@@ -1,20 +1,2 @@
-# Screenshots & screen recordings
-*.png
-*.jpg
-*.jpeg
-*.mp4
-screenshots/
-
-# Logs
-*.log
-logcat*.txt
-
-# APKs (live in ~/Downloads, don't commit builds)
-*.apk
-
-# macOS
+qa-credentials.local.txt
 .DS_Store
-
-# Editor
-.vscode/
-.idea/
