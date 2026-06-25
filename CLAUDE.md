@@ -42,15 +42,26 @@ These rules apply to **every** testing run in this directory.
 
 ## What you produce (file structure)
 
+This repo holds **all** Vantage Fit testing, with one top-level folder per testing area:
+
 ```
-/test-cases/<module>.md      ← test cases for that module/flow
-/bug-log.md                  ← single running bug log, all modules
-/coverage-log.md             ← what was tested, partial, blocked, skipped
-/evidence/                   ← screenshots
+ui-ux/           ← UI/UX testing (this work)
+localization/    ← localization testing (future)
+<area>/          ← future areas as needed
 ```
 
+Inside each area folder:
+
+```
+<area>/test-cases/<module>.md   ← test cases for that module/flow
+<area>/bug-log.md               ← single running bug log for that area
+<area>/coverage-log.md          ← what was tested, partial, blocked, skipped
+<area>/evidence/                ← screenshots & accessibility dumps
+```
+
+- Work inside the relevant area folder (e.g. `ui-ux/` for UI/UX testing).
 - Append to `bug-log.md` and `coverage-log.md` — never overwrite prior runs.
-- One test-case file per module/flow.
+- One test-case file per module/flow. **Always prioritise crashes** — log them P1 and list them first.
 
 ---
 
