@@ -201,3 +201,40 @@ Nutrition (Meals + Water) · Sleep. No "Set Up Health Profile" card (profile alr
 ### Note (test-tool / safety)
 - The login email was NOT changed (could lock out the shared Demo account). No profile data was actually persisted (Bug #38 means edits don't save), so the account is unchanged.
 - One navigation mishap mid-run (a stray tap surfaced the Google search overlay); recovered by relaunching the app. Not an app defect.
+
+---
+
+## Run 5 — 2026-06-26 — Challenges (bottom-nav tab)
+
+- **Driver:** adb + uiautomator. **mobile-mcp NOT connected.** Bugs logged: **#48–#51**.
+- Test cases: `test-cases/challenges.md`.
+- Structure: bottom-nav **Challenges** → tabs **Ongoing / Upcoming / Past** → tap a challenge → **ChallengeInfoActivity** (tasks, weekly progress, leaderboard) → ⓘ → **AboutChallengeActivity** (More info).
+- Account state: **0 Ongoing, 0 Upcoming, 5 Past** (all Past show 0% progress / score 0). Challenges look **HR/admin-assigned** (no self-join CTA).
+
+### Tested — DONE
+| Area | Result |
+|---|---|
+| Challenges tab + 3 sub-tabs | ✅ Open, switch Ongoing/Upcoming/Past; active tab underlined. |
+| Loading state | ✅ Skeleton/shimmer placeholders (~4s) then content. |
+| Ongoing — empty state | ✅ "No Ongoing Challenges" + Refresh; copy mismatch (Bug #48). |
+| Upcoming — empty state | ✅ "No Upcoming Challenges Found" + Refresh; title differs from Ongoing (Bug #51). |
+| Refresh (Ongoing) | ✅ Re-fetches; stays empty (no data). |
+| Past — list | ✅ 5 challenges render (title, weekly rank, dates, thumbnail). |
+| Challenge detail (×2) | ✅ Stress Free Month + Adherence Task III; consistent layout (hero, progress, Ended, tasks, leaderboard). |
+| Tasks | ✅ Render with circular progress (0/n). Pluralization bug "1 days" (Bug #49). Rows not clickable (ended). |
+| Leaderboard | ✅ YOU + ranked list; **ranking anomaly** with tied-0 scores (Bug #50). |
+| More info (ⓘ) | ✅ AboutChallengeActivity: T&C + About. |
+| Back navigation | ✅ Clean from detail / more-info / list. |
+
+### NOT TESTED — blocked by data (no active challenges on Demo account)
+- **Ongoing/active challenge experience** — joining is HR-assigned and the account has none, so could not test: task completion, daily logging, live progress updates, score/rank changes, an active (non-zero) leaderboard.
+- **Upcoming challenge detail / pre-start state** — 0 upcoming challenges.
+- **Enroll / join / browse a challenge** — no self-join or browse CTA found (HR-assigned model). Needs an account with assigned/active challenges (or HR enrollment) to test these.
+
+### NOT TESTED — other
+- **Full TalkBack accessibility pass** of the Challenges screens — only spot-checked.
+- **Remaining 3 past challenges' details** (Adherence Task II, Adherence Tasks, June Fitness) — not opened individually; layout verified consistent via 2 representatives.
+
+### Data observations (not logged as defects)
+- "Stress Free Month" is a "month long challenge" but the detail shows only "Week 1"; weeks 2–4 not reachable (challenge ended / not enrolled).
+- Some challenges have a description line (Stress Free Month), others don't (Adherence Task III) — likely source data.

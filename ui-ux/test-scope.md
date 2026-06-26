@@ -4,7 +4,7 @@ Master checklist of the whole app's UI/UX testing. Updated as runs complete.
 
 - **Build under test:** VFit PROD new design fixes 16_jun.apk · emulator-5554 (Android 16) · driver: adb + uiautomator
 - **Last updated:** 2026-06-26
-- **Bugs to date:** 47 logged (1 P1 crash, see `bug-log.md`)
+- **Bugs to date:** 51 logged (1 P1 crash, see `bug-log.md`)
 
 **Legend:** ✅ Done · 🟡 Partial · ⬜ Not started · ⛔ Blocked (environment) · 🚫 Excluded (destructive / by request)
 
@@ -34,7 +34,7 @@ Master checklist of the whole app's UI/UX testing. Updated as runs complete.
 | Tab | Status | Notes |
 |---|---|---|
 | **Home** (dashboard) | 🟡 | See section B + Summary modules (E) |
-| **Challenges** | ⬜ | **NOT TESTED** — major section, untouched |
+| **Challenges** | ✅ | *(Run 5)* Ongoing/Upcoming/Past, detail, tasks, leaderboard, more-info. Active-challenge flows blocked (no enrolled challenges) |
 | **Programs** | ⬜ | **NOT TESTED** — major section, untouched |
 | **Community** | ⬜ | **NOT TESTED** — major section, untouched |
 
@@ -101,7 +101,7 @@ Master checklist of the whole app's UI/UX testing. Updated as runs complete.
 ---
 
 ## Snapshot
-- **Done:** FAB Quick Actions · Summary detail modules · Home Header · Navigation Drawer (incl. Profile, App Preferences, Quick Links, Wallet, More)
-- **Biggest gaps (not started):** **Challenges, Programs, Community** bottom-nav tabs · Authentication/onboarding · most cross-cutting concerns (accessibility full pass, localization, offline, rotation, performance, push, deep links)
-- **Blocked:** Device Connection / Change Device (Google account) · Health Connect import (system setup)
+- **Done:** FAB Quick Actions · Summary detail modules · Home Header · Navigation Drawer (incl. Profile, App Preferences, Quick Links, Wallet, More) · **Challenges**
+- **Biggest gaps (not started):** **Programs, Community** bottom-nav tabs · Authentication/onboarding · most cross-cutting concerns (accessibility full pass, localization, offline, rotation, performance, push, deep links)
+- **Blocked / data-gated:** Device Connection / Change Device (Google account) · Health Connect import (system setup) · **active-challenge flows** (no enrolled challenges on the Demo account)
 - **Excluded by request:** Logout · Delete Account

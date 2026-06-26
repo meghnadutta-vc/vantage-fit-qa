@@ -4,7 +4,7 @@
 - **Device:** emulator-5554, Android 16 (API 36), 1080×2220
 - **Driver:** adb + uiautomator (mobile-mcp not connected)
 - **Tested:** 2026-06-25, 2026-06-26 — Reporter: Meghna Dutta
-- **Areas covered:** FAB ＋ Quick-Actions flow · Summary (Calendar, Calorie/Meal, Water, Sleep, Profile, Device Connection) · Home Header · App Menu / Navigation Drawer (drawer container, Profile, App Preferences, Quick Links, Wallet, More) — destructive items (Delete Account, Logout) held for confirmation
+- **Areas covered:** FAB ＋ Quick-Actions flow · Summary (Calendar, Calorie/Meal, Water, Sleep, Profile, Device Connection) · Home Header · App Menu / Navigation Drawer (drawer container, Profile, App Preferences, Quick Links, Wallet, More) · Challenges (Ongoing/Upcoming/Past, detail, leaderboard, more-info) — destructive items (Delete Account, Logout) held for confirmation
 
 > Organised by module for readability. **Crashes are always listed first** (see below). Add new bugs under the relevant module heading.
 
@@ -16,9 +16,9 @@
 |---|---|---|
 | **P1 — Crash / blocker** | 1 | #34 |
 | **P2 — High-impact** | 5 | #1, #16, #26, #31, #38 |
-| **P3 — UI/UX/functional** | 29 | #2–#8, #10, #12–#15, #17, #18, #20–#22, #24, #25, #27–#29, #33, #35, #39, #40, #41, #42, #45 |
-| **P4 — Minor / copy** | 12 | #9, #11, #19, #23, #30, #32, #36, #37, #43, #44, #46, #47 |
-| **Total** | **47** | #1–#47 |
+| **P3 — UI/UX/functional** | 30 | #2–#8, #10, #12–#15, #17, #18, #20–#22, #24, #25, #27–#29, #33, #35, #39, #40, #41, #42, #45, #50 |
+| **P4 — Minor / copy** | 15 | #9, #11, #19, #23, #30, #32, #36, #37, #43, #44, #46, #47, #48, #49, #51 |
+| **Total** | **51** | #1–#51 |
 
 ---
 
@@ -694,4 +694,63 @@ Actual: Several cards show "…/100/200/250/2/3/4" — the trailing "2/3/4" brea
 Note/Doubt: Likely sourced from backend catalog data rather than a UI sort. Verify the data feed / add
             a client-side sort.
 Evidence: evidence/drawer_redeem_01.png
+```
+
+---
+
+# Module 10 — Challenges (bottom-nav tab)
+
+> Tabs: Ongoing · Upcoming · Past → ChallengeInfoActivity (detail) → AboutChallengeActivity (ⓘ More info).
+> Demo account: 0 Ongoing, 0 Upcoming, 5 Past (all 0% / score 0). Challenges appear HR/admin-assigned (no self-join).
+
+```
+Bug #50 [Functional / UX - P3 — verify]
+[Challenges → Past → challenge detail (ChallengeInfoActivity) → Leaderboard]
+With all scores tied at 0, the user is ranked near the bottom while others sit at the top.
+
+Expected: When every participant has the same score (0), ranking should be fair/sensible — e.g. all
+          tied at 1st, or the current user not arbitrarily dumped to the bottom.
+Actual: In "Stress Free Month" (ended, everyone score 0), "YOU" shows rank "10143rd" with SCORE 0,
+        while ranks #1–#5 are auto-named users (User10136, User10135, User10134…) also at SCORE 0.
+        Ranking appears to fall back to user-ID / enrollment order, so the real user lands at 10143rd
+        despite an identical score to #1.
+Impact: Confusing and demotivating — a user with the same score as #1 is shown as 10,143rd.
+Note/Doubt: Confirm the ranking/tie-break algorithm. May be by-design (ID order) but reads as a bug;
+            consider tie handling (shared rank) when scores are equal. Only observed in a tied-at-0
+            ended challenge (data-dependent).
+Evidence: evidence/challenges_07_detail_tasks.png, evidence/challenges_08_leaderboard.png
+```
+
+```
+Bug #48 [Copy / UX - P4]
+[Challenges → Ongoing tab → empty state]
+Empty-state copy promises options that aren't there.
+
+Expected: Copy matches the available actions; ideally a way to browse/discover challenges.
+Actual: "It seems you are not currently enrolled in any challenge. Choose an option below to get
+        started." — but the only control below is a single "Refresh" button. "Choose an option" (plural)
+        is misleading, and there is no browse/join CTA (challenges are HR-assigned).
+Evidence: evidence/challenges_02_ongoing.png
+```
+
+```
+Bug #49 [Copy - P4]
+[Challenges → challenge detail → Week 1 Tasks]
+Task description doesn't handle singular counts.
+
+Expected: "Read 10 pages 1 day this week".
+Actual: "Read 10 pages 1 days this week" — "1 days" (the "{n} days" template isn't pluralized when n=1).
+        Multi-day tasks ("3 days", "7 days") read correctly; only the n=1 case is wrong.
+Evidence: evidence/challenges_10_adherence_detail.png
+```
+
+```
+Bug #51 [Copy - P4]
+[Challenges → Ongoing vs Upcoming empty-state titles]
+Inconsistent empty-state title phrasing between tabs.
+
+Expected: Consistent title style across tabs.
+Actual: Ongoing tab title is "No Ongoing Challenges"; Upcoming tab title is "No Upcoming Challenges
+        Found" (extra "Found"). The two empty states are styled/worded inconsistently.
+Evidence: evidence/challenges_02_ongoing.png, evidence/challenges_04_upcoming.png
 ```
