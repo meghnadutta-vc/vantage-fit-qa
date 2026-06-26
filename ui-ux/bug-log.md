@@ -3,8 +3,8 @@
 - **Build under test:** VFit PROD new design fixes 16_jun.apk
 - **Device:** emulator-5554, Android 16 (API 36), 1080×2220
 - **Driver:** adb + uiautomator (mobile-mcp not connected)
-- **Tested:** 2026-06-25 — Reporter: Meghna Dutta
-- **Areas covered:** FAB ＋ Quick-Actions flow · Summary (Calendar, Calorie/Meal, Water, Sleep, Profile, Device Connection) · Home Header
+- **Tested:** 2026-06-25, 2026-06-26 — Reporter: Meghna Dutta
+- **Areas covered:** FAB ＋ Quick-Actions flow · Summary (Calendar, Calorie/Meal, Water, Sleep, Profile, Device Connection) · Home Header · App Menu / Navigation Drawer (drawer container, Profile, App Preferences, Quick Links, Wallet, More) — destructive items (Delete Account, Logout) held for confirmation
 
 > Organised by module for readability. **Crashes are always listed first** (see below). Add new bugs under the relevant module heading.
 
@@ -15,10 +15,10 @@
 | Severity | Count | Bug IDs |
 |---|---|---|
 | **P1 — Crash / blocker** | 1 | #34 |
-| **P2 — High-impact** | 4 | #1, #16, #26, #31 |
-| **P3 — UI/UX/functional** | 24 | #2–#8, #10, #12–#15, #17, #18, #20–#22, #24, #25, #27–#29, #33, #35 |
-| **P4 — Minor / copy** | 8 | #9, #11, #19, #23, #30, #32, #36, #37 |
-| **Total** | **37** | #1–#37 |
+| **P2 — High-impact** | 5 | #1, #16, #26, #31, #38 |
+| **P3 — UI/UX/functional** | 29 | #2–#8, #10, #12–#15, #17, #18, #20–#22, #24, #25, #27–#29, #33, #35, #39, #40, #41, #42, #45 |
+| **P4 — Minor / copy** | 12 | #9, #11, #19, #23, #30, #32, #36, #37, #43, #44, #46, #47 |
+| **Total** | **47** | #1–#47 |
 
 ---
 
@@ -532,4 +532,166 @@ Unnatural relative-time copy.
 Expected: "1 day ago".
 Actual: "1 day." (trailing period, missing "ago").
 Evidence: evidence/hdr_02_notifications.png
+```
+
+---
+
+# Module 9 — App Menu / Navigation Drawer
+
+> Drawer = bottom-sheet opened from the hamburger (`toolbar_drawer`, top-left). Sections: Profile · App preferences · QUICK LINKS · WALLET · MORE.
+> Tested via the drawer entry point. (Profile is the same `UserProfileActivity` reached from Summary in Module 6 — see Bug #29 for the Current City data issue, not repeated here.)
+
+## 9.1 Profile (view / edit)
+
+```
+Bug #38 [Functional - P2 — CONFIRMED]
+[Drawer → My Profile (UserProfileActivity) → field-edit dialogs + Save Changes]
+Profile field edits do not take effect, yet the app reports "Profile Updated Successfully".
+
+Expected: Editing a field (e.g. Name) → typing a new value → "Update" → "Save Changes" updates the
+          field on the form, persists it, and reflects it across the app (incl. drawer header).
+Actual: After "Update", the form field keeps the OLD value. For Name: the dialog EditText verifiably
+        held "Tester99", I tapped "Update" (exact button bounds, dialog closed), but the Name field
+        still showed "Demo". Tapping "Save Changes" then showed the toast "Profile Updated Successfully"
+        — but re-opening the screen (and the drawer header) still showed "Demo". The typed value is lost.
+Repro: 100% for Name (instrumented + verified via UI dump, 3×). Marital Status reproduces the symptom:
+       the radio moved to "Married" (checked=true) but the field stayed "Single" after Update; reopening
+       the dialog showed the stale in-memory "Married", not the field's "Single".
+Impact: P2 — a core account flow (editing your profile) is broken across field types, and the success
+        message is misleading (users believe their change saved when it did not).
+Note/Doubt: Could the displayed name be sourced from SSO/cache and intentionally read-only? Even so,
+            presenting editable dialogs + a false "success" message is a defect. Dev to confirm the
+            save path and the source of the displayed value.
+Sub-note (empty Name): Submitting an EMPTY required Name + Update closed the dialog with NO inline
+            error/validation message (no feedback). Confounded by this same save bug.
+Evidence: evidence/drawer_profile_07_name_valid.png, drawer_profile_09_after_update.png,
+          drawer_profile_10_after_save.png, drawer_profile_11_name_save_result.png,
+          drawer_profile_12_marital_dropdown.png
+```
+
+```
+Bug #41 [UX / Security - P3 — verify intent]
+[Drawer → My Profile → Email field]
+The login email is freely editable from the profile with no verification step.
+
+Expected: The account email (login identity) should be read-only, or changing it should require
+          verification (confirm via OTP/email link) and/or re-authentication.
+Actual: Tapping the Email field opens a "Change Email" dialog with an editable text box and a plain
+        "Update" button — no verification or re-auth prompt is shown.
+Note/Doubt: NOT submitted — changing the login email on a shared test account risks locking it out
+            (account-affecting action, paused per test rules). Verify whether email edit is intended
+            and, if so, what verification guards it. (Given Bug #38, the edit likely would not persist
+            anyway — but the affordance itself is the concern.)
+Evidence: evidence/drawer_profile_01_view.png
+```
+
+```
+Bug #40 [Accessibility - P3]
+[Drawer → My Profile (UserProfileActivity) → toolbar back arrow & field rows]
+Controls expose no content-description for screen readers.
+
+Expected: The back arrow announces e.g. "Back"/"Navigate up"; each editable field row announces its
+          label and value.
+Actual: The toolbar back button (Button [11,88][143,220]) and the clickable field rows have empty
+        content-desc, so TalkBack has no meaningful label to read for these controls.
+Evidence: evidence/drawer_profile_01_view.png
+```
+
+## 9.2 Drawer container & affordances
+
+```
+Bug #39 [Accessibility - P3]
+[Dashboard → top nav → hamburger (toolbar_drawer)]
+The menu button has an empty content-description.
+
+Expected: The menu/hamburger announces a label such as "Open menu" / "Navigation".
+Actual: `toolbar_drawer` (the left hamburger, bounds [44,101][116,184]) has content-desc="" — a screen
+        reader announces nothing meaningful for the primary menu control.
+Evidence: evidence/drawer_01_open.png
+```
+
+```
+Bug #42 [UI - P3]
+[Drawer → section grouping]
+Inconsistent container treatment between drawer groups.
+
+Expected: Consistent grouping/container styling across drawer sections (per design system).
+Actual: QUICK LINKS and WALLET rows sit inside a white rounded card, but the MORE rows (Terms and
+        conditions, Privacy Policy, Rate us, Need Help?) sit directly on the bare grey sheet background
+        with no card. The grouping treatment is inconsistent within the same drawer.
+Evidence: evidence/drawer_01_open.png, evidence/drawer_02_more.png
+```
+
+```
+Bug #43 [UX / Enhancement - P4]
+[Dashboard → navigation drawer open gesture]
+No edge-swipe affordance to open the drawer.
+
+Expected: Many apps let users swipe in from the left edge to open the nav drawer.
+Actual: The "drawer" is a modal bottom sheet; it only opens by tapping the hamburger. Swiping from the
+        left edge does nothing (that gesture is the OS Back gesture). Reasonable as a design choice, but
+        users expecting a side-drawer swipe get no response.
+Note: Enhancement / design-intent call, not a defect.
+Evidence: evidence/drawer_01_open.png
+```
+
+## 9.3 App Preferences (Settings)
+
+> Unit / Reminder / Leaderboard settings all save & persist correctly — only profile editing (Bug #38) fails to save. Settings' MORE group reuses the bare-grey grouping from Bug #42.
+
+```
+Bug #44 [UX - P4]
+[Drawer → App preferences (SettingsActivity) → GENERAL → Sync Activities]
+"Sync Activities" gives no visible feedback.
+
+Expected: Tapping "Sync Activities" shows progress ("Syncing…" / spinner) and a success or failure
+          result, so the user knows the sync ran.
+Actual: Tapping it leaves the user on the Settings screen with no visible spinner, toast, or result
+        message (observed twice). The user cannot tell whether a sync started, succeeded, or failed.
+Note/Doubt: A sync may run silently in the background; the issue is the lack of any user feedback.
+Evidence: evidence/drawer_prefs_10_sync.png
+```
+
+## 9.4 Quick Links / Wallet / More
+
+```
+Bug #45 [Functional / Content - P3 — verify (compliance)]
+[Drawer → MORE → Privacy Policy vs Terms and conditions (WebViewActivity)]
+Privacy Policy and Terms & Conditions appear to render the same content.
+
+Expected: "Privacy Policy" and "Terms and conditions" are distinct legal documents with different text.
+Actual: Both WebView pages open with the identical lead paragraph ("At VantageFit ("App") we are
+        dedicated to safeguarding and preserving your privacy…") and the same "About VantageFit" block
+        (Bargain Technologies Inc, 4512 Legacy Drive, Plano TX). Only the page title differs; the body
+        looks duplicated.
+Note/Doubt: Possible compliance issue (a privacy policy must be accurate/distinct). Confirm the two
+            screens point to different source URLs/content; they currently look like the same document.
+Evidence: evidence/drawer_more_01_terms.png, evidence/drawer_more_02_privacy.png
+```
+
+```
+Bug #46 [Copy / UX - P4]
+[Drawer → WALLET → My Gift Cards (MyVouchersActivity) → empty state]
+Weak, inconsistent empty-state copy (and an off-topic illustration).
+
+Expected: Friendly, on-brand empty state, e.g. "You haven't redeemed any gift cards yet." (matching the
+          tone of My Workouts' "No workouts yet!").
+Actual: Shows "Sorry!!" (apologetic, double exclamation) + "No Data Found" (developer-ish). The
+        illustration is a magnifying-glass-over-document/person, which doesn't represent gift cards.
+        "No Data Found" also recurs in the Points Statement empty state (Bug #36) — empty-state copy is
+        inconsistent across the app.
+Evidence: evidence/drawer_giftcards_01.png
+```
+
+```
+Bug #47 [Backend / Data - P4 — verify]
+[Drawer → WALLET → Redeem Points (RedeemListActivity) → denominations]
+Gift-card denomination list is out of order.
+
+Expected: Denominations in ascending order, e.g. 2/3/4/5/10/15/20/25/50/100/200/250.
+Actual: Several cards show "…/100/200/250/2/3/4" — the trailing "2/3/4" breaks the ascending sequence
+        (e.g. Virtual Promotional Prepaid Mastercard USD, Virtual Prepaid VISA USD).
+Note/Doubt: Likely sourced from backend catalog data rather than a UI sort. Verify the data feed / add
+            a client-side sort.
+Evidence: evidence/drawer_redeem_01.png
 ```

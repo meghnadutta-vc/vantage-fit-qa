@@ -159,3 +159,45 @@ Nutrition (Meals + Water) · Sleep. No "Set Up Health Profile" card (profile alr
 - After the Run-2 Google Fit / device-connection flow, `PlayCoreAcquisitionActivity` (Google Play
   in-app update) repeatedly launched on cold start and some taps, pulling focus from the app and making
   navigation flaky (Bug #35). Recommend an emulator cold-boot/restart before further testing.
+
+---
+
+## Run 4 — 2026-06-26 — App Menu / Navigation Drawer
+
+- **Driver:** adb + uiautomator. **mobile-mcp NOT connected.** Bugs logged: **#38–#47**.
+- Test cases: `test-cases/drawer.md`, `drawer-profile.md`, `drawer-preferences.md`, `drawer-items.md`.
+- Drawer = **bottom-sheet** opened from the hamburger (`toolbar_drawer`, top-left). Sections: Profile · App preferences · QUICK LINKS (My Workouts, My Badges) · WALLET (Redeem Points, Points Statement, My Gift Cards) · MORE (Terms and conditions, Privacy Policy, Rate us, Need Help?) · App Version v4.2.7.
+
+### Tested — DONE
+| Area | Result |
+|---|---|
+| **Drawer container** | ✅ Opens via hamburger; closes via Back, tap-outside, drag-down. All items present. Bottom-sheet (no edge-swipe open, Bug #43). Grouping inconsistency (Bug #42). Hamburger unlabeled (Bug #39). |
+| **Profile — view** | ✅ All fields render (Email, Name, Marital Status, Current City, Country), points card, avatar+camera, Points Statement link. |
+| **Profile — edit (Name, Marital Status)** | ❌ **Edits do not save** (Bug #38, P2) — Update + Save Changes shows "Profile Updated Successfully" but value is unchanged on form, after reload, and in drawer header. Name confirmed airtight (EditText held the typed value); Marital Status reproduces. |
+| **Profile — Cancel / Back mid-edit** | ✅ Cancel and Back both dismiss the dialog without change. |
+| **Profile — Email editability** | ⚠️ Editable with no verification (Bug #41). **NOT submitted** (account-safety). |
+| **App Preferences — Unit Settings** | ✅ Toggle (Mile↔Km) **persists** across leave/return. All 5 unit pairs present. Restored to original. |
+| **App Preferences — Reminder Settings** | ✅ WATER toggle → time-picker sheet → Save → toggle ON + time shown + persists; toggle off clears. Restored OFF. Meal reminders same pattern. |
+| **App Preferences — Leaderboard Settings** | ✅ Opt-out/opt-in toggle works; explanatory text updates dynamically; persists inline. Restored to opted-in. |
+| **App Preferences — Change Device** | ↪ Routes to ManageDevicesActivity (= Summary ▸ Device Connection; Google-blocked, Module 7). |
+| **App Preferences — App Version** | ✅ Static info "v4.2.7"; tapping is a no-op. |
+| **My Workouts** | ✅ AllWorkoutListActivity; clean empty state; "Import Workouts" → HealthConnectPermissionActivity → system Health Connect onboarding. |
+| **My Badges** | ✅ BadgeActivity; earned (colored) vs locked (greyed) clear; badge images labelled; hero "Best Walk Badge". |
+| **Redeem Points** | ✅ RedeemListActivity catalog + RedeemDetailsActivity (denomination/qty/T&C/Redeem). Denomination ordering odd (Bug #47). |
+| **My Gift Cards** | ✅ MyVouchersActivity empty state ("Sorry!!/No Data Found", Bug #46). |
+| **Terms / Privacy / Rate us / Need Help?** | ✅ Terms & Privacy → WebView (Privacy duplicates Terms, Bug #45); Rate us → Play Store; Need Help? → Freshchat chat. |
+
+### NOT TESTED / intentionally skipped
+- **Delete Account & Logout** (Settings → MORE) — **destructive/irreversible; NOT tapped** per test rules. Need explicit go-ahead (and ideally a throwaway account) to test the confirm dialogs + flows.
+- **Redeem with insufficient points** (negative) — **NOT executed**; redemption is irreversible ("cannot be cancelled"). Needs a points-funded account + go-ahead.
+- **Need Help? — sending a message** — NOT sent (would create a real Freshchat support ticket).
+- **Change profile photo** (camera icon) — opens an image picker; needs camera/gallery content on the emulator.
+- **Empty / special-char / very-long Name validation** — confounded by Bug #38 (no profile edit applies); needs a build where profile edits save.
+- **Rapid-toggle stress** of settings switches — not stress-tested.
+
+### PASS highlight
+- Settings (Unit/Reminder/Leaderboard) **persist correctly**, proving Bug #38 is specific to **profile editing**, not a global save failure.
+
+### Note (test-tool / safety)
+- The login email was NOT changed (could lock out the shared Demo account). No profile data was actually persisted (Bug #38 means edits don't save), so the account is unchanged.
+- One navigation mishap mid-run (a stray tap surfaced the Google search overlay); recovered by relaunching the app. Not an app defect.
