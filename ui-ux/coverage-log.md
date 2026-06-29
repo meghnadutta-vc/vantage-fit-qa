@@ -238,3 +238,36 @@ Nutrition (Meals + Water) · Sleep. No "Set Up Health Profile" card (profile alr
 ### Data observations (not logged as defects)
 - "Stress Free Month" is a "month long challenge" but the detail shows only "Week 1"; weeks 2–4 not reachable (challenge ended / not enrolled).
 - Some challenges have a description line (Stress Free Month), others don't (Adherence Task III) — likely source data.
+
+---
+
+# Run 6 — Full-app crash & UI-break sweep (2026-06-29)
+
+- **Build:** VFit PROD new design fixes **29 Jun**.apk · **Device:** emulator-5554, Android 16 (API 36), 1080×2220
+- **Driver:** adb + uiautomator. Crash detection after every action: focused-activity + `pidof` + `logcat -b crash -d`.
+- **Primary goal:** reproduce/clear the profile-picture crash (Bug #34) and find crashes + UI breaks app-wide.
+- **Result:** 0 crashes. Bug #34 (profile-avatar crash) does NOT reproduce → fixed. 6 new bugs logged (#52–#57).
+
+| Module / surface | Status | Notes |
+|---|---|---|
+| Profile avatar → My Health Profile (My Health / My League) | ✅ Done | No crash. League card/chart render. Bug #34 fixed. |
+| Profile picture change (camera→gallery→uCrop→upload) + Remove | ✅ Done | Full lifecycle, no crash. Pushed a test image to emulator gallery, then removed pic to restore. |
+| Health-profile setup wizard (6 steps) | ✅ Done | All steps render; not committed (backed out). Copy bugs → #54. |
+| Settings (from gear & App preferences) | ✅ Done | Renders; Delete Account / Logout NOT tapped (destructive). |
+| Home Summary detail + 4 Trend graphs (Week/Month/Year) | ✅ Done | No crash. |
+| Notifications + feed detail | ✅ Done | No crash. Timestamp doubt → #56. |
+| Wallet / Points Statement | ✅ Done | Empty state, no crash. |
+| Drawer: My Workouts, My Badges (+detail), Redeem Points, My Gift Cards, App preferences, Profile, Need Help? | ✅ Done | All open, no crash. |
+| Challenges: Ongoing/Upcoming/Past + detail + leaderboard (Weekly/Overall) | ✅ Done | No crash. Pill clipping → #53. |
+| FAB quick actions: Start Outdoor Activity, Measure Heart Rate, Log Water | ✅ Partial | Representative sample; no crash. |
+| Programs: Library (featured→YouTube) + Offerings (categories) | ✅ Done | No crash. Stray images → #52. |
+| Community: Social feed + Events | ✅ Done | No crash. Stray images → #52. |
+
+### NOT TESTED / partial — and why
+- **FAB actions not individually opened:** Start 7-Minute Workout, Log Activity, Log Today's Meal, Log Sleep, Update Weight, Track Mood, Start Squats Workout, Start Meditation, Sync Activities. (Menu renders; 3 representative actions verified crash-free. Worth a follow-up pass.)
+- **GPS Outdoor-workout run & Health-Connect heart-rate sync:** BLOCKED — gated behind OS location / Health Connect permission grants (per no-loop rule on OS dialogs); did not grant. Camera-PPG heart rate also gated by camera-permission OS dialog (denied).
+- **Drawer "MORE" external links:** Terms & Conditions, Privacy Policy, Rate us — not opened (external web / Play Store; out of in-app crash scope).
+- **Gift-card redemption flow:** not entered — "redeemed cannot be cancelled" (irreversible); only the voucher list verified.
+- **Programs content quiz / full video playback:** featured content hands off to external YouTube app; in-app quiz not exercised.
+- **Active-challenge experience & non-empty data states:** Demo account has no ongoing data (steps/sleep partial) — many screens validated in empty/low-data state only.
+- **Full TalkBack accessibility pass:** not performed this run (crash/UI-break focus).

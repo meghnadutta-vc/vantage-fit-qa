@@ -754,3 +754,117 @@ Actual: Ongoing tab title is "No Ongoing Challenges"; Upcoming tab title is "No 
         Found" (extra "Found"). The two empty states are styled/worded inconsistently.
 Evidence: evidence/challenges_02_ongoing.png, evidence/challenges_04_upcoming.png
 ```
+
+---
+
+# Run 6 — Full-app crash & UI-break sweep (2026-06-29)
+
+- **Build under test:** VFit PROD new design fixes **29 Jun**.apk · emulator-5554, Android 16 (API 36), 1080×2220
+- **Driver:** adb + uiautomator. Crash detection = activity/PID check + `logcat -b crash -d` after every action.
+- **Scope:** Whole app — profile pic flow, Home/Summary + graphs, Notifications, Wallet, Drawer (all in-app items + full profile-picture change/remove), Challenges (+detail/leaderboard), FAB quick actions, Programs (Library/Offerings), Community (Social/Events).
+- **Crashes found this run: 0.** App PID stayed alive (21018) across every flow.
+
+## ✅ Regression verification — Bug #34 (profile-avatar crash) appears FIXED
+
+```
+Bug #34 RE-TEST [Functional - P1 → PASS on 29 Jun build]
+[Home Header → profile/league avatar]
+On 16_jun the profile avatar tap exited the app 100% of the time. On the 29 Jun build the SAME tap
+(include_toolbar_league, ~1008,143) opens "My Health Profile" (HealthActivity) correctly — no exit,
+crash buffer empty. The full profile-picture lifecycle (camera → Choose From Gallery → system picker
+→ uCrop crop → upload "updated successfully" → Remove Profile Picture → restored) also completed
+without a crash. Recommend dev confirm the fix; closing as Fixed pending their confirmation.
+Evidence: run6-crash-audit/01_profile_health.png, 05j_profile_pic_picker.png, 05m_after_image_select.png,
+          05n_after_crop_upload.png, 05o_after_remove_pic.png
+```
+
+## 🟠 P2
+
+```
+Bug #52 [UI - P2]
+[Community (Social + Events) & Programs (Offerings + Workout category) — feed/content media]
+Unrelated images render as floating/overlapping elements on top of real content. On the Community
+Social feed a car-battery photo ("DieHard GOLD") overlaps the "My Activity Badge / 3000" post,
+covering the "Last earned…" text; it first renders as a solid BLACK BOX then loads the wrong image.
+The same battery image floats in empty space on Community → Events, and a power-tools
+"ORIGINAL MANUFACTURER" pegboard graphic overlaps the meditation Partner-Offering card on
+Programs → Offerings and floats mid-screen on the Workout category screen.
+Expected: Only relevant content; any media stays within its card/bounds and matches the item.
+Actual: Wrong, unrelated images (batteries/power tools) render detached and overlap/obscure content
+        across 4+ screens. Pattern looks like a misplaced ad/media view (wrong z-order/layout/asset).
+Note/Doubt: Are these intended ad placements? Even if so, the positioning is broken (overlap + black
+            placeholder). Needs design/dev confirmation of source (ad SDK vs content image binding).
+Evidence: run6-crash-audit/09_community.png (black box), 09b_community_recheck.png (battery over badge),
+          09c_community_events.png (battery floating), 08d_offerings.png, 08e_offering_category.png
+```
+
+## 🟡 P3
+
+```
+Bug #53 [UI - P3]
+[Challenges → Leaderboard (Weekly & Overall tabs)]
+The red "SCORE" pills on the right of each leaderboard row are clipped by the right screen edge —
+the pill's rounded right corner is cut off, so it reads as a flat-cut rectangle flush to the edge.
+Expected: Score pill fully visible with a consistent right margin/gutter.
+Actual: Pill is clipped at the screen boundary on every row, both Weekly and Overall tabs.
+Evidence: run6-crash-audit/06e_leaderboard.png, 06f_leaderboard_overall.png
+```
+
+```
+Bug #56 [UX/Backend - P3 — verify]
+[Notifications list → linked feed post]
+A notification's relative timestamp does not match the linked post's date. The notification shows
+"4 days." but opening it shows a post dated "Tuesday, 17 February 2026" (~4 months before today,
+29 Jun 2026).
+Expected: Relative time reflects the actual event date.
+Actual: "4 days." vs a Feb-2026 post — mismatch. Could be a timestamp-mapping bug or two different
+        events; needs verification with known data.
+Note/Doubt: Also copy nit — "4 days." reads oddly; likely should be "4 days ago".
+Evidence: run6-crash-audit/03_notifications.png, 03c_feed_detail_loaded.png
+```
+
+## 🔵 P4 — Minor / copy
+
+```
+Bug #54 [Copy - P4]
+[Health-profile setup wizard (ShowcaseActivity)]
+Multiple copy errors in the setup wizard:
+ • "Lets get started" (step 1) and "Lets start" (step 6) — missing apostrophe → "Let's".
+ • "Workout atleast once a week" — "atleast" should be "at least".
+ • "Workout 3–4 times once a week" — contradictory; should be "Workout 3–4 times a week".
+Expected: Grammatically correct microcopy.
+Evidence: run6-crash-audit/01e_add_data_manually.png, 01j_wizard_step6.png
+```
+
+```
+Bug #55 [UI/Copy - P3/P4 — design-system consistency]
+[Empty states across modules]
+Empty-state wording/tone is inconsistent across the app: "Empty / No Data Found" (Points Statement),
+"Sorry!! No Data Found" (My Gift Cards), "No workouts yet!" (My Workouts), "No activities found"
+(graph stats), "No calendar events" (Events). Different titles, punctuation and tone for the same
+"nothing here" state.
+Expected: One consistent empty-state pattern (title + helper text) per the design system.
+Evidence: run6-crash-audit/04_wallet.png, 05g_my_gift_cards.png, 05c_my_workouts.png, 02h_sleep.png
+```
+
+```
+Bug #57 [Copy/UI - P4]
+[Summary detail (Calories) + BMI screen + Height displays]
+Number/units formatting issues:
+ • "to gain 0.55115 lbs per week" — excessive precision (5 decimals); show ~0.55 lbs.
+ • "Your current weight is 132  lbs" — double space before "lbs" (BMI screen).
+ • "5'3" feet" — redundant "feet" after the '/" feet-inches notation (appears in Import Health Data,
+   Health Records and the height wizard step).
+Expected: Sensible precision, single spaces, non-redundant unit labels.
+Evidence: run6-crash-audit/02_summary_card.png, 01h_wizard_step4.png, 01d_setup_health.png, 01f_wizard_step2.png
+```
+
+## ⚪ Observations / doubts (not logged as confirmed bugs)
+
+- **My Health "not set up" vs server has data:** My Health tab shows "Health Profile not set up", yet the Import-Health-Data screen shows Age/Gender/Height/Weight already on the server. Verify whether the empty state is about *trends* vs *records*. (01_profile_health.png vs 01d_setup_health.png)
+- **BMI "Healthy" vs weight marker in "Over Weight":** BMI 23.44 labelled Healthy, but the Ideal-Weight gauge places current 132 lbs just past "Max 130 lbs" (Over Weight). Borderline; confirm intended logic. (01h_wizard_step4.png)
+- **Leaderboard avatars** render as grey placeholder circles on the Overall tab (load/asset). (06f_leaderboard_overall.png)
+- **Southwest gift-card art** doesn't load (blank placeholder) while other cards show logos. (05f_redeem.png)
+- **Water-log fill colour** is deep indigo while the glass icon/bottle outline use the design-system teal/cyan. (07f_log_water_inc.png)
+- **Graph axis labels:** Sleep stats shows alternating-day labels (Mon/Wed/Fri/Sun); Mindful stats shows all 7 days — inconsistent. (02h_sleep.png vs 02g_mindful.png)
+- **Heart-rate disclaimer back-trap** (matches prior #8): the medical Disclaimer dialog is non-cancelable and back does not dismiss it (must tap OK). Intentional, but flag if it should be cancelable. (07d_heartrate_stuck.png)
