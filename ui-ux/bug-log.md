@@ -1,12 +1,14 @@
 # Bug Log — Vantage Fit (Android)
 
-- **Build under test:** VFit PROD new design fixes 16_jun.apk
+- **Builds under test:** VFit PROD new design fixes 16_jun.apk (Runs 1–5) → 29 Jun.apk (Run 6 regression)
 - **Device:** emulator-5554, Android 16 (API 36), 1080×2220
 - **Driver:** adb + uiautomator (mobile-mcp not connected)
-- **Tested:** 2026-06-25, 2026-06-26 — Reporter: Meghna Dutta
-- **Areas covered:** FAB ＋ Quick-Actions flow · Summary (Calendar, Calorie/Meal, Water, Sleep, Profile, Device Connection) · Home Header · App Menu / Navigation Drawer (drawer container, Profile, App Preferences, Quick Links, Wallet, More) · Challenges (Ongoing/Upcoming/Past, detail, leaderboard, more-info) — destructive items (Delete Account, Logout) held for confirmation
+- **Tested:** 2026-06-25, 2026-06-26, 2026-06-29 — Reporter: Meghna Dutta
+- **Areas covered:** FAB ＋ Quick-Actions flow · Summary (Calendar, Calorie/Meal, Water, Sleep, Profile, Device Connection) · Home Header · App Menu / Navigation Drawer (drawer container, Profile, App Preferences, Quick Links, Wallet, More) · Challenges (Ongoing/Upcoming/Past, detail, leaderboard, more-info) · Programs / Community · full-app crash sweep — destructive items (Delete Account, Logout) held for confirmation
 
 > Organised by module for readability. **Crashes are always listed first** (see below). Add new bugs under the relevant module heading.
+
+> **Lifecycle fields** on each bug: **Occurred** = when first observed (date · run · build) · **Fixed** = build/date a fix landed (— = not confirmed fixed) · **Tested** = last verification date + outcome (— = not re-tested since logging). Occurrence dates derive from the run that logged the bug; only #34 is confirmed fixed (verified Run 6) and #8 was re-confirmed still-present in Run 6.
 
 ---
 
@@ -39,6 +41,9 @@ Repro: 100%. Reproduced via adb (3×) AND manually by the QA tester — clicking
 Impact: P1 — a primary, always-visible header control kicks the user out of the app on every tap.
 Open: Root cause not yet confirmed — true crash (unhandled exception) vs broken navigation/exit.
       Capture logcat (FATAL EXCEPTION / AndroidRuntime) during the tap to get the stack trace for devs.
+Occurred:  2026-06-25 (Run 3, 16_jun build)
+Fixed:     29 Jun build
+Tested:    2026-06-29 (Run 6) — verified FIXED
 Evidence: evidence/hdr_03_profile.png (Android launcher shown after tapping the profile icon)
 ```
 
@@ -62,6 +67,9 @@ Actual: "Post Coffee Walk" is duplicated many times in a row.
 Note/Doubt: Needs backend/data confirmation — are these genuinely distinct user entries,
             seeded test/garbage data, or a list de-duplication defect? Verification needed:
             check the activities API response for this account/environment.
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/06_log_activity.png
 ```
 
@@ -74,6 +82,9 @@ Expected: Each row shows its correct activity icon.
 Actual: Most "Post Coffee Walk" rows show empty gray placeholder squares (failed/missing
         image load); the first row shows an unrelated red image (wrong asset).
 Note/Doubt: Likely tied to the same data issue as Bug #1 (bad/empty image URLs).
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/06_log_activity.png
 ```
 
@@ -85,6 +96,9 @@ Inconsistent icon shape across sections.
 Expected: Consistent icon container shape per design system across all rows.
 Actual: "Well Being" / "Most Popular" icons are circular; "Cardiovascular" (Post Coffee Walk)
         icons are square. Mixed shapes within one list.
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/06_log_activity.png
 ```
 
@@ -99,6 +113,9 @@ Expected: FAB exposes a meaningful label (e.g. "Add" / "Quick actions") for Talk
 Actual: Accessibility node for the FAB ([463,1967][617,2121]) has empty text AND empty
         content-desc — screen readers announce it as an unlabeled button.
 Note/Doubt: Touch-target size itself is fine (~154×154 px ≈ 51 dp).
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/01_home_screen.png (verified via uiautomator dump_00)
 ```
 
@@ -111,6 +128,9 @@ Expected: A clear close control, or a top control whose behaviour matches its ap
 Actual: There is no ✕ button. The clickable region at the top of the sheet (around the drag
         handle) EXPANDS the sheet to full height rather than dismissing it. Dismissal is only
         possible via scrim tap, swipe-down, or Back — not discoverable.
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/16_fab_reopened.png, evidence/17_after_closebtn.png (sheet expanded, not closed)
 ```
 
@@ -124,6 +144,9 @@ Actual: Icons mix unrelated styles/colors — teal shoe, red tennis racket, blue
         fork/spoon, multicolor scale/heart/person. No consistent visual language.
 Note/Doubt: This is a design-system-rollout concern (primary target of this audit). Judgment
             call vs. intentional playful iconography — flag to design for a consistency ruling.
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/17_after_closebtn.png
 ```
 
@@ -140,6 +163,9 @@ Actual: While the "Disclaimer" dialog is shown, device Back does nothing (6 pres
         to Back until the dialog was cleared.
 Note/Doubt: Modal disclaimers blocking Back can be intentional — confirm with design whether
             Back should at least dismiss the dialog. Borderline; verify expected modal behaviour.
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    2026-06-29 (Run 6) — still reproduces
 Evidence: evidence/11b_heart_rate_main.png
 ```
 
@@ -155,6 +181,9 @@ Actual: Only the selected tab ("Breakfast") shows a text label; Lunch/Snacks/Din
         icon-only (blue cloche, orange burger, red pot) — multicolor and unlabelled.
 Note/Doubt: Verify whether the icon tabs expose content-descriptions for TalkBack; if not,
             this is an accessibility defect. Needs human/TalkBack verification.
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/08_log_meal.png
 ```
 
@@ -169,6 +198,9 @@ Expected: Consistent validation pattern across log forms (either disable Save un
           enable + toast — but the same everywhere).
 Actual: Log Water disables "Save Changes" while value = 0. Update Weight leaves "Save Changes"
         enabled and only shows a toast ("Please enter weight") on tap. Two different patterns.
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/07_log_water.png, evidence/19_weight_empty_save.png
 ```
 
@@ -181,6 +213,9 @@ Expected: Consistent toolbar title on every destination (as Log Water / Update W
           Sleep have).
 Actual: Heart Rate (Health Connect intro), Squats intro, and Track Mood screens show only a
         back arrow with no toolbar title text.
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/11_heart_rate.png, evidence/13_squats.png, evidence/12_track_mood.png
 ```
 
@@ -193,6 +228,9 @@ Expected: Consistent measurement-unit convention across the app for the user's l
 Actual: Log Water uses "fl oz" (US imperial) by default; Update Weight defaults to "kg" (metric).
 Note/Doubt: Could be locale/profile-driven rather than a defect — confirm intended unit behaviour
             and whether water volume should follow the same metric/imperial preference.
+Occurred:  2026-06-25 (Run 1, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/07_log_water.png, evidence/10_update_weight.png
 ```
 
@@ -209,6 +247,9 @@ Expected: Future dates either visibly disabled (greyed/non-tappable look) or giv
 Actual: Future dates (26/27/28 when today=25) render identically to selectable dates. Tapping a
         future date does nothing — header/selection do not change and there is no toast/feedback.
         User cannot tell the date is unavailable.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/cal_02_tap28_future.png
 ```
 
@@ -223,6 +264,9 @@ Actual: Swiping from the current week (24 selected) to an earlier week silently 
         selection/header to the same weekday of the new week (e.g. "Wednesday, 10 Jun") with no
         tap. Summary data reloaded for that auto-selected date.
 Note/Doubt: May be intended (keep weekday across weeks) — needs design confirmation.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/cal_05_swipe_prev2.png
 ```
 
@@ -236,6 +280,9 @@ Actual: Clickable date-cell containers have empty content-desc; the weekday lett
         date number ("24") are separate text nodes. A screen reader reads disjointed fragments and
         does not convey which date is "today" or "selected". Touch target ≈ 132 px (~44 dp), just
         under the 48 dp guideline.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/cal_dump_24.xml (accessibility dump)
 ```
 
@@ -252,6 +299,9 @@ Expected: Editing an entry pre-populates the saved quantity (e.g. 2).
 Actual: Edit screen opens with Quantity = "1" while the calorie/macros header reflects the SAVED
         qty (288 cal / 72 g = qty 2). Field and displayed nutrition disagree. Risk: saving without
         re-typing could silently overwrite the quantity to 1.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/meals_02_edit_open.png
 Note: Save itself DOES persist a changed quantity (qty 3 → 432 cal verified) — the defect is the
       pre-fill, not the save.
@@ -265,6 +315,9 @@ Calorie/macros display does not recalculate when quantity is set to 0.
 Expected: With qty 0, the calorie value and macros show 0 (or a clear invalid state).
 Actual: "Add to Diary" correctly disables, but the displayed calories/macros remain stale at the
         previous quantity's values (e.g. shows 288 cal / 72 g carbs while qty field = 0).
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/calorie_11_qty0.png, evidence/calorie_14_add_qty0.png
 ```
 
@@ -275,6 +328,9 @@ Food name is missing from the edit screen.
 
 Expected: Edit screen shows the food name (as the Add screen does, e.g. "Apple Juice").
 Actual: In edit mode only "288 cal" + the illustration show; the food name label is absent.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/meals_02_edit_open.png
 ```
 
@@ -285,6 +341,9 @@ No maximum / sanity validation on quantity.
 
 Expected: A sensible cap or validation on absurd quantities.
 Actual: qty = 9999 accepted, yielding 1,439,856 cal / 359,964 g carbs with no cap or warning.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/calorie_12_qty9999.png
 ```
 
@@ -297,6 +356,9 @@ Expected: Primary CTAs share the design-system primary colour.
 Actual: "Add to Diary" is teal/green, whereas primary CTAs elsewhere (Save Changes, Log Sleep,
         Start Workout) are red/pink. Also the button label stays "Add to Diary" in edit mode
         (should read "Update"/"Save").
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/calorie_09_add_dialog.png
 ```
 
@@ -308,6 +370,9 @@ Excessive decimal precision in goal text.
 Expected: Rounded value (e.g. "~0.55 lbs per week").
 Actual: "to gain 0.55115 lbs per week" — 5 decimal places.
 Note: Also a unit inconsistency — goal uses "lbs" while weight elsewhere defaults to "kg" (see Bug #11).
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/sum_01_summary_top.png
 ```
 
@@ -321,6 +386,9 @@ Actual: Nutrition→Meals card updated to 288 cal, but the Calorie card still sh
         "Resting 0", "Active 0", "Deficit ?". Breakdown appears not to incorporate logged meals
         (or needs a refresh / health-profile data).
 Note/Doubt: Needs confirmation — may depend on resting/active calorie data or a refresh cycle.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/calorie_dump_edit.xml (Summary state after logging)
 ```
 
@@ -331,6 +399,9 @@ Search field hint reads "Suggest Food".
 
 Expected: A search-appropriate hint, e.g. "Search food".
 Actual: The search input placeholder is "Suggest Food", which describes a different action.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/calorie_dump_search.xml
 ```
 
@@ -341,6 +412,9 @@ Serving text truncates mid-parenthesis.
 
 Expected: Clean truncation/wrapping.
 Actual: "2 x (Large Glass (300ml.." cut off with unbalanced parentheses on the narrower card view.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/calorie_15_after_add.png
 ```
 
@@ -360,6 +434,9 @@ Actual: On one attempt, setting "50" via the edit dialog and tapping Save did NO
 Note/Doubt: Could not cleanly reproduce — the first Save may have been a missed tap or affected by
             the preceding empty-Set test. Needs a clean repro: edit→Set value→Save→confirm dialog
             →reopen. Flagged as Test Case (needs investigation), not a confirmed defect.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/water_04_set50.png, evidence/water_dump_reopen.xml
 ```
 
@@ -372,6 +449,9 @@ Expected: Back dismisses the success dialog.
 Actual: After Save, an "Activity Saved Successfully" modal appears; the device Back button does
         nothing while it is shown — only the "Close" button dismisses it. Same trap pattern as
         Bug #8 (Heart Rate disclaimer). Suggests a recurring modal back-handling defect.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/water_08_stuck.png
 ```
 
@@ -383,6 +463,9 @@ The − and + buttons share an identical, non-descriptive content-description.
 Expected: Distinct labels, e.g. "Decrease water intake" / "Increase water intake".
 Actual: Both buttons expose content-desc "Log Water"; a screen reader cannot tell them apart or
         know their function.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/water_dump_01.xml
 ```
 
@@ -401,6 +484,9 @@ Actual: The "Went To Bed" time picker opened at approximately the current device
         (25 Jun).
 Note/Doubt: Verify against a real device — adb interaction may have influenced the picker's
             initial state.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/sleep_02_timepicker.png
 ```
 
@@ -413,6 +499,9 @@ Expected: A consistent save-confirmation pattern across modules.
 Actual: Meal Log returns silently to the list; Water shows a modal "Activity Saved Successfully"
         dialog (which traps Back, Bug #24); Sleep shows a loading animation then auto-returns to
         Summary. Three different patterns for the same conceptual action.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/calorie_15_after_add.png, evidence/water_08_stuck.png, evidence/sleep_05_save.png
 ```
 
@@ -430,6 +519,9 @@ Actual: The "Current City" dropdown shows "United States" (a country). The separ
         also shows "United States". The city field appears populated from / limited to country values.
 Note/Doubt: May be demo-account data, but the field/dropdown semantics look wrong. Verify the
             Current City data source.
+Occurred:  2026-06-25 (Run 2, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/hp_04_profile_health.png
 ```
 
@@ -449,6 +541,9 @@ Actual: Entering "Mi Band 5" → Continue → "Connecting Mi Band 5 and phone" �
         path dead-ends at the same Google wall as the direct Google Fit path.
 Note/Doubt: The alternate "I don't want to merge my steps" button was NOT tested (user opted to stop)
             and may be the true no-Google path. Verify whether manual add can complete without Google.
+Occurred:  2026-06-25 (Run 2 · Device Connection, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/device_10_manual_continue.png, evidence/device_12_signinhub.png
 ```
 
@@ -460,6 +555,9 @@ Brand name miscapitalised.
 Expected: "Vantage Fit" (consistent brand capitalisation).
 Actual: "Select your device from the list below and connect your device to Vantage fit and continue"
         — "Vantage fit" with a lowercase "f".
+Occurred:  2026-06-25 (Run 2 · Device Connection, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/device_02_devicelist.png
 ```
 
@@ -472,6 +570,9 @@ Expected: Instructions match the controls on screen.
 Actual: The bullet list says "Go to Google Fit → Go to Settings → Go to Tracking preferences → Turn on
         'Track your activities'", yet the exact "Track your activities" toggle is shown inline on this
         same screen (already ON). The navigation instructions are redundant/confusing.
+Occurred:  2026-06-25 (Run 2 · Device Connection, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/device_10_manual_continue.png
 ```
 
@@ -497,6 +598,9 @@ Header action icons have no content-descriptions.
 Expected: Each icon announced (e.g. "Wallet, 0 points", "Notifications, 2 unread", "Profile").
 Actual: menu_item_main (wallet), menu_item_bell (notifications), and include_toolbar_league/img_profile
         all expose empty content-desc. Screen-reader users get no labels for the primary header actions.
+Occurred:  2026-06-25 (Run 3, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/hdr_dump_home.xml
 ```
 
@@ -511,6 +615,9 @@ Actual: After the Google Fit / device-connection flow, `com.google.android.finsk
         repeatedly pulling focus from the app. Possibly an in-app-update prompt loop.
 Note/Doubt: May be an emulator Play-services state artifact rather than an app defect; verify whether
             the app forces an in-app update / on-demand module on a clean device.
+Occurred:  2026-06-25 (Run 3, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: observed via dumpsys window focus (PlayCoreAcquisitionActivity) across multiple relaunches
 ```
 
@@ -521,6 +628,9 @@ Redundant empty-state messaging.
 
 Expected: A single clear empty message.
 Actual: Shows both "Empty" and "No Data Found" stacked — duplicative.
+Occurred:  2026-06-25 (Run 3, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/hdr_01_wallet.png
 ```
 
@@ -531,6 +641,9 @@ Unnatural relative-time copy.
 
 Expected: "1 day ago".
 Actual: "1 day." (trailing period, missing "ago").
+Occurred:  2026-06-25 (Run 3, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/hdr_02_notifications.png
 ```
 
@@ -564,6 +677,9 @@ Note/Doubt: Could the displayed name be sourced from SSO/cache and intentionally
             save path and the source of the displayed value.
 Sub-note (empty Name): Submitting an EMPTY required Name + Update closed the dialog with NO inline
             error/validation message (no feedback). Confounded by this same save bug.
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_profile_07_name_valid.png, drawer_profile_09_after_update.png,
           drawer_profile_10_after_save.png, drawer_profile_11_name_save_result.png,
           drawer_profile_12_marital_dropdown.png
@@ -582,6 +698,9 @@ Note/Doubt: NOT submitted — changing the login email on a shared test account 
             (account-affecting action, paused per test rules). Verify whether email edit is intended
             and, if so, what verification guards it. (Given Bug #38, the edit likely would not persist
             anyway — but the affordance itself is the concern.)
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_profile_01_view.png
 ```
 
@@ -594,6 +713,9 @@ Expected: The back arrow announces e.g. "Back"/"Navigate up"; each editable fiel
           label and value.
 Actual: The toolbar back button (Button [11,88][143,220]) and the clickable field rows have empty
         content-desc, so TalkBack has no meaningful label to read for these controls.
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_profile_01_view.png
 ```
 
@@ -607,6 +729,9 @@ The menu button has an empty content-description.
 Expected: The menu/hamburger announces a label such as "Open menu" / "Navigation".
 Actual: `toolbar_drawer` (the left hamburger, bounds [44,101][116,184]) has content-desc="" — a screen
         reader announces nothing meaningful for the primary menu control.
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_01_open.png
 ```
 
@@ -619,6 +744,9 @@ Expected: Consistent grouping/container styling across drawer sections (per desi
 Actual: QUICK LINKS and WALLET rows sit inside a white rounded card, but the MORE rows (Terms and
         conditions, Privacy Policy, Rate us, Need Help?) sit directly on the bare grey sheet background
         with no card. The grouping treatment is inconsistent within the same drawer.
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_01_open.png, evidence/drawer_02_more.png
 ```
 
@@ -632,6 +760,9 @@ Actual: The "drawer" is a modal bottom sheet; it only opens by tapping the hambu
         left edge does nothing (that gesture is the OS Back gesture). Reasonable as a design choice, but
         users expecting a side-drawer swipe get no response.
 Note: Enhancement / design-intent call, not a defect.
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_01_open.png
 ```
 
@@ -649,6 +780,9 @@ Expected: Tapping "Sync Activities" shows progress ("Syncing…" / spinner) and 
 Actual: Tapping it leaves the user on the Settings screen with no visible spinner, toast, or result
         message (observed twice). The user cannot tell whether a sync started, succeeded, or failed.
 Note/Doubt: A sync may run silently in the background; the issue is the lack of any user feedback.
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_prefs_10_sync.png
 ```
 
@@ -666,6 +800,9 @@ Actual: Both WebView pages open with the identical lead paragraph ("At VantageFi
         looks duplicated.
 Note/Doubt: Possible compliance issue (a privacy policy must be accurate/distinct). Confirm the two
             screens point to different source URLs/content; they currently look like the same document.
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_more_01_terms.png, evidence/drawer_more_02_privacy.png
 ```
 
@@ -680,6 +817,9 @@ Actual: Shows "Sorry!!" (apologetic, double exclamation) + "No Data Found" (deve
         illustration is a magnifying-glass-over-document/person, which doesn't represent gift cards.
         "No Data Found" also recurs in the Points Statement empty state (Bug #36) — empty-state copy is
         inconsistent across the app.
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_giftcards_01.png
 ```
 
@@ -693,6 +833,9 @@ Actual: Several cards show "…/100/200/250/2/3/4" — the trailing "2/3/4" brea
         (e.g. Virtual Promotional Prepaid Mastercard USD, Virtual Prepaid VISA USD).
 Note/Doubt: Likely sourced from backend catalog data rather than a UI sort. Verify the data feed / add
             a client-side sort.
+Occurred:  2026-06-26 (Run 4, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/drawer_redeem_01.png
 ```
 
@@ -718,6 +861,9 @@ Impact: Confusing and demotivating — a user with the same score as #1 is shown
 Note/Doubt: Confirm the ranking/tie-break algorithm. May be by-design (ID order) but reads as a bug;
             consider tie handling (shared rank) when scores are equal. Only observed in a tied-at-0
             ended challenge (data-dependent).
+Occurred:  2026-06-26 (Run 5, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/challenges_07_detail_tasks.png, evidence/challenges_08_leaderboard.png
 ```
 
@@ -730,6 +876,9 @@ Expected: Copy matches the available actions; ideally a way to browse/discover c
 Actual: "It seems you are not currently enrolled in any challenge. Choose an option below to get
         started." — but the only control below is a single "Refresh" button. "Choose an option" (plural)
         is misleading, and there is no browse/join CTA (challenges are HR-assigned).
+Occurred:  2026-06-26 (Run 5, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/challenges_02_ongoing.png
 ```
 
@@ -741,6 +890,9 @@ Task description doesn't handle singular counts.
 Expected: "Read 10 pages 1 day this week".
 Actual: "Read 10 pages 1 days this week" — "1 days" (the "{n} days" template isn't pluralized when n=1).
         Multi-day tasks ("3 days", "7 days") read correctly; only the n=1 case is wrong.
+Occurred:  2026-06-26 (Run 5, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/challenges_10_adherence_detail.png
 ```
 
@@ -752,6 +904,9 @@ Inconsistent empty-state title phrasing between tabs.
 Expected: Consistent title style across tabs.
 Actual: Ongoing tab title is "No Ongoing Challenges"; Upcoming tab title is "No Upcoming Challenges
         Found" (extra "Found"). The two empty states are styled/worded inconsistently.
+Occurred:  2026-06-26 (Run 5, 16_jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: evidence/challenges_02_ongoing.png, evidence/challenges_04_upcoming.png
 ```
 
@@ -794,6 +949,9 @@ Actual: Wrong, unrelated images (batteries/power tools) render detached and over
         across 4+ screens. Pattern looks like a misplaced ad/media view (wrong z-order/layout/asset).
 Note/Doubt: Are these intended ad placements? Even if so, the positioning is broken (overlap + black
             placeholder). Needs design/dev confirmation of source (ad SDK vs content image binding).
+Occurred:  2026-06-29 (Run 6, 29 Jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: run6-crash-audit/09_community.png (black box), 09b_community_recheck.png (battery over badge),
           09c_community_events.png (battery floating), 08d_offerings.png, 08e_offering_category.png
 ```
@@ -807,6 +965,9 @@ The red "SCORE" pills on the right of each leaderboard row are clipped by the ri
 the pill's rounded right corner is cut off, so it reads as a flat-cut rectangle flush to the edge.
 Expected: Score pill fully visible with a consistent right margin/gutter.
 Actual: Pill is clipped at the screen boundary on every row, both Weekly and Overall tabs.
+Occurred:  2026-06-29 (Run 6, 29 Jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: run6-crash-audit/06e_leaderboard.png, 06f_leaderboard_overall.png
 ```
 
@@ -820,6 +981,9 @@ Expected: Relative time reflects the actual event date.
 Actual: "4 days." vs a Feb-2026 post — mismatch. Could be a timestamp-mapping bug or two different
         events; needs verification with known data.
 Note/Doubt: Also copy nit — "4 days." reads oddly; likely should be "4 days ago".
+Occurred:  2026-06-29 (Run 6, 29 Jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: run6-crash-audit/03_notifications.png, 03c_feed_detail_loaded.png
 ```
 
@@ -833,6 +997,9 @@ Multiple copy errors in the setup wizard:
  • "Workout atleast once a week" — "atleast" should be "at least".
  • "Workout 3–4 times once a week" — contradictory; should be "Workout 3–4 times a week".
 Expected: Grammatically correct microcopy.
+Occurred:  2026-06-29 (Run 6, 29 Jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: run6-crash-audit/01e_add_data_manually.png, 01j_wizard_step6.png
 ```
 
@@ -844,6 +1011,9 @@ Empty-state wording/tone is inconsistent across the app: "Empty / No Data Found"
 (graph stats), "No calendar events" (Events). Different titles, punctuation and tone for the same
 "nothing here" state.
 Expected: One consistent empty-state pattern (title + helper text) per the design system.
+Occurred:  2026-06-29 (Run 6, 29 Jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: run6-crash-audit/04_wallet.png, 05g_my_gift_cards.png, 05c_my_workouts.png, 02h_sleep.png
 ```
 
@@ -856,6 +1026,9 @@ Number/units formatting issues:
  • "5'3" feet" — redundant "feet" after the '/" feet-inches notation (appears in Import Health Data,
    Health Records and the height wizard step).
 Expected: Sensible precision, single spaces, non-redundant unit labels.
+Occurred:  2026-06-29 (Run 6, 29 Jun build)
+Fixed:     — (pending dev fix)
+Tested:    — (not re-tested since logged)
 Evidence: run6-crash-audit/02_summary_card.png, 01h_wizard_step4.png, 01d_setup_health.png, 01f_wizard_step2.png
 ```
 
