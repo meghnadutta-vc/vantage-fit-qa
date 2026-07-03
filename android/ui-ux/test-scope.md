@@ -4,7 +4,7 @@ Master checklist of the whole app's UI/UX testing. Updated as runs complete.
 
 - **Build under test:** VFit PROD new design fixes 16_jun.apk · emulator-5554 (Android 16) · driver: adb + uiautomator
 - **Last updated:** 2026-06-26
-- **Bugs to date:** 51 logged (1 P1 crash, see `bug-log.md`)
+- **Bugs to date:** 51 logged (1 P1 crash, see `bug-logs/bug-log.md`)
 
 **Legend:** ✅ Done · 🟡 Partial · ⬜ Not started · ⛔ Blocked (environment) · 🚫 Excluded (destructive / by request)
 

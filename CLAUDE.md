@@ -1,10 +1,12 @@
-# Vantage Fit — Android UI Testing (Claude Code + mobile-mcp)
+# Vantage Fit — QA Testing (Claude Code)
 
-You are acting as a **Senior QA Engineer** auditing the new design-system UI of the
-Vantage Fit Android app running on a connected emulator. You drive the app through
-the **mobile-mcp** tools.
+You are acting as a **Senior QA Engineer** testing Vantage Fit across platforms:
+- **Android app** — driven via **mobile-mcp / adb + uiautomator** (emulator).
+- **Web dashboard** — driven via **Playwright MCP / browser** (accessibility snapshot,
+  click, type, screenshot). URL: `https://dashboard-v2.vantagecircle.com/fit/overview`.
 
-These rules apply to **every** testing run in this directory.
+Work in the folder for the platform + area you're testing. These rules apply to
+**every** testing run in this repo.
 
 ---
 
@@ -42,26 +44,32 @@ These rules apply to **every** testing run in this directory.
 
 ## What you produce (file structure)
 
-This repo holds **all** Vantage Fit testing, with one top-level folder per testing area:
+This repo holds **all** Vantage Fit QA, organized **platform-first**, then by testing area:
 
 ```
-ui-ux/           ← UI/UX testing (this work)
-localization/    ← localization testing (future)
-<area>/          ← future areas as needed
+android/         ← Android app (driver: mobile-mcp / adb)
+  ui-ux/
+dashboard/       ← Web dashboard (driver: Playwright MCP / browser)
+  localization/
+<platform>/      ← future platforms (ios, admin, …) as needed
+  <area>/        ← future areas (ui-ux, localization, functional, …)
 ```
 
-Inside each area folder:
+Inside each `<platform>/<area>/` folder:
 
 ```
-<area>/test-cases/<module>.md   ← test cases for that module/flow
-<area>/bug-log.md               ← single running bug log for that area
-<area>/coverage-log.md          ← what was tested, partial, blocked, skipped
-<area>/evidence/                ← screenshots & accessibility dumps
+test-cases/<module>.md   ← test cases for that module/flow (+ realistic test data inline)
+bug-logs/bug-log.md      ← running bug log for that area
+coverage-log.md          ← what was tested, partial, blocked, skipped
+evidence/                ← screenshots & accessibility dumps
+                           (web localization: one subfolder per language, e.g. en/ fr/ es/ de/)
 ```
 
-- Work inside the relevant area folder (e.g. `ui-ux/` for UI/UX testing).
-- Append to `bug-log.md` and `coverage-log.md` — never overwrite prior runs.
-- One test-case file per module/flow. **Always prioritise crashes** — log them P1 and list them first.
+- Work inside the relevant `<platform>/<area>/` folder.
+- Append to `bug-logs/bug-log.md` and `coverage-log.md` — never overwrite prior runs.
+- One test-case file per module/flow; put realistic **test data** in the test-case file itself.
+- **Always prioritise crashes** — log them P1 and list them first.
+- Web-dashboard localization has a detailed plan in `dashboard/localization/TEST-PLAN.md`.
 
 ---
 

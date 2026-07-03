@@ -2,7 +2,7 @@
 
 > **Purpose:** A single consolidated, automation-ready regression suite covering **every bug logged in Runs 1–6 (#1–#57)** plus the **happy-path flows verified working**, so this list can be wired into automation (Appium/UIAutomator/Espresso) later.
 >
-> **Source of truth:** `ui-ux/bug-log.md` (bugs #1–#57) and `ui-ux/coverage-log.md` (Runs 1–6).
+> **Source of truth:** `android/ui-ux/bug-logs/bug-log.md` (bugs #1–#57) and `android/ui-ux/coverage-log.md` (Runs 1–6).
 > **Builds referenced:** baseline `16_jun.apk` (Runs 1–5) → regression target `29 Jun.apk` (Run 6).
 > **Device baseline:** emulator-5554, Android 16 (API 36), 1080×2220. **Account:** Demo / demo@fitvantage.com, app v4.2.7.
 
@@ -10,7 +10,7 @@
 
 ## How to use this suite (read before automating)
 
-- **Each row maps to one bug or one verified flow.** The `Description` column names the originating **Bug #** (or "happy-path guard") so you can trace it back to `bug-log.md`.
+- **Each row maps to one bug or one verified flow.** The `Description` column names the originating **Bug #** (or "happy-path guard") so you can trace it back to `bug-logs/bug-log.md`.
 - **`Expected Result` = the CORRECT / fixed behaviour** (what the test should assert). For bugs still **open**, the test will **FAIL until the fix lands** — that is intended; the same row doubles as the fix-verification test. Bug **#34** is already verified fixed on the 29 Jun build → it should now **PASS**.
 - **`Actual Result` and `Status` are left BLANK** per project rules — the human QA / automation run fills them.
 - **Priority** mirrors the bug's severity (P1 crash → P4 copy).
