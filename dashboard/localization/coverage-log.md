@@ -10,6 +10,7 @@ What was tested / partial / blocked / skipped, per run. Append per run — never
 | 1 | 2026-07-10 | AC1 — language switch updates admin UI | en→de | Chromium (MCP) | ✅ | Switching "Content language"→German re-renders all nav/chrome. AC1 PASS |
 | 1 | 2026-07-10 | Overview + global chrome | de | Chromium (MCP) | 🟡 | Chrome fully tested (Bugs #1–#5, N1–N3). Dashboard **body** = skeleton loaders in BOTH en & de (pre-existing `disableRange` JS error, O1) → chart/card labels untested |
 | 2 | 2026-07-10 | Spanish targeted pass (Overview, Create Challenge, Announcements, Publish Notifications) | es | Chromium (MCP) | 🟡 | AC1 PASS; Spanish fluent + accurate. Bug #25 (informal tú vs formal Sie register). Confirmed #1,2,6,7,8,12,15 recur (language-agnostic FE). Not all 25 screens re-walked (leveraged Run 1 map). Evidence in evidence/es/ |
+| 3 | 2026-07-10 | French targeted pass (Overview, Create Challenge, Publish Notifications) | fr | Chromium (MCP) | 🟡 | AC1 PASS; French fluent + accurate, **formal vous** (correct) → reinforces #25 that Spanish tú is the outlier. Confirmed #1,2,6,7,8 recur; #12/#15 English by construction (hardcoded bundle literals). No new bugs. Space-before-`:!?` not exercisable on checked screens. Evidence in evidence/fr/ |
 
 **Phase 1a decision (2026-07-10):** test **German only**, all screens, all 6 passes, then review before expanding. 18 languages available; German chosen first (highest layout risk + switcher behavior unverified at start).
 

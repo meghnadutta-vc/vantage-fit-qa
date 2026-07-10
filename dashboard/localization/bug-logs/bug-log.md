@@ -597,3 +597,46 @@ deferred (same as de).
 - **¿ ¡ inverted punctuation:** could not be exercised — the translated UI checked had no
   interrogative/exclamatory sentences (the one question, "What is an Announcement?", is untranslated
   English). Flag for a screen with Spanish questions/validation messages.
+
+---
+
+## Run 3 — 2026-07-10 — French (fr) — targeted cross-language pass
+
+**Scope:** targeted pass (Overview, Create Challenge, Publish Notifications) leveraging Run 1's map.
+Evidence in `evidence/fr/`.
+
+### AC1 (French) — PASS
+Whole UI re-renders in French; nav fluent and accurate with correct accents: "Aperçu", "Créer un
+défi", "Défis actifs/passés", "Programmes", "Communauté", "Santé des effectifs", "Analyses de
+santé", "Score de bien-être", "Ligues de bien-être", "Rapports", "Récompenses", "Importer des
+points", "Configuration", "Paramètres", "Ajouter des employés", "Contacter le gestionnaire de
+compte". Widget "Langue" / "Licences". Typographic apostrophe used ("à l'aide"). No English/German
+bleed, no raw keys.
+
+### Register — French uses formal "vous" ✅ (correct) — reinforces Bug #25
+French correctly uses formal **vous** ("Commencez à créer…", "Créez vos propres…", "Envoyez…",
+"Saisissez…"), consistent with German's formal Sie. **This confirms Spanish (informal tú, Bug #25)
+is the outlier** and the register is inconsistent across languages.
+
+### Language-agnostic FE bugs — CONFIRMED recur in French
+- **#1** "All Countries", **#2** "This Month", **#8** "NEW"/"FREE" — English in fr (Overview).
+- **#6** challenge-type cards ("Custom Challenge", "Race Challenge", "Journey Challenge",
+  "E-Marathon" + descriptions) — English in fr.
+- **#7** "Créez vos propres **Nouveaux** défis" ("Nouveaux" wrongly capitalized) — same defect,
+  third language confirmed → the source i18n string carries the capitalization error everywhere.
+- **#12** Create-content modal & **#15** Announcements page — not re-opened in fr, but proven
+  hardcoded-English literals in the JS bundle (Run 1 verification), so they are English in **every**
+  language by construction.
+
+### Positive verification (French)
+- Nav, Create Challenge instructional copy, and the full Publish Notifications form are cleanly
+  French, formal register, correct accents. Filter defaults on Publish Notifications correctly
+  French ("Tous les pays / départements / genres", "Toutes les tranches d'âge") — again confirming
+  Overview "All Countries" (#1) is a component-specific gap. "NOUVEAU" badge localized. No layout
+  breakage.
+
+### Could not verify (French-specific typography)
+- **Space before `: ! ?`** (French narrow no-break space rule): the checked screens' labels use
+  "*" for required fields and have no colon/question/exclamation punctuation in French strings, so
+  this rule was not exercisable. Flag for a screen with French sentences ending in `: ! ?` (e.g.
+  validation messages, confirmation dialogs).
