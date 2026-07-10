@@ -640,3 +640,103 @@ is the outlier** and the register is inconsistent across languages.
   "*" for required fields and have no colon/question/exclamation punctuation in French strings, so
   this rule was not exercisable. Flag for a screen with French sentences ending in `: ! ?` (e.g.
   validation messages, confirmation dialogs).
+
+---
+
+# FUNCTIONAL + UI PASS — Run 4 (2026-07-10) — German primary, per FUNCTIONAL-UI-PLAN.md
+
+Write scope authorized by QA: 🟢 read-only/validation/search/sort/filter/dialogs/UI + 🟡 create→delete
+of QA-LOC- records; 🔴 sends/uploads/employee-adds/settings NOT fired. Findings continue from #26.
+
+## Positive functional verification (German) — no new defect; these behaviors WORK
+- **Challenge builder (Create Challenge › Custom):** required-field gating works — "Weiter" is
+  disabled until "Challenge-Name" is filled, then enables; **accented input accepted** ("QA-LOC-
+  Frühlingsmarsch Prüfung"); **multi-step navigation works** (Step 1 → `/challenge-duration`).
+  Publish NOT completed (🔴 avoids notifying employees).
+- **Content Library search:** functional — query "meditation" filtered 25 rows → 4 matching. ✅
+- **Content create form ("Verknüpften Inhalt erstellen"):** reached via global Erstellen → Inhalt →
+  Linked Content. Form is **German + formal Sie** ("Geben Sie Ihren Titel hier ein…"), required
+  markers present, **char counter decrements correctly** (22 chars → "noch 128 Zeichen"), accented
+  title accepted ("QA-LOC-Prüfinhalt Tëst"), Typ options localized (Artikel/Video/Podcast).
+
+## Bug #26
+[UX - P4]
+[Vantage Fit Admin — two different "create" choosers, one localized, one not]
+There are two create-entry choosers with inconsistent localization. The **global** "Erstellen"
+(top bar / sidebar) opens a fully **German** chooser: "Was möchten Sie erstellen?" → Challenge /
+Ankündigung / Event / **Inhalt** (all with German descriptions). Selecting **Inhalt** then opens
+the **content sub-chooser which is English** ("Create content" / "What would you like to create?" /
+"Linked Content" / "Health Bite") — the same untranslated modal as Bug #12. So within one flow the
+first chooser is German and the second is English.
+
+Expected: both choosers localized (German)
+Actual: global chooser German ✅; content sub-chooser English ❌ (= Bug #12)
+Note: refines Bug #12 — the English is the **chooser** only; the actual content **form** that follows
+is correctly German (formal Sie). Evidence: evidence/functional/content_create-modal_de.png (German global), evidence/functional/content_type-chooser_de.png (English sub-chooser), evidence/functional/content_linked-form_de.png (German form)
+
+## Not completed (functional)
+- **Full create→delete happy-path**: the Linked-Content form requires an **image upload** (Bild *)
+  with no test asset available, and completing it publishes live content. Create form + validation +
+  char-counter verified; final save→delete not executed. Challenge/Event create also gated by
+  publish-notifies-employees (🔴). Recommend a dedicated CRUD session on a **sandbox/QA tenant** for
+  the save→delete happy-path.
+
+## Reports (Employee Report) — functional
+- **Column picker** works (opens, lists columns, toggles). **Confirms Bug #20 is FRONTEND:** the
+  picker options are all English ("Date of Joining", "Name", "Email", "Department", "Country",
+  "Last Active At") while the table headers for the same columns are German ("Eintrittsdatum",
+  "Name", "E-Mail", "Abteilung", "Land", "Zuletzt aktiv"). Because the two lists diverge on the same
+  screen, the picker is not sharing the header i18n → **reclassify #20 from "uncertain" to FE bug.**
+  Evidence: (column picker open — employee-report)
+- **Export** works — opens a menu with **CSV / Excel** options (format labels, language-neutral).
+- **Sort / pagination not exercised** — report returned no rows for the current date range (no data
+  to sort/page). Change of date range to a populated window is a follow-up.
+
+## 3-language functional feedback — status
+- Static form labels/placeholders/char-counters confirmed localized in **de** this pass; **de/es/fr**
+  chrome confirmed across Runs 1–3. **Hard validation-error messages, success/error toasts, and
+  confirmation dialogs require a form submit to trigger** and were NOT fired (🔴 write-safety /
+  outward-facing). These language-sensitive outputs should be captured in a sandbox CRUD session.
+
+## Modules covered in this functional+UI pass
+✅ Overview (controls; O1 body-load caveat) · ✅ Challenges (builder validation/nav/accents) ·
+✅ Programs (search, create form, char counter) · ✅ Reports/Employee (column picker, export).
+⬜ Not yet functionally walked: Community (Create Event dynamic FAQ + validation), Communications
+(audience builder + validation), Workforce Health (filters/tabs), Rewards (Upload Points validation),
+Configuration (Add Employees validation, Settings toggles). Read-only/validation-safe; no writes fired.
+
+## Remaining 5 modules — functional verification (German) — behaviors WORK
+- **Community › Create Event:** validation gating ("Neue Veranstaltung erstellen" disabled until
+  required filled); **dynamic add works** — "Weitere FAQ hinzufügen" added a 2nd question/answer
+  pair (1→2). ✅
+- **Communications › Publish Notifications:** validation gating (Send initially disabled);
+  **char counter** correct ("QA-LOC-Benachrichtigung Prüfung" = 31/60, accented ü = 1 char);
+  **live preview updates in real time** with typed title. ✅
+- **Workforce Health › Wellness Leagues:** period toggle works — "Monatlich" becomes `[active]`
+  (was Wöchentlich). ✅ (Filters English = Bug #18.)
+- **Rewards › Upload Points:** validation gating ("Vorschau" disabled); **radio selection works**
+  — "Anerkennungen" upload-type becomes `[active]`. ✅
+- **Configuration › Add Employees:** validation gating ("Vorschau"/"Absenden" disabled pending
+  file); "Mehr anzeigen" expander toggles. ✅
+- **Configuration › Settings:** toggle switches **NOT flipped** — org-wide settings may auto-save
+  (🔴). Localization already verified (fully German, Run 1).
+
+## Bug #27
+[UX - P3]
+[Vantage Fit Admin — Communications › Publish Notifications → Send enablement]
+The "Benachrichtigung senden" (Send) button **enables after only a title is entered**, because the
+audience defaults to "all employees" (all attribute filters default to "Alle …"). An admin could
+send a notification to the entire org after filling just one field.
+
+Expected: require an explicit audience confirmation (or a confirm dialog) before Send enables
+Actual: Send enabled with just a title + implicit default audience = everyone
+Note/Doubt: May be by design (default = all). Flagged as an accidental-send / safety UX risk for
+product confirmation. NOT actually sent (🔴). Evidence: (Publish Notifications, title filled)
+
+## Functional + UI pass — coverage summary
+**All 9 modules** now functionally walked (German) at safe depth. Behaviors verified working:
+navigation, validation gating (7 forms), multi-step wizard nav, dynamic add-rows, char counters,
+live preview, search filtering, radio/toggle/period selection, column picker, export menu,
+accented input. **No crashes or broken flows.** New: Bug #26 (create choosers), Bug #27 (send
+enablement). Not executed: live save→delete happy-path (image-upload / publish-notifies-employees /
+org-settings = 🔴 or blocked) and runtime validation-error/toast messages (need a submit).
