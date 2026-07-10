@@ -544,3 +544,56 @@ list implied**: several headline "whole page/section in English" findings (#17 W
 #23 email types) and the challenge status/type text (#9, #10) are **backend content**, not FE
 gaps. The remaining FE gaps are specific hardcoded strings/screens plus formatting, not the
 analytics/list bodies.
+
+---
+
+## Run 2 — 2026-07-10 — Spanish (es) — targeted cross-language pass
+
+**Scope:** targeted pass leveraging Run 1's structural map — confirmed language-agnostic FE bugs
+recur, checked Spanish translation quality/register, and Spanish-specific issues. Not all 25
+screens re-walked at full depth. Evidence in `evidence/es/`.
+
+### AC1 (Spanish) — PASS
+Switching to Spanish re-renders the whole UI. Nav fluent and accurate with correct accents:
+"Resumen", "Crear desafío", "Desafíos activos/anteriores", "Programas", "Comunidad", "Salud del
+personal", "Análisis de salud", "Puntuación de bienestar", "Informes", "Configuración", "Ajustes",
+"Añadir empleados", "Contactar al gerente de cuenta". Widget "Idioma" / "Idioma del contenido" /
+"Licencias". No German bleed, no raw keys.
+
+### Bug #25
+[Copy/UX - P3]
+[Vantage Fit Admin — Spanish → verb register (app-wide)]
+Spanish uses the **informal "tú"** imperative throughout, whereas German uses the **formal
+"Sie"**. For an enterprise admin product, formal **"usted"** is the usual expectation, and the
+cross-language register is now inconsistent.
+
+Expected (formal usted): "Empiece a crear…", "Cree sus propios…", "Envíe…", "Ingrese…"
+Actual (informal tú): "Empieza a crear desafíos…", "Crea tus propios…" (Create Challenge); "Envía notificaciones…", "Ingresa el título…" (Publish Notifications)
+Note/Doubt: Register is a style-guide decision — tú is not wrong, but it should be (a) intentional and (b) consistent with the other languages. Needs native-speaker + style-guide sign-off. Logged as a call-out rather than a hard defect.
+Evidence: evidence/es/create-challenge_landing.png · evidence/es/publish-notifications_form.png
+
+### Language-agnostic FE bugs — CONFIRMED recur identically in Spanish
+These render **English in both German and Spanish**, proving they are un-externalized FE strings
+(not per-language translation gaps):
+- **#1** "All Countries", **#2** "This Month", **#8** "NEW"/"FREE" badges — English in es (Overview).
+- **#6** challenge-type cards ("Custom Challenge", "Race Challenge", "Journey Challenge",
+  "E-Marathon", "Streak Challenge" + descriptions) — English in es (Create Challenge).
+- **#7** capitalization — "Crea tus propios **Nuevos** desafíos" ("Nuevos" wrongly capitalized),
+  same defect as German → the source i18n string carries the error into every language.
+- **#12** Create-content modal, **#15** Announcements page — full English in es (identical to de).
+  Announcements verified English verbatim: "Announcements", "What is an Announcement?", "Existing
+  Announcements", "Search by title...", "Delete announcement", "Show more".
+
+### Backend strings (es) — still English, as expected
+Template names/descriptions (Stress Free Month, "Join our HR team…") English in es — BE content,
+deferred (same as de).
+
+### Positive verification (Spanish)
+- **Nav + Overview chrome, Create Challenge instructional copy, Publish Notifications form** all
+  cleanly Spanish with correct accents (Desafíos, Añadir, Puntuación, Título). Filter defaults on
+  Publish Notifications correctly Spanish ("Todos los países / departamentos / géneros / grupos de
+  edad") — confirming the Overview "All Countries" (#1) is a specific component gap, not a global
+  miss. No layout breakage observed. "NUEVO" template badge localized (like de "NEU").
+- **¿ ¡ inverted punctuation:** could not be exercised — the translated UI checked had no
+  interrogative/exclamatory sentences (the one question, "What is an Announcement?", is untranslated
+  English). Flag for a screen with Spanish questions/validation messages.
