@@ -853,8 +853,32 @@ This was previously mislabeled frontend in Bucket A; corrected here and in DEV-H
 - Evidence: evidence/pl/overview_landing.png
 
 **Conclusion (Overview, Polish):** Polish is in good shape — translations exist and render; the only
-gaps are the same frontend wire-up/hardcoded-literal bugs already logged for German (#1, #2, #3, #5,
-#8) plus the global #24. No new bug IDs needed.
+gaps are the same frontend wire-up/hardcoded-literal bugs already logged for German (#1, #2, #3,
+#8) plus the global #24. (#5 corrected → backend, see above.)
+
+### Polish — Create Challenge (2026-07-13)
+When Polish is applied, the page renders Polish correctly: "Zacznij tworzyć wyzwania korzystając z
+naszych gotowych szablonów", "Użyj szablonu", "NOWOŚĆ", "LUB". Findings are the same frontend bugs:
+- **#6** (wire-up, verified FE): challenge-type cards show English "Custom Challenge" etc. though
+  pl.json has `staticChallenges.custom-challenge.title` = "Niestandardowe wyzwanie" and the
+  description "Zrób to sam: skonfiguruj każde zadanie i cel indywidualnie". Same as de/es/fr.
+- **#7** (concatenation, verified FE): the heading is built from separate keys
+  (`createChallenge.ownRest` = "Stwórz własne" + "Nowe wyzwania"), rendering "Stwórz własne **Nowe**
+  wyzwania" — mid-phrase capitalization. Recurs in every language (de "Neuen", es "Nuevos", fr
+  "Nouveaux", pl "Nowe") → root cause is **string concatenation of translated fragments** (i18n
+  anti-pattern), not a per-language typo.
+- Template names/descriptions (Stress Free Month, "Join our HR team…") English = ⭕ BE content.
+- **Custom Challenge builder** opened (step 1); pl.json ~99% complete and the builder was fully
+  translated in German — Polish rendering expected but **not exhaustively re-verified field-by-field
+  this pass** (flag if you want it walked in detail).
+- Evidence: evidence/pl/create-challenge_landing.png
+
+### Note/Doubt N7 — intermittent language reversion (needs dev repro)
+Observed **once**: after setting Polish on Overview and navigating to `/fit/create-challenge`, the
+UI + `localStorage.fit_lang` had reverted to **English**. Re-selecting Polish then **reloading**
+the same page **kept** Polish (`fit_lang="pl"`), so it did **not** reproduce on demand. Likely a
+race between route load and language init on some navigations. Logged as an observation, not a
+confirmed bug — dev to try to reproduce (relates to AC5 persistence).
 
 ## Functional + UI pass — coverage summary
 **All 9 modules** now functionally walked (German) at safe depth. Behaviors verified working:
