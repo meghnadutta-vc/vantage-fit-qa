@@ -50,53 +50,53 @@ Test German-deep first, then Arabic (RTL), then es/fr/pl (record status per lang
 | Card list (status "Completed", participation, dates) | U1 U7 ⭕ — labels FE; status/names backend; dates formatted | de: labels FE ✅; status "Abgeschlossen"/names ⭕ backend; dates #11 |
 | Row action: View | U1 F1 F2 — opens results detail | de: ✅ (same component as Active — "Ansehen" opens detail) |
 | **▸ ENGAGE › Content Library — `/fit/programs/on-demand-content`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 U8 · F8 · A2 A5 · U5 | ☐ |
-| Title + "Create" button | U1 F1 — translated; opens chooser | ☐ |
-| Search box | U1 F1 F6 — placeholder translated; filters; accented input | ☐ |
-| Type / Category filters ("All") | U1 F1 F2 F9 — **wire-up #13 "All"**; options; applies | ☐ |
-| Table headers (Content/Type/Category/Actions) | U1 F9 — headers translated; **#14 Type "Article" wire-up** | ☐ |
-| Row: content title / category | ⭕ A5 — backend content data | ☐ |
-| Row actions (View content + icon buttons) | U1 F1 U10 — "View content" translated; **icon buttons lack a11y name** | ☐ |
-| Content Overview panel (Articles/Videos/Podcasts/Bite Size) | U1 U7 — labels (loanwords ok) | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 U8 · F8 · A2 A5 · U5 | de: ✅ German chrome ("Inhaltsbibliothek"), no overflow |
+| Title + "Create" button | U1 F1 — translated; opens chooser | de: ✅ German; opens chooser |
+| Search box | U1 F1 F6 — placeholder translated; filters; accented input | de: **F1/F6 ✅ (search "meditation" 25→4)**; placeholder "Inhalte suchen…" ✅ |
+| Type / Category filters ("All") | U1 F1 F2 F9 — **wire-up #13 "All"**; options; applies | de: **U1 "All" English ❌ #13**; F1 opens |
+| Table headers (Content/Type/Category/Actions) | U1 F9 — headers translated; **#14 Type "Article" wire-up** | de: headers German ✅ (Inhalt/Typ/Kategorie/Aktionen); **Type value "Article" ❌ #14** |
+| Row: content title / category | ⭕ A5 — backend content data | ⭕ backend content |
+| Row actions (View content + icon buttons) | U1 F1 U10 — "View content" translated; **icon buttons lack a11y name** | de: "Inhalt ansehen" ✅; **icon buttons no a11y name ❌ (U10)** |
+| Content Overview panel (Articles/Videos/Podcasts/Bite Size) | U1 U7 — labels (loanwords ok) | de: ✅ (Artikel/Videos/Podcasts/Bite Size) |
 | **▸ ENGAGE › Create Content — chooser + forms** | | |
-| Create-content chooser modal | U1 F1 F9 — **#12 wire-up: "Create content"/"Linked Content"/"Health Bite" English** | ☐ |
-| Linked Content form (Type, Category, Page URL, Image*, Title+counter) | U1 U2 F3 F6 — labels/placeholders/counter; validation (image required); accented title | ☐ |
-| Health Bite → Bite-Size builder (`/fit/create-bite-size-content`) | U1 U2 F3 F7 — walk builder steps in-language (see create-content/ cases) | ☐ |
+| Create-content chooser modal | U1 F1 F9 — **#12 wire-up: "Create content"/"Linked Content"/"Health Bite" English** | de: **❌ #12 chooser English** |
+| Linked Content form (Type, Category, Page URL, Image*, Title+counter) | U1 U2 F3 F6 — labels/placeholders/counter; validation (image required); accented title | de: ✅ German fields ("Verknüpften Inhalt erstellen", counter); F3 image required ✅; F6 accents ✅ |
+| Health Bite → Bite-Size builder (`/fit/create-bite-size-content`) | U1 U2 F3 F7 — walk builder steps in-language (see create-content/ cases) | ☐ not yet walked (see create-content/ docs) |
 | **▸ ENGAGE › Create Event — `/fit/events/create-event`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 U9 · F8 · A2 · U5 | ☐ |
-| Basic Information (Title, Start/End Date, Start/End Time, Image) | U1 F1 F3 U7 — labels; date DD/MM/YYYY + time pickers open; validation | ☐ |
-| Target Audience (Country/City/Age Group/Department) | U1 F1 F2 — labels translated; dropdowns open + filter | ☐ |
-| Event Details (Venue, About, Benefit +Add more, FAQ +Add more) | U1 F1 — labels/placeholders; **dynamic add rows work** | ☐ |
-| Send Email Invites toggle | U1 F1 — label; toggles | ☐ |
-| Reset / Create New Event | U1 F1 F3 F4 — validation-gated; submit + toast localized | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 U9 · F8 · A2 · U5 | de: ✅ fully German, no overflow |
+| Basic Information (Title, Start/End Date, Start/End Time, Image) | U1 F1 F3 U7 — labels; date DD/MM/YYYY + time pickers open; validation | de: ✅ German ("Veranstaltungstitel"…); date DD/MM/YYYY; validation-gated |
+| Target Audience (Country/City/Age Group/Department) | U1 F1 F2 — labels translated; dropdowns open + filter | de: ✅ German (Land/Stadt/Altersgruppe/Abteilung) |
+| Event Details (Venue, About, Benefit +Add more, FAQ +Add more) | U1 F1 — labels/placeholders; **dynamic add rows work** | de: ✅ German; **F1 dynamic add ✅ (FAQ 1→2)** |
+| Send Email Invites toggle | U1 F1 — label; toggles | de: ✅ German label; toggles |
+| Reset / Create New Event | U1 F1 F3 F4 — validation-gated; submit + toast localized | de: ✅ German ("Neue Veranstaltung erstellen"); F3 gated (not submitted) |
 | **▸ ENGAGE › View Events — `/fit/events`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 U8 · F8 · A2 A5 | ☐ |
-| Title + "Create Event" | U1 F1 — translated; opens form | ☐ |
-| Tabs (Ongoing/Upcoming/Past Events) | U1 F1 F2 — translated; switch filters list | ☐ |
-| Event card (name, dates, invites sent, engagement, "Learn more") | U1 U7 ⭕ — labels FE; name/metrics backend; dates formatted | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 U8 · F8 · A2 A5 | de: ✅ German ("Veranstaltungen anzeigen") |
+| Title + "Create Event" | U1 F1 — translated; opens form | de: ✅ German; opens form |
+| Tabs (Ongoing/Upcoming/Past Events) | U1 F1 F2 — translated; switch filters list | de: **F1/F2 ✅** ("Laufende/Kommende/Vergangene Veranstaltungen") |
+| Event card (name, dates, invites sent, engagement, "Learn more") | U1 U7 ⭕ — labels FE; name/metrics backend; dates formatted | de: labels FE ✅ ("Anzahl gesendeter Einladungen", "Nutzerengagement"); name ⭕; date #11 |
 | **▸ ENGAGE › Create Announcement — `/fit/community/announcement`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 U8 · F8 · A2 · U5 | ☐ |
-| List page chrome (title, banner, Existing Announcements, Search, Show more) | U1 F9 — **#15 not-externalised: entire chrome English** | ☐ |
-| Create Announcement button (icon) | U1 F1 U10 — opens form; **no a11y name** | ☐ |
-| Create form (AI-generate, Title, Description) | U1 U2 F3 — field labels/placeholders; header + "Publish" English (#15) | ☐ |
-| Publish button | F1 F3 — **#29 functional: never enables with valid fields (repro)** | ☐ |
-| Delete (row) → confirm dialog | U1 F1 F4 F5 — **#28 dialog English (key exists → wire-up)**; delete works | ☐ |
-| Row titles | ⭕ A5 — backend announcement data | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 U8 · F8 · A2 · U5 | de: mixed — list chrome EN (#15), form fields German |
+| List page chrome (title, banner, Existing Announcements, Search, Show more) | U1 F9 — **#15 not-externalised: entire chrome English** | de: **❌ #15 entire chrome English** |
+| Create Announcement button (icon) | U1 F1 U10 — opens form; **no a11y name** | de: F1 ✅ opens; **U10 no a11y name ❌** |
+| Create form (AI-generate, Title, Description) | U1 U2 F3 — field labels/placeholders; header + "Publish" English (#15) | de: fields German ✅; header + "Publish" English (#15) |
+| Publish button | F1 F3 — **#29 functional: never enables with valid fields (repro)** | de: **❌ #29 never enables with valid Titel+Beschreibung (functional)** |
+| Delete (row) → confirm dialog | U1 F1 F4 F5 — **#28 dialog English (key exists → wire-up)**; delete works | de: **F4 delete ✅ works**; **F5 dialog English ❌ #28** |
+| Row titles | ⭕ A5 — backend announcement data | ⭕ backend |
 | **▸ ENGAGE › Publish Notifications — `/fit/community/publish-notifications`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 · F8 · A2 · U5 | ☐ |
-| Notification Content (Title, Subtitle + counters) | U1 U2 F3 F6 — labels/placeholders/counters; accented input | ☐ |
-| Target Audience (Select Users/Attributes/CSV; filters Dept/Country/Gender/Age) | U1 F1 F2 — modes + filters translated + apply; Load Employees | ☐ |
-| Live Notification Preview | U1 F1 — mirrors typed content; labels translated | ☐ |
-| Send Notification | F1 F3 — **#27: enables with only a title (default audience = all)** (🔴 don't fire) | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 · F8 · A2 · U5 | de: ✅ German ("Benachrichtigung veröffentlichen") |
+| Notification Content (Title, Subtitle + counters) | U1 U2 F3 F6 — labels/placeholders/counters; accented input | de: ✅ German; **counter ✅ (31/60)**; accents ✅ |
+| Target Audience (Select Users/Attributes/CSV; filters Dept/Country/Gender/Age) | U1 F1 F2 — modes + filters translated + apply; Load Employees | de: ✅ German incl. **"Alle Länder/Abteilungen/…"** (filters German here) |
+| Live Notification Preview | U1 F1 — mirrors typed content; labels translated | de: ✅ German; mirrors live ("Gerade eben", "Desktop-Ansicht") |
+| Send Notification | F1 F3 — **#27: enables with only a title (default audience = all)** (🔴 don't fire) | de: **❌ #27 enables with only a title (audience = all)** — not fired |
 | **▸ ENGAGE › Send Custom Email — `/fit/community/send-custom-email`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 · F8 · A2 · U5 | ☐ |
-| Email Content (Subject, Headline, Body + counters) | U1 U2 F3 F6 — labels/placeholders/counters; accented input | ☐ |
-| Target Audience (modes + Build from Report) | U1 F1 F2 — translated; build audience | ☐ |
-| Email Preview | U1 — chrome translated; template body may be backend | ☐ |
-| "Design a rich email" / Send Email | U1 F1 F4 — opens designer; send (🔴) + toast localized | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 · F8 · A2 · U5 | de: ✅ German ("Benutzerdefinierte E-Mail senden") |
+| Email Content (Subject, Headline, Body + counters) | U1 U2 F3 F6 — labels/placeholders/counters; accented input | de: ✅ German (Betreff/Überschrift/Text + counters) |
+| Target Audience (modes + Build from Report) | U1 F1 F2 — translated; build audience | de: ✅ German ("Aus Bericht erstellen": Liga-/Mitarbeiter-/Teilnahmebericht) |
+| Email Preview | U1 — chrome translated; template body may be backend | de: chrome German ("Posteingang", "Gerade eben"); template body ⭕ (email-template scope) |
+| "Design a rich email" / Send Email | U1 F1 F4 — opens designer; send (🔴) + toast localized | de: F1 ✅ opens designer ("Individuelle E-Mail gestalten"); send not fired |
 | **▸ ENGAGE › Email Designer ("Rich Email Composer") — overlay** | | |
-| Composer dialog (title, steps, Start new/Continue, cards, Get started/Import) | U1 F9 — **#16 not-externalised: whole composer English** | ☐ |
-| Live preview pane | U1 ⭕ — chrome FE; placeholder copy | ☐ |
+| Composer dialog (title, steps, Start new/Continue, cards, Get started/Import) | U1 F9 — **#16 not-externalised: whole composer English** | de: **❌ #16 whole composer English** |
+| Live preview pane | U1 ⭕ — chrome FE; placeholder copy | ⭕ placeholder copy |
 | **▸ ANALYZE › Health Insights — `/fit/workforce-health/health-insights`** | | |
 | Embedded external dashboard (iframe `dash-vfit…org`) | ⛔ — iframe refused to connect; separate app. Re-test where frame loads | ⛔ |
 | **▸ ANALYZE › Wellness Score — `/fit/workforce-health/wellness-score`** | | |
