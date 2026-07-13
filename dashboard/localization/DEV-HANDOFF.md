@@ -18,7 +18,6 @@ For each: the key is present and correctly translated; the screen shows English 
 | #1 | Overview country filter | `targetAudience.filtersAll.country` | "Alle Länder" |
 | #1/#19 | Filters (Notif/Reports/Leagues) | `targetAudience.filtersAll.{department,gender,ageGroup}`, `reportBuilder.allCountries` | "Alle Abteilungen", "Alle Geschlechter", "Alle Altersgruppen" |
 | #2 | Overview date preset | `subheader.presets.this_month` | "Dieser Monat" |
-| #5 | Left rail plan badge | `fitMenu.activePlan` | "Aktiver Plan" ("Grow" = plan tier, backend/brand) |
 | #6 | Create Challenge type cards | `staticChallenges.{custom,race,journey,e-marathon,streak}-challenge.{title,description}` | "Individuelle Challenge", "Rennen-Challenge", "Selbst gestalten: Konfigurieren Sie jede Aufgabe…" |
 | #8 (NEW) | "NEW" badge | `common.newTag` | "NEU" |
 | #12 | Create-content chooser | `fitActions.title` | "Was möchten Sie erstellen?" |
@@ -66,6 +65,7 @@ Rendered verbatim from API responses; German won't appear until backend is trans
 | #17 | workforce-health/wellness-score/insights/stream `header`/`label` | "Current Score", "Wellness Score by Department" |
 | #21 | wellness-score/employee-report `title`/`subtitle` | "Employee Wellness Scores" |
 | #23 | email/getAll `title`/`description` | "Welcome Email (Add Employee)" |
+| #5 | dashboard/config `plan.name` | "Active Plan - Grow" (corrected 2026-07-13; was in Bucket A. FE key `fitMenu.activePlan` exists but the widget renders the API value) |
 | #18? | (unresolved) | "Based on avg daily steps over 21 days" — not an i18n key, not in checked APIs; dev to confirm source |
 
 ---

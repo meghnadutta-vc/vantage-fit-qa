@@ -55,8 +55,11 @@ Actual: All options English; selected value "German"
 Note/Doubt: Showing each language in its own endonym (Deutsch, Français, 日本語) is a common alternative convention — confirm intended behavior. Either way, all-English in German mode is inconsistent.
 Evidence: evidence/de/overview_landing.png
 
-### Bug #5
-[Copy - P4]
+### Bug #5  ⭕ BACKEND-DEFERRED (corrected 2026-07-13 — was mislabeled frontend)
+[Copy - P4 · BACKEND]
+> Verified backend-sourced: the config API returns `plan.name = "Active Plan - Grow"` and the
+> widget renders it verbatim. A FE key `fitMenu.activePlan` exists but is unused here. Owned by
+> the backend translation ticket. See Run 6 correction note.
 [Vantage Fit Admin — left rail → plan badge]
 The plan badge label is not translated in German mode.
 
@@ -824,15 +827,22 @@ Switch to Polish re-renders the whole UI. Nav fully Polish with correct diacriti
 "Skontaktuj się z opiekunem konta". Group headers "WYZWANIA", "ANGAŻUJ". Widget "Język" / "Licencje".
 No German/English bleed.
 
-### Overview findings — all are the SAME language-agnostic wire-up bugs (Polish translation exists, not applied)
-Verified in pl.json:
-- **#1** "All Countries" → pl.json `targetAudience.filtersAll.country` = **"Wszystkie kraje"** (UI shows English)
-- **#2** "This Month" → `subheader.presets.this_month` = **"Bieżący miesiąc"** (UI shows English)
-- **#3/#11** date "Jul 01, 2026 - Jul 12, 2026" — English format (should be Polish locale format)
-- **#5** "Active Plan - Grow" → `fitMenu.activePlan` = **"Aktywny plan"** (UI shows English; "Grow" = plan tier)
-- **#8** NEW badge → `common.newTag` = **"NOWOŚĆ"** (UI shows "NEW"); FREE badge still English (no key)
-- **N2** "Ask Vantage Fit anything" chat widget — English (separate embedded widget)
-- **#24** `<html lang>` — expected still "en" (global bug, not re-fixed for pl)
+### Overview findings — verified FE vs BE (bundle + API check, 2026-07-13)
+Verified: each string searched in the 144 JS bundles (present=FE literal) AND in the Overview APIs
+(present=backend). Control "Multi Week Multi Activity" absent from bundles (method valid).
+- **#1** "All Countries" → **FRONTEND**: in JS bundle; **absent** from config API; pl.json `targetAudience.filtersAll.country` = "Wszystkie kraje" exists unused.
+- **#2** "This Month" → **FRONTEND**: in JS bundle; **absent** from config API; pl.json `subheader.presets.this_month` = "Bieżący miesiąc" exists unused.
+- **#3/#11** date "Jul 01, 2026 - Jul 12, 2026" → **FRONTEND**: client-side date-picker formatting; not in config API.
+- **#8** NEW badge → **FRONTEND**: `common.newTag` = "NOWOŚĆ" exists; UI renders "NEW". FREE badge = hardcoded literal (no key).
+- **#24** `<html lang>` = "en" → **FRONTEND** (DOM attribute set by the app).
+- **N2** "Ask Vantage Fit anything" → frontend but a **separate embedded widget** (`dl.vantagecircle.com/vfit-chat`), not the Fit i18n.
+
+### ⚠️ CORRECTION — #5 "Active Plan - Grow" is BACKEND, not frontend
+The config API (`/vantagefit/api/dashboard/v1/dashboard/config`) returns
+`"plan":{"type":"grow","name":"Active Plan - Grow"}`. The widget renders `plan.name` **verbatim**,
+so the full displayed string is backend-supplied. (A FE key `fitMenu.activePlan`="Aktywny plan"
+exists but is unused on this widget — same pattern as #21.) **Reclassify #5 → BACKEND-DEFERRED.**
+This was previously mislabeled frontend in Bucket A; corrected here and in DEV-HANDOFF.md.
 
 ### Positive / no-new-bugs
 - **No layout breakage** — Polish text fits; diacritics (ł, ż, ą, ś, ę) render correctly; the
