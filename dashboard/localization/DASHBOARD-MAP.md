@@ -27,14 +27,14 @@ documentation (behaviour is described, not executed).
 | 2 | Challenges | Create Challenge | `/fit/create-challenge` | ◐ (landing+steps 1–2; deeper wizard pending) |
 | 3 | Challenges | Active Challenges | `/fit/manage-challenge` | ✅ |
 | 4 | Challenges | Past Challenges | `/fit/past-challenges` | ✅ |
-| 5 | Engage · Programs | Content Library | `/fit/programs/on-demand-content` | ☐ |
-| 6 | Engage · Programs | Create Content (chooser + forms/builders) | `…?action=create` / `/fit/create-bite-size-content` | ☐ |
-| 7 | Engage · Community | Create Event | `/fit/events/create-event` | ☐ |
-| 8 | Engage · Community | View Events | `/fit/events` | ☐ |
-| 9 | Engage · Community | Create Announcement | `/fit/community/announcement` | ☐ |
-| 10 | Engage · Communications | Publish Notifications | `/fit/community/publish-notifications` | ☐ |
-| 11 | Engage · Communications | Send Custom Email | `/fit/community/send-custom-email` | ☐ |
-| 12 | Engage · Communications | Email Designer | (overlay) | ☐ |
+| 5 | Engage · Programs | Content Library | `/fit/programs/on-demand-content` | ✅ |
+| 6 | Engage · Programs | Create Content (chooser + forms/builders) | `…?action=create` / `/fit/create-bite-size-content` | ✅ |
+| 7 | Engage · Community | Create Event | `/fit/events/create-event` | ✅ |
+| 8 | Engage · Community | View Events | `/fit/events` | ✅ |
+| 9 | Engage · Community | Create Announcement | `/fit/community/announcement` | ✅ |
+| 10 | Engage · Communications | Publish Notifications | `/fit/community/publish-notifications` | ✅ |
+| 11 | Engage · Communications | Send Custom Email | `/fit/community/send-custom-email` | ✅ |
+| 12 | Engage · Communications | Email Designer | (overlay) | ✅ |
 | 13 | Analyze · Workforce Health | Health Insights | `/fit/workforce-health/health-insights` | ☐ |
 | 14 | Analyze · Workforce Health | Wellness Score | `/fit/workforce-health/wellness-score` | ☐ |
 | 15 | Analyze · Workforce Health | Wellness Leagues | `/fit/workforce-health/wellness-leagues` | ☐ |
@@ -256,7 +256,237 @@ Populated card list; empty state when none.
 
 **Evidence:** evidence/map/04_past-challenges.png
 
+## 5. Content Library — `/fit/programs/on-demand-content`
+**Access:** left nav → Engage → Programs → "Content Library" (+ FREE badge). **Purpose:** manage &
+curate on-demand content. **Layout regions:** header · toolbar (search + filters + Create) · content
+table · right "Content Overview" summary panel.
+
+### Elements
+| Element | Type | Exact label/text | Function / on-interact | Notes |
+|---|---|---|---|---|
+| Title | heading | "Content Library" / "Manage content availability and curate featured items." | — | |
+| Create | button | "Create" | Opens content create-chooser (screen 6) | |
+| Search | textbox | "Search content..." | Filters the table by title (verified: 25→4 for "meditation") | |
+| Type filter | dropdown | "All" | Filters by content type | default All |
+| Category filter | dropdown | "All" | Filters by category | default All |
+| Table | table | columns: "Content", "Type", "Category", "Actions" | lists content rows | |
+| Row: Content | cell | title + tagline (content data) | — | BE data |
+| Row: Type | cell | "Article" / "Video" / etc. | FE-mapped from enum | |
+| Row: Category | cell | e.g. "Mindfulness", "Exercise" | BE data | |
+| Row actions | icon buttons + link | "View content" link + unlabeled icon buttons (edit/toggle/delete) | per-row actions | ⚠️ icon buttons have no accessible name (a11y) |
+| Content Overview | side panel | "Content Overview" + counts "Articles", "Videos", "Podcasts", "Bite Size" | summary of library by type | |
+
+### Functional flows
+1. **Search** filters rows live. 2. **Type/Category filters** narrow the table. 3. **Create** →
+create-chooser. 4. Row **View content** opens the item; icon buttons edit/toggle-availability/delete.
+
+### States
+Populated table + list/grid view toggle; no-results state on search miss.
+
+**Evidence:** evidence/map/05_content-library.png
+
+## 6. Create Content — `…?action=create` (chooser) → Linked Content form / Health Bite builder
+**Access:** Content Library "Create" button, or nav "Create Content", or global Create → Content.
+**Purpose:** add a new content item. **Layout:** a small chooser modal → then a form/builder.
+
+### Overlay 6a — Create-content chooser (modal)
+| Element | Type | Exact label/text | Function |
+|---|---|---|---|
+| Title | heading | "Create content" / "What would you like to create?" | — |
+| Linked Content | option button | "Linked Content" / "Add an article, video or podcast link." | → Linked Content form (6b) |
+| Health Bite | option button | "Health Bite" / "Author a bite-size content experience." | → Bite-Size content builder (6c) |
+| Close | button | (X) | closes modal |
+Evidence: evidence/map/06_create-content-chooser.png
+
+### Form 6b — Linked Content ("Create Linked Content", verified this session)
+| Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|
+| Type | dropdown | "Type" → options "Article", "Video", "Podcast" | content type |
+| Category | dropdown | "Category" (e.g. Mindfulness) | content category |
+| Page URL | textbox* | "Page URL" placeholder "https://" | required |
+| Image | upload* | "Image" + "Upload from System" | **required** (blocks save without an image) |
+| Title | textbox* | "Title" placeholder "Enter your title here..." + char counter ("… characters left", 150 cap) | required; counter decrements |
+| (submit) | button | (create/publish) | saves the content item |
+
+### Builder 6c — Health Bite / Bite-Size content builder — `/fit/create-bite-size-content`
+Multi-step authoring builder (VF-2126). Documented in detail in
+`dashboard/create-content/test-cases/bite-size-content-builder.md` (Languages step; Intro / Content
+/ Quiz page types; per-page-type widgets). **Cross-referenced, not re-inventoried here.**
+
+### Functional flows
+1. Create → chooser → pick Linked Content or Health Bite.
+2. Linked Content: fill Type/Category/URL/Image/Title → save (image required).
+3. Health Bite: opens the Bite-Size builder wizard.
+
+**Evidence:** evidence/map/06_create-content-chooser.png (+ see create-content docs for the Bite-Size builder)
+
+## 7. Create Event — `/fit/events/create-event`
+**Access:** left nav → Engage → Community → "Create Event" (or global Create → Event).
+**Purpose:** schedule a wellness event. **Layout regions:** "Basic Information" · "Target Audience" ·
+"Event Details" · send-invites toggle · action buttons. Single long form (not a wizard).
+
+### Elements
+| Section | Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|---|
+| Basic Information | Event Title | textbox | "Event Title" | required |
+| | Event Start/End Date | date | "Event Start Date" / "Event End Date" ("DD/MM/YYYY") | opens calendar |
+| | Event Start/End Time | time picker (button) | "Event Start Time" / "Event End Time" | opens time picker |
+| | Event Image | upload | "Event Image" + "Upload from System" | |
+| Target Audience | Country / City / Age Group / Department | dropdowns | "Country", "City", "Age Group", "Department" | scope the invite audience |
+| Event Details | Event Venue | textbox | "Event Venue" | |
+| | About this Event | textarea | "About this Event" | |
+| | Benefit | repeatable | "Benefit of this Event" (placeholder "Write your benefit here") + "Add more benefits" | **dynamic add** — adds another benefit field |
+| | FAQ | repeatable | "FAQ" (placeholder "Write your question here" / "Write your answer here") + "Add more FAQ" | **dynamic add** (verified 1→2) |
+| — | Send Email Invites | switch | "Send Email Invites to join this Event" | toggles emailing invites on create |
+| — | Reset | button | "Reset" | clears form |
+| — | Create New Event | button | "Create New Event" | submits (disabled until required valid) |
+
+### Functional flows
+1. Fill required fields → "Create New Event" enables → submit creates the event (optionally emails invites).
+2. "Add more benefits" / "Add more FAQ" append repeatable field groups. "Reset" clears the form.
+
+### States
+Validation-gated submit; dynamic add/remove of benefit/FAQ rows.
+
+**Evidence:** evidence/map/07_create-event.png
+
+## 8. View Events — `/fit/events`
+**Access:** left nav → Engage → Community → "View Events". **Purpose:** browse/manage/analyze
+events. **Layout regions:** header (+ Create Event) · tab bar · event card list.
+
+### Elements
+| Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|
+| Title | heading | "View Events" / "Create, manage, and analyze wellness events" | — |
+| Create Event | button | "Create Event" | → `/fit/events/create-event` |
+| Tabs | tablist | "Ongoing Events", "Upcoming Events", "Past Events" | switches the event list by status |
+| Event card | card | event name (e.g. "New Event") + date range + "No of invites sent" (count) + "User Engagement" (% + "N of N participants active") + "Learn more →" | metrics per event |
+| Learn more | link | "Learn more →" | opens event detail/analytics |
+
+### Functional flows
+1. Switch tabs (Ongoing/Upcoming/Past) → list re-filters. 2. "Learn more" → event detail.
+
+### States
+Populated card list per tab; empty state per tab when none.
+
+**Evidence:** evidence/map/08_view-events.png
+
+## 9. Create Announcement / Announcements — `/fit/community/announcement`
+**Access:** left nav → Engage → Community → "Create Announcement" (or global Create → Announcement).
+**Purpose:** write & publish org announcements. **Layout regions:** header · info banner · "Existing
+Announcements" list (toolbar + table) · (Create Announcement opens a form view).
+
+### Elements — list page
+| Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|
+| Title | heading | "Announcements" / "Write and publish announcements to your organisation." | (English — bug #15) |
+| Info banner | panel | "What is an Announcement?" / "Send messages about new initiatives, events, and more to your organisation" | (English) |
+| Create Announcement | button | (icon button, no accessible name) "Create Announcement" | opens create form; ⚠️ unlabeled for a11y |
+| Section | label | "Existing Announcements" | |
+| Search | textbox | "Search by title..." | filters list |
+| View toggle | buttons | list / grid icons | switch layout |
+| Table | table | column "Title" + rows | lists announcements |
+| Delete announcement | button (per row) | "Delete announcement" (trash icon) | opens delete-confirmation dialog (9b) |
+| Show more | button | "Show more" (+ "N remaining") | paginates/loads more |
+
+### Form 9a — Create Announcement (form view)
+Heading "Create Announcement"; **"Mit KI generieren" / AI-generate** field (prompt textarea + tone
+selector "Business" + "Generate", "Minimum 30 characters"); **Title*** (placeholder "Enter the
+title of the announcement"); **Description*** (placeholder "What would you like to announce today?");
+**"Publish"** button. ⚠️ Bugs: header + "Publish" stay English (#15); **Publish never enables even
+with both fields filled** (#29 — functional).
+
+### Overlay 9b — Delete confirmation dialog
+"Are you sure you want to delete?" / "You won't be able to revert this!" + "Cancel" / "Delete".
+(Delete works; dialog is English — bug #28.)
+
+### Functional flows
+1. Create → form → fill AI-generate or Title+Description → Publish (⚠️ Publish gating bug #29).
+2. Search filters list. 3. Delete (trash) → confirm dialog → removes the announcement.
+
+**Evidence:** evidence/map/09_announcements.png (+ evidence/functional/announcement_* for form/dialog)
+
+## 10. Publish Notifications — `/fit/community/publish-notifications`
+**Access:** left nav → Engage → Communications → "Publish Notifications". **Purpose:** send targeted
+in-app notifications. **Layout regions:** "Notification Content" form · "Target Audience" builder ·
+"Notification Preview" (live).
+
+### Elements
+| Section | Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|---|
+| — | Title | heading | "Publish Notification" / "Send targeted in-app notifications to employees." | |
+| Notification Content | Title | textbox | "Enter notification title" + counter ("0/60") | required; counter verified |
+| | Subtitle | textbox | "Enter notification subtitle (optional)" + counter ("0/150") | optional |
+| Target Audience | mode tabs | buttons | "Select Users", "Attributes", "CSV Upload" | choose how to target |
+| | Attribute filters | dropdowns | "Department"/"Country"/"Gender"/"Age Group" each with "is in" + "All Departments/Countries/Genders/Age Groups" | narrow audience (default = all) |
+| | Load Employees | button | "Load Employees" | resolves the audience list |
+| — | Send Notification | button | "Send Notification" | **⚠️ enables after only a title (default audience = everyone) — accidental-send risk, bug #27** |
+| Notification Preview | live preview | "Notification Preview" / "Preview" / "Notification Title" / "Notification subtitle will appear here" / "Just now" / "Desktop View" | mirrors typed content in real time |
+
+### Functional flows
+1. Type title/subtitle → preview updates live. 2. Pick audience mode + attribute filters → Load
+Employees. 3. Send Notification (🔴 sends in-app to employees — do not fire in docs).
+
+**Evidence:** evidence/map/10_publish-notifications.png
+
+## 11. Send Custom Email — `/fit/community/send-custom-email`
+**Access:** left nav → Engage → Communications → "Send Custom Email". **Purpose:** compose & send
+branded emails. **Layout regions:** "Email Content" form · "Target Audience" builder · "Email
+Preview" (live).
+
+### Elements
+| Section | Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|---|
+| — | Title | heading | "Send Custom Email" / "Compose and send branded emails to employees." | |
+| — | Design a rich email | button | "Design a rich email" | opens Email Designer (screen 12) |
+| Email Content | Subject Line | textbox | "Subject Line" + counter | required |
+| | Headline | textbox | "Headline" + counter | required |
+| | Body | textarea | "Body" + counter | |
+| Target Audience | mode tabs | buttons | "Select Users", "Attributes", "CSV Upload" | targeting mode |
+| | Build from Report | buttons | "Employee Report", "League Report", "Participation Report", "Wellness Score" | build audience from a report |
+| | Search & add | textbox | "Build a list from reports above or search and add individual users" (+ search) | add individual users |
+| — | Send Email | button | "Send Email" | 🔴 sends real emails — not fired in docs |
+| Email Preview | live preview | "Email Preview" / "Email Subject" / "Inbox" / "Vantage Fit" / "Just now" | mirrors composed email |
+
+### Functional flows
+1. Compose subject/headline/body → preview updates. 2. Build audience from a report or search users.
+3. "Design a rich email" → Email Designer. 4. Send Email (🔴).
+
+**Evidence:** evidence/map/11_send-custom-email.png
+
+## 12. Email Designer ("Rich Email Composer") — overlay
+**Access:** Send Custom Email → "Design a rich email" (or nav Communications → "Email Designer").
+**Purpose:** guided rich-email authoring. **Layout:** full-screen dialog with a step rail + a
+start-choice screen + live preview.
+
+### Elements
+| Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|
+| Title | heading | "Rich Email Composer" | (English — bug #16) |
+| Close | button | "Close" | closes composer |
+| Step rail | buttons | "Intro", "Write", "Design", "Send" | wizard steps |
+| Value prop | heading | "People-first email" / "Send updates people actually open." + "Build a polished, on-brand email in a few guided steps - then send it from your own mailbox, so it lands like a note from a colleague." | |
+| Continue last email | option | "Continue last email" / "Keep the current draft." | resume a draft |
+| Start new | option | "Start new" / "Begin from a fresh template." | new email |
+| Info cards | cards | "System mail gets skimmed", "Your mailbox lands harder", "Designed, not plain" (+ descriptions) | rationale |
+| Get started / Import template | buttons | "Get started", "Import template" | proceed into the Write/Design steps |
+| Live preview | pane | "Live preview · 600px email" with sample email layout | previews the designed email |
+
+### Functional flows
+1. Open → Intro (Continue last / Start new) → Write → Design → Send (steps).
+2. Live preview reflects the composed email. (Whole composer is English — bug #16.)
+
+**Evidence:** evidence/map/12_email-designer.png
+
 <!-- Screen entries are appended below in tracker order. -->
+
+
+
+
+
+
+
+
 
 
 
