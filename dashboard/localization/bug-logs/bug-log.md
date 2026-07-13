@@ -537,6 +537,42 @@ Phase-1 FE bug).
 - **Bug #3 / #11** (English date format "Jul 01, 2026"): date formatting is normally FE (`Intl` +
   locale), but confirm the API doesn't send pre-formatted date strings.
 
+### ⚑ FE/BE VERIFICATION ROUND 2 (2026-07-13) — authoritative via the FE i18n files
+The admin app ships its frontend translations as **i18n JSON**: `/assets/i18n/fit/en.json` and
+`/assets/i18n/fit/de.json` (982 keys each). This is the definitive frontend-ownership test:
+- **In en.json AND de.json has a real German value, but UI shows English** → *frontend bug*: the
+  component renders a hardcoded English literal (also found in the JS bundle) or looks up the wrong
+  key **instead of using the translation that already exists**. NOT a missing translation.
+- **Not a key in either file** → hardcoded English literal never externalized (still frontend) OR
+  a backend value.
+- **Present in an API response body** → backend.
+
+**Key insight for triage:** for most string bugs the **German translation ALREADY EXISTS in
+de.json and is correct** — the defect is that the screen isn't wired to the i18n key. Examples
+(en → de value that exists but isn't shown):
+- #1 `targetAudience.filtersAll.country` = "All Countries" → **"Alle Länder"** ✔ in de.json
+- #2 `subheader.presets.this_month` = "This Month" → **"Dieser Monat"** ✔
+- #14 `contentLibrary.types.article` = "Article" → **"Artikel"** ✔
+- #18 `reportCols.employeeId` = "Employee ID" → **"Mitarbeiter-ID"** ✔
+- #28 `announcementPage.deleteText` = "You won't be able to revert this!" → **"Dies kann nicht rückgängig gemacht werden!"** ✔
+- #12 `fitActions.title` = "What would you like to create?" → **"Was möchten Sie erstellen?"** ✔
+→ These are **confirmed frontend** (translation present, component not using it): #1, #2, #12, #13, #14, #18(col), #19, #20, #28.
+
+**Not externalized at all (no i18n key) → frontend hardcoded literals:** #15 ("Existing
+Announcements" & announcements page chrome), #16 ("Rich Email Composer"), #22 ("Click to upload or
+drag and drop"). (#15, #16 also found as literals in the JS bundle.)
+
+**RECLASSIFY #21 → backend (mixed):** "Employee Wellness Scores"/"Individual employee wellness
+score details" are returned by the WSR API as `title`/`subtitle` and rendered verbatim. (A FE key
+also exists, but the screen uses the API value.) Treat as backend-supplied like #17; if the design
+intends the FE to translate section titles, it's a FE wiring bug — dev to confirm.
+
+**Unresolved:** #18 "Based on avg daily steps over 21 days" — not an i18n key, not in the JS bundle,
+not in the two leagues APIs checked. Likely backend (another leagues endpoint) or a lazy-chunk
+literal; dev to confirm. Low priority (P3 caption).
+
+**Confirmed backend (in API, not FE-rendered keys):** #9, #10, #17, #21, #23.
+
 ### Net effect on AC2
 Still **FAIL** — genuine FE untranslated strings remain (#1, #2, #6, #12, #13, #15, #22, plus
 formatting/#7/#8 and likely #16). **But** the FE localization is **more complete than the raw
@@ -732,6 +768,45 @@ Expected: require an explicit audience confirmation (or a confirm dialog) before
 Actual: Send enabled with just a title + implicit default audience = everyone
 Note/Doubt: May be by design (default = all). Flagged as an accidental-send / safety UX risk for
 product confirmation. NOT actually sent (🔴). Evidence: (Publish Notifications, title filled)
+
+## Run 5 — 2026-07-10 — CRUD on UAT tenant (German) — write actions now authorized
+User confirmed the account is **UAT** → create/edit/delete/submit are safe.
+
+### Bug #28
+[Copy - P3]
+[Vantage Fit Admin — Community › Announcements → delete confirmation dialog]
+The delete-confirmation dialog is entirely in English in German mode. (Runtime dialog — only
+appears on a delete action, so earlier static passes couldn't catch it.)
+
+Expected: German, e.g. "Möchten Sie wirklich löschen?" / "Dies kann nicht rückgängig gemacht werden!" / "Abbrechen" / "Löschen"
+Actual: "Are you sure you want to delete?" / "You won't be able to revert this!" / "Cancel" / "Delete"
+Evidence: evidence/functional/announcement_delete-confirm_de.png
+
+### Bug #29
+[Functional - P2 · needs manual confirmation]
+[Vantage Fit Admin — Community › Create Announcement → Publish never enables]
+The "Publish" button stays disabled even when both required fields are validly filled. Verified
+via DOM: title = 21 chars, description = 51 chars, **no `.ng-invalid` controls, no `[required]`
+controls**, fields filled with real key events (pressSequentially) and blurred — Publish still
+`aria-disabled`. There is no other visible field on the form. This blocks creating an announcement.
+Contrast: the Challenge builder's "Weiter" DID enable once its name field was filled, so form-enabling
+works elsewhere — this appears specific to the announcement form.
+
+Expected: Publish enables when Titel + Beschreibung are filled
+Actual: Publish remains disabled
+Note/Doubt: **Needs a human to confirm** whether manual typing enables it (to rule out an automation/event-binding artifact); if a human also can't publish, this is a P1/P2 functional blocker. Possible hidden required field (e.g. banner) or a broken validity binding.
+Evidence: evidence/functional/announcement_ready_de.png (both fields filled, Publish greyed)
+
+### Positive — Delete CRUD works
+- **Delete works** end-to-end: Delete icon → English confirm dialog (#28) → "Delete" → item removed,
+  list refreshed, no error. (Success toast not captured — none shown or faded before screenshot.)
+  Tested on UAT against the "Test Announcement" set (372 items). Evidence: evidence/functional/announcement_delete-toast_de.png
+
+### Refines Bug #15 (Announcements)
+- The Create-Announcement **form fields ARE German** ("Titel", "Beschreibung", "Mit KI generieren",
+  "Geschäftlich" tone, placeholders) — but the **page header, breadcrumb, and "Publish" button stay
+  English** ("Announcements", "Create Announcement", "Write and publish…", "Publish"). So #15 is the
+  list-page chrome + header + CTA + confirm dialog (#28), not the field labels. Evidence: evidence/functional/announcement_create-form_de.png
 
 ## Functional + UI pass — coverage summary
 **All 9 modules** now functionally walked (German) at safe depth. Behaviors verified working:
