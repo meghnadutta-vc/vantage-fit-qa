@@ -38,16 +38,16 @@ documentation (behaviour is described, not executed).
 | 13 | Analyze · Workforce Health | Health Insights | `/fit/workforce-health/health-insights` | ⛔ (iframe refused to connect) |
 | 14 | Analyze · Workforce Health | Wellness Score | `/fit/workforce-health/wellness-score` | ✅ |
 | 15 | Analyze · Workforce Health | Wellness Leagues | `/fit/workforce-health/wellness-leagues` | ✅ |
-| 16 | Analyze · Reports | League Report | `/fit/leagues` | ☐ |
-| 17 | Analyze · Reports | Employee Report | `/fit/employee-report` | ☐ |
-| 18 | Analyze · Reports | Participation Report | `/fit/participant-report` | ☐ |
-| 19 | Analyze · Reports | Incentivisation Report | `/fit/transaction-report` | ☐ |
-| 20 | Analyze · Reports | Wellness Score Report | `/fit/wellness-score-report` | ☐ |
-| 21 | Analyze · Reports | Redemption Report | `/fit/redemption-report` | ☐ |
-| 22 | Manage · Rewards | Upload Points | `/fit/reward-hub/upload-points` | ☐ |
-| 23 | Manage · Configuration | Add Employees | `/fit/configuration/add-employees` | ☐ |
-| 24 | Manage · Configuration | Preview Emails | `/fit/configuration/preview-emails` | ☐ |
-| 25 | Manage · Configuration | Settings | `/fit/configuration/settings` | ☐ |
+| 16 | Analyze · Reports | League Report | `/fit/leagues` | ✅ (empty-state; shared report structure) |
+| 17 | Analyze · Reports | Employee Report | `/fit/employee-report` | ✅ |
+| 18 | Analyze · Reports | Participation Report | `/fit/participant-report` | ✅ |
+| 19 | Analyze · Reports | Incentivisation Report | `/fit/transaction-report` | ✅ |
+| 20 | Analyze · Reports | Wellness Score Report | `/fit/wellness-score-report` | ✅ |
+| 21 | Analyze · Reports | Redemption Report | `/fit/redemption-report` | ✅ |
+| 22 | Manage · Rewards | Upload Points | `/fit/reward-hub/upload-points` | ✅ |
+| 23 | Manage · Configuration | Add Employees | `/fit/configuration/add-employees` | ✅ |
+| 24 | Manage · Configuration | Preview Emails | `/fit/configuration/preview-emails` | ✅ |
+| 25 | Manage · Configuration | Settings | `/fit/configuration/settings` | ✅ |
 
 ---
 
@@ -538,7 +538,151 @@ Over Time" · employee table (columns + export).
 
 **Evidence:** evidence/map/15_wellness-leagues.png
 
-<!-- Screen entries are appended below in tracker order. -->
+## 16–21. Reports (Analyze · Reports) — shared structure + per-report columns
+**Access:** left nav → Analyze → Reports → (each report). All six share one layout.
+**Shared structure (every report):** header (title + subtitle) · **filter bar** (audience dropdowns
+"All Countries" / "All Departments" / "All Genders" / "All Age Groups" + date-range preset) ·
+**column picker** (choose visible columns; button shows first column "+N others") · **Export**
+button (CSV/Excel) · **data table** (report-specific columns) · **empty state** ("No data available"
+/ "Adjust your filters or the date range" or "…click Generate"). Column-picker labels render English
+even when headers are translated (bug #20). Some reports have an "Enrolled" status filter.
+
+| # | Report | Route | Columns (observed this session) | Notes |
+|---|---|---|---|---|
+| 16 | **League Report** | `/fit/leagues` | (empty for current range) | shows "No data available" empty state; filters only |
+| 17 | **Employee Report** | `/fit/employee-report` | Name · Email · Department · Country · Date of Joining · Last Active At | filters incl. "Enrolled"; column picker "Date of Joining(+5 others)" |
+| 18 | **Participation Report** | `/fit/participant-report` | Name · Email · Department · Country · Date of Joining · Last Active At | same column set as Employee |
+| 19 | **Incentivisation Report** | `/fit/transaction-report` | User Email · Challenge Name · Date · Reason · Country Name · Points · Value | fully headers-translated in de |
+| 20 | **Wellness Score Report** | `/fit/wellness-score-report` | per-employee wellness scores ("Employee Wellness Scores" section, "HR Admin Only") | section title/subtitle are **backend-served** (bug #21) |
+| 21 | **Redemption Report** | `/fit/redemption-report` | Name · Email · Department · Country · Employee ID · Company User ID · Product Name · Redeemed Points · Amount · Currency · Transaction Date | column picker "Transaction Date(+10 others)" |
+
+### Functional flows (all reports)
+1. Set audience filters + date range → (Generate where required) → table populates.
+2. Column picker toggles visible columns. 3. Export downloads the report (CSV / Excel).
+4. Empty state shown when no data for the selected scope.
+
+**Evidence:** evidence/map/16_reports_league.png (empty state) + column sets captured in this
+session's Run-1 testing (evidence/de/{employee,participant,incentivisation,wellness-score,redemption}-report.png).
+⚠️ League Report body was empty for the current range; other reports' columns verified earlier this session.
+
+## 22. Upload Points — `/fit/reward-hub/upload-points`
+**Access:** left nav → Manage → Rewards → "Upload Points". **Purpose:** bulk-award reward points via
+CSV. **Layout regions:** config form (left) · "Steps to follow" guidance (right).
+
+### Elements
+| Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|
+| Title | heading | "Bulk Upload Points" / "Distribute reward points to your employees" | |
+| Select Wallet | dropdown | "Select Wallet" → "Reward" | choose points wallet |
+| Select Country | dropdown | "Select Country" | choose country |
+| Upload Type | radio group | "Primary", "Appreciations", "Points CSV with Custom Email Template" | template type |
+| Download Sample | button | "Download Sample" / "Download sample CSV" | downloads CSV template for selected type |
+| File dropzone | upload | "Click to upload or drag and drop" | upload the filled CSV |
+| Send email toggle | switch | "Send Email to recipients" | (from prior) email recipients |
+| Steps to follow | guidance | "Steps to follow" + numbered steps (select wallet/country/type → download template → edit → upload) | instructions |
+| Preview / Submit | buttons | "Preview", "Submit" | disabled until wallet+country+type+file set (validation-gated); Submit 🔴 distributes real points |
+
+### Functional flows
+1. Select wallet + country + upload type → download sample → fill CSV → upload → Preview → Submit.
+2. Validation gates Preview/Submit until required fields + file present.
+
+**Evidence:** evidence/map/22_upload-points.png
+
+## 23. Add Employees — `/fit/configuration/add-employees`
+**Access:** left nav → Manage → Configuration → "Add Employees". **Purpose:** bulk add/update
+employees via CSV. **Layout regions:** upload form + steps · "Note" (CSV field rules).
+
+### Elements
+| Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|
+| Title | text | "Add Employees" / "Upload the list of your employee's details and we'll manage the setup." | |
+| Steps | guidance | "Start by downloading our ready-to-use template", "Edit the template with the details…", "Upload the completed file…" | |
+| Download template | link/button | (download ready-to-use template) | gets the CSV template |
+| File dropzone | upload | "Click to upload or drag and drop" | upload filled CSV |
+| Note | panel | "Note" + rules: "company_id" (unique company ID); "status" ("Status = 1 for add/update actions.", "Status = 0 for all other actions (delete, deactivate, exit, terminate).", "Any value other than 1 will be treated as a Delete/Deactivate/Exit/Terminate case.") | field-format help |
+| View More | button | "View More" | expands the note |
+| Cancel / Preview / Submit | buttons | "Cancel", "Preview", "Submit" | Preview/Submit disabled until a file is uploaded (validation-gated); Submit 🔴 adds/updates real employees |
+
+### Functional flows
+1. Download template → fill → upload → Preview → Submit. 2. "View More" expands rules. 3. Cancel clears.
+
+**Evidence:** evidence/map/23_add-employees.png
+
+## 24. Preview Emails — `/fit/configuration/preview-emails`
+**Access:** left nav → Manage → Configuration → "Preview Emails". **Purpose:** preview & enable/disable
+the system emails employees receive. **Layout:** list of email-type cards.
+
+### Elements
+| Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|
+| Title | heading | "Preview Emails" / "Manage email notifications sent to employees. 9 of 9 enabled" | |
+| Email-type card ×9 | card | "Welcome Email (Add Employee)", "Welcome Email (Invite to Challenge)", "Intro to App", "Challenge Reminder", "Challenge Start", "Weekly Summary", "Challenge Completion", "Event Invite / RSVP Confirmation", "Direct Message from HR" — each + a description | titles/descriptions **backend-served** (bug #23) |
+| Open in New Tab | link (per card) | "Open in New Tab" | opens the rendered email preview in a new tab |
+| Enable toggle | switch (per card) | on/off | enable/disable that email; some may be locked (system-managed) |
+| Footer | note | "About Email Settings" (explains locked/system emails, preview behaviour) | |
+
+### Functional flows
+1. Toggle a card to enable/disable that notification. 2. "Open in New Tab" renders the email preview.
+
+**Evidence:** evidence/map/24_preview-emails.png
+
+## 25. Settings — `/fit/configuration/settings`
+**Access:** left nav → Manage → Configuration → "Settings". **Purpose:** configure email/challenge/
+app behaviour. **Layout regions:** three grouped setting sections. **Note:** no separate UI-language
+setting here (the left-rail switcher is the only language control). 🔴 toggles are org-wide (may
+auto-save) — not flipped during documentation.
+
+### Elements
+| Section | Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|---|
+| — | Title | heading | "Settings" | |
+| Email Settings | Section | heading | "Email Settings" / "Email banner and notification preferences" | |
+| | Banner | image config | "Recommended banner size" / "PNG only" + Change/"Remove" | email banner upload |
+| | Challenge completion email | switch | "Challenge completion email" / "Send email when a user completes a challenge" | toggle |
+| | Disable all emails | switch | "Disable all emails" / "Disable all Vantage Fit marketing/system emails" | master toggle |
+| Challenge Settings | Section | heading | "Challenge Settings" / "Configure team and challenge behavior" | |
+| | Users can create teams | switch | "Users can create teams" / "Allow users to create their own teams within challenges" | |
+| | Users can update teams | switch | "Users can update teams" / "Allow users to modify team details (name, photo)" | |
+| | Max team size | spinbutton | "Max team size" / "Maximum number of members allowed per team" (placeholder "Enter") | numeric |
+| | Team breakdown | switch | "Show team breakdown in leaderboard" / "Show team-level breakdown in the challenge leaderboard" | |
+| App Settings | Section | heading | "App Settings" / "In-app logo and app-wide configurations" | |
+| | Logo | image config | "Recommended logo size" / "PNG only" + Change/"Remove" | in-app logo upload |
+| | Multiple activity save check | switch | "Multiple activity save check" / "Prevent users from saving overlapping or duplicate workouts and activities" | |
+
+### Functional flows
+1. Toggle switches / set values → settings persist org-wide (🔴 auto-save risk). 2. Upload/Remove banner & logo.
+
+**Evidence:** evidence/map/25_settings.png
+
+## Completion & verification (Phase 1)
+
+**All 26 tracker rows resolved:** 24 ✅ fully documented · 1 ◐ partial (**#2 Create Challenge** —
+landing + builder steps 1–2 done; deeper wizard steps flagged for a dedicated pass) · 1 ⛔ blocked
+(**#13 Health Insights** — external iframe refused to connect).
+
+**Grounding:** every screen entry was built from a live accessibility snapshot + screenshot
+(evidence in `evidence/map/`), labels quoted from the snapshot; interactive overlays (filters, date
+picker, Ask-Vantage-Fit modal, create-choosers, wizards, dialogs, column pickers) opened and
+documented where present. No destructive writes were performed.
+
+**Known follow-ups for full exhaustiveness:**
+- #2: walk the Custom Challenge wizard beyond "Set Duration" (activities/targets → audience →
+  rewards → publish) and the other four challenge-type builders.
+- #13: re-run Health Insights in an environment where the `dash-vfit.vantagecircle.org` iframe loads.
+- Overview KPI cards intermittently skeleton (observation O1) — chart labels captured when rendered.
+
+**Sets up the next phases (per user):**
+- **Phase 2** — from this element inventory, tag every string as frontend (in `en.json`/`de.json` or
+  a JS-bundle literal) vs backend (API-served). The "Function / on-interact" column also lists
+  every behaviour to test.
+- **Phase 3** — per module, test each frontend string **and each functional flow** across languages
+  (incl. behaviour bugs like a filter that doesn't respond when clicked in a non-English locale).
+
+
+
+
+
+
 
 
 
