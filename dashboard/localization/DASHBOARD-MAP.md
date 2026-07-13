@@ -35,9 +35,9 @@ documentation (behaviour is described, not executed).
 | 10 | Engage · Communications | Publish Notifications | `/fit/community/publish-notifications` | ✅ |
 | 11 | Engage · Communications | Send Custom Email | `/fit/community/send-custom-email` | ✅ |
 | 12 | Engage · Communications | Email Designer | (overlay) | ✅ |
-| 13 | Analyze · Workforce Health | Health Insights | `/fit/workforce-health/health-insights` | ☐ |
-| 14 | Analyze · Workforce Health | Wellness Score | `/fit/workforce-health/wellness-score` | ☐ |
-| 15 | Analyze · Workforce Health | Wellness Leagues | `/fit/workforce-health/wellness-leagues` | ☐ |
+| 13 | Analyze · Workforce Health | Health Insights | `/fit/workforce-health/health-insights` | ⛔ (iframe refused to connect) |
+| 14 | Analyze · Workforce Health | Wellness Score | `/fit/workforce-health/wellness-score` | ✅ |
+| 15 | Analyze · Workforce Health | Wellness Leagues | `/fit/workforce-health/wellness-leagues` | ✅ |
 | 16 | Analyze · Reports | League Report | `/fit/leagues` | ☐ |
 | 17 | Analyze · Reports | Employee Report | `/fit/employee-report` | ☐ |
 | 18 | Analyze · Reports | Participation Report | `/fit/participant-report` | ☐ |
@@ -478,7 +478,70 @@ start-choice screen + live preview.
 
 **Evidence:** evidence/map/12_email-designer.png
 
+## 13. Health Insights — `/fit/workforce-health/health-insights` — ⛔ BLOCKED
+**Access:** left nav → Analyze → Workforce Health → "Health Insights". **Status:** ⛔ **BLOCKED.**
+The page embeds an external dashboard (`dash-vfit.vantagecircle.org`) in an **iframe** that
+**"refused to connect"** in the MCP browser (frame blocked). Its content (charts, filters, legends)
+could not be observed. This is a separate embedded app, likely its own localization system.
+**Needs a browser/environment where the iframe loads.** Only the surrounding chrome + the Ask
+Vantage Fit launcher are present. **Evidence:** evidence/map/13_health-insights_blocked.png
+
+## 14. Wellness Score — `/fit/workforce-health/wellness-score`
+**Access:** left nav → Analyze → Workforce Health → "Wellness Score" (+ NEW badge). **Purpose:**
+org wellness-score analytics. **Layout regions:** filter bar · KPI cards · Insights (AI) · a set of
+breakdown charts.
+
+### Elements
+| Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|
+| Filters | dropdowns | "All Countries", "All Departments", "All Genders", "All Age Groups", date "This Month" | scope the analytics |
+| KPI cards | stat cards | "Current Score", "12-Month Average", "Industry Benchmark" (+ "vs Industry"/"below benchmark") | headline metrics |
+| Insights | panel | "Insights" + "AI-generated" | AI summary |
+| Chart: composition | chart | "How the Wellness Score is Composed" ("Gesamtpunktzahl"/total) | breakdown |
+| Chart: trends | chart | "Component Trends Over Time" | |
+| Chart: by Department | chart | "Wellness Score by Department" / "Average score ranked by performance" + legend "High (>=80)", "Moderate (70-80)", "Low (<70)" | |
+| Chart: by Geography | chart | "Wellness Score by Geography" / "Regional average scores" (US, India, Austria, UK) | |
+| Chart: by Age Group | chart | "Average score across age brackets" + legend (High/Moderate-High/Moderate/Low) | |
+| Chart: by Gender | chart | "Average score across genders" (Male/Female) | |
+| Segments | labels | "Consistent Engagers", "High Participation Users" ("Users with high weekly activity"), "Program Adherents", "Score advantage vs org average", "HR Admin Only" | segment cards |
+| Employee scores | section | "Employee Wellness Scores" / "Individual employee wellness score details" | per-employee table |
+
+### Notes (source)
+Most analytics **content** (stat labels, chart titles/headers, legends, "Employee Wellness Scores")
+is **backend-served** (insights API `header`/`label` fields) — see bugs #17, #21. Page **chrome**
+(heading "Wellness Score", "Insights", "AI-generated", filters) is FE.
+
+### Functional flows
+1. Adjust filters/date → all charts recompute. 2. Charts have hover tooltips; sections drill into detail.
+
+**Evidence:** evidence/map/14_wellness-score.png
+
+## 15. Wellness Leagues — `/fit/workforce-health/wellness-leagues`
+**Access:** left nav → Analyze → Workforce Health → "Wellness Leagues". **Purpose:** activity-tier
+distribution & trends. **Layout regions:** filter bar · "Current Tier Distribution" · "Tier Trends
+Over Time" · employee table (columns + export).
+
+### Elements
+| Element | Type | Exact label/text | Function / notes |
+|---|---|---|---|
+| Title | heading | "Wellness Leagues" / "Consistency-based activity tier distribution and trends" | |
+| Filters | dropdowns | "All Countries", "All Departments", "All Genders", "All Age Groups", date "This Month" | scope data |
+| Current Tier Distribution | panel | "Current Tier Distribution" + "On <date>" + "Based on avg daily steps over 21 days" | tier snapshot |
+| Tier Trends Over Time | chart | "Tier Trends Over Time" + "Weekly"/"Monthly" toggle | period toggle (verified) |
+| Columns picker | button | "Columns" → "Employee ID(+8 others)" | choose visible table columns (labels English — bug #20) |
+| Export | button | "Export" | export the table |
+| Table | table | employee rows by tier | empty-state: "No data available" / "Adjust your filters or the date range" |
+
+### Functional flows
+1. Filters recompute distribution/trends. 2. Weekly/Monthly toggles the trend period (verified).
+3. Columns picker toggles table columns. 4. Export downloads.
+
+**Evidence:** evidence/map/15_wellness-leagues.png
+
 <!-- Screen entries are appended below in tracker order. -->
+
+
+
 
 
 
