@@ -151,6 +151,34 @@ Test German-deep first, then Arabic (RTL), then es/fr/pl (record status per lang
 
 ---
 
+## Per-language pass results
+
+### German (de) — ✅ complete
+All 26 screens walked (Status cells above carry `de:` results). Functional controls work in German
+(filters open/apply, tabs, toggles, row actions, dynamic add, counters, delete). Defects = wire-up
+(#1,#2,#6,#13,#14,#18,#19,#20,#28), not-externalised (#4,#8,#15,#16,#22), functional (#27,#29),
+a11y (#24), backend ⭕ (#9,#10,#17,#21,#23), blocked ⛔ (#13 Health Insights). No new German bug.
+
+### Spanish (es) — ✅ pass complete
+- **i18n coverage:** `es.json` 991 keys, **973 translated, 0 missing**; uses inverted punctuation
+  correctly (e.g. `"¿Qué te gustaría crear?"`, "Todos los países", "Este mes", "NUEVO").
+- **AC1:** nav fluent Spanish ("Resumen", "Crear desafío", "Salud del personal"…), no bleed.
+- **Functional:** Overview country filter **opens** in Spanish (listbox with countries) — controls
+  work as in German. F1/F2 hold.
+- **Language-agnostic bugs recur identically** (English in Spanish too, since hardcoded-literal /
+  wire-up / backend): #1, #2, #6, #7, #8, #12, #13, #14, #15, #16, #18, #19, #20, #22, #28, and
+  backend ⭕ #9/#10/#17/#21/#23. (Same Status as the `de:` cells above.)
+- **Spanish-specific:** **#25 register — informal "tú"** ("Empieza a crear…", "Crea tus propios…",
+  "Envía…", "Ingresa…") vs German/French formal — enterprise expects formal "usted"; the outlier.
+  ¿ ¡ correct in the i18n content (`es.json`). Accents (ñ, á, é) render. No layout overflow.
+- **No new Spanish-only bug** beyond #25.
+
+### French (fr) / Polish (pl) / Arabic (ar) — pending
+fr: formal "vous" (correct); pl: fluent, ~99% translated. **Arabic (RTL) not yet run — highest
+remaining risk (mirroring/layout).**
+
+---
+
 **How to run:** pick a language (German first) → go top-to-bottom → apply the row's check IDs
 (expanded in `LOCALIZATION-TEST-SCOPE.md`) → set Status (✅/❌→bug#/⛔/⭕) → log ❌ in
 `bug-logs/bug-log.md` with exact string/behaviour + language + evidence → repeat per language.
