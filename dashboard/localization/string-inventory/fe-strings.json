@@ -1,0 +1,6876 @@
+[
+  {
+    "key": "addEmployees.cancel",
+    "prefix": "addEmployees",
+    "en": "Cancel",
+    "de": "Abbrechen",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.companyIdLabel",
+    "prefix": "addEmployees",
+    "en": "Your unique Company ID:",
+    "de": "Ihre eindeutige Unternehmens-ID:",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.dateFormat",
+    "prefix": "addEmployees",
+    "en": "Date Format:",
+    "de": "Datumsformat:",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.dateFormatText",
+    "prefix": "addEmployees",
+    "en": "All dates should follow the DD/MM/YYYY format.",
+    "de": "Alle Datumsangaben sollten dem Format DD/MM/YYYY entsprechen.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.defaultLocation",
+    "prefix": "addEmployees",
+    "en": "Default Location:",
+    "de": "Standardstandort:",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.defaultLocationText",
+    "prefix": "addEmployees",
+    "en": "If city or country is not specified, it will default to India-Others.",
+    "de": "Wenn keine Stadt oder kein Land angegeben ist, wird standardmäßig India-Others verwendet.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.dobHeading",
+    "prefix": "addEmployees",
+    "en": "Date of Birth (dob)",
+    "de": "Geburtsdatum (dob)",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.dobInfo",
+    "prefix": "addEmployees",
+    "en": "If provided, this date can be used to award Birthday Points.",
+    "de": "Sofern angegeben, kann dieses Datum verwendet werden, um Geburtstagspunkte zu vergeben.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.dojHeading",
+    "prefix": "addEmployees",
+    "en": "Date of Joining (doj)",
+    "de": "Eintrittsdatum (doj)",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.dojInfo",
+    "prefix": "addEmployees",
+    "en": "If provided, this date can be used to calculate eligibility for Anniversary or Tenure Awards.",
+    "de": "Sofern angegeben, kann dieses Datum verwendet werden, um die Berechtigung für Jubiläums- oder Betriebszugehörigkeitsauszeichnungen zu berechnen.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.downloadSample",
+    "prefix": "addEmployees",
+    "en": "Download Sample",
+    "de": "Beispiel herunterladen",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.guidelinesHeading",
+    "prefix": "addEmployees",
+    "en": "Data Entry Guidelines",
+    "de": "Richtlinien für die Dateneingabe",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.intro",
+    "prefix": "addEmployees",
+    "en": "Upload the list of your employee’s details and we’ll manage the setup.",
+    "de": "Laden Sie die Liste mit den Daten Ihrer Mitarbeiter hoch, und wir übernehmen die Einrichtung.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.mandatoryFields",
+    "prefix": "addEmployees",
+    "en": "Mandatory Fields:",
+    "de": "Pflichtfelder:",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.mandatoryFieldsText",
+    "prefix": "addEmployees",
+    "en": "email_id, name, and status must be provided.",
+    "de": "email_id, name und status müssen angegeben werden.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.note",
+    "prefix": "addEmployees",
+    "en": "Note",
+    "de": "Hinweis",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.preview",
+    "prefix": "addEmployees",
+    "en": "Preview",
+    "de": "Vorschau",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.status0Text",
+    "prefix": "addEmployees",
+    "en": "for all other actions (delete, deactivate, exit, terminate).",
+    "de": "für alle anderen Aktionen (löschen, deaktivieren, ausscheiden, beenden).",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.status1Text",
+    "prefix": "addEmployees",
+    "en": "for add/update actions.",
+    "de": "für Aktionen zum Hinzufügen/Aktualisieren.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.statusIntro",
+    "prefix": "addEmployees",
+    "en": "To set the \"Status\" of each row:",
+    "de": "So legen Sie den \"Status\" jeder Zeile fest:",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.statusOther",
+    "prefix": "addEmployees",
+    "en": "Any value other than 1 will be treated as a Delete/Deactivate/Exit/Terminate case.",
+    "de": "Jeder andere Wert als 1 wird als Fall von Löschen/Deaktivieren/Ausscheiden/Beenden behandelt.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.step1",
+    "prefix": "addEmployees",
+    "en": "Start by downloading our ready-to-use template",
+    "de": "Beginnen Sie mit dem Herunterladen unserer gebrauchsfertigen Vorlage",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.step2",
+    "prefix": "addEmployees",
+    "en": "Edit the template with the details of the employees you’d like to invite, then save it.",
+    "de": "Bearbeiten Sie die Vorlage mit den Daten der Mitarbeiter, die Sie einladen möchten, und speichern Sie sie anschließend.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.step3",
+    "prefix": "addEmployees",
+    "en": "Upload the completed file - either import directly or drag and drop.",
+    "de": "Laden Sie die ausgefüllte Datei hoch – entweder durch direkten Import oder per Drag & Drop.",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.submit",
+    "prefix": "addEmployees",
+    "en": "Submit",
+    "de": "Absenden",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.title",
+    "prefix": "addEmployees",
+    "en": "Add Employees",
+    "de": "Mitarbeiter hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "addEmployees.viewMore",
+    "prefix": "addEmployees",
+    "en": "View More",
+    "de": "Mehr anzeigen",
+    "translated": true
+  },
+  {
+    "key": "addMemberModal.notValidEmail",
+    "prefix": "addMemberModal",
+    "en": "{{email}} is not a valid email",
+    "de": "{{email}} ist keine gültige E-Mail-Adresse",
+    "translated": true
+  },
+  {
+    "key": "addMemberModal.someEmailsInvalid",
+    "prefix": "addMemberModal",
+    "en": "Some emails are invalid.",
+    "de": "Einige E-Mail-Adressen sind ungültig.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.addDocumentHeader",
+    "prefix": "announcementPage",
+    "en": "Add a document",
+    "de": "Dokument hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.aiPromptPlaceholder",
+    "prefix": "announcementPage",
+    "en": "e.g. Announce Diwali celebration at the office on Oct 20th",
+    "de": "z. B. Kündigen Sie die Diwali-Feier im Büro am 20. Oktober an",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.aiReview",
+    "prefix": "announcementPage",
+    "en": "Please review the AI-generated content before publishing.",
+    "de": "Bitte überprüfen Sie die KI-generierten Inhalte vor der Veröffentlichung.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.attachLink",
+    "prefix": "announcementPage",
+    "en": "Attach Link",
+    "de": "Link anhängen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.audienceSubtitle",
+    "prefix": "announcementPage",
+    "en": "Choose where and how you want to post this announcement.",
+    "de": "Wählen Sie, wo und wie Sie diese Ankündigung veröffentlichen möchten.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.audienceTitle",
+    "prefix": "announcementPage",
+    "en": "Audience & Delivery",
+    "de": "Zielgruppe & Zustellung",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.composing",
+    "prefix": "announcementPage",
+    "en": "Composing",
+    "de": "Wird verfasst",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.contentPlaceholder",
+    "prefix": "announcementPage",
+    "en": "What do you want to announce today?",
+    "de": "Was möchten Sie heute ankündigen?",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.deleteHeading",
+    "prefix": "announcementPage",
+    "en": "Are you sure you want to delete?",
+    "de": "Möchten Sie wirklich löschen?",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.deleteSuccess",
+    "prefix": "announcementPage",
+    "en": "Announcement successfully deleted.",
+    "de": "Ankündigung erfolgreich gelöscht.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.deleteText",
+    "prefix": "announcementPage",
+    "en": "You won't be able to revert this!",
+    "de": "Dies kann nicht rückgängig gemacht werden!",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.chooseFile",
+    "prefix": "announcementPage",
+    "en": "Choose File",
+    "de": "Datei auswählen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.documentTitle",
+    "prefix": "announcementPage",
+    "en": "Document Title",
+    "de": "Dokumenttitel",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.documentTitlePlaceholder",
+    "prefix": "announcementPage",
+    "en": "Add a descriptive title to your document",
+    "de": "Fügen Sie Ihrem Dokument einen aussagekräftigen Titel hinzu",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.linkedTextLabel",
+    "prefix": "announcementPage",
+    "en": "Enter Text to be Linked",
+    "de": "Zu verlinkenden Text eingeben",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.ok",
+    "prefix": "announcementPage",
+    "en": "Ok",
+    "de": "Ok",
+    "translated": false
+  },
+  {
+    "key": "announcementPage.dialog.pdfHint",
+    "prefix": "announcementPage",
+    "en": "Maximum size limit: 5 MB, Maximum page: 10.",
+    "de": "Maximale Größe: 5 MB, maximal 10 Seiten.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.requiredFields",
+    "prefix": "announcementPage",
+    "en": "Please enter the required fields.",
+    "de": "Bitte füllen Sie die Pflichtfelder aus.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.targetLinkLabel",
+    "prefix": "announcementPage",
+    "en": "Target Link URL",
+    "de": "Ziel-URL des Links",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.unsureBody",
+    "prefix": "announcementPage",
+    "en": "Search for the desired webpage, copy its web address from your browser's address bar, and paste it above.",
+    "de": "Suchen Sie die gewünschte Webseite, kopieren Sie deren Webadresse aus der Adressleiste Ihres Browsers und fügen Sie sie oben ein.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.unsureTitle",
+    "prefix": "announcementPage",
+    "en": "Unsure what to write in the box?",
+    "de": "Unsicher, was Sie in das Feld schreiben sollen?",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.dialog.uploadPdf",
+    "prefix": "announcementPage",
+    "en": "Please upload PDF file.",
+    "de": "Bitte laden Sie eine PDF-Datei hoch.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.editLinkHeader",
+    "prefix": "announcementPage",
+    "en": "Edit Link",
+    "de": "Link bearbeiten",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.enterTitlePlaceholder",
+    "prefix": "announcementPage",
+    "en": "Enter announcement title",
+    "de": "Titel der Ankündigung eingeben",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.error",
+    "prefix": "announcementPage",
+    "en": "Error",
+    "de": "Fehler",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.existingAnnouncements",
+    "prefix": "announcementPage",
+    "en": "Existing Announcement",
+    "de": "Bestehende Ankündigungen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.fileSizeExceeded",
+    "prefix": "announcementPage",
+    "en": "File size exceeds the limit of {{size}} MB.",
+    "de": "Die Dateigröße überschreitet das Limit von {{size}} MB.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.formDescription",
+    "prefix": "announcementPage",
+    "en": "Description",
+    "de": "Beschreibung",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.formTitle",
+    "prefix": "announcementPage",
+    "en": "Title",
+    "de": "Titel",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.generate",
+    "prefix": "announcementPage",
+    "en": "Generate",
+    "de": "Generieren",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.generateError",
+    "prefix": "announcementPage",
+    "en": "Unable to generate announcement right now. Please try again.",
+    "de": "Die Ankündigung kann derzeit nicht generiert werden. Bitte versuchen Sie es erneut.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.generateWithAi",
+    "prefix": "announcementPage",
+    "en": "Generate with AI",
+    "de": "Mit KI generieren",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.generating",
+    "prefix": "announcementPage",
+    "en": "Generating",
+    "de": "Wird generiert",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.genericError",
+    "prefix": "announcementPage",
+    "en": "Something went wrong.",
+    "de": "Etwas ist schiefgelaufen.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.genericLaterError",
+    "prefix": "announcementPage",
+    "en": "Something went wrong. Please try again later.",
+    "de": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.improveError",
+    "prefix": "announcementPage",
+    "en": "Unable to improve the announcement right now. Please try again.",
+    "de": "Die Ankündigung kann derzeit nicht verbessert werden. Bitte versuchen Sie es erneut.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.improveWriting",
+    "prefix": "announcementPage",
+    "en": "Improve Writing",
+    "de": "Text verbessern",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.improving",
+    "prefix": "announcementPage",
+    "en": "Improving",
+    "de": "Wird verbessert",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.linkTitlePrefix",
+    "prefix": "announcementPage",
+    "en": "Title",
+    "de": "Titel",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.loading",
+    "prefix": "announcementPage",
+    "en": "Loading...",
+    "de": "Wird geladen...",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.minimumCharacters",
+    "prefix": "announcementPage",
+    "en": "Minimum 30 characters",
+    "de": "Mindestens 30 Zeichen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.noDataFound",
+    "prefix": "announcementPage",
+    "en": "No data found.",
+    "de": "Keine Daten gefunden.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.postAnnouncementVia",
+    "prefix": "announcementPage",
+    "en": "Post this announcement via",
+    "de": "Diese Ankündigung veröffentlichen über",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.publish",
+    "prefix": "announcementPage",
+    "en": "Publish",
+    "de": "Veröffentlichen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.readyToGenerate",
+    "prefix": "announcementPage",
+    "en": "Ready to generate",
+    "de": "Bereit zum Generieren",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.remaining",
+    "prefix": "announcementPage",
+    "en": "remaining",
+    "de": "verbleibend",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.removeImageError",
+    "prefix": "announcementPage",
+    "en": "Something went wrong. Please try after sometime.",
+    "de": "Etwas ist schiefgelaufen. Bitte versuchen Sie es in Kürze erneut.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.search",
+    "prefix": "announcementPage",
+    "en": "Search",
+    "de": "Suchen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.selectFromFollowing",
+    "prefix": "announcementPage",
+    "en": "Select from the following",
+    "de": "Wählen Sie aus den folgenden Optionen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.subtitle",
+    "prefix": "announcementPage",
+    "en": "Write and publish announcements to your organization.",
+    "de": "Verfassen und veröffentlichen Sie Ankündigungen für Ihre Organisation.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.success",
+    "prefix": "announcementPage",
+    "en": "Success",
+    "de": "Erfolg",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.title",
+    "prefix": "announcementPage",
+    "en": "Create Announcement",
+    "de": "Ankündigung erstellen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.tone",
+    "prefix": "announcementPage",
+    "en": "Tone:",
+    "de": "Ton:",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.tones.appreciative",
+    "prefix": "announcementPage",
+    "en": "Appreciative",
+    "de": "Wertschätzend",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.tones.celebratory",
+    "prefix": "announcementPage",
+    "en": "Celebratory",
+    "de": "Feierlich",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.tones.corporate",
+    "prefix": "announcementPage",
+    "en": "Corporate",
+    "de": "Geschäftlich",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.tones.friendly",
+    "prefix": "announcementPage",
+    "en": "Friendly",
+    "de": "Freundlich",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.tones.informative",
+    "prefix": "announcementPage",
+    "en": "Informative",
+    "de": "Informativ",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.uploadImage",
+    "prefix": "announcementPage",
+    "en": "Upload Image",
+    "de": "Bild hochladen",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.uploadImageTooltip",
+    "prefix": "announcementPage",
+    "en": "Upload Image. Maximum size limit: 5 MB.",
+    "de": "Bild hochladen. Maximale Größe: 5 MB.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.uploadPdfTooltip",
+    "prefix": "announcementPage",
+    "en": "Upload PDF. Maximum size limit: 5 MB, Maximum page: 10.",
+    "de": "PDF hochladen. Maximale Größe: 5 MB, maximal 10 Seiten.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.uploadVideoTooltip",
+    "prefix": "announcementPage",
+    "en": "Upload Video. Maximum size limit: 5 MB.",
+    "de": "Video hochladen. Maximale Größe: 5 MB.",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.visibility.bothEmailFeedPost",
+    "prefix": "announcementPage",
+    "en": "Both in email & feed post",
+    "de": "Sowohl per E-Mail als auch als Feed-Beitrag",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.visibility.onlyEmail",
+    "prefix": "announcementPage",
+    "en": "Only email",
+    "de": "Nur E-Mail",
+    "translated": true
+  },
+  {
+    "key": "announcementPage.visibility.onlyFeedPost",
+    "prefix": "announcementPage",
+    "en": "Only feed post",
+    "de": "Nur Feed-Beitrag",
+    "translated": true
+  },
+  {
+    "key": "articleForm.assignCountry",
+    "prefix": "articleForm",
+    "en": "Assign Country",
+    "de": "Land zuweisen",
+    "translated": true
+  },
+  {
+    "key": "articleForm.category",
+    "prefix": "articleForm",
+    "en": "Category",
+    "de": "Kategorie",
+    "translated": true
+  },
+  {
+    "key": "articleForm.charsLeft",
+    "prefix": "articleForm",
+    "en": "left {{n}} characters",
+    "de": "noch {{n}} Zeichen",
+    "translated": true
+  },
+  {
+    "key": "articleForm.gender",
+    "prefix": "articleForm",
+    "en": "Gender",
+    "de": "Geschlecht",
+    "translated": true
+  },
+  {
+    "key": "articleForm.imageAlt",
+    "prefix": "articleForm",
+    "en": "Health article",
+    "de": "Gesundheitsartikel",
+    "translated": true
+  },
+  {
+    "key": "articleForm.pageUrl",
+    "prefix": "articleForm",
+    "en": "Page URL",
+    "de": "Seiten-URL",
+    "translated": true
+  },
+  {
+    "key": "articleForm.selectCategory",
+    "prefix": "articleForm",
+    "en": "Select category",
+    "de": "Kategorie auswählen",
+    "translated": true
+  },
+  {
+    "key": "articleForm.selectCountryMulti",
+    "prefix": "articleForm",
+    "en": "Select country",
+    "de": "Land auswählen",
+    "translated": true
+  },
+  {
+    "key": "articleForm.selectLanguage",
+    "prefix": "articleForm",
+    "en": "Select Language",
+    "de": "Sprache auswählen",
+    "translated": true
+  },
+  {
+    "key": "articleForm.selectLanguagePlaceholder",
+    "prefix": "articleForm",
+    "en": "Select language",
+    "de": "Sprache auswählen",
+    "translated": true
+  },
+  {
+    "key": "articleForm.tagline",
+    "prefix": "articleForm",
+    "en": "Tagline",
+    "de": "Slogan",
+    "translated": true
+  },
+  {
+    "key": "articleForm.taglinePlaceholder",
+    "prefix": "articleForm",
+    "en": "Type your Tagline here...",
+    "de": "Geben Sie Ihren Slogan hier ein...",
+    "translated": true
+  },
+  {
+    "key": "articleForm.title",
+    "prefix": "articleForm",
+    "en": "Create Linked Content",
+    "de": "Verknüpften Inhalt erstellen",
+    "translated": true
+  },
+  {
+    "key": "articleForm.titleLabel",
+    "prefix": "articleForm",
+    "en": "Title",
+    "de": "Titel",
+    "translated": true
+  },
+  {
+    "key": "articleForm.titlePlaceholder",
+    "prefix": "articleForm",
+    "en": "Type your Title here...",
+    "de": "Geben Sie Ihren Titel hier ein...",
+    "translated": true
+  },
+  {
+    "key": "articleForm.type",
+    "prefix": "articleForm",
+    "en": "Type",
+    "de": "Typ",
+    "translated": true
+  },
+  {
+    "key": "articleForm.urlPlaceholder",
+    "prefix": "articleForm",
+    "en": "https://",
+    "de": "https://",
+    "translated": false
+  },
+  {
+    "key": "bulkUpload.addParticipants",
+    "prefix": "bulkUpload",
+    "en": "Add Participants",
+    "de": "Teilnehmer hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "bulkUpload.chooseFile",
+    "prefix": "bulkUpload",
+    "en": "Choose File",
+    "de": "Datei auswählen",
+    "translated": true
+  },
+  {
+    "key": "bulkUpload.downloadSample",
+    "prefix": "bulkUpload",
+    "en": "Download Sample CSV",
+    "de": "Beispiel-CSV herunterladen",
+    "translated": true
+  },
+  {
+    "key": "bulkUpload.instructions",
+    "prefix": "bulkUpload",
+    "en": "Please upload the bulk invite data in the CSV as per the format of sample CSV, for your convenience you can download a sample CSV by clicking below.",
+    "de": "Bitte laden Sie die Masseneinladungsdaten als CSV im Format der Beispiel-CSV hoch. Zur Bequemlichkeit können Sie unten eine Beispiel-CSV herunterladen.",
+    "translated": true
+  },
+  {
+    "key": "bulkUpload.noFileChosen",
+    "prefix": "bulkUpload",
+    "en": "No File Chosen",
+    "de": "Keine Datei ausgewählt",
+    "translated": true
+  },
+  {
+    "key": "bulkUpload.title",
+    "prefix": "bulkUpload",
+    "en": "Bulk Invite Users",
+    "de": "Benutzer per Masseneinladung einladen",
+    "translated": true
+  },
+  {
+    "key": "bulkUpload.uploadCsv",
+    "prefix": "bulkUpload",
+    "en": "Upload CSV file",
+    "de": "CSV-Datei hochladen",
+    "translated": true
+  },
+  {
+    "key": "bulkUpload.validating",
+    "prefix": "bulkUpload",
+    "en": "Validating file ...",
+    "de": "Datei wird validiert ...",
+    "translated": true
+  },
+  {
+    "key": "challengeDetails.aboveBenchmark",
+    "prefix": "challengeDetails",
+    "en": "above benchmark",
+    "de": "über dem Benchmark",
+    "translated": true
+  },
+  {
+    "key": "challengeDetails.belowBenchmark",
+    "prefix": "challengeDetails",
+    "en": "below benchmark",
+    "de": "unter dem Benchmark",
+    "translated": true
+  },
+  {
+    "key": "challengeDetails.engagement",
+    "prefix": "challengeDetails",
+    "en": "Challenge Engagement",
+    "de": "Challenge-Engagement",
+    "translated": true
+  },
+  {
+    "key": "challengeDetails.status",
+    "prefix": "challengeDetails",
+    "en": "Challenge Status",
+    "de": "Challenge-Status",
+    "translated": true
+  },
+  {
+    "key": "challengeDetails.theme",
+    "prefix": "challengeDetails",
+    "en": "Theme",
+    "de": "Thema",
+    "translated": true
+  },
+  {
+    "key": "challengeDetails.totalMilestones",
+    "prefix": "challengeDetails",
+    "en": "Total Milestones",
+    "de": "Meilensteine insgesamt",
+    "translated": true
+  },
+  {
+    "key": "challengeDetails.totalParticipants",
+    "prefix": "challengeDetails",
+    "en": "Total Participants",
+    "de": "Teilnehmer insgesamt",
+    "translated": true
+  },
+  {
+    "key": "challengeDetails.totalTeams",
+    "prefix": "challengeDetails",
+    "en": "Total Teams",
+    "de": "Teams insgesamt",
+    "translated": true
+  },
+  {
+    "key": "challengePosters.vf-sample02",
+    "prefix": "challengePosters",
+    "en": "Default Image 01",
+    "de": "Standardbild 01",
+    "translated": true
+  },
+  {
+    "key": "challengePosters.vf-sample04",
+    "prefix": "challengePosters",
+    "en": "Default Image 02",
+    "de": "Standardbild 02",
+    "translated": true
+  },
+  {
+    "key": "challengeReview.contestAvailability",
+    "prefix": "challengeReview",
+    "en": "Contest Availability",
+    "de": "Verfügbarkeit des Wettbewerbs",
+    "translated": true
+  },
+  {
+    "key": "challengeReview.duration",
+    "prefix": "challengeReview",
+    "en": "Duration",
+    "de": "Dauer",
+    "translated": true
+  },
+  {
+    "key": "challengeReview.endDate",
+    "prefix": "challengeReview",
+    "en": "End Date",
+    "de": "Enddatum",
+    "translated": true
+  },
+  {
+    "key": "challengeReview.reward",
+    "prefix": "challengeReview",
+    "en": "Reward",
+    "de": "Belohnung",
+    "translated": true
+  },
+  {
+    "key": "challengeReview.startDate",
+    "prefix": "challengeReview",
+    "en": "Start Date",
+    "de": "Startdatum",
+    "translated": true
+  },
+  {
+    "key": "challengeReview.stepCountTarget",
+    "prefix": "challengeReview",
+    "en": "Step Count Target",
+    "de": "Schrittzahl-Ziel",
+    "translated": true
+  },
+  {
+    "key": "challengeReview.submit",
+    "prefix": "challengeReview",
+    "en": "Submit",
+    "de": "Absenden",
+    "translated": true
+  },
+  {
+    "key": "challengeReview.week",
+    "prefix": "challengeReview",
+    "en": "Week",
+    "de": "Woche",
+    "translated": true
+  },
+  {
+    "key": "challengeReview.weeks",
+    "prefix": "challengeReview",
+    "en": "Weeks",
+    "de": "Wochen",
+    "translated": true
+  },
+  {
+    "key": "challengeSetup.name",
+    "prefix": "challengeSetup",
+    "en": "Challenge Name",
+    "de": "Challenge-Name",
+    "translated": true
+  },
+  {
+    "key": "challengeSetup.nameHint",
+    "prefix": "challengeSetup",
+    "en": "This will appear on the app",
+    "de": "Wird in der App angezeigt",
+    "translated": true
+  },
+  {
+    "key": "challengeSetup.slogan",
+    "prefix": "challengeSetup",
+    "en": "Challenge Slogan",
+    "de": "Challenge-Slogan",
+    "translated": true
+  },
+  {
+    "key": "challengeSetup.sloganHint",
+    "prefix": "challengeSetup",
+    "en": "This will appear on contest emails",
+    "de": "Wird in Wettbewerbs-E-Mails angezeigt",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.configuration",
+    "prefix": "challengeWizard",
+    "en": "Challenge Configuration",
+    "de": "Challenge-Konfiguration",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.creating",
+    "prefix": "challengeWizard",
+    "en": "Creating Challenge ...",
+    "de": "Challenge wird erstellt ...",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.creatingCustom",
+    "prefix": "challengeWizard",
+    "en": "Creating Custom Challenge",
+    "de": "Benutzerdefinierte Challenge wird erstellt",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.creatingEMarathon",
+    "prefix": "challengeWizard",
+    "en": "Creating E-Marathon Challenge",
+    "de": "E-Marathon-Challenge wird erstellt",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.creatingRace",
+    "prefix": "challengeWizard",
+    "en": "Creating Race Challenge",
+    "de": "Rennen-Challenge wird erstellt",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.creatingStreak",
+    "prefix": "challengeWizard",
+    "en": "Creating Streak Challenge",
+    "de": "Streak-Challenge wird erstellt",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.review",
+    "prefix": "challengeWizard",
+    "en": "Review your Challenge and Submit",
+    "de": "Überprüfen Sie Ihre Challenge und senden Sie sie ab",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.selectJourney",
+    "prefix": "challengeWizard",
+    "en": "Select any Journey Challenge",
+    "de": "Wählen Sie eine Journey-Challenge",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.setDuration",
+    "prefix": "challengeWizard",
+    "en": "Set Duration",
+    "de": "Dauer festlegen",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.targetAudience",
+    "prefix": "challengeWizard",
+    "en": "Set Target Audience",
+    "de": "Zielgruppe festlegen",
+    "translated": true
+  },
+  {
+    "key": "challengeWizard.uploading",
+    "prefix": "challengeWizard",
+    "en": "Uploading",
+    "de": "Wird hochgeladen",
+    "translated": true
+  },
+  {
+    "key": "common.add",
+    "prefix": "common",
+    "en": "Add",
+    "de": "Hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "common.added",
+    "prefix": "common",
+    "en": "Added",
+    "de": "Hinzugefügt",
+    "translated": true
+  },
+  {
+    "key": "common.areYouSure",
+    "prefix": "common",
+    "en": "Are you sure?",
+    "de": "Sind Sie sicher?",
+    "translated": true
+  },
+  {
+    "key": "common.back",
+    "prefix": "common",
+    "en": "Back",
+    "de": "Zurück",
+    "translated": true
+  },
+  {
+    "key": "common.cancel",
+    "prefix": "common",
+    "en": "Cancel",
+    "de": "Abbrechen",
+    "translated": true
+  },
+  {
+    "key": "common.city",
+    "prefix": "common",
+    "en": "City",
+    "de": "Stadt",
+    "translated": true
+  },
+  {
+    "key": "common.clear",
+    "prefix": "common",
+    "en": "Clear",
+    "de": "Löschen",
+    "translated": true
+  },
+  {
+    "key": "common.close",
+    "prefix": "common",
+    "en": "Close",
+    "de": "Schließen",
+    "translated": true
+  },
+  {
+    "key": "common.confirm",
+    "prefix": "common",
+    "en": "Confirm",
+    "de": "Bestätigen",
+    "translated": true
+  },
+  {
+    "key": "common.confirmation",
+    "prefix": "common",
+    "en": "Confirmation",
+    "de": "Bestätigung",
+    "translated": true
+  },
+  {
+    "key": "common.country",
+    "prefix": "common",
+    "en": "Country",
+    "de": "Land",
+    "translated": true
+  },
+  {
+    "key": "common.create",
+    "prefix": "common",
+    "en": "Create",
+    "de": "Erstellen",
+    "translated": true
+  },
+  {
+    "key": "common.delete",
+    "prefix": "common",
+    "en": "Delete",
+    "de": "Löschen",
+    "translated": true
+  },
+  {
+    "key": "common.disable",
+    "prefix": "common",
+    "en": "Disable",
+    "de": "Deaktivieren",
+    "translated": true
+  },
+  {
+    "key": "common.discard",
+    "prefix": "common",
+    "en": "Discard",
+    "de": "Verwerfen",
+    "translated": true
+  },
+  {
+    "key": "common.edit",
+    "prefix": "common",
+    "en": "Edit",
+    "de": "Bearbeiten",
+    "translated": true
+  },
+  {
+    "key": "common.editChallenge",
+    "prefix": "common",
+    "en": "Edit Challenge",
+    "de": "Challenge bearbeiten",
+    "translated": true
+  },
+  {
+    "key": "common.email",
+    "prefix": "common",
+    "en": "Email",
+    "de": "E-Mail",
+    "translated": true
+  },
+  {
+    "key": "common.employeeEmail",
+    "prefix": "common",
+    "en": "Employee Email",
+    "de": "E-Mail des Mitarbeitenden",
+    "translated": true
+  },
+  {
+    "key": "common.employeeName",
+    "prefix": "common",
+    "en": "Employee Name",
+    "de": "Name des Mitarbeitenden",
+    "translated": true
+  },
+  {
+    "key": "common.enable",
+    "prefix": "common",
+    "en": "Enable",
+    "de": "Aktivieren",
+    "translated": true
+  },
+  {
+    "key": "common.export",
+    "prefix": "common",
+    "en": "Export",
+    "de": "Exportieren",
+    "translated": true
+  },
+  {
+    "key": "common.female",
+    "prefix": "common",
+    "en": "Female",
+    "de": "Weiblich",
+    "translated": true
+  },
+  {
+    "key": "common.filter",
+    "prefix": "common",
+    "en": "Filter",
+    "de": "Filtern",
+    "translated": true
+  },
+  {
+    "key": "common.generateReport",
+    "prefix": "common",
+    "en": "Generate Report",
+    "de": "Bericht erstellen",
+    "translated": true
+  },
+  {
+    "key": "common.image",
+    "prefix": "common",
+    "en": "Image",
+    "de": "Bild",
+    "translated": true
+  },
+  {
+    "key": "common.individual",
+    "prefix": "common",
+    "en": "Individual",
+    "de": "Einzeln",
+    "translated": true
+  },
+  {
+    "key": "common.loadEmployeeList",
+    "prefix": "common",
+    "en": "Load Employee List",
+    "de": "Mitarbeiterliste laden",
+    "translated": true
+  },
+  {
+    "key": "common.loading",
+    "prefix": "common",
+    "en": "Loading...",
+    "de": "Wird geladen...",
+    "translated": true
+  },
+  {
+    "key": "common.male",
+    "prefix": "common",
+    "en": "Male",
+    "de": "Männlich",
+    "translated": true
+  },
+  {
+    "key": "common.manage",
+    "prefix": "common",
+    "en": "Manage",
+    "de": "Verwalten",
+    "translated": true
+  },
+  {
+    "key": "common.maxFileSize500",
+    "prefix": "common",
+    "en": "Maximum file allowed (500KB)",
+    "de": "Maximal zulässige Dateigröße (500 KB)",
+    "translated": true
+  },
+  {
+    "key": "common.name",
+    "prefix": "common",
+    "en": "Name",
+    "de": "Name",
+    "translated": false
+  },
+  {
+    "key": "common.newTag",
+    "prefix": "common",
+    "en": "NEW",
+    "de": "NEU",
+    "translated": true
+  },
+  {
+    "key": "common.next",
+    "prefix": "common",
+    "en": "Next",
+    "de": "Weiter",
+    "translated": true
+  },
+  {
+    "key": "common.no",
+    "prefix": "common",
+    "en": "No",
+    "de": "Nein",
+    "translated": true
+  },
+  {
+    "key": "common.ok",
+    "prefix": "common",
+    "en": "OK",
+    "de": "OK",
+    "translated": false
+  },
+  {
+    "key": "common.other",
+    "prefix": "common",
+    "en": "Other",
+    "de": "Andere",
+    "translated": true
+  },
+  {
+    "key": "common.others",
+    "prefix": "common",
+    "en": "Others",
+    "de": "Andere",
+    "translated": true
+  },
+  {
+    "key": "common.remove",
+    "prefix": "common",
+    "en": "Remove",
+    "de": "Entfernen",
+    "translated": true
+  },
+  {
+    "key": "common.reset",
+    "prefix": "common",
+    "en": "Reset",
+    "de": "Zurücksetzen",
+    "translated": true
+  },
+  {
+    "key": "common.save",
+    "prefix": "common",
+    "en": "Save",
+    "de": "Speichern",
+    "translated": true
+  },
+  {
+    "key": "common.saveChanges",
+    "prefix": "common",
+    "en": "Save Changes",
+    "de": "Änderungen speichern",
+    "translated": true
+  },
+  {
+    "key": "common.saving",
+    "prefix": "common",
+    "en": "Saving...",
+    "de": "Wird gespeichert...",
+    "translated": true
+  },
+  {
+    "key": "common.searchUserByNameEmail",
+    "prefix": "common",
+    "en": "Search user by name or email",
+    "de": "Benutzer nach Name oder E-Mail suchen",
+    "translated": true
+  },
+  {
+    "key": "common.select",
+    "prefix": "common",
+    "en": "Select",
+    "de": "Auswählen",
+    "translated": true
+  },
+  {
+    "key": "common.selectCity",
+    "prefix": "common",
+    "en": "Select City",
+    "de": "Stadt auswählen",
+    "translated": true
+  },
+  {
+    "key": "common.selectCountry",
+    "prefix": "common",
+    "en": "Select Country",
+    "de": "Land auswählen",
+    "translated": true
+  },
+  {
+    "key": "common.sendToUsers",
+    "prefix": "common",
+    "en": "Send to {{count}} users",
+    "de": "An {{count}} Benutzer senden",
+    "translated": true
+  },
+  {
+    "key": "common.sending",
+    "prefix": "common",
+    "en": "Sending...",
+    "de": "Wird gesendet...",
+    "translated": true
+  },
+  {
+    "key": "common.somethingWentWrong",
+    "prefix": "common",
+    "en": "Something Went Wrong",
+    "de": "Etwas ist schiefgelaufen",
+    "translated": true
+  },
+  {
+    "key": "common.submit",
+    "prefix": "common",
+    "en": "Submit",
+    "de": "Absenden",
+    "translated": true
+  },
+  {
+    "key": "common.team",
+    "prefix": "common",
+    "en": "Team",
+    "de": "Team",
+    "translated": false
+  },
+  {
+    "key": "common.update",
+    "prefix": "common",
+    "en": "Update",
+    "de": "Aktualisieren",
+    "translated": true
+  },
+  {
+    "key": "common.uploadFromSystem",
+    "prefix": "common",
+    "en": "Upload from System",
+    "de": "Vom System hochladen",
+    "translated": true
+  },
+  {
+    "key": "common.useTemplate",
+    "prefix": "common",
+    "en": "Use Template",
+    "de": "Vorlage verwenden",
+    "translated": true
+  },
+  {
+    "key": "common.view",
+    "prefix": "common",
+    "en": "View",
+    "de": "Ansehen",
+    "translated": true
+  },
+  {
+    "key": "common.viewChallenge",
+    "prefix": "common",
+    "en": "View Challenge",
+    "de": "Challenge ansehen",
+    "translated": true
+  },
+  {
+    "key": "common.viewMore",
+    "prefix": "common",
+    "en": "View more",
+    "de": "Mehr anzeigen",
+    "translated": true
+  },
+  {
+    "key": "common.vsPrevQuarter",
+    "prefix": "common",
+    "en": "vs Prev Quarter",
+    "de": "vs. Vorquartal",
+    "translated": true
+  },
+  {
+    "key": "common.yes",
+    "prefix": "common",
+    "en": "Yes",
+    "de": "Ja",
+    "translated": true
+  },
+  {
+    "key": "contactAmModal.contactLabel",
+    "prefix": "contactAmModal",
+    "en": "Contact:",
+    "de": "Kontakt:",
+    "translated": true
+  },
+  {
+    "key": "contactAmModal.copied",
+    "prefix": "contactAmModal",
+    "en": "Copied!",
+    "de": "Kopiert!",
+    "translated": true
+  },
+  {
+    "key": "contactAmModal.copy",
+    "prefix": "contactAmModal",
+    "en": "Copy",
+    "de": "Kopieren",
+    "translated": true
+  },
+  {
+    "key": "contactAmModal.emailApp",
+    "prefix": "contactAmModal",
+    "en": "Email App",
+    "de": "E-Mail-App",
+    "translated": true
+  },
+  {
+    "key": "contactAmModal.emailLabel",
+    "prefix": "contactAmModal",
+    "en": "Email:",
+    "de": "E-Mail:",
+    "translated": true
+  },
+  {
+    "key": "contactAmModal.emailSubject",
+    "prefix": "contactAmModal",
+    "en": "[{{name}}] Need help with Admin Dashboard",
+    "de": "[{{name}}] Benötigt Hilfe zum Admin-Dashboard",
+    "translated": true
+  },
+  {
+    "key": "contactAmModal.gmail",
+    "prefix": "contactAmModal",
+    "en": "Gmail",
+    "de": "Gmail",
+    "translated": false
+  },
+  {
+    "key": "contactAmModal.nameLabel",
+    "prefix": "contactAmModal",
+    "en": "Name:",
+    "de": "Name:",
+    "translated": false
+  },
+  {
+    "key": "contactAmModal.outlook",
+    "prefix": "contactAmModal",
+    "en": "Outlook",
+    "de": "Outlook",
+    "translated": false
+  },
+  {
+    "key": "contactAmModal.sendEmailVia",
+    "prefix": "contactAmModal",
+    "en": "Send email via",
+    "de": "E-Mail senden über",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.actions.edit",
+    "prefix": "contentLibrary",
+    "en": "Edit content",
+    "de": "Inhalt bearbeiten",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.actions.view",
+    "prefix": "contentLibrary",
+    "en": "View content",
+    "de": "Inhalt ansehen",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.contentOverview",
+    "prefix": "contentLibrary",
+    "en": "Content Overview",
+    "de": "Inhaltsübersicht",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.createSuccess",
+    "prefix": "contentLibrary",
+    "en": "Content created successfully",
+    "de": "Inhalt erfolgreich erstellt",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.search",
+    "prefix": "contentLibrary",
+    "en": "Search content...",
+    "de": "Inhalte suchen...",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.stats.articles",
+    "prefix": "contentLibrary",
+    "en": "Articles",
+    "de": "Artikel",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.stats.podcasts",
+    "prefix": "contentLibrary",
+    "en": "Podcasts",
+    "de": "Podcasts",
+    "translated": false
+  },
+  {
+    "key": "contentLibrary.stats.videos",
+    "prefix": "contentLibrary",
+    "en": "Videos",
+    "de": "Videos",
+    "translated": false
+  },
+  {
+    "key": "contentLibrary.subtitle",
+    "prefix": "contentLibrary",
+    "en": "Manage content availability and curate featured items.",
+    "de": "Verwalten Sie die Verfügbarkeit von Inhalten und kuratieren Sie hervorgehobene Elemente.",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.table.actions",
+    "prefix": "contentLibrary",
+    "en": "Actions",
+    "de": "Aktionen",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.table.category",
+    "prefix": "contentLibrary",
+    "en": "Category",
+    "de": "Kategorie",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.table.content",
+    "prefix": "contentLibrary",
+    "en": "Content",
+    "de": "Inhalt",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.table.type",
+    "prefix": "contentLibrary",
+    "en": "Type",
+    "de": "Typ",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.title",
+    "prefix": "contentLibrary",
+    "en": "Content Library",
+    "de": "Inhaltsbibliothek",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.types.all",
+    "prefix": "contentLibrary",
+    "en": "All",
+    "de": "Alle",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.types.article",
+    "prefix": "contentLibrary",
+    "en": "Article",
+    "de": "Artikel",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.types.bite_content",
+    "prefix": "contentLibrary",
+    "en": "Bite Size",
+    "de": "Häppchen",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.types.health-byte",
+    "prefix": "contentLibrary",
+    "en": "Health Byte",
+    "de": "Gesundheits-Kurzinfo",
+    "translated": true
+  },
+  {
+    "key": "contentLibrary.types.podcast",
+    "prefix": "contentLibrary",
+    "en": "Podcast",
+    "de": "Podcast",
+    "translated": false
+  },
+  {
+    "key": "contentLibrary.types.video",
+    "prefix": "contentLibrary",
+    "en": "Video",
+    "de": "Video",
+    "translated": false
+  },
+  {
+    "key": "contest.activeMinutes",
+    "prefix": "contest",
+    "en": "Active Minutes",
+    "de": "Aktive Minuten",
+    "translated": true
+  },
+  {
+    "key": "contest.challengeType",
+    "prefix": "contest",
+    "en": "Challenge Type",
+    "de": "Challenge-Typ",
+    "translated": true
+  },
+  {
+    "key": "contest.completedHighestLevel",
+    "prefix": "contest",
+    "en": "participants have completed the highest Level",
+    "de": "Teilnehmende haben das höchste Level erreicht",
+    "translated": true
+  },
+  {
+    "key": "contest.completedTarget",
+    "prefix": "contest",
+    "en": "have completed the challenge target",
+    "de": "haben das Challenge-Ziel erreicht",
+    "translated": true
+  },
+  {
+    "key": "contest.highestActiveMinutes",
+    "prefix": "contest",
+    "en": "Highest Active Minutes",
+    "de": "Meiste aktive Minuten",
+    "translated": true
+  },
+  {
+    "key": "contest.highestSteps",
+    "prefix": "contest",
+    "en": "Highest Steps",
+    "de": "Meiste Schritte",
+    "translated": true
+  },
+  {
+    "key": "contest.leaderboard",
+    "prefix": "contest",
+    "en": "Leaderboard",
+    "de": "Bestenliste",
+    "translated": true
+  },
+  {
+    "key": "contest.leaderboardTooltip",
+    "prefix": "contest",
+    "en": "The Leaderboard shows participants' rankings based on their activity and engagement in this campaign. It encourages friendly competition and recognizes employees' commitment to wellness goals.",
+    "de": "Die Bestenliste zeigt die Platzierung der Teilnehmenden basierend auf ihrer Aktivität und ihrem Engagement in dieser Kampagne. Sie fördert freundschaftlichen Wettbewerb und würdigt das Engagement der Mitarbeitenden für Wellness-Ziele.",
+    "translated": true
+  },
+  {
+    "key": "contest.levelCompletion",
+    "prefix": "contest",
+    "en": "Level Completion",
+    "de": "Level-Abschluss",
+    "translated": true
+  },
+  {
+    "key": "contest.milestone",
+    "prefix": "contest",
+    "en": "Milestone",
+    "de": "Meilenstein",
+    "translated": true
+  },
+  {
+    "key": "contest.milestoneCompletion",
+    "prefix": "contest",
+    "en": "Milestone Completion",
+    "de": "Meilenstein-Abschluss",
+    "translated": true
+  },
+  {
+    "key": "contest.milestones",
+    "prefix": "contest",
+    "en": "Milestones",
+    "de": "Meilensteine",
+    "translated": true
+  },
+  {
+    "key": "contest.monetary",
+    "prefix": "contest",
+    "en": "Monetary",
+    "de": "Monetär",
+    "translated": true
+  },
+  {
+    "key": "contest.noData",
+    "prefix": "contest",
+    "en": "No Data Available",
+    "de": "Keine Daten verfügbar",
+    "translated": true
+  },
+  {
+    "key": "contest.noOfParticipants",
+    "prefix": "contest",
+    "en": "No. of participants",
+    "de": "Anzahl der Teilnehmer",
+    "translated": true
+  },
+  {
+    "key": "contest.noOfSteps",
+    "prefix": "contest",
+    "en": "No. of steps",
+    "de": "Anzahl der Schritte",
+    "translated": true
+  },
+  {
+    "key": "contest.noOfTeams",
+    "prefix": "contest",
+    "en": "No. of teams",
+    "de": "Anzahl der Teams",
+    "translated": true
+  },
+  {
+    "key": "contest.nonMonetary",
+    "prefix": "contest",
+    "en": "Non Monetary",
+    "de": "Nicht monetär",
+    "translated": true
+  },
+  {
+    "key": "contest.reward",
+    "prefix": "contest",
+    "en": "Reward",
+    "de": "Belohnung",
+    "translated": true
+  },
+  {
+    "key": "contest.score",
+    "prefix": "contest",
+    "en": "Score",
+    "de": "Punktzahl",
+    "translated": true
+  },
+  {
+    "key": "contest.scoreLeaderboard",
+    "prefix": "contest",
+    "en": "Score leaderboard",
+    "de": "Bestenliste nach Punkten",
+    "translated": true
+  },
+  {
+    "key": "contest.scoreLeaderboardTooltip",
+    "prefix": "contest",
+    "en": "Score leaderboard shows the average level of participation in all wellness activities tracked during this campaign. A higher score indicates more frequent engagement by employees in various challenges and activities.",
+    "de": "Die Bestenliste nach Punkten zeigt den durchschnittlichen Grad der Teilnahme an allen während dieser Kampagne erfassten Wellness-Aktivitäten. Eine höhere Punktzahl deutet auf häufigeres Engagement der Mitarbeitenden in verschiedenen Challenges und Aktivitäten hin.",
+    "translated": true
+  },
+  {
+    "key": "contest.steps",
+    "prefix": "contest",
+    "en": "Steps",
+    "de": "Schritte",
+    "translated": true
+  },
+  {
+    "key": "contest.stepsLeaderboard",
+    "prefix": "contest",
+    "en": "Steps leaderboard",
+    "de": "Bestenliste nach Schritten",
+    "translated": true
+  },
+  {
+    "key": "contest.stepsLeaderboardTooltip",
+    "prefix": "contest",
+    "en": "Steps leaderboard tracks the average number of steps logged by participants in this campaign. This metric reflects employees’ daily activity levels and helps visualize progress toward step-based goals.",
+    "de": "Die Bestenliste nach Schritten verfolgt die durchschnittliche Anzahl der von den Teilnehmenden dieser Kampagne erfassten Schritte. Diese Kennzahl spiegelt das tägliche Aktivitätsniveau der Mitarbeitenden wider und hilft, den Fortschritt in Richtung Schrittziele zu visualisieren.",
+    "translated": true
+  },
+  {
+    "key": "contest.tabChallenge",
+    "prefix": "contest",
+    "en": "Challenge",
+    "de": "Challenge",
+    "translated": false
+  },
+  {
+    "key": "contest.tabParticipants",
+    "prefix": "contest",
+    "en": "Participants",
+    "de": "Teilnehmende",
+    "translated": true
+  },
+  {
+    "key": "contest.tabTeams",
+    "prefix": "contest",
+    "en": "Teams",
+    "de": "Teams",
+    "translated": false
+  },
+  {
+    "key": "contest.target",
+    "prefix": "contest",
+    "en": "Target",
+    "de": "Ziel",
+    "translated": true
+  },
+  {
+    "key": "contest.taskDetails",
+    "prefix": "contest",
+    "en": "Task Details",
+    "de": "Aufgabendetails",
+    "translated": true
+  },
+  {
+    "key": "contest.teamLeaderboard",
+    "prefix": "contest",
+    "en": "Team Leaderboard",
+    "de": "Team-Bestenliste",
+    "translated": true
+  },
+  {
+    "key": "contest.themes",
+    "prefix": "contest",
+    "en": "Themes",
+    "de": "Themen",
+    "translated": true
+  },
+  {
+    "key": "contest.themesTooltip",
+    "prefix": "contest",
+    "en": "Themes are organized weekly as Week 1, Week 2, and so on, with each week featuring specific tasks and health goals. These weekly themes keep employees engaged by introducing fresh content, motivating them to focus on new wellness activities, and helping maintain ongoing interest in the program.",
+    "de": "Die Themen sind wöchentlich als Woche 1, Woche 2 usw. organisiert, wobei jede Woche bestimmte Aufgaben und Gesundheitsziele enthält. Diese wöchentlichen Themen halten die Mitarbeitenden bei der Stange, indem sie frische Inhalte einführen und sie motivieren, sich auf neue Wellness-Aktivitäten zu konzentrieren.",
+    "translated": true
+  },
+  {
+    "key": "contest.thisWeekTask",
+    "prefix": "contest",
+    "en": "This week task",
+    "de": "Aufgabe dieser Woche",
+    "translated": true
+  },
+  {
+    "key": "contest.thisWeekTaskTooltip",
+    "prefix": "contest",
+    "en": "This Week's Task section displays the weekly assigned task for the campaign, encouraging participants to focus on a specific activity or goal, like reaching a step target or completing a mindfulness exercise.",
+    "de": "Der Abschnitt „Aufgabe dieser Woche“ zeigt die wöchentlich zugewiesene Aufgabe der Kampagne und ermutigt die Teilnehmenden, sich auf eine bestimmte Aktivität oder ein Ziel zu konzentrieren, etwa ein Schrittziel zu erreichen oder eine Achtsamkeitsübung zu absolvieren.",
+    "translated": true
+  },
+  {
+    "key": "contest.totalCalories",
+    "prefix": "contest",
+    "en": "Total Calories",
+    "de": "Kalorien gesamt",
+    "translated": true
+  },
+  {
+    "key": "contest.totalSteps",
+    "prefix": "contest",
+    "en": "Total Steps",
+    "de": "Schritte gesamt",
+    "translated": true
+  },
+  {
+    "key": "contest.updateChallenge",
+    "prefix": "contest",
+    "en": "Update Challenge",
+    "de": "Challenge aktualisieren",
+    "translated": true
+  },
+  {
+    "key": "createChallenge.heading1Bold",
+    "prefix": "createChallenge",
+    "en": "Start creating Challenges",
+    "de": "Beginnen Sie mit dem Erstellen von Challenges",
+    "translated": true
+  },
+  {
+    "key": "createChallenge.heading1Rest",
+    "prefix": "createChallenge",
+    "en": "using our pre-built templates",
+    "de": "mit unseren vorgefertigten Vorlagen",
+    "translated": true
+  },
+  {
+    "key": "createChallenge.heading2",
+    "prefix": "createChallenge",
+    "en": "with no configuration hassles",
+    "de": "ohne Konfigurationsaufwand",
+    "translated": true
+  },
+  {
+    "key": "createChallenge.or",
+    "prefix": "createChallenge",
+    "en": "OR",
+    "de": "ODER",
+    "translated": true
+  },
+  {
+    "key": "createChallenge.ownBold",
+    "prefix": "createChallenge",
+    "en": "New Challenges",
+    "de": "Neuen Challenges",
+    "translated": true
+  },
+  {
+    "key": "createChallenge.ownRest",
+    "prefix": "createChallenge",
+    "en": "Create your own",
+    "de": "Erstellen Sie Ihre eigenen",
+    "translated": true
+  },
+  {
+    "key": "createChallenge.viewMore",
+    "prefix": "createChallenge",
+    "en": "View More Templates",
+    "de": "Weitere Vorlagen anzeigen",
+    "translated": true
+  },
+  {
+    "key": "customActivity.effort",
+    "prefix": "customActivity",
+    "en": "Effort",
+    "de": "Aufwand",
+    "translated": true
+  },
+  {
+    "key": "customActivity.effortHint1",
+    "prefix": "customActivity",
+    "en": "Select the reference activity first. Themn set how much effort this activity equals.",
+    "de": "Wählen Sie zuerst die Referenzaktivität aus. Legen Sie dann fest, wie viel Aufwand diese Aktivität entspricht.",
+    "translated": true
+  },
+  {
+    "key": "customActivity.effortHint2",
+    "prefix": "customActivity",
+    "en": "A rough estimate is needed to calculate active calories and to calculate converted steps (If enabled)",
+    "de": "Eine grobe Schätzung ist erforderlich, um die aktiven Kalorien und die umgerechneten Schritte zu berechnen (falls aktiviert)",
+    "translated": true
+  },
+  {
+    "key": "customActivity.imageNote",
+    "prefix": "customActivity",
+    "en": "Use a square image (1:1 ratio).",
+    "de": "Verwenden Sie ein quadratisches Bild (Verhältnis 1:1).",
+    "translated": true
+  },
+  {
+    "key": "customActivity.namePlaceholder",
+    "prefix": "customActivity",
+    "en": "ex: Post Coffee Walk",
+    "de": "z. B.: Spaziergang nach dem Kaffee",
+    "translated": true
+  },
+  {
+    "key": "customActivity.of",
+    "prefix": "customActivity",
+    "en": "of",
+    "de": "von",
+    "translated": true
+  },
+  {
+    "key": "customActivity.previewAlt",
+    "prefix": "customActivity",
+    "en": "Custom activity preview",
+    "de": "Vorschau der benutzerdefinierten Aktivität",
+    "translated": true
+  },
+  {
+    "key": "customActivity.sameEffortAs",
+    "prefix": "customActivity",
+    "en": "of this Activity is same effort as",
+    "de": "dieser Aktivität entsprechen demselben Aufwand wie",
+    "translated": true
+  },
+  {
+    "key": "customActivity.savedSuccess",
+    "prefix": "customActivity",
+    "en": "\"{{name}}\" saved successfully. It is now available under Log Activities.",
+    "de": "\"{{name}}\" wurde erfolgreich gespeichert. Es ist jetzt unter Aktivitäten protokollieren verfügbar.",
+    "translated": true
+  },
+  {
+    "key": "customActivity.selectedActivity",
+    "prefix": "customActivity",
+    "en": "Selected Activity",
+    "de": "Ausgewählte Aktivität",
+    "translated": true
+  },
+  {
+    "key": "customActivity.title",
+    "prefix": "customActivity",
+    "en": "Create Custom Activity",
+    "de": "Benutzerdefinierte Aktivität erstellen",
+    "translated": true
+  },
+  {
+    "key": "customActivity.xxMinutes",
+    "prefix": "customActivity",
+    "en": "XX Minutes",
+    "de": "XX Minuten",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.add",
+    "prefix": "customChallengeConfig",
+    "en": "Add",
+    "de": "Hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.createActivity",
+    "prefix": "customChallengeConfig",
+    "en": "Create Activity",
+    "de": "Aktivität erstellen",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.dragDropHint",
+    "prefix": "customChallengeConfig",
+    "en": "Simply drag and drop activities to the week card",
+    "de": "Ziehen Sie die Aktivitäten einfach auf die Wochenkarte",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.dragHint",
+    "prefix": "customChallengeConfig",
+    "en": "Start by dragging cards from the Activity Task list",
+    "de": "Ziehen Sie zunächst Karten aus der Aktivitätsaufgabenliste",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.remove",
+    "prefix": "customChallengeConfig",
+    "en": "Remove",
+    "de": "Entfernen",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.selectTasks",
+    "prefix": "customChallengeConfig",
+    "en": "Select Tasks",
+    "de": "Aufgaben auswählen",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.setupTask",
+    "prefix": "customChallengeConfig",
+    "en": "Setup Task For The Challenge",
+    "de": "Aufgaben für die Challenge einrichten",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.taskTypeExists",
+    "prefix": "customChallengeConfig",
+    "en": "The '{{task}}' task type has already been created for this week.",
+    "de": "Der Aufgabentyp '{{task}}' wurde für diese Woche bereits erstellt.",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.themeName",
+    "prefix": "customChallengeConfig",
+    "en": "Theme Name",
+    "de": "Themenname",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.week",
+    "prefix": "customChallengeConfig",
+    "en": "Week",
+    "de": "Woche",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.weekN",
+    "prefix": "customChallengeConfig",
+    "en": "Week {{n}}",
+    "de": "Woche {{n}}",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.weekNamePlaceholder",
+    "prefix": "customChallengeConfig",
+    "en": "Week Name",
+    "de": "Wochenname",
+    "translated": true
+  },
+  {
+    "key": "customChallengeConfig.willBeRemoved",
+    "prefix": "customChallengeConfig",
+    "en": "{{title}} will be removed",
+    "de": "\"{{title}}\" wird entfernt",
+    "translated": true
+  },
+  {
+    "key": "dataTable.activeFilters",
+    "prefix": "dataTable",
+    "en": "Active filters:",
+    "de": "Aktive Filter:",
+    "translated": true
+  },
+  {
+    "key": "dataTable.clearAll",
+    "prefix": "dataTable",
+    "en": "Clear all",
+    "de": "Alle löschen",
+    "translated": true
+  },
+  {
+    "key": "dataTable.columns",
+    "prefix": "dataTable",
+    "en": "Columns",
+    "de": "Spalten",
+    "translated": true
+  },
+  {
+    "key": "dataTable.daysCount",
+    "prefix": "dataTable",
+    "en": "({{count}} Days)",
+    "de": "({{count}} Tage)",
+    "translated": true
+  },
+  {
+    "key": "dataTable.exportNoAccess",
+    "prefix": "dataTable",
+    "en": "You do not have access to Export Reports functionality",
+    "de": "Sie haben keinen Zugriff auf die Funktion zum Exportieren von Berichten",
+    "translated": true
+  },
+  {
+    "key": "dataTable.fetchingData",
+    "prefix": "dataTable",
+    "en": "Fetching Data ...",
+    "de": "Daten werden abgerufen ...",
+    "translated": true
+  },
+  {
+    "key": "dataTable.noData",
+    "prefix": "dataTable",
+    "en": "No data available",
+    "de": "Keine Daten verfügbar",
+    "translated": true
+  },
+  {
+    "key": "dataTable.noDataHint",
+    "prefix": "dataTable",
+    "en": "Try adjusting your filters or date range",
+    "de": "Passen Sie Ihre Filter oder den Datumsbereich an",
+    "translated": true
+  },
+  {
+    "key": "dataTable.search",
+    "prefix": "dataTable",
+    "en": "Search...",
+    "de": "Suchen...",
+    "translated": true
+  },
+  {
+    "key": "dataTable.searchEmployeeByName",
+    "prefix": "dataTable",
+    "en": "Search employee by name",
+    "de": "Mitarbeitende nach Name suchen",
+    "translated": true
+  },
+  {
+    "key": "dataTable.searchPlaceholder",
+    "prefix": "dataTable",
+    "en": "Search by name, email, or ID...",
+    "de": "Nach Name, E-Mail oder ID suchen...",
+    "translated": true
+  },
+  {
+    "key": "dataTable.selectColumns",
+    "prefix": "dataTable",
+    "en": "Select Columns",
+    "de": "Spalten auswählen",
+    "translated": true
+  },
+  {
+    "key": "durationForm.endDate",
+    "prefix": "durationForm",
+    "en": "Challenge End Date",
+    "de": "Enddatum der Challenge",
+    "translated": true
+  },
+  {
+    "key": "durationForm.startDate",
+    "prefix": "durationForm",
+    "en": "Challenge Start Date",
+    "de": "Startdatum der Challenge",
+    "translated": true
+  },
+  {
+    "key": "eventForm.about",
+    "prefix": "eventForm",
+    "en": "About this Event",
+    "de": "Über diese Veranstaltung",
+    "translated": true
+  },
+  {
+    "key": "eventForm.addBenefit",
+    "prefix": "eventForm",
+    "en": "Add more benefits",
+    "de": "Weitere Vorteile hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "eventForm.addFaq",
+    "prefix": "eventForm",
+    "en": "Add more FAQ",
+    "de": "Weitere FAQ hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "eventForm.ageGroup",
+    "prefix": "eventForm",
+    "en": "Age Group",
+    "de": "Altersgruppe",
+    "translated": true
+  },
+  {
+    "key": "eventForm.allDay",
+    "prefix": "eventForm",
+    "en": "All day event",
+    "de": "Ganztägige Veranstaltung",
+    "translated": true
+  },
+  {
+    "key": "eventForm.answerPlaceholder",
+    "prefix": "eventForm",
+    "en": "Write your answer here",
+    "de": "Schreiben Sie Ihre Antwort hier",
+    "translated": true
+  },
+  {
+    "key": "eventForm.basicInfo",
+    "prefix": "eventForm",
+    "en": "Basic Information",
+    "de": "Grundlegende Informationen",
+    "translated": true
+  },
+  {
+    "key": "eventForm.benefit",
+    "prefix": "eventForm",
+    "en": "Benefit of this Event",
+    "de": "Vorteil dieser Veranstaltung",
+    "translated": true
+  },
+  {
+    "key": "eventForm.benefitPlaceholder",
+    "prefix": "eventForm",
+    "en": "Write your benefit here",
+    "de": "Schreiben Sie Ihren Vorteil hier",
+    "translated": true
+  },
+  {
+    "key": "eventForm.city",
+    "prefix": "eventForm",
+    "en": "City",
+    "de": "Stadt",
+    "translated": true
+  },
+  {
+    "key": "eventForm.createEvent",
+    "prefix": "eventForm",
+    "en": "Create New Event",
+    "de": "Neue Veranstaltung erstellen",
+    "translated": true
+  },
+  {
+    "key": "eventForm.deleteConfirm",
+    "prefix": "eventForm",
+    "en": "Are you sure you want to delete this event ?",
+    "de": "Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?",
+    "translated": true
+  },
+  {
+    "key": "eventForm.deleteEvent",
+    "prefix": "eventForm",
+    "en": "Delete this Event",
+    "de": "Diese Veranstaltung löschen",
+    "translated": true
+  },
+  {
+    "key": "eventForm.department",
+    "prefix": "eventForm",
+    "en": "Department",
+    "de": "Abteilung",
+    "translated": true
+  },
+  {
+    "key": "eventForm.details",
+    "prefix": "eventForm",
+    "en": "Event Details",
+    "de": "Veranstaltungsdetails",
+    "translated": true
+  },
+  {
+    "key": "eventForm.endDate",
+    "prefix": "eventForm",
+    "en": "Event End Date",
+    "de": "Enddatum der Veranstaltung",
+    "translated": true
+  },
+  {
+    "key": "eventForm.endTime",
+    "prefix": "eventForm",
+    "en": "Event End Time",
+    "de": "Endzeit der Veranstaltung",
+    "translated": true
+  },
+  {
+    "key": "eventForm.faq",
+    "prefix": "eventForm",
+    "en": "FAQ",
+    "de": "Häufig gestellte Fragen",
+    "translated": true
+  },
+  {
+    "key": "eventForm.image",
+    "prefix": "eventForm",
+    "en": "Event Image",
+    "de": "Veranstaltungsbild",
+    "translated": true
+  },
+  {
+    "key": "eventForm.questionPlaceholder",
+    "prefix": "eventForm",
+    "en": "Write your question here",
+    "de": "Schreiben Sie Ihre Frage hier",
+    "translated": true
+  },
+  {
+    "key": "eventForm.saveChanges",
+    "prefix": "eventForm",
+    "en": "Save Changes",
+    "de": "Änderungen speichern",
+    "translated": true
+  },
+  {
+    "key": "eventForm.sendInvites",
+    "prefix": "eventForm",
+    "en": "Send Email Invites to join this Event",
+    "de": "E-Mail-Einladungen zur Teilnahme an dieser Veranstaltung senden",
+    "translated": true
+  },
+  {
+    "key": "eventForm.startDate",
+    "prefix": "eventForm",
+    "en": "Event Start Date",
+    "de": "Startdatum der Veranstaltung",
+    "translated": true
+  },
+  {
+    "key": "eventForm.startTime",
+    "prefix": "eventForm",
+    "en": "Event Start Time",
+    "de": "Startzeit der Veranstaltung",
+    "translated": true
+  },
+  {
+    "key": "eventForm.targetAudience",
+    "prefix": "eventForm",
+    "en": "Target Audience",
+    "de": "Zielgruppe",
+    "translated": true
+  },
+  {
+    "key": "eventForm.title",
+    "prefix": "eventForm",
+    "en": "Event Title",
+    "de": "Veranstaltungstitel",
+    "translated": true
+  },
+  {
+    "key": "eventForm.venue",
+    "prefix": "eventForm",
+    "en": "Event Venue",
+    "de": "Veranstaltungsort",
+    "translated": true
+  },
+  {
+    "key": "events.create",
+    "prefix": "events",
+    "en": "Create Event",
+    "de": "Veranstaltung erstellen",
+    "translated": true
+  },
+  {
+    "key": "events.details.deleteFailed",
+    "prefix": "events",
+    "en": "Event Deletion Failed: {{err}}",
+    "de": "Löschen des Events fehlgeschlagen: {{err}}",
+    "translated": true
+  },
+  {
+    "key": "events.details.deleted",
+    "prefix": "events",
+    "en": "Event Deleted",
+    "de": "Event gelöscht",
+    "translated": true
+  },
+  {
+    "key": "events.details.invitesAccepted",
+    "prefix": "events",
+    "en": "Invites Accepted",
+    "de": "Angenommene Einladungen",
+    "translated": true
+  },
+  {
+    "key": "events.details.invitesPending",
+    "prefix": "events",
+    "en": "Invites Pending",
+    "de": "Ausstehende Einladungen",
+    "translated": true
+  },
+  {
+    "key": "events.details.invitesRejected",
+    "prefix": "events",
+    "en": "Invites Rejected",
+    "de": "Abgelehnte Einladungen",
+    "translated": true
+  },
+  {
+    "key": "events.details.manageEvents",
+    "prefix": "events",
+    "en": "Manage Events",
+    "de": "Events verwalten",
+    "translated": true
+  },
+  {
+    "key": "events.details.totalInvitesSent",
+    "prefix": "events",
+    "en": "Total Invites Sent",
+    "de": "Gesendete Einladungen insgesamt",
+    "translated": true
+  },
+  {
+    "key": "events.details.updateFailed",
+    "prefix": "events",
+    "en": "Event Updation Failed: {{err}}",
+    "de": "Aktualisierung des Events fehlgeschlagen: {{err}}",
+    "translated": true
+  },
+  {
+    "key": "events.details.updated",
+    "prefix": "events",
+    "en": "Event Details Updated",
+    "de": "Eventdetails aktualisiert",
+    "translated": true
+  },
+  {
+    "key": "events.empty.ongoing",
+    "prefix": "events",
+    "en": "No Ongoing Events Available",
+    "de": "Keine laufenden Veranstaltungen verfügbar",
+    "translated": true
+  },
+  {
+    "key": "events.empty.past",
+    "prefix": "events",
+    "en": "No Past Events Available",
+    "de": "Keine vergangenen Veranstaltungen verfügbar",
+    "translated": true
+  },
+  {
+    "key": "events.empty.upcoming",
+    "prefix": "events",
+    "en": "No Upcoming Events Available",
+    "de": "Keine kommenden Veranstaltungen verfügbar",
+    "translated": true
+  },
+  {
+    "key": "events.list.invitesSent",
+    "prefix": "events",
+    "en": "No of invites sent",
+    "de": "Anzahl gesendeter Einladungen",
+    "translated": true
+  },
+  {
+    "key": "events.list.knowMore",
+    "prefix": "events",
+    "en": "Know More >",
+    "de": "Mehr erfahren >",
+    "translated": true
+  },
+  {
+    "key": "events.list.participantsActive",
+    "prefix": "events",
+    "en": "{{active}} of {{total}} participants active",
+    "de": "{{active}} von {{total}} Teilnehmern aktiv",
+    "translated": true
+  },
+  {
+    "key": "events.list.userEngagement",
+    "prefix": "events",
+    "en": "User Engagement",
+    "de": "Nutzerengagement",
+    "translated": true
+  },
+  {
+    "key": "events.msg.createFailed",
+    "prefix": "events",
+    "en": "Event Creation Failed: {{err}}",
+    "de": "Erstellung des Events fehlgeschlagen: {{err}}",
+    "translated": true
+  },
+  {
+    "key": "events.msg.createSuccess",
+    "prefix": "events",
+    "en": "Event Created Successfully",
+    "de": "Event erfolgreich erstellt",
+    "translated": true
+  },
+  {
+    "key": "events.subtitle",
+    "prefix": "events",
+    "en": "Create, manage, and analyze wellness events",
+    "de": "Wellness-Veranstaltungen erstellen, verwalten und analysieren",
+    "translated": true
+  },
+  {
+    "key": "events.tabs.ongoing",
+    "prefix": "events",
+    "en": "Ongoing Events",
+    "de": "Laufende Veranstaltungen",
+    "translated": true
+  },
+  {
+    "key": "events.tabs.past",
+    "prefix": "events",
+    "en": "Past Events",
+    "de": "Vergangene Veranstaltungen",
+    "translated": true
+  },
+  {
+    "key": "events.tabs.upcoming",
+    "prefix": "events",
+    "en": "Upcoming Events",
+    "de": "Kommende Veranstaltungen",
+    "translated": true
+  },
+  {
+    "key": "events.title",
+    "prefix": "events",
+    "en": "View Events",
+    "de": "Veranstaltungen anzeigen",
+    "translated": true
+  },
+  {
+    "key": "fitActions.announcement.description",
+    "prefix": "fitActions",
+    "en": "Broadcast important updates to your organization members",
+    "de": "Verbreiten Sie wichtige Updates an die Mitglieder Ihrer Organisation",
+    "translated": true
+  },
+  {
+    "key": "fitActions.announcement.title",
+    "prefix": "fitActions",
+    "en": "Announcement",
+    "de": "Ankündigung",
+    "translated": true
+  },
+  {
+    "key": "fitActions.challenge.description",
+    "prefix": "fitActions",
+    "en": "Create a race, streak, or journey challenge for your organization",
+    "de": "Erstellen Sie eine Renn-, Serien- oder Journey-Challenge für Ihre Organisation",
+    "translated": true
+  },
+  {
+    "key": "fitActions.challenge.title",
+    "prefix": "fitActions",
+    "en": "Challenge",
+    "de": "Challenge",
+    "translated": false
+  },
+  {
+    "key": "fitActions.content.description",
+    "prefix": "fitActions",
+    "en": "Publish articles, podcasts, or videos for your organization",
+    "de": "Veröffentlichen Sie Artikel, Podcasts oder Videos für Ihre Organisation",
+    "translated": true
+  },
+  {
+    "key": "fitActions.content.title",
+    "prefix": "fitActions",
+    "en": "Content",
+    "de": "Inhalt",
+    "translated": true
+  },
+  {
+    "key": "fitActions.custom-activity.description",
+    "prefix": "fitActions",
+    "en": "Define a custom activity type for tracking specific behaviors",
+    "de": "Definieren Sie einen benutzerdefinierten Aktivitätstyp zur Verfolgung bestimmter Verhaltensweisen",
+    "translated": true
+  },
+  {
+    "key": "fitActions.custom-activity.title",
+    "prefix": "fitActions",
+    "en": "Custom Activity",
+    "de": "Benutzerdefinierte Aktivität",
+    "translated": true
+  },
+  {
+    "key": "fitActions.event.description",
+    "prefix": "fitActions",
+    "en": "Schedule a wellness event for your team or organization",
+    "de": "Planen Sie ein Wellness-Event für Ihr Team oder Ihre Organisation",
+    "translated": true
+  },
+  {
+    "key": "fitActions.event.title",
+    "prefix": "fitActions",
+    "en": "Event",
+    "de": "Event",
+    "translated": false
+  },
+  {
+    "key": "fitActions.healthy-habits-activity.description",
+    "prefix": "fitActions",
+    "en": "Create a yes or no habit check-in for routines like walks, hydration, or mindfulness",
+    "de": "Erstellen Sie einen Ja/Nein-Gewohnheits-Check-in für Routinen wie Spaziergänge, Hydration oder Achtsamkeit",
+    "translated": true
+  },
+  {
+    "key": "fitActions.healthy-habits-activity.title",
+    "prefix": "fitActions",
+    "en": "Create Healthy Habits Activity",
+    "de": "Aktivität für gesunde Gewohnheiten erstellen",
+    "translated": true
+  },
+  {
+    "key": "fitActions.moreOptions",
+    "prefix": "fitActions",
+    "en": "More options",
+    "de": "Weitere Optionen",
+    "translated": true
+  },
+  {
+    "key": "fitActions.showLess",
+    "prefix": "fitActions",
+    "en": "Show less",
+    "de": "Weniger anzeigen",
+    "translated": true
+  },
+  {
+    "key": "fitActions.title",
+    "prefix": "fitActions",
+    "en": "What would you like to create?",
+    "de": "Was möchten Sie erstellen?",
+    "translated": true
+  },
+  {
+    "key": "fitInfoCard.challenges",
+    "prefix": "fitInfoCard",
+    "en": "Challenges",
+    "de": "Challenges",
+    "translated": false
+  },
+  {
+    "key": "fitInfoCard.contentLanguage",
+    "prefix": "fitInfoCard",
+    "en": "Content language",
+    "de": "Inhaltssprache",
+    "translated": true
+  },
+  {
+    "key": "fitInfoCard.language",
+    "prefix": "fitInfoCard",
+    "en": "Language",
+    "de": "Sprache",
+    "translated": true
+  },
+  {
+    "key": "fitInfoCard.licenses",
+    "prefix": "fitInfoCard",
+    "en": "Licenses",
+    "de": "Lizenzen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.activeChallenges",
+    "prefix": "fitMenu",
+    "en": "Active Challenges",
+    "de": "Aktive Challenges",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.activePlan",
+    "prefix": "fitMenu",
+    "en": "Active Plan",
+    "de": "Aktiver Plan",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.addEmployees",
+    "prefix": "fitMenu",
+    "en": "Add Employees",
+    "de": "Mitarbeiter hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.communications",
+    "prefix": "fitMenu",
+    "en": "Communications",
+    "de": "Kommunikation",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.community",
+    "prefix": "fitMenu",
+    "en": "Community",
+    "de": "Community",
+    "translated": false
+  },
+  {
+    "key": "fitMenu.configuration",
+    "prefix": "fitMenu",
+    "en": "Configuration",
+    "de": "Konfiguration",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.contentLibrary",
+    "prefix": "fitMenu",
+    "en": "Content Library",
+    "de": "Inhaltsbibliothek",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.create",
+    "prefix": "fitMenu",
+    "en": "Create",
+    "de": "Erstellen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.createAnnouncement",
+    "prefix": "fitMenu",
+    "en": "Create Announcement",
+    "de": "Ankündigung erstellen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.createChallenge",
+    "prefix": "fitMenu",
+    "en": "Create Challenge",
+    "de": "Challenge erstellen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.createContent",
+    "prefix": "fitMenu",
+    "en": "Create Content",
+    "de": "Inhalt erstellen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.createEvent",
+    "prefix": "fitMenu",
+    "en": "Create Event",
+    "de": "Event erstellen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.emailDesigner",
+    "prefix": "fitMenu",
+    "en": "Email Designer",
+    "de": "E-Mail-Designer",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.employeeReport",
+    "prefix": "fitMenu",
+    "en": "Employee Report",
+    "de": "Mitarbeiterbericht",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.groups.analyze",
+    "prefix": "fitMenu",
+    "en": "Analyze",
+    "de": "Analysieren",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.groups.challenges",
+    "prefix": "fitMenu",
+    "en": "Challenges",
+    "de": "Challenges",
+    "translated": false
+  },
+  {
+    "key": "fitMenu.groups.engage",
+    "prefix": "fitMenu",
+    "en": "Engage",
+    "de": "Einbinden",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.groups.manage",
+    "prefix": "fitMenu",
+    "en": "Manage",
+    "de": "Verwalten",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.healthInsights",
+    "prefix": "fitMenu",
+    "en": "Health Insights",
+    "de": "Gesundheitsanalysen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.incentivisationReport",
+    "prefix": "fitMenu",
+    "en": "Incentivisation Report",
+    "de": "Anreizbericht",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.leagueReport",
+    "prefix": "fitMenu",
+    "en": "League Report",
+    "de": "Liga-Bericht",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.overview",
+    "prefix": "fitMenu",
+    "en": "Overview",
+    "de": "Übersicht",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.participationReport",
+    "prefix": "fitMenu",
+    "en": "Participation Report",
+    "de": "Teilnahmebericht",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.pastChallenges",
+    "prefix": "fitMenu",
+    "en": "Past Challenges",
+    "de": "Vergangene Challenges",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.previewEmails",
+    "prefix": "fitMenu",
+    "en": "Preview Emails",
+    "de": "E-Mails vorschauen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.programs",
+    "prefix": "fitMenu",
+    "en": "Programs",
+    "de": "Programme",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.publishNotifications",
+    "prefix": "fitMenu",
+    "en": "Publish Notifications",
+    "de": "Benachrichtigungen veröffentlichen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.redemptionReport",
+    "prefix": "fitMenu",
+    "en": "Redemption Report",
+    "de": "Einlösebericht",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.reports",
+    "prefix": "fitMenu",
+    "en": "Reports",
+    "de": "Berichte",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.rewards",
+    "prefix": "fitMenu",
+    "en": "Rewards",
+    "de": "Prämien",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.sendCustomEmail",
+    "prefix": "fitMenu",
+    "en": "Send Custom Email",
+    "de": "Individuelle E-Mail senden",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.settings",
+    "prefix": "fitMenu",
+    "en": "Settings",
+    "de": "Einstellungen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.uploadPoints",
+    "prefix": "fitMenu",
+    "en": "Upload Points",
+    "de": "Punkte hochladen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.viewEvents",
+    "prefix": "fitMenu",
+    "en": "View Events",
+    "de": "Events anzeigen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.wellnessBadges",
+    "prefix": "fitMenu",
+    "en": "Wellness Badges",
+    "de": "Wellness-Abzeichen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.wellnessLeagues",
+    "prefix": "fitMenu",
+    "en": "Wellness Leagues",
+    "de": "Wellness-Ligen",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.wellnessScore",
+    "prefix": "fitMenu",
+    "en": "Wellness Score",
+    "de": "Wellness-Score",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.wellnessScoreReport",
+    "prefix": "fitMenu",
+    "en": "Wellness Score Report",
+    "de": "Wellness-Score-Bericht",
+    "translated": true
+  },
+  {
+    "key": "fitMenu.workforceHealth",
+    "prefix": "fitMenu",
+    "en": "Workforce Health",
+    "de": "Gesundheit der Belegschaft",
+    "translated": true
+  },
+  {
+    "key": "fitOutlineButton.viewMoreTemplates",
+    "prefix": "fitOutlineButton",
+    "en": "View More Templates",
+    "de": "Weitere Vorlagen anzeigen",
+    "translated": true
+  },
+  {
+    "key": "fitSplash.loadingAria",
+    "prefix": "fitSplash",
+    "en": "Loading Vantage Fit",
+    "de": "Vantage Fit wird geladen",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.activitySetup",
+    "prefix": "habitsModal",
+    "en": "Activity Setup",
+    "de": "Aktivitätseinrichtung",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.createdSuccess",
+    "prefix": "habitsModal",
+    "en": "Healthy habits activity \"{{name}}\" was created successfully.",
+    "de": "Die Aktivität für gesunde Gewohnheiten \"{{name}}\" wurde erfolgreich erstellt.",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.expectedResponse",
+    "prefix": "habitsModal",
+    "en": "Expected Response",
+    "de": "Erwartete Antwort",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.expectedResponseNote",
+    "prefix": "habitsModal",
+    "en": "Choose the response that should count for this habit question.",
+    "de": "Wählen Sie die Antwort, die für diese Gewohnheitsfrage zählen soll.",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.imageNote",
+    "prefix": "habitsModal",
+    "en": "Use a clean square icon (1:1 ratio) for activity lists and check-ins.",
+    "de": "Verwenden Sie ein sauberes quadratisches Symbol (Verhältnis 1:1) für Aktivitätslisten und Check-ins.",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.imageRatioError",
+    "prefix": "habitsModal",
+    "en": "Image must have a 1:1 (square) aspect ratio.",
+    "de": "Das Bild muss ein Seitenverhältnis von 1:1 (quadratisch) haben.",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.limit100",
+    "prefix": "habitsModal",
+    "en": "Limit : 100 Characters",
+    "de": "Limit: 100 Zeichen",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.namePlaceholder",
+    "prefix": "habitsModal",
+    "en": "ex: Morning Walk",
+    "de": "z. B.: Morgenspaziergang",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.previewAlt",
+    "prefix": "habitsModal",
+    "en": "Healthy habits activity preview",
+    "de": "Vorschau der Aktivität für gesunde Gewohnheiten",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.showPlus",
+    "prefix": "habitsModal",
+    "en": "Show in Plus Icon",
+    "de": "Im Plus-Symbol anzeigen",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.showPlusDesc",
+    "prefix": "habitsModal",
+    "en": "Enable this activity in the quick-create plus icon entry points.",
+    "de": "Aktivieren Sie diese Aktivität an den Einstiegspunkten des Plus-Symbols für die Schnellerstellung.",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.subtitle",
+    "prefix": "habitsModal",
+    "en": "Build a simple yes or no daily check-in for healthy routines and consistency.",
+    "de": "Erstellen Sie ein einfaches tägliches Ja-oder-Nein-Check-in für gesunde Routinen und Beständigkeit.",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.subtitleHint",
+    "prefix": "habitsModal",
+    "en": "Add a short motivating line",
+    "de": "Fügen Sie eine kurze motivierende Zeile hinzu",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.subtitleLabel",
+    "prefix": "habitsModal",
+    "en": "Subtitle",
+    "de": "Untertitel",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.subtitlePlaceholder",
+    "prefix": "habitsModal",
+    "en": "ex: A simple walk can energize your body and clear your mind.",
+    "de": "z. B.: Ein einfacher Spaziergang kann Ihren Körper mit Energie versorgen und Ihren Kopf frei machen.",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.title",
+    "prefix": "habitsModal",
+    "en": "Create Healthy Habits Activity",
+    "de": "Aktivität für gesunde Gewohnheiten erstellen",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.titleHint",
+    "prefix": "habitsModal",
+    "en": "Shown as the daily yes or no question",
+    "de": "Wird als tägliche Ja-oder-Nein-Frage angezeigt",
+    "translated": true
+  },
+  {
+    "key": "habitsModal.titlePlaceholder",
+    "prefix": "habitsModal",
+    "en": "ex: Did you go for a morning walk today?",
+    "de": "z. B.: Sind Sie heute Morgen spazieren gegangen?",
+    "translated": true
+  },
+  {
+    "key": "inviteUserDialog.memberAdded",
+    "prefix": "inviteUserDialog",
+    "en": "Member successfully added to campaign",
+    "de": "Mitglied erfolgreich zur Kampagne hinzugefügt",
+    "translated": true
+  },
+  {
+    "key": "inviteUserDialog.processing",
+    "prefix": "inviteUserDialog",
+    "en": "Processing...",
+    "de": "Wird verarbeitet ...",
+    "translated": true
+  },
+  {
+    "key": "inviteUserDialog.validatingUser",
+    "prefix": "inviteUserDialog",
+    "en": "Validating user...",
+    "de": "Benutzer wird überprüft ...",
+    "translated": true
+  },
+  {
+    "key": "journeyConfig.country",
+    "prefix": "journeyConfig",
+    "en": "Country",
+    "de": "Land",
+    "translated": true
+  },
+  {
+    "key": "journeyConfig.milestoneN",
+    "prefix": "journeyConfig",
+    "en": "Milestone {{n}}",
+    "de": "Meilenstein {{n}}",
+    "translated": true
+  },
+  {
+    "key": "journeyConfig.milestoneOrderError",
+    "prefix": "journeyConfig",
+    "en": "Milestone targets must not be less than the previous one.",
+    "de": "Meilensteinziele dürfen nicht kleiner als das vorherige sein.",
+    "translated": true
+  },
+  {
+    "key": "journeyConfig.priceCompareLink",
+    "prefix": "journeyConfig",
+    "en": "Click here to view the prize in a different country",
+    "de": "Klicken Sie hier, um den Preis in einem anderen Land anzuzeigen",
+    "translated": true
+  },
+  {
+    "key": "journeyConfig.selectCountry",
+    "prefix": "journeyConfig",
+    "en": "Select Country",
+    "de": "Land auswählen",
+    "translated": true
+  },
+  {
+    "key": "journeyConfig.selectReward",
+    "prefix": "journeyConfig",
+    "en": "Select Reward",
+    "de": "Belohnung auswählen",
+    "translated": true
+  },
+  {
+    "key": "journeyConfig.setupTask",
+    "prefix": "journeyConfig",
+    "en": "Setup Task for the Challenge",
+    "de": "Aufgaben für die Challenge einrichten",
+    "translated": true
+  },
+  {
+    "key": "journeyConfig.targetStep",
+    "prefix": "journeyConfig",
+    "en": "Target Step",
+    "de": "Zielschritte",
+    "translated": true
+  },
+  {
+    "key": "journeyInfo.about",
+    "prefix": "journeyInfo",
+    "en": "About the Challenge",
+    "de": "Über die Challenge",
+    "translated": true
+  },
+  {
+    "key": "journeyInfo.autoAnnounce",
+    "prefix": "journeyInfo",
+    "en": "Auto-Announce Winners on Social Feed",
+    "de": "Gewinner automatisch im Social Feed bekannt geben",
+    "translated": true
+  },
+  {
+    "key": "journeyInfo.autoAnnounceAgree",
+    "prefix": "journeyInfo",
+    "en": "I agree to auto-generate a social feed post after the challenge ends, announcing and tagging the winners.",
+    "de": "Ich stimme zu, nach Ende der Challenge automatisch einen Social-Feed-Beitrag zu erstellen, der die Gewinner bekannt gibt und markiert.",
+    "translated": true
+  },
+  {
+    "key": "journeyInfo.challengeLogo",
+    "prefix": "journeyInfo",
+    "en": "Challenge Logo",
+    "de": "Challenge-Logo",
+    "translated": true
+  },
+  {
+    "key": "journeyInfo.max1500",
+    "prefix": "journeyInfo",
+    "en": "Maximum 1500 characters allowed",
+    "de": "Maximal 1500 Zeichen erlaubt",
+    "translated": true
+  },
+  {
+    "key": "journeyInfo.max2000",
+    "prefix": "journeyInfo",
+    "en": "Maximum 2000 characters allowed",
+    "de": "Maximal 2000 Zeichen erlaubt",
+    "translated": true
+  },
+  {
+    "key": "journeyInfo.teamOnly",
+    "prefix": "journeyInfo",
+    "en": "Team Only Challenge",
+    "de": "Nur-Team-Challenge",
+    "translated": true
+  },
+  {
+    "key": "journeyInfo.tnc",
+    "prefix": "journeyInfo",
+    "en": "Terms & Conditions",
+    "de": "Geschäftsbedingungen",
+    "translated": true
+  },
+  {
+    "key": "leaderboardWidget.overall",
+    "prefix": "leaderboardWidget",
+    "en": "Overall",
+    "de": "Insgesamt",
+    "translated": true
+  },
+  {
+    "key": "leaderboardWidget.rank",
+    "prefix": "leaderboardWidget",
+    "en": "Rank",
+    "de": "Rang",
+    "translated": true
+  },
+  {
+    "key": "leaderboardWidget.weekly",
+    "prefix": "leaderboardWidget",
+    "en": "Weekly",
+    "de": "Wöchentlich",
+    "translated": true
+  },
+  {
+    "key": "leagueSteps.primaryLeagueIconAlt",
+    "prefix": "leagueSteps",
+    "en": "Primary League Icon",
+    "de": "Symbol der Hauptliga",
+    "translated": true
+  },
+  {
+    "key": "leagueSteps.report",
+    "prefix": "leagueSteps",
+    "en": "{{name}}'s Report",
+    "de": "Bericht von {{name}}",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.activeSubtitle",
+    "prefix": "manageChallenge",
+    "en": "Manage your ongoing and upcoming wellness challenges",
+    "de": "Verwalten Sie Ihre laufenden und bevorstehenden Wellness-Challenges",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.activeTitle",
+    "prefix": "manageChallenge",
+    "en": "Active Challenges",
+    "de": "Aktive Challenges",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.adherence",
+    "prefix": "manageChallenge",
+    "en": "Adherence",
+    "de": "Einhaltung",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.create",
+    "prefix": "manageChallenge",
+    "en": "Create Challenge",
+    "de": "Challenge erstellen",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.createFailed",
+    "prefix": "manageChallenge",
+    "en": "Challenge Creation Failed: {{err}}",
+    "de": "Erstellung der Challenge fehlgeschlagen: {{err}}",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.created",
+    "prefix": "manageChallenge",
+    "en": "Challenge Created",
+    "de": "Challenge erstellt",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.emptyOngoing",
+    "prefix": "manageChallenge",
+    "en": "No ongoing challenges",
+    "de": "Keine laufenden Challenges",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.emptyOngoingHint",
+    "prefix": "manageChallenge",
+    "en": "Create your first challenge to get started",
+    "de": "Erstellen Sie Ihre erste Challenge, um zu beginnen",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.emptyPast",
+    "prefix": "manageChallenge",
+    "en": "No past challenges found",
+    "de": "Keine vergangenen Challenges gefunden",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.emptyUpcoming",
+    "prefix": "manageChallenge",
+    "en": "No upcoming challenges scheduled",
+    "de": "Keine bevorstehenden Challenges geplant",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.fetchingCampaign",
+    "prefix": "manageChallenge",
+    "en": "Fetching Campaign Data",
+    "de": "Kampagnendaten werden abgerufen",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.membersAddedToTeam",
+    "prefix": "manageChallenge",
+    "en": "Members Added To The Team",
+    "de": "Mitglieder zum Team hinzugefügt",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.ongoing",
+    "prefix": "manageChallenge",
+    "en": "Ongoing Challenges",
+    "de": "Laufende Challenges",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.participantsCount",
+    "prefix": "manageChallenge",
+    "en": "{{count}} participants",
+    "de": "{{count}} Teilnehmende",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.participation",
+    "prefix": "manageChallenge",
+    "en": "Participation",
+    "de": "Teilnahme",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.pastSubtitle",
+    "prefix": "manageChallenge",
+    "en": "Review completed challenges and their performance metrics",
+    "de": "Überprüfen Sie abgeschlossene Challenges und deren Leistungskennzahlen",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.pastTitle",
+    "prefix": "manageChallenge",
+    "en": "Past Challenges",
+    "de": "Vergangene Challenges",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.private",
+    "prefix": "manageChallenge",
+    "en": "Private",
+    "de": "Privat",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.spent",
+    "prefix": "manageChallenge",
+    "en": "Spent",
+    "de": "Ausgegeben",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.statusCompleted",
+    "prefix": "manageChallenge",
+    "en": "Completed",
+    "de": "Abgeschlossen",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.statusOngoing",
+    "prefix": "manageChallenge",
+    "en": "Ongoing",
+    "de": "Laufend",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.statusUpcoming",
+    "prefix": "manageChallenge",
+    "en": "Upcoming",
+    "de": "Bevorstehend",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.teamCreated",
+    "prefix": "manageChallenge",
+    "en": "Team {{name}} created for this campaign",
+    "de": "Team {{name}} für diese Kampagne erstellt",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.teamInfoUpdated",
+    "prefix": "manageChallenge",
+    "en": "Team Information Updated",
+    "de": "Teaminformationen aktualisiert",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.teamLogoChanged",
+    "prefix": "manageChallenge",
+    "en": "Team Logo Changed",
+    "de": "Team-Logo geändert",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.teamRemoved",
+    "prefix": "manageChallenge",
+    "en": "Team Removed From Campaign",
+    "de": "Team aus der Kampagne entfernt",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.upcoming",
+    "prefix": "manageChallenge",
+    "en": "Upcoming Challenges",
+    "de": "Bevorstehende Challenges",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.updatingCampaign",
+    "prefix": "manageChallenge",
+    "en": "Updating Campaign Information...",
+    "de": "Kampagneninformationen werden aktualisiert...",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.uploadingImage",
+    "prefix": "manageChallenge",
+    "en": "Uploading Image...",
+    "de": "Bild wird hochgeladen...",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.userAddedToCampaign",
+    "prefix": "manageChallenge",
+    "en": "User added to campaign",
+    "de": "Benutzer zur Kampagne hinzugefügt",
+    "translated": true
+  },
+  {
+    "key": "manageChallenge.userRemovedFromCampaign",
+    "prefix": "manageChallenge",
+    "en": "User removed from campaign",
+    "de": "Benutzer aus der Kampagne entfernt",
+    "translated": true
+  },
+  {
+    "key": "notifPreview.desktopView",
+    "prefix": "notifPreview",
+    "en": "Desktop View",
+    "de": "Desktop-Ansicht",
+    "translated": true
+  },
+  {
+    "key": "notifPreview.justNow",
+    "prefix": "notifPreview",
+    "en": "Just now",
+    "de": "Gerade eben",
+    "translated": true
+  },
+  {
+    "key": "notifPreview.preview",
+    "prefix": "notifPreview",
+    "en": "Preview",
+    "de": "Vorschau",
+    "translated": true
+  },
+  {
+    "key": "notifPreview.subtitlePlaceholder",
+    "prefix": "notifPreview",
+    "en": "Notification subtitle will appear here",
+    "de": "Der Untertitel der Benachrichtigung wird hier angezeigt",
+    "translated": true
+  },
+  {
+    "key": "notifPreview.titlePlaceholder",
+    "prefix": "notifPreview",
+    "en": "Notification Title",
+    "de": "Benachrichtigungstitel",
+    "translated": true
+  },
+  {
+    "key": "overview.activeChallenges",
+    "prefix": "overview",
+    "en": "Active Challenges",
+    "de": "Aktive Challenges",
+    "translated": true
+  },
+  {
+    "key": "overview.atAGlance",
+    "prefix": "overview",
+    "en": "At a Glance",
+    "de": "Auf einen Blick",
+    "translated": true
+  },
+  {
+    "key": "overview.createChallenge",
+    "prefix": "overview",
+    "en": "Create New Challenge",
+    "de": "Neue Challenge erstellen",
+    "translated": true
+  },
+  {
+    "key": "overview.dormant.title",
+    "prefix": "overview",
+    "en": "Fetching Inactive Users",
+    "de": "Inaktive Benutzer werden abgerufen",
+    "translated": true
+  },
+  {
+    "key": "overview.gated.cta",
+    "prefix": "overview",
+    "en": "Contact Account Manager",
+    "de": "Account Manager kontaktieren",
+    "translated": true
+  },
+  {
+    "key": "overview.gated.subtitle",
+    "prefix": "overview",
+    "en": "Get in touch with your Account Manager",
+    "de": "Wenden Sie sich an Ihren Account Manager",
+    "translated": true
+  },
+  {
+    "key": "overview.gated.title",
+    "prefix": "overview",
+    "en": "You currently do not have access to this component",
+    "de": "Sie haben derzeit keinen Zugriff auf diese Komponente",
+    "translated": true
+  },
+  {
+    "key": "overview.healthStatus",
+    "prefix": "overview",
+    "en": "Health Status",
+    "de": "Gesundheitsstatus",
+    "translated": true
+  },
+  {
+    "key": "overview.leadershipInsightsTitle",
+    "prefix": "overview",
+    "en": "Leadership Insights",
+    "de": "Führungs-Insights",
+    "translated": true
+  },
+  {
+    "key": "overview.noInactiveUsers",
+    "prefix": "overview",
+    "en": "No inactive users found for the selected period.",
+    "de": "Für den ausgewählten Zeitraum wurden keine inaktiven Benutzer gefunden.",
+    "translated": true
+  },
+  {
+    "key": "overview.noRecommendedActions",
+    "prefix": "overview",
+    "en": "No recommended actions yet, check back again later.",
+    "de": "Noch keine empfohlenen Maßnahmen, bitte später erneut prüfen.",
+    "translated": true
+  },
+  {
+    "key": "overview.preview.bannerText",
+    "prefix": "overview",
+    "en": "Experience our redesigned overview page",
+    "de": "Entdecken Sie unsere neu gestaltete Übersichtsseite",
+    "translated": true
+  },
+  {
+    "key": "overview.preview.close",
+    "prefix": "overview",
+    "en": "Close Preview",
+    "de": "Vorschau schließen",
+    "translated": true
+  },
+  {
+    "key": "overview.preview.modalTitle",
+    "prefix": "overview",
+    "en": "New Overview Page Preview",
+    "de": "Vorschau der neuen Übersichtsseite",
+    "translated": true
+  },
+  {
+    "key": "overview.preview.previewBtn",
+    "prefix": "overview",
+    "en": "Preview New Overview Page",
+    "de": "Neue Übersichtsseite ansehen",
+    "translated": true
+  },
+  {
+    "key": "overview.preview.upgrade",
+    "prefix": "overview",
+    "en": "Contact Account Manager to Upgrade",
+    "de": "Account Manager für Upgrade kontaktieren",
+    "translated": true
+  },
+  {
+    "key": "overview.recommendedActions",
+    "prefix": "overview",
+    "en": "Recommended Actions",
+    "de": "Empfohlene Maßnahmen",
+    "translated": true
+  },
+  {
+    "key": "overview.scoreBreakdown",
+    "prefix": "overview",
+    "en": "Score Breakdown",
+    "de": "Punkteaufschlüsselung",
+    "translated": true
+  },
+  {
+    "key": "overview.topDeficiencies",
+    "prefix": "overview",
+    "en": "Top Deficiencies",
+    "de": "Häufigste Defizite",
+    "translated": true
+  },
+  {
+    "key": "overview.viewAll",
+    "prefix": "overview",
+    "en": "View all",
+    "de": "Alle anzeigen",
+    "translated": true
+  },
+  {
+    "key": "overview.viewInsights",
+    "prefix": "overview",
+    "en": "View Insights",
+    "de": "Insights ansehen",
+    "translated": true
+  },
+  {
+    "key": "overview.wellnessTiers",
+    "prefix": "overview",
+    "en": "Wellness Tiers",
+    "de": "Wellness-Stufen",
+    "translated": true
+  },
+  {
+    "key": "overview.wellnessTiersSubtitle",
+    "prefix": "overview",
+    "en": "Consistency based employee tiers",
+    "de": "Konsistenzbasierte Mitarbeiterstufen",
+    "translated": true
+  },
+  {
+    "key": "overview.workforceSnapshotTitle",
+    "prefix": "overview",
+    "en": "Workforce Health Snapshot",
+    "de": "Übersicht zur Gesundheit der Belegschaft",
+    "translated": true
+  },
+  {
+    "key": "participantBulkUpload.invalidFile",
+    "prefix": "participantBulkUpload",
+    "en": "Please import a valid .csv file.",
+    "de": "Bitte importieren Sie eine gültige .csv-Datei.",
+    "translated": true
+  },
+  {
+    "key": "participantBulkUpload.invalidFormat",
+    "prefix": "participantBulkUpload",
+    "en": "Please import a valid format .csv file.",
+    "de": "Bitte importieren Sie eine .csv-Datei mit gültigem Format.",
+    "translated": true
+  },
+  {
+    "key": "participantBulkUpload.membersAdded",
+    "prefix": "participantBulkUpload",
+    "en": "Members successfully added to campaign",
+    "de": "Mitglieder erfolgreich zur Kampagne hinzugefügt",
+    "translated": true
+  },
+  {
+    "key": "participantBulkUpload.processingData",
+    "prefix": "participantBulkUpload",
+    "en": "Processing Data ...",
+    "de": "Daten werden verarbeitet ...",
+    "translated": true
+  },
+  {
+    "key": "participantBulkUpload.sampleCsv",
+    "prefix": "participantBulkUpload",
+    "en": "Sample CSV",
+    "de": "Beispiel-CSV",
+    "translated": true
+  },
+  {
+    "key": "participantBulkUpload.validatingData",
+    "prefix": "participantBulkUpload",
+    "en": "Validating Data ...",
+    "de": "Daten werden überprüft ...",
+    "translated": true
+  },
+  {
+    "key": "participants.add",
+    "prefix": "participants",
+    "en": "Add Participant",
+    "de": "Teilnehmer hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "participants.bulkInvite",
+    "prefix": "participants",
+    "en": "Bulk Invite",
+    "de": "Masseneinladung",
+    "translated": true
+  },
+  {
+    "key": "participants.enterEmail",
+    "prefix": "participants",
+    "en": "Enter User's Email",
+    "de": "E-Mail des Benutzers eingeben",
+    "translated": true
+  },
+  {
+    "key": "participants.enterName",
+    "prefix": "participants",
+    "en": "Enter User's Name",
+    "de": "Namen des Benutzers eingeben",
+    "translated": true
+  },
+  {
+    "key": "participants.existing",
+    "prefix": "participants",
+    "en": "Existing Participants",
+    "de": "Vorhandene Teilnehmer",
+    "translated": true
+  },
+  {
+    "key": "participants.inviteUser",
+    "prefix": "participants",
+    "en": "Invite User",
+    "de": "Benutzer einladen",
+    "translated": true
+  },
+  {
+    "key": "participants.noUsersInvite",
+    "prefix": "participants",
+    "en": "No users are registered against this name or email. Would you like to invite this user?",
+    "de": "Unter diesem Namen oder dieser E-Mail ist kein Benutzer registriert. Möchten Sie diesen Benutzer einladen?",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.awardTypes.appreciation",
+    "prefix": "pointsUpload",
+    "en": "Appreciations",
+    "de": "Anerkennungen",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.awardTypes.normal",
+    "prefix": "pointsUpload",
+    "en": "Primary",
+    "de": "Primär",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.awardTypes.others",
+    "prefix": "pointsUpload",
+    "en": "Work from home",
+    "de": "Homeoffice",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.awardTypes.pointsUpload",
+    "prefix": "pointsUpload",
+    "en": "Points CSV with Custom Email Template",
+    "de": "Punkte-CSV mit benutzerdefinierter E-Mail-Vorlage",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.clickToUpload",
+    "prefix": "pointsUpload",
+    "en": "Click to upload",
+    "de": "Zum Hochladen klicken",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.downloadSample",
+    "prefix": "pointsUpload",
+    "en": "Download Sample",
+    "de": "Beispiel herunterladen",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.downloadSampleCsv",
+    "prefix": "pointsUpload",
+    "en": "Download sample CSV",
+    "de": "Beispiel-CSV herunterladen",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.dragDrop",
+    "prefix": "pointsUpload",
+    "en": "or drag and drop",
+    "de": "oder ziehen und ablegen",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.preview",
+    "prefix": "pointsUpload",
+    "en": "Preview",
+    "de": "Vorschau",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.selectCountry",
+    "prefix": "pointsUpload",
+    "en": "Select Country",
+    "de": "Land auswählen",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.selectEmailTemplate",
+    "prefix": "pointsUpload",
+    "en": "Select email template",
+    "de": "E-Mail-Vorlage auswählen",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.selectWallet",
+    "prefix": "pointsUpload",
+    "en": "Select Wallet",
+    "de": "Wallet auswählen",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.sendEmail",
+    "prefix": "pointsUpload",
+    "en": "Send email to receivers",
+    "de": "E-Mail an Empfänger senden",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.steps.country",
+    "prefix": "pointsUpload",
+    "en": "Select a country",
+    "de": "Wählen Sie ein Land",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.steps.download",
+    "prefix": "pointsUpload",
+    "en": "Download the sample template for the selected upload type",
+    "de": "Laden Sie die Beispielvorlage für den ausgewählten Upload-Typ herunter",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.steps.edit",
+    "prefix": "pointsUpload",
+    "en": "Edit the template with the employee details and reward points",
+    "de": "Bearbeiten Sie die Vorlage mit den Mitarbeiterdaten und Prämienpunkten",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.steps.upload",
+    "prefix": "pointsUpload",
+    "en": "Upload the file by dragging and dropping or importing from your device",
+    "de": "Laden Sie die Datei per Drag-and-drop oder durch Import von Ihrem Gerät hoch",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.steps.uploadType",
+    "prefix": "pointsUpload",
+    "en": "Select an upload type",
+    "de": "Wählen Sie einen Upload-Typ",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.steps.wallet",
+    "prefix": "pointsUpload",
+    "en": "Select a wallet",
+    "de": "Wählen Sie eine Wallet",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.stepsToFollow",
+    "prefix": "pointsUpload",
+    "en": "Steps to follow",
+    "de": "Zu befolgende Schritte",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.submit",
+    "prefix": "pointsUpload",
+    "en": "Submit",
+    "de": "Absenden",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.subtitle",
+    "prefix": "pointsUpload",
+    "en": "Distribute reward points to your employees",
+    "de": "Verteilen Sie Prämienpunkte an Ihre Mitarbeiter",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.title",
+    "prefix": "pointsUpload",
+    "en": "Bulk Upload Points",
+    "de": "Punkte in großen Mengen hochladen",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.uploadType",
+    "prefix": "pointsUpload",
+    "en": "Upload Type",
+    "de": "Upload-Typ",
+    "translated": true
+  },
+  {
+    "key": "pointsUpload.verify",
+    "prefix": "pointsUpload",
+    "en": "Verify",
+    "de": "Überprüfen",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.aboutText",
+    "prefix": "previewEmails",
+    "en": "Toggle the switch to enable or disable specific email notifications for your organization. Locked emails are managed by the system and cannot be changed. Preview links open in a new tab.",
+    "de": "Aktivieren oder deaktivieren Sie bestimmte E-Mail-Benachrichtigungen für Ihre Organisation. Gesperrte E-Mails werden vom System verwaltet und können nicht geändert werden. Vorschaulinks werden in einem neuen Tab geöffnet.",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.aboutTitle",
+    "prefix": "previewEmails",
+    "en": "About Email Settings",
+    "de": "Über die E-Mail-Einstellungen",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.cannotModify",
+    "prefix": "previewEmails",
+    "en": "This email cannot be modified",
+    "de": "Diese E-Mail kann nicht geändert werden",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.discardText",
+    "prefix": "previewEmails",
+    "en": "You have unsaved changes that will be lost if you leave this page.",
+    "de": "Sie haben ungespeicherte Änderungen, die verloren gehen, wenn Sie diese Seite verlassen.",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.discardTitle",
+    "prefix": "previewEmails",
+    "en": "Discard changes?",
+    "de": "Änderungen verwerfen?",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.enabledCount",
+    "prefix": "previewEmails",
+    "en": "{{enabled}} of {{total}} enabled",
+    "de": "{{enabled}} von {{total}} aktiviert",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.openNewTab",
+    "prefix": "previewEmails",
+    "en": "Open in New Tab",
+    "de": "In neuem Tab öffnen",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.previewNotAvailable",
+    "prefix": "previewEmails",
+    "en": "Preview not available",
+    "de": "Vorschau nicht verfügbar",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.saveFailed",
+    "prefix": "previewEmails",
+    "en": "Failed to save changes. Please try again.",
+    "de": "Änderungen konnten nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.saved",
+    "prefix": "previewEmails",
+    "en": "Email settings saved successfully.",
+    "de": "E-Mail-Einstellungen erfolgreich gespeichert.",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.subtitle",
+    "prefix": "previewEmails",
+    "en": "Manage email notifications sent to employees.",
+    "de": "Verwalten Sie die an Mitarbeitende gesendeten E-Mail-Benachrichtigungen.",
+    "translated": true
+  },
+  {
+    "key": "previewEmails.title",
+    "prefix": "previewEmails",
+    "en": "Preview Emails",
+    "de": "E-Mail-Vorschau",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.addedFromSourceMany",
+    "prefix": "privacyForm",
+    "en": "{{count}} employees from {{source}} have been added to the list.",
+    "de": "{{count}} Mitarbeitende aus {{source}} wurden zur Liste hinzugefügt.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.addedFromSourceOne",
+    "prefix": "privacyForm",
+    "en": "{{count}} employee from {{source}} has been added to the list.",
+    "de": "{{count}} Mitarbeitender aus {{source}} wurde zur Liste hinzugefügt.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.addedMany",
+    "prefix": "privacyForm",
+    "en": "{{count}} employees have been added to the list.",
+    "de": "{{count}} Mitarbeitende wurden zur Liste hinzugefügt.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.addedOne",
+    "prefix": "privacyForm",
+    "en": "{{count}} employee has been added to the list.",
+    "de": "{{count}} Mitarbeitender wurde zur Liste hinzugefügt.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.addedSingle",
+    "prefix": "privacyForm",
+    "en": "{{name}} has been added to the list.",
+    "de": "{{name}} wurde zur Liste hinzugefügt.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.addedWithDupesMany",
+    "prefix": "privacyForm",
+    "en": "{{added}} employees added, {{dupes}} already in list.",
+    "de": "{{added}} Mitarbeitende hinzugefügt, {{dupes}} bereits in der Liste.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.addedWithDupesOne",
+    "prefix": "privacyForm",
+    "en": "{{added}} employee added, {{dupes}} already in list.",
+    "de": "{{added}} Mitarbeitender hinzugefügt, {{dupes}} bereits in der Liste.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.allUsersAlreadyPresent",
+    "prefix": "privacyForm",
+    "en": "All users already present in the list.",
+    "de": "Alle Benutzer sind bereits in der Liste vorhanden.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.countryRegion",
+    "prefix": "privacyForm",
+    "en": "Country/Region",
+    "de": "Land/Region",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.employeeFallback",
+    "prefix": "privacyForm",
+    "en": "Employee",
+    "de": "Mitarbeiter",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.employeeListCleared",
+    "prefix": "privacyForm",
+    "en": "Employee list cleared.",
+    "de": "Mitarbeiterliste geleert.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.searchUserByName",
+    "prefix": "privacyForm",
+    "en": "Search user by name",
+    "de": "Benutzer nach Name suchen",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.selectFilter",
+    "prefix": "privacyForm",
+    "en": "Select {{name}}",
+    "de": "{{name}} auswählen",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.sources.employee",
+    "prefix": "privacyForm",
+    "en": "Employee Report",
+    "de": "Mitarbeiterbericht",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.sources.generic",
+    "prefix": "privacyForm",
+    "en": "report",
+    "de": "Bericht",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.sources.league",
+    "prefix": "privacyForm",
+    "en": "Leagues",
+    "de": "Ligen",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.sources.participant",
+    "prefix": "privacyForm",
+    "en": "Participation Report",
+    "de": "Teilnahmebericht",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.sources.wellness",
+    "prefix": "privacyForm",
+    "en": "Wellness Report",
+    "de": "Wellness-Bericht",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.totalSelected",
+    "prefix": "privacyForm",
+    "en": "Total users selected for this challenge: {{count}}",
+    "de": "Insgesamt für diese Challenge ausgewählte Benutzer: {{count}}",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.userAlreadyPresent",
+    "prefix": "privacyForm",
+    "en": "User already present in the list.",
+    "de": "Benutzer ist bereits in der Liste vorhanden.",
+    "translated": true
+  },
+  {
+    "key": "privacyForm.usersAlreadyPresent",
+    "prefix": "privacyForm",
+    "en": "Users already present in the list.",
+    "de": "Benutzer sind bereits in der Liste vorhanden.",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.contentTitle",
+    "prefix": "publishNotifications",
+    "en": "Notification Content",
+    "de": "Benachrichtigungsinhalt",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.previewTitle",
+    "prefix": "publishNotifications",
+    "en": "Notification Preview",
+    "de": "Benachrichtigungsvorschau",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.sendBtn",
+    "prefix": "publishNotifications",
+    "en": "Send Notification",
+    "de": "Benachrichtigung senden",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.sendFailed",
+    "prefix": "publishNotifications",
+    "en": "Failed to send notification. Please try again.",
+    "de": "Benachrichtigung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.sentToMany",
+    "prefix": "publishNotifications",
+    "en": "Notification sent to {{count}} users.",
+    "de": "Benachrichtigung an {{count}} Benutzer gesendet.",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.sentToOne",
+    "prefix": "publishNotifications",
+    "en": "Notification sent to {{count}} user.",
+    "de": "Benachrichtigung an {{count}} Benutzer gesendet.",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.subtitle",
+    "prefix": "publishNotifications",
+    "en": "Send targeted in-app notifications to employees.",
+    "de": "Senden Sie gezielte In-App-Benachrichtigungen an Mitarbeitende.",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.subtitleLabel",
+    "prefix": "publishNotifications",
+    "en": "Subtitle",
+    "de": "Untertitel",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.subtitlePlaceholder",
+    "prefix": "publishNotifications",
+    "en": "Enter notification subtitle (optional)",
+    "de": "Untertitel der Benachrichtigung eingeben (optional)",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.title",
+    "prefix": "publishNotifications",
+    "en": "Publish Notification",
+    "de": "Benachrichtigung veröffentlichen",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.titleLabel",
+    "prefix": "publishNotifications",
+    "en": "Title *",
+    "de": "Titel *",
+    "translated": true
+  },
+  {
+    "key": "publishNotifications.titlePlaceholder",
+    "prefix": "publishNotifications",
+    "en": "Enter notification title",
+    "de": "Titel der Benachrichtigung eingeben",
+    "translated": true
+  },
+  {
+    "key": "qna.announcement.answer",
+    "prefix": "qna",
+    "en": "An announcement is a way to send a message regarding any new initiatives or events across the organization via the feed. The announcements can be configured by anyone with access to the HR Admin Dashboard.",
+    "de": "Eine Ankündigung ist eine Möglichkeit, über den Feed eine Nachricht zu neuen Initiativen oder Veranstaltungen an die gesamte Organisation zu senden. Ankündigungen können von allen Personen mit Zugriff auf das HR-Admin-Dashboard konfiguriert werden.",
+    "translated": true
+  },
+  {
+    "key": "qna.announcement.question",
+    "prefix": "qna",
+    "en": "What is an Announcement?",
+    "de": "Was ist eine Ankündigung?",
+    "translated": true
+  },
+  {
+    "key": "qna.readLess",
+    "prefix": "qna",
+    "en": "Read less",
+    "de": "Weniger anzeigen",
+    "translated": true
+  },
+  {
+    "key": "qna.readMore",
+    "prefix": "qna",
+    "en": "Read more",
+    "de": "Mehr anzeigen",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.activeUsers",
+    "prefix": "reportBuilder",
+    "en": "Active Users",
+    "de": "Aktive Benutzer",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.allAgeGroups",
+    "prefix": "reportBuilder",
+    "en": "All Age Groups",
+    "de": "Alle Altersgruppen",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.allCountries",
+    "prefix": "reportBuilder",
+    "en": "All Countries",
+    "de": "Alle Länder",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.allDepartments",
+    "prefix": "reportBuilder",
+    "en": "All Departments",
+    "de": "Alle Abteilungen",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.allEnrolledUsers",
+    "prefix": "reportBuilder",
+    "en": "All Enrolled Users",
+    "de": "Alle angemeldeten Benutzer",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.allGenders",
+    "prefix": "reportBuilder",
+    "en": "All Genders",
+    "de": "Alle Geschlechter",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.allLeagues",
+    "prefix": "reportBuilder",
+    "en": "All Leagues",
+    "de": "Alle Ligen",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.bronze",
+    "prefix": "reportBuilder",
+    "en": "Bronze",
+    "de": "Bronze",
+    "translated": false
+  },
+  {
+    "key": "reportBuilder.buildFromReport",
+    "prefix": "reportBuilder",
+    "en": "Build from Report",
+    "de": "Aus Bericht erstellen",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.employeeReport",
+    "prefix": "reportBuilder",
+    "en": "Employee Report",
+    "de": "Mitarbeiterbericht",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.fetchAdd",
+    "prefix": "reportBuilder",
+    "en": "Fetch & Add to List",
+    "de": "Abrufen und zur Liste hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.fetching",
+    "prefix": "reportBuilder",
+    "en": "Fetching...",
+    "de": "Wird abgerufen...",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.gold",
+    "prefix": "reportBuilder",
+    "en": "Gold",
+    "de": "Gold",
+    "translated": false
+  },
+  {
+    "key": "reportBuilder.inactive30",
+    "prefix": "reportBuilder",
+    "en": "Inactive (30 days)",
+    "de": "Inaktiv (30 Tage)",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.leagueReport",
+    "prefix": "reportBuilder",
+    "en": "League Report",
+    "de": "Liga-Bericht",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.lockedTooltip",
+    "prefix": "reportBuilder",
+    "en": "Contact your Account Manager to enable this feature",
+    "de": "Kontaktieren Sie Ihren Account Manager, um diese Funktion zu aktivieren",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.maxWellnessScore",
+    "prefix": "reportBuilder",
+    "en": "Max Wellness Score",
+    "de": "Max. Wellness-Score",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.minWellnessScore",
+    "prefix": "reportBuilder",
+    "en": "Min Wellness Score",
+    "de": "Min. Wellness-Score",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.participantStatus",
+    "prefix": "reportBuilder",
+    "en": "Participant Status",
+    "de": "Teilnehmerstatus",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.participationReport",
+    "prefix": "reportBuilder",
+    "en": "Participation Report",
+    "de": "Teilnahmebericht",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.pendingActivation",
+    "prefix": "reportBuilder",
+    "en": "Pending Activation",
+    "de": "Aktivierung ausstehend",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.registeredUsers",
+    "prefix": "reportBuilder",
+    "en": "Registered Users",
+    "de": "Registrierte Benutzer",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.silver",
+    "prefix": "reportBuilder",
+    "en": "Silver",
+    "de": "Silber",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.userStatus",
+    "prefix": "reportBuilder",
+    "en": "User Status",
+    "de": "Benutzerstatus",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.usersAdded",
+    "prefix": "reportBuilder",
+    "en": "{{count}} users added",
+    "de": "{{count}} Benutzer hinzugefügt",
+    "translated": true
+  },
+  {
+    "key": "reportBuilder.wellnessScore",
+    "prefix": "reportBuilder",
+    "en": "Wellness Score",
+    "de": "Wellness-Score",
+    "translated": true
+  },
+  {
+    "key": "reportCols.ageGroup",
+    "prefix": "reportCols",
+    "en": "Age Group",
+    "de": "Altersgruppe",
+    "translated": true
+  },
+  {
+    "key": "reportCols.amount",
+    "prefix": "reportCols",
+    "en": "Amount",
+    "de": "Betrag",
+    "translated": true
+  },
+  {
+    "key": "reportCols.avgSteps",
+    "prefix": "reportCols",
+    "en": "Avg Steps",
+    "de": "Ø Schritte",
+    "translated": true
+  },
+  {
+    "key": "reportCols.avgStepsRolling",
+    "prefix": "reportCols",
+    "en": "Last {{days}} Days Steps Avg",
+    "de": "Schritte-Durchschnitt der letzten {{days}} Tage",
+    "translated": true
+  },
+  {
+    "key": "reportCols.challengeName",
+    "prefix": "reportCols",
+    "en": "Challenge Name",
+    "de": "Challenge-Name",
+    "translated": true
+  },
+  {
+    "key": "reportCols.companyUserId",
+    "prefix": "reportCols",
+    "en": "Company User ID",
+    "de": "Firmen-Benutzer-ID",
+    "translated": true
+  },
+  {
+    "key": "reportCols.country",
+    "prefix": "reportCols",
+    "en": "Country",
+    "de": "Land",
+    "translated": true
+  },
+  {
+    "key": "reportCols.countryName",
+    "prefix": "reportCols",
+    "en": "Country Name",
+    "de": "Ländername",
+    "translated": true
+  },
+  {
+    "key": "reportCols.currency",
+    "prefix": "reportCols",
+    "en": "Currency",
+    "de": "Währung",
+    "translated": true
+  },
+  {
+    "key": "reportCols.currentLeague",
+    "prefix": "reportCols",
+    "en": "Current League",
+    "de": "Aktuelle Liga",
+    "translated": true
+  },
+  {
+    "key": "reportCols.date",
+    "prefix": "reportCols",
+    "en": "Date",
+    "de": "Datum",
+    "translated": true
+  },
+  {
+    "key": "reportCols.dateOfJoining",
+    "prefix": "reportCols",
+    "en": "Date of Joining",
+    "de": "Eintrittsdatum",
+    "translated": true
+  },
+  {
+    "key": "reportCols.daysInBronze",
+    "prefix": "reportCols",
+    "en": "Days in Bronze",
+    "de": "Tage in Bronze",
+    "translated": true
+  },
+  {
+    "key": "reportCols.daysInGold",
+    "prefix": "reportCols",
+    "en": "Days in Gold",
+    "de": "Tage in Gold",
+    "translated": true
+  },
+  {
+    "key": "reportCols.daysInSilver",
+    "prefix": "reportCols",
+    "en": "Days in Silver",
+    "de": "Tage in Silber",
+    "translated": true
+  },
+  {
+    "key": "reportCols.department",
+    "prefix": "reportCols",
+    "en": "Department",
+    "de": "Abteilung",
+    "translated": true
+  },
+  {
+    "key": "reportCols.email",
+    "prefix": "reportCols",
+    "en": "Email",
+    "de": "E-Mail",
+    "translated": true
+  },
+  {
+    "key": "reportCols.employeeId",
+    "prefix": "reportCols",
+    "en": "Employee ID",
+    "de": "Mitarbeiter-ID",
+    "translated": true
+  },
+  {
+    "key": "reportCols.endDate",
+    "prefix": "reportCols",
+    "en": "End Date",
+    "de": "Enddatum",
+    "translated": true
+  },
+  {
+    "key": "reportCols.gender",
+    "prefix": "reportCols",
+    "en": "Gender",
+    "de": "Geschlecht",
+    "translated": true
+  },
+  {
+    "key": "reportCols.lastActiveAt",
+    "prefix": "reportCols",
+    "en": "Last Active At",
+    "de": "Zuletzt aktiv",
+    "translated": true
+  },
+  {
+    "key": "reportCols.league",
+    "prefix": "reportCols",
+    "en": "League",
+    "de": "Liga",
+    "translated": true
+  },
+  {
+    "key": "reportCols.location",
+    "prefix": "reportCols",
+    "en": "Location",
+    "de": "Standort",
+    "translated": true
+  },
+  {
+    "key": "reportCols.name",
+    "prefix": "reportCols",
+    "en": "Name",
+    "de": "Name",
+    "translated": false
+  },
+  {
+    "key": "reportCols.points",
+    "prefix": "reportCols",
+    "en": "Points",
+    "de": "Punkte",
+    "translated": true
+  },
+  {
+    "key": "reportCols.primaryLeague",
+    "prefix": "reportCols",
+    "en": "Primary League",
+    "de": "Primärliga",
+    "translated": true
+  },
+  {
+    "key": "reportCols.productName",
+    "prefix": "reportCols",
+    "en": "Product Name",
+    "de": "Produktname",
+    "translated": true
+  },
+  {
+    "key": "reportCols.reason",
+    "prefix": "reportCols",
+    "en": "Reason",
+    "de": "Grund",
+    "translated": true
+  },
+  {
+    "key": "reportCols.redeemedPoints",
+    "prefix": "reportCols",
+    "en": "Redeemed Points",
+    "de": "Eingelöste Punkte",
+    "translated": true
+  },
+  {
+    "key": "reportCols.startDate",
+    "prefix": "reportCols",
+    "en": "Start Date",
+    "de": "Startdatum",
+    "translated": true
+  },
+  {
+    "key": "reportCols.steps",
+    "prefix": "reportCols",
+    "en": "Steps",
+    "de": "Schritte",
+    "translated": true
+  },
+  {
+    "key": "reportCols.task",
+    "prefix": "reportCols",
+    "en": "Task",
+    "de": "Aufgabe",
+    "translated": true
+  },
+  {
+    "key": "reportCols.transactionDate",
+    "prefix": "reportCols",
+    "en": "Transaction Date",
+    "de": "Transaktionsdatum",
+    "translated": true
+  },
+  {
+    "key": "reportCols.userEmail",
+    "prefix": "reportCols",
+    "en": "User Email",
+    "de": "Benutzer-E-Mail",
+    "translated": true
+  },
+  {
+    "key": "reportCols.userName",
+    "prefix": "reportCols",
+    "en": "User Name",
+    "de": "Benutzername",
+    "translated": true
+  },
+  {
+    "key": "reportCols.value",
+    "prefix": "reportCols",
+    "en": "Value",
+    "de": "Wert",
+    "translated": true
+  },
+  {
+    "key": "reportCols.wellnessScore",
+    "prefix": "reportCols",
+    "en": "Wellness Score",
+    "de": "Wellness-Score",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.ageGroupsCount",
+    "prefix": "reportFilter",
+    "en": "{{count}} Age Groups",
+    "de": "{{count}} Altersgruppen",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.apply",
+    "prefix": "reportFilter",
+    "en": "APPLY",
+    "de": "ANWENDEN",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.cancel",
+    "prefix": "reportFilter",
+    "en": "CANCEL",
+    "de": "ABBRECHEN",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.countries",
+    "prefix": "reportFilter",
+    "en": "Countries",
+    "de": "Länder",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.countriesCount",
+    "prefix": "reportFilter",
+    "en": "{{count}} Countries",
+    "de": "{{count}} Länder",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.departmentsCount",
+    "prefix": "reportFilter",
+    "en": "{{count}} Departments",
+    "de": "{{count}} Abteilungen",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.filtersSelected",
+    "prefix": "reportFilter",
+    "en": "{{count}} filters selected",
+    "de": "{{count}} Filter ausgewählt",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.gendersCount",
+    "prefix": "reportFilter",
+    "en": "{{count}} Genders",
+    "de": "{{count}} Geschlechter",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.noFiltersSelected",
+    "prefix": "reportFilter",
+    "en": "No filters selected",
+    "de": "Keine Filter ausgewählt",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.searchAgeGroup",
+    "prefix": "reportFilter",
+    "en": "Search Age Group",
+    "de": "Altersgruppe suchen",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.searchCountry",
+    "prefix": "reportFilter",
+    "en": "Search Country",
+    "de": "Land suchen",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.searchDepartment",
+    "prefix": "reportFilter",
+    "en": "Search Department",
+    "de": "Abteilung suchen",
+    "translated": true
+  },
+  {
+    "key": "reportFilter.searchGender",
+    "prefix": "reportFilter",
+    "en": "Search Gender",
+    "de": "Geschlecht suchen",
+    "translated": true
+  },
+  {
+    "key": "reports.allChallenges",
+    "prefix": "reports",
+    "en": "All Challenges",
+    "de": "Alle Challenges",
+    "translated": true
+  },
+  {
+    "key": "reports.contactAm",
+    "prefix": "reports",
+    "en": "Contact Account Manager",
+    "de": "Account-Manager kontaktieren",
+    "translated": true
+  },
+  {
+    "key": "reports.emptyDefault",
+    "prefix": "reports",
+    "en": "No data available. Adjust filters and click Generate.",
+    "de": "Keine Daten verfügbar. Passen Sie die Filter an und klicken Sie auf Generieren.",
+    "translated": true
+  },
+  {
+    "key": "reports.emptyFiltered",
+    "prefix": "reports",
+    "en": "No data available for the selected filters.",
+    "de": "Keine Daten für die ausgewählten Filter verfügbar.",
+    "translated": true
+  },
+  {
+    "key": "reports.emptyRedemption",
+    "prefix": "reports",
+    "en": "No redemption data available for the selected filters.",
+    "de": "Keine Einlösungsdaten für die ausgewählten Filter verfügbar.",
+    "translated": true
+  },
+  {
+    "key": "reports.enrolled",
+    "prefix": "reports",
+    "en": "Enrolled",
+    "de": "Angemeldet",
+    "translated": true
+  },
+  {
+    "key": "reports.footerText",
+    "prefix": "reports",
+    "en": "Something not right or facing an issue? Report it to us and we will fix it at lightning speed.",
+    "de": "Stimmt etwas nicht oder haben Sie ein Problem? Melden Sie es uns, und wir beheben es blitzschnell.",
+    "translated": true
+  },
+  {
+    "key": "reports.loadPrompt",
+    "prefix": "reports",
+    "en": "Click Generate to load the report.",
+    "de": "Klicken Sie auf Generieren, um den Bericht zu laden.",
+    "translated": true
+  },
+  {
+    "key": "reports.pendingRegistration",
+    "prefix": "reports",
+    "en": "Pending Registration",
+    "de": "Registrierung ausstehend",
+    "translated": true
+  },
+  {
+    "key": "reports.registered",
+    "prefix": "reports",
+    "en": "Registered",
+    "de": "Registriert",
+    "translated": true
+  },
+  {
+    "key": "rewardForm.conversionInfo",
+    "prefix": "rewardForm",
+    "en": "{{steps}} steps will be considered as 1 {{unit}}, The target for this challenge will be {{target}} steps",
+    "de": "{{steps}} Schritte werden als 1 {{unit}} gewertet. Das Ziel für diese Challenge liegt bei {{target}} Schritten",
+    "translated": true
+  },
+  {
+    "key": "rewardForm.leaderboardRankInfo",
+    "prefix": "rewardForm",
+    "en": "The Leaderboard will primarily rank people based on how many times this target is achieved",
+    "de": "Die Bestenliste ordnet die Teilnehmer in erster Linie danach, wie oft dieses Ziel erreicht wird",
+    "translated": true
+  },
+  {
+    "key": "rewardForm.setupGoals",
+    "prefix": "rewardForm",
+    "en": "Setup Goals & Prizes for the Challenge",
+    "de": "Ziele und Preise für die Challenge einrichten",
+    "translated": true
+  },
+  {
+    "key": "rewardForm.stepTargetQuestion",
+    "prefix": "rewardForm",
+    "en": "What do you want to be the step count target for each day?",
+    "de": "Welche Schrittzahl soll das Tagesziel für jeden Tag sein?",
+    "translated": true
+  },
+  {
+    "key": "rewardForm.streakDaysQuestion",
+    "prefix": "rewardForm",
+    "en": "In your {{days}} day challenge, how many days do you want people to atleast achieve this target ?",
+    "de": "An wie vielen Tagen Ihrer {{days}}-tägigen Challenge sollen die Teilnehmer dieses Ziel mindestens erreichen?",
+    "translated": true
+  },
+  {
+    "key": "rewardForm.targetDistance",
+    "prefix": "rewardForm",
+    "en": "Target Distance",
+    "de": "Zieldistanz",
+    "translated": true
+  },
+  {
+    "key": "rewardForm.viewPriceOtherCountry",
+    "prefix": "rewardForm",
+    "en": "Click here to view the price in a different country",
+    "de": "Klicken Sie hier, um den Preis in einem anderen Land anzuzeigen",
+    "translated": true
+  },
+  {
+    "key": "scoreBreakdown.backToTheme",
+    "prefix": "scoreBreakdown",
+    "en": "Back To Theme",
+    "de": "Zurück zum Thema",
+    "translated": true
+  },
+  {
+    "key": "selectedEmployeeModal.title",
+    "prefix": "selectedEmployeeModal",
+    "en": "Selected Employees",
+    "de": "Ausgewählte Mitarbeiter",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.bodyLabel",
+    "prefix": "sendCustomEmail",
+    "en": "Body",
+    "de": "Text",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.bodyPlaceholder",
+    "prefix": "sendCustomEmail",
+    "en": "Enter email body content",
+    "de": "Inhalt der E-Mail eingeben",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.contentTitle",
+    "prefix": "sendCustomEmail",
+    "en": "Email Content",
+    "de": "E-Mail-Inhalt",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.designRichEmail",
+    "prefix": "sendCustomEmail",
+    "en": "Design a rich email",
+    "de": "Individuelle E-Mail gestalten",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.headlineLabel",
+    "prefix": "sendCustomEmail",
+    "en": "Headline *",
+    "de": "Überschrift *",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.headlinePlaceholder",
+    "prefix": "sendCustomEmail",
+    "en": "Enter email headline",
+    "de": "Überschrift der E-Mail eingeben",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.preview.bodyPlaceholder",
+    "prefix": "sendCustomEmail",
+    "en": "Your email body content will appear here",
+    "de": "Ihr E-Mail-Textinhalt wird hier angezeigt",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.preview.emailSubject",
+    "prefix": "sendCustomEmail",
+    "en": "Email Subject",
+    "de": "E-Mail-Betreff",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.preview.headlinePlaceholder",
+    "prefix": "sendCustomEmail",
+    "en": "Your headline will appear here",
+    "de": "Ihre Überschrift wird hier angezeigt",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.preview.inbox",
+    "prefix": "sendCustomEmail",
+    "en": "Inbox",
+    "de": "Posteingang",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.preview.justNow",
+    "prefix": "sendCustomEmail",
+    "en": "Just now",
+    "de": "Gerade eben",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.preview.label",
+    "prefix": "sendCustomEmail",
+    "en": "Preview",
+    "de": "Vorschau",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.preview.templateLoadFailed",
+    "prefix": "sendCustomEmail",
+    "en": "Email template could not be loaded.",
+    "de": "E-Mail-Vorlage konnte nicht geladen werden.",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.previewTitle",
+    "prefix": "sendCustomEmail",
+    "en": "Email Preview",
+    "de": "E-Mail-Vorschau",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.richEmailApplied",
+    "prefix": "sendCustomEmail",
+    "en": "Rich email design applied — it will be sent as the email body.",
+    "de": "Individuelles E-Mail-Design angewendet – es wird als E-Mail-Text gesendet.",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.sendBtn",
+    "prefix": "sendCustomEmail",
+    "en": "Send Email",
+    "de": "E-Mail senden",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.sendFailed",
+    "prefix": "sendCustomEmail",
+    "en": "Failed to send email. Please try again.",
+    "de": "E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.sentToMany",
+    "prefix": "sendCustomEmail",
+    "en": "Email sent to {{count}} users.",
+    "de": "E-Mail an {{count}} Benutzer gesendet.",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.sentToOne",
+    "prefix": "sendCustomEmail",
+    "en": "Email sent to {{count}} user.",
+    "de": "E-Mail an {{count}} Benutzer gesendet.",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.subjectLabel",
+    "prefix": "sendCustomEmail",
+    "en": "Subject Line *",
+    "de": "Betreff *",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.subjectPlaceholder",
+    "prefix": "sendCustomEmail",
+    "en": "Enter email subject line",
+    "de": "Betreff der E-Mail eingeben",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.subtitle",
+    "prefix": "sendCustomEmail",
+    "en": "Compose and send branded emails to employees.",
+    "de": "Verfassen und senden Sie gebrandete E-Mails an Mitarbeitende.",
+    "translated": true
+  },
+  {
+    "key": "sendCustomEmail.title",
+    "prefix": "sendCustomEmail",
+    "en": "Send Custom Email",
+    "de": "Benutzerdefinierte E-Mail senden",
+    "translated": true
+  },
+  {
+    "key": "settings.app.changeLogo",
+    "prefix": "settings",
+    "en": "Change Logo",
+    "de": "Logo ändern",
+    "translated": true
+  },
+  {
+    "key": "settings.app.defaultLogo",
+    "prefix": "settings",
+    "en": "Default Logo",
+    "de": "Standardlogo",
+    "translated": true
+  },
+  {
+    "key": "settings.app.logoAlt",
+    "prefix": "settings",
+    "en": "App logo",
+    "de": "App-Logo",
+    "translated": true
+  },
+  {
+    "key": "settings.app.logoSize",
+    "prefix": "settings",
+    "en": "Recommended logo size",
+    "de": "Empfohlene Logogröße",
+    "translated": true
+  },
+  {
+    "key": "settings.app.noLogo",
+    "prefix": "settings",
+    "en": "No Logo",
+    "de": "Kein Logo",
+    "translated": true
+  },
+  {
+    "key": "settings.app.subtitle",
+    "prefix": "settings",
+    "en": "In-app logo and app-wide configurations",
+    "de": "In-App-Logo und app-weite Konfigurationen",
+    "translated": true
+  },
+  {
+    "key": "settings.app.title",
+    "prefix": "settings",
+    "en": "App Settings",
+    "de": "App-Einstellungen",
+    "translated": true
+  },
+  {
+    "key": "settings.app.uploadLogo",
+    "prefix": "settings",
+    "en": "Upload Logo",
+    "de": "Logo hochladen",
+    "translated": true
+  },
+  {
+    "key": "settings.bannerUploadAria",
+    "prefix": "settings",
+    "en": "Email banner upload requirements",
+    "de": "Anforderungen für den Upload des E-Mail-Banners",
+    "translated": true
+  },
+  {
+    "key": "settings.challenge.enterPlaceholder",
+    "prefix": "settings",
+    "en": "Enter",
+    "de": "Eingeben",
+    "translated": true
+  },
+  {
+    "key": "settings.challenge.subtitle",
+    "prefix": "settings",
+    "en": "Configure team and challenge behavior",
+    "de": "Verhalten von Teams und Challenges konfigurieren",
+    "translated": true
+  },
+  {
+    "key": "settings.challenge.teamSizeHint",
+    "prefix": "settings",
+    "en": "Min: 5 · Max: 500 members per team",
+    "de": "Min.: 5 · Max.: 500 Mitglieder pro Team",
+    "translated": true
+  },
+  {
+    "key": "settings.challenge.title",
+    "prefix": "settings",
+    "en": "Challenge Settings",
+    "de": "Challenge-Einstellungen",
+    "translated": true
+  },
+  {
+    "key": "settings.default",
+    "prefix": "settings",
+    "en": "Default",
+    "de": "Standard",
+    "translated": true
+  },
+  {
+    "key": "settings.dialog.cancel",
+    "prefix": "settings",
+    "en": "Cancel",
+    "de": "Abbrechen",
+    "translated": true
+  },
+  {
+    "key": "settings.dialog.text",
+    "prefix": "settings",
+    "en": "You have unsaved changes that will be lost if you leave this page.",
+    "de": "Sie haben nicht gespeicherte Änderungen, die verloren gehen, wenn Sie diese Seite verlassen.",
+    "translated": true
+  },
+  {
+    "key": "settings.dialog.title",
+    "prefix": "settings",
+    "en": "Discard changes?",
+    "de": "Änderungen verwerfen?",
+    "translated": true
+  },
+  {
+    "key": "settings.discard",
+    "prefix": "settings",
+    "en": "Discard",
+    "de": "Verwerfen",
+    "translated": true
+  },
+  {
+    "key": "settings.email.bannerAlt",
+    "prefix": "settings",
+    "en": "Email banner",
+    "de": "E-Mail-Banner",
+    "translated": true
+  },
+  {
+    "key": "settings.email.bannerSize",
+    "prefix": "settings",
+    "en": "Recommended banner size",
+    "de": "Empfohlene Bannergröße",
+    "translated": true
+  },
+  {
+    "key": "settings.email.changeBanner",
+    "prefix": "settings",
+    "en": "Change Banner",
+    "de": "Banner ändern",
+    "translated": true
+  },
+  {
+    "key": "settings.email.subtitle",
+    "prefix": "settings",
+    "en": "Email banner and notification preferences",
+    "de": "E-Mail-Banner und Benachrichtigungseinstellungen",
+    "translated": true
+  },
+  {
+    "key": "settings.email.title",
+    "prefix": "settings",
+    "en": "Email Settings",
+    "de": "E-Mail-Einstellungen",
+    "translated": true
+  },
+  {
+    "key": "settings.email.uploadBanner",
+    "prefix": "settings",
+    "en": "Upload Custom Banner",
+    "de": "Eigenes Banner hochladen",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.aspectRatio",
+    "prefix": "settings",
+    "en": "Image aspect ratio must be {{w}}:{{h}}. Current: {{cw}}×{{ch}}.",
+    "de": "Das Seitenverhältnis des Bildes muss {{w}}:{{h}} betragen. Aktuell: {{cw}}×{{ch}}.",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.dimensionsReadFailed",
+    "prefix": "settings",
+    "en": "Could not read image dimensions. Please try another file.",
+    "de": "Die Bildabmessungen konnten nicht gelesen werden. Bitte versuchen Sie eine andere Datei.",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.dimensionsTooLarge",
+    "prefix": "settings",
+    "en": "Image dimensions must not exceed {{maxW}}×{{maxH}}px. Current: {{w}}×{{h}}px.",
+    "de": "Die Bildabmessungen dürfen {{maxW}}×{{maxH}}px nicht überschreiten. Aktuell: {{w}}×{{h}}px.",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.dimensionsTooSmall",
+    "prefix": "settings",
+    "en": "Image dimensions must be at least {{minW}}×{{minH}}px. Current: {{w}}×{{h}}px.",
+    "de": "Die Bildabmessungen müssen mindestens {{minW}}×{{minH}}px betragen. Aktuell: {{w}}×{{h}}px.",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.fileSizeLimit",
+    "prefix": "settings",
+    "en": "File size must be under {{max}}KB. Current: {{current}}KB.",
+    "de": "Die Dateigröße muss unter {{max}} KB liegen. Aktuell: {{current}} KB.",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.pngOnlyBanner",
+    "prefix": "settings",
+    "en": "Only PNG files are allowed for the email banner.",
+    "de": "Für das E-Mail-Banner sind nur PNG-Dateien zulässig.",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.pngOnlyLogo",
+    "prefix": "settings",
+    "en": "Only PNG files are allowed for the app logo.",
+    "de": "Für das App-Logo sind nur PNG-Dateien zulässig.",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.saveFailed",
+    "prefix": "settings",
+    "en": "Failed to save settings. Please try again.",
+    "de": "Einstellungen konnten nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.uploadFailedBanner",
+    "prefix": "settings",
+    "en": "Failed to upload banner image",
+    "de": "Fehler beim Hochladen des Banner-Bildes",
+    "translated": true
+  },
+  {
+    "key": "settings.errors.uploadFailedLogo",
+    "prefix": "settings",
+    "en": "Failed to upload logo image",
+    "de": "Fehler beim Hochladen des Logo-Bildes",
+    "translated": true
+  },
+  {
+    "key": "settings.heading",
+    "prefix": "settings",
+    "en": "Settings",
+    "de": "Einstellungen",
+    "translated": true
+  },
+  {
+    "key": "settings.loading",
+    "prefix": "settings",
+    "en": "Loading settings...",
+    "de": "Einstellungen werden geladen...",
+    "translated": true
+  },
+  {
+    "key": "settings.logoUploadAria",
+    "prefix": "settings",
+    "en": "App logo upload requirements",
+    "de": "Anforderungen für den Upload des App-Logos",
+    "translated": true
+  },
+  {
+    "key": "settings.pngOnly",
+    "prefix": "settings",
+    "en": "PNG only",
+    "de": "Nur PNG",
+    "translated": true
+  },
+  {
+    "key": "settings.remove",
+    "prefix": "settings",
+    "en": "Remove",
+    "de": "Entfernen",
+    "translated": true
+  },
+  {
+    "key": "settings.save",
+    "prefix": "settings",
+    "en": "Save Settings",
+    "de": "Einstellungen speichern",
+    "translated": true
+  },
+  {
+    "key": "settings.saved",
+    "prefix": "settings",
+    "en": "Settings saved successfully.",
+    "de": "Einstellungen erfolgreich gespeichert.",
+    "translated": true
+  },
+  {
+    "key": "settings.saving",
+    "prefix": "settings",
+    "en": "Saving...",
+    "de": "Wird gespeichert...",
+    "translated": true
+  },
+  {
+    "key": "settings.unsavedChanges",
+    "prefix": "settings",
+    "en": "You have unsaved changes",
+    "de": "Sie haben nicht gespeicherte Änderungen",
+    "translated": true
+  },
+  {
+    "key": "settings.uploading",
+    "prefix": "settings",
+    "en": "Uploading...",
+    "de": "Wird hochgeladen...",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.isChallengeCompletionMailEnabled.desc",
+    "prefix": "settingsFlags",
+    "en": "Send email when a user completes a challenge",
+    "de": "E-Mail senden, wenn ein Benutzer eine Challenge abschließt",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.isChallengeCompletionMailEnabled.title",
+    "prefix": "settingsFlags",
+    "en": "Challenge completion email",
+    "de": "E-Mail zum Abschluss der Challenge",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.isMultipleActivitySaveCheckEnabled.desc",
+    "prefix": "settingsFlags",
+    "en": "Prevent users from saving overlapping or duplicate workouts and activities",
+    "de": "Benutzer daran hindern, sich überschneidende oder doppelte Workouts und Aktivitäten zu speichern",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.isMultipleActivitySaveCheckEnabled.title",
+    "prefix": "settingsFlags",
+    "en": "Multiple activity save check",
+    "de": "Prüfung beim Speichern mehrerer Aktivitäten",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.isVfitEmailDisabled.desc",
+    "prefix": "settingsFlags",
+    "en": "Disable all Vantage Fit marketing/system emails",
+    "de": "Alle Marketing- und System-E-Mails von Vantage Fit deaktivieren",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.isVfitEmailDisabled.title",
+    "prefix": "settingsFlags",
+    "en": "Disable all emails",
+    "de": "Alle E-Mails deaktivieren",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.maxTeamSize.desc",
+    "prefix": "settingsFlags",
+    "en": "Maximum number of members allowed per team",
+    "de": "Maximale Anzahl der pro Team zulässigen Mitglieder",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.maxTeamSize.title",
+    "prefix": "settingsFlags",
+    "en": "Max team size",
+    "de": "Maximale Teamgröße",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.showTeamBreakdownInLeaderBoard.desc",
+    "prefix": "settingsFlags",
+    "en": "Show team-level breakdown in the challenge leaderboard",
+    "de": "Die Aufschlüsselung auf Teamebene in der Challenge-Bestenliste anzeigen",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.showTeamBreakdownInLeaderBoard.title",
+    "prefix": "settingsFlags",
+    "en": "Show team breakdown in leaderboard",
+    "de": "Teamaufschlüsselung in der Bestenliste anzeigen",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.usersCanCreateTeams.desc",
+    "prefix": "settingsFlags",
+    "en": "Allow users to create their own teams within challenges",
+    "de": "Benutzern erlauben, innerhalb von Challenges eigene Teams zu erstellen",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.usersCanCreateTeams.title",
+    "prefix": "settingsFlags",
+    "en": "Users can create teams",
+    "de": "Benutzer können Teams erstellen",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.usersCanUpdateTeams.desc",
+    "prefix": "settingsFlags",
+    "en": "Allow users to modify team details (name, photo)",
+    "de": "Benutzern erlauben, Teamdetails zu ändern (Name, Foto)",
+    "translated": true
+  },
+  {
+    "key": "settingsFlags.usersCanUpdateTeams.title",
+    "prefix": "settingsFlags",
+    "en": "Users can update teams",
+    "de": "Benutzer können Teams aktualisieren",
+    "translated": true
+  },
+  {
+    "key": "staticChallenges.custom-challenge.description",
+    "prefix": "staticChallenges",
+    "en": "Do it yourself: configure every task and target individually.",
+    "de": "Selbst gestalten: Konfigurieren Sie jede Aufgabe und jedes Ziel individuell.",
+    "translated": true
+  },
+  {
+    "key": "staticChallenges.custom-challenge.title",
+    "prefix": "staticChallenges",
+    "en": "Custom Challenge",
+    "de": "Individuelle Challenge",
+    "translated": true
+  },
+  {
+    "key": "staticChallenges.e-marathon-challenge.description",
+    "prefix": "staticChallenges",
+    "en": "A unique challenge format meant to simulate a virtual marathon with simply considering 1000 steps as 1 km (1609 steps = 1 mile) with a finish line defined at a mile-marker of your choice.",
+    "de": "Ein einzigartiges Challenge-Format, das einen virtuellen Marathon simuliert, indem einfach 1000 Schritte als 1 km gelten (1609 Schritte = 1 Meile), mit einer Ziellinie an einem von Ihnen gewählten Meilenmarker.",
+    "translated": true
+  },
+  {
+    "key": "staticChallenges.e-marathon-challenge.title",
+    "prefix": "staticChallenges",
+    "en": "E-Marathon",
+    "de": "E-Marathon",
+    "translated": false
+  },
+  {
+    "key": "staticChallenges.journey-challenge.description",
+    "prefix": "staticChallenges",
+    "en": "A wellness competition driven by a real-time leaderboard, with no specific targets, focusing on a pure race to the top.",
+    "de": "Ein Wellness-Wettbewerb mit einer Echtzeit-Bestenliste, ohne feste Ziele, mit dem Fokus auf ein reines Rennen an die Spitze.",
+    "translated": true
+  },
+  {
+    "key": "staticChallenges.journey-challenge.title",
+    "prefix": "staticChallenges",
+    "en": "Journey Challenge",
+    "de": "Journey-Challenge",
+    "translated": true
+  },
+  {
+    "key": "staticChallenges.race-challenge.description",
+    "prefix": "staticChallenges",
+    "en": "A wellness competition driven by a realtime leaderboard with no specific targets and a pure race to top the leaderboard.",
+    "de": "Ein Wellness-Wettbewerb mit einer Echtzeit-Bestenliste ohne feste Ziele – ein reines Rennen um die Spitzenposition.",
+    "translated": true
+  },
+  {
+    "key": "staticChallenges.race-challenge.title",
+    "prefix": "staticChallenges",
+    "en": "Race Challenge",
+    "de": "Rennen-Challenge",
+    "translated": true
+  },
+  {
+    "key": "staticChallenges.streak-challenge.description",
+    "prefix": "staticChallenges",
+    "en": "A simple competition may end up being a boring race. Add some flavour to your challenge by setting a daily target.",
+    "de": "Ein einfacher Wettbewerb kann zu einem langweiligen Rennen werden. Verleihen Sie Ihrer Challenge mehr Würze, indem Sie ein Tagesziel festlegen.",
+    "translated": true
+  },
+  {
+    "key": "staticChallenges.streak-challenge.title",
+    "prefix": "staticChallenges",
+    "en": "Streak Challenge",
+    "de": "Streak-Challenge",
+    "translated": true
+  },
+  {
+    "key": "subheader.apply",
+    "prefix": "subheader",
+    "en": "Apply",
+    "de": "Anwenden",
+    "translated": true
+  },
+  {
+    "key": "subheader.custom",
+    "prefix": "subheader",
+    "en": "Custom",
+    "de": "Benutzerdefiniert",
+    "translated": true
+  },
+  {
+    "key": "subheader.customDisabled",
+    "prefix": "subheader",
+    "en": "Custom date range is not available for this page. Please select a preset.",
+    "de": "Ein benutzerdefinierter Datumsbereich ist für diese Seite nicht verfügbar. Bitte wählen Sie eine Vorgabe.",
+    "translated": true
+  },
+  {
+    "key": "subheader.lifetimeDisabled",
+    "prefix": "subheader",
+    "en": "Lifetime is selected — pick another preset to change the date range.",
+    "de": "Gesamtzeitraum ist ausgewählt — wählen Sie eine andere Vorgabe, um den Datumsbereich zu ändern.",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.last_30_days",
+    "prefix": "subheader",
+    "en": "Last 30 Days",
+    "de": "Letzte 30 Tage",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.last_365_days",
+    "prefix": "subheader",
+    "en": "Last 365 Days",
+    "de": "Letzte 365 Tage",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.last_90_days",
+    "prefix": "subheader",
+    "en": "Last 90 Days",
+    "de": "Letzte 90 Tage",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.last_fiscal_year",
+    "prefix": "subheader",
+    "en": "Last Fiscal Year",
+    "de": "Letztes Geschäftsjahr",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.last_month",
+    "prefix": "subheader",
+    "en": "Last Month",
+    "de": "Letzter Monat",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.last_quarter",
+    "prefix": "subheader",
+    "en": "Last Quarter",
+    "de": "Letztes Quartal",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.last_year",
+    "prefix": "subheader",
+    "en": "Last year",
+    "de": "Letztes Jahr",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.since_inception",
+    "prefix": "subheader",
+    "en": "Lifetime",
+    "de": "Gesamtzeitraum",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.this_fiscal_year",
+    "prefix": "subheader",
+    "en": "This Fiscal Year",
+    "de": "Dieses Geschäftsjahr",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.this_month",
+    "prefix": "subheader",
+    "en": "This Month",
+    "de": "Dieser Monat",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.this_quarter",
+    "prefix": "subheader",
+    "en": "This Quarter",
+    "de": "Dieses Quartal",
+    "translated": true
+  },
+  {
+    "key": "subheader.presets.this_year",
+    "prefix": "subheader",
+    "en": "This Year",
+    "de": "Dieses Jahr",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.browseFiles",
+    "prefix": "targetAudience",
+    "en": "Browse files",
+    "de": "Dateien durchsuchen",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.clearAll",
+    "prefix": "targetAudience",
+    "en": "Clear All",
+    "de": "Alle löschen",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.csvEmailColumn",
+    "prefix": "targetAudience",
+    "en": "CSV must contain an 'email' column",
+    "de": "Die CSV-Datei muss eine Spalte 'email' enthalten",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.done",
+    "prefix": "targetAudience",
+    "en": "Done",
+    "de": "Fertig",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.downloadSampleCsv",
+    "prefix": "targetAudience",
+    "en": "Download sample CSV",
+    "de": "Beispiel-CSV herunterladen",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.dragDrop",
+    "prefix": "targetAudience",
+    "en": "Drag & drop a CSV file here, or",
+    "de": "Ziehen Sie eine CSV-Datei hierher, oder",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.employeesMatched",
+    "prefix": "targetAudience",
+    "en": "{{count}} employees matched",
+    "de": "{{count}} Mitarbeiter gefunden",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.emptyHint",
+    "prefix": "targetAudience",
+    "en": "Build a list from reports above or search and add individual users",
+    "de": "Erstellen Sie eine Liste aus den obigen Berichten oder suchen und fügen Sie einzelne Benutzer hinzu",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.filterPlaceholder",
+    "prefix": "targetAudience",
+    "en": "Filter list...",
+    "de": "Liste filtern...",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.filters.ageGroup",
+    "prefix": "targetAudience",
+    "en": "Age Group",
+    "de": "Altersgruppe",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.filters.country",
+    "prefix": "targetAudience",
+    "en": "Country",
+    "de": "Land",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.filters.department",
+    "prefix": "targetAudience",
+    "en": "Department",
+    "de": "Abteilung",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.filters.gender",
+    "prefix": "targetAudience",
+    "en": "Gender",
+    "de": "Geschlecht",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.filtersAll.ageGroup",
+    "prefix": "targetAudience",
+    "en": "All Age Groups",
+    "de": "Alle Altersgruppen",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.filtersAll.country",
+    "prefix": "targetAudience",
+    "en": "All Countries",
+    "de": "Alle Länder",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.filtersAll.department",
+    "prefix": "targetAudience",
+    "en": "All Departments",
+    "de": "Alle Abteilungen",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.filtersAll.gender",
+    "prefix": "targetAudience",
+    "en": "All Genders",
+    "de": "Alle Geschlechter",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.isIn",
+    "prefix": "targetAudience",
+    "en": "is in",
+    "de": "ist in",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.isNotIn",
+    "prefix": "targetAudience",
+    "en": "is not in",
+    "de": "ist nicht in",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.loadEmployees",
+    "prefix": "targetAudience",
+    "en": "Load Employees",
+    "de": "Mitarbeiter laden",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.loading",
+    "prefix": "targetAudience",
+    "en": "Loading employees...",
+    "de": "Mitarbeiter werden geladen...",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.more",
+    "prefix": "targetAudience",
+    "en": "more",
+    "de": "weitere",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.noUsersFilter",
+    "prefix": "targetAudience",
+    "en": "No users match your filter.",
+    "de": "Keine Benutzer entsprechen Ihrem Filter.",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.preview",
+    "prefix": "targetAudience",
+    "en": "Preview:",
+    "de": "Vorschau:",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.reloadEmployees",
+    "prefix": "targetAudience",
+    "en": "Reload Employees",
+    "de": "Mitarbeiter neu laden",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.searchAdd",
+    "prefix": "targetAudience",
+    "en": "Search & Add",
+    "de": "Suchen & hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.searchPlaceholder",
+    "prefix": "targetAudience",
+    "en": "Search by name or email...",
+    "de": "Nach Name oder E-Mail suchen...",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.selectedUsers",
+    "prefix": "targetAudience",
+    "en": "Selected Users",
+    "de": "Ausgewählte Benutzer",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.source",
+    "prefix": "targetAudience",
+    "en": "Source",
+    "de": "Quelle",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.sourceEmployee",
+    "prefix": "targetAudience",
+    "en": "Employee",
+    "de": "Mitarbeiter",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.sourceLeague",
+    "prefix": "targetAudience",
+    "en": "League",
+    "de": "Liga",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.sourceParticipation",
+    "prefix": "targetAudience",
+    "en": "Participation",
+    "de": "Teilnahme",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.sourcePrefill",
+    "prefix": "targetAudience",
+    "en": "Prefill",
+    "de": "Vorausfüllen",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.sourceSearch",
+    "prefix": "targetAudience",
+    "en": "Search",
+    "de": "Suche",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.sourceWellness",
+    "prefix": "targetAudience",
+    "en": "Wellness",
+    "de": "Wellness",
+    "translated": false
+  },
+  {
+    "key": "targetAudience.tabAttributes",
+    "prefix": "targetAudience",
+    "en": "Attributes",
+    "de": "Attribute",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.tabCsv",
+    "prefix": "targetAudience",
+    "en": "CSV Upload",
+    "de": "CSV-Upload",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.tabSelectUsers",
+    "prefix": "targetAudience",
+    "en": "Select Users",
+    "de": "Benutzer auswählen",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.title",
+    "prefix": "targetAudience",
+    "en": "Target Audience",
+    "de": "Zielgruppe",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.usersInList",
+    "prefix": "targetAudience",
+    "en": "{{count}} users in list",
+    "de": "{{count}} Benutzer in der Liste",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.usersSelected",
+    "prefix": "targetAudience",
+    "en": "{{count}} users selected",
+    "de": "{{count}} Benutzer ausgewählt",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.validEmails",
+    "prefix": "targetAudience",
+    "en": "{{count}} valid email(s) found",
+    "de": "{{count}} gültige E-Mail(s) gefunden",
+    "translated": true
+  },
+  {
+    "key": "targetAudience.viewList",
+    "prefix": "targetAudience",
+    "en": "View List",
+    "de": "Liste anzeigen",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.activitiesSelected",
+    "prefix": "taskConfig",
+    "en": "{{count}} activities selected",
+    "de": "{{count}} Aktivitäten ausgewählt",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.addTask",
+    "prefix": "taskConfig",
+    "en": "Add Task",
+    "de": "Aufgabe hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.anyLoggableActivity",
+    "prefix": "taskConfig",
+    "en": "Any Loggable Activity",
+    "de": "Beliebige protokollierbare Aktivität",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.customiseActivities",
+    "prefix": "taskConfig",
+    "en": "CUSTOMISE ELIGIBLE ACTIVITIES",
+    "de": "ZULÄSSIGE AKTIVITÄTEN ANPASSEN",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.daily",
+    "prefix": "taskConfig",
+    "en": "Daily",
+    "de": "Täglich",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.daysThisWeek",
+    "prefix": "taskConfig",
+    "en": "DAYS THIS WEEK",
+    "de": "TAGE DIESE WOCHE",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.enterGroupName",
+    "prefix": "taskConfig",
+    "en": "Enter group name",
+    "de": "Gruppennamen eingeben",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.groupName",
+    "prefix": "taskConfig",
+    "en": "GROUP NAME",
+    "de": "GRUPPENNAME",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.groupNameRequired",
+    "prefix": "taskConfig",
+    "en": "Group name is required",
+    "de": "Gruppenname ist erforderlich",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.minimumPace",
+    "prefix": "taskConfig",
+    "en": "MINIMUM PACE",
+    "de": "MINDESTTEMPO",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.minimumPacePlaceholder",
+    "prefix": "taskConfig",
+    "en": "Minimum Pace",
+    "de": "Mindesttempo",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.noOfDays",
+    "prefix": "taskConfig",
+    "en": "NO OF DAYS",
+    "de": "ANZAHL DER TAGE",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.paceInfo",
+    "prefix": "taskConfig",
+    "en": "min/km (Any outdoor jog/run slower than {{pace}} minutes per kilometer (approx. {{mile}} minutes per mile) will not be considered eligible)",
+    "de": "min/km (Jedes Joggen/Laufen im Freien, das langsamer als {{pace}} Minuten pro Kilometer ist (ca. {{mile}} Minuten pro Meile), wird nicht als zulässig gewertet)",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.removeTask",
+    "prefix": "taskConfig",
+    "en": "Remove Task",
+    "de": "Aufgabe entfernen",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.reward",
+    "prefix": "taskConfig",
+    "en": "REWARD",
+    "de": "BELOHNUNG",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.selectActivities",
+    "prefix": "taskConfig",
+    "en": "Select activities",
+    "de": "Aktivitäten auswählen",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.selectActivity",
+    "prefix": "taskConfig",
+    "en": "SELECT ACTIVITY",
+    "de": "AKTIVITÄT AUSWÄHLEN",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.selectTargetType",
+    "prefix": "taskConfig",
+    "en": "SELECT TARGET TYPE",
+    "de": "ZIELTYP AUSWÄHLEN",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.target",
+    "prefix": "taskConfig",
+    "en": "TARGET",
+    "de": "ZIEL",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.targetPlaceholder",
+    "prefix": "taskConfig",
+    "en": "Target",
+    "de": "Ziel",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.titleText",
+    "prefix": "taskConfig",
+    "en": "TITLE TEXT OF THE ACTIVITY",
+    "de": "TITELTEXT DER AKTIVITÄT",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.units.glasses",
+    "prefix": "taskConfig",
+    "en": "GLASSESS",
+    "de": "GLÄSER",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.units.gms",
+    "prefix": "taskConfig",
+    "en": "GMS",
+    "de": "G",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.units.steps",
+    "prefix": "taskConfig",
+    "en": "STEPS",
+    "de": "SCHRITTE",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.updateTask",
+    "prefix": "taskConfig",
+    "en": "Update Task",
+    "de": "Aufgabe aktualisieren",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.viewPrizeOtherCountry",
+    "prefix": "taskConfig",
+    "en": "Click here to view the prize in a different country",
+    "de": "Klicken Sie hier, um den Preis in einem anderen Land anzuzeigen",
+    "translated": true
+  },
+  {
+    "key": "taskConfig.weekly",
+    "prefix": "taskConfig",
+    "en": "Weekly",
+    "de": "Wöchentlich",
+    "translated": true
+  },
+  {
+    "key": "taskUnits.km",
+    "prefix": "taskUnits",
+    "en": "KM",
+    "de": "KM",
+    "translated": false
+  },
+  {
+    "key": "taskUnits.mile",
+    "prefix": "taskUnits",
+    "en": "Mile",
+    "de": "Meile",
+    "translated": true
+  },
+  {
+    "key": "team.addMembers",
+    "prefix": "team",
+    "en": "Add New Team Members",
+    "de": "Neue Teammitglieder hinzufügen",
+    "translated": true
+  },
+  {
+    "key": "team.captain",
+    "prefix": "team",
+    "en": "Captain",
+    "de": "Kapitän",
+    "translated": true
+  },
+  {
+    "key": "team.create",
+    "prefix": "team",
+    "en": "Create Team",
+    "de": "Team erstellen",
+    "translated": true
+  },
+  {
+    "key": "team.existingMembers",
+    "prefix": "team",
+    "en": "Existing Members",
+    "de": "Vorhandene Mitglieder",
+    "translated": true
+  },
+  {
+    "key": "team.existingTeams",
+    "prefix": "team",
+    "en": "Existing Teams",
+    "de": "Vorhandene Teams",
+    "translated": true
+  },
+  {
+    "key": "team.leader",
+    "prefix": "team",
+    "en": "Team Leader",
+    "de": "Teamleiter",
+    "translated": true
+  },
+  {
+    "key": "team.members",
+    "prefix": "team",
+    "en": "members",
+    "de": "Mitglieder",
+    "translated": true
+  },
+  {
+    "key": "team.membersBtn",
+    "prefix": "team",
+    "en": "Members",
+    "de": "Mitglieder",
+    "translated": true
+  },
+  {
+    "key": "team.membersEmailPlaceholder",
+    "prefix": "team",
+    "en": "Eg: abc@gmail.com, dcv@gmail.com",
+    "de": "Eg: abc@gmail.com, dcv@gmail.com",
+    "translated": false
+  },
+  {
+    "key": "team.name",
+    "prefix": "team",
+    "en": "Team Name",
+    "de": "Teamname",
+    "translated": true
+  },
+  {
+    "key": "team.photo",
+    "prefix": "team",
+    "en": "Team Photo",
+    "de": "Teamfoto",
+    "translated": true
+  },
+  {
+    "key": "team.searchByName",
+    "prefix": "team",
+    "en": "Search by team names..",
+    "de": "Nach Teamnamen suchen..",
+    "translated": true
+  },
+  {
+    "key": "team.searchMember",
+    "prefix": "team",
+    "en": "Search team member by name or email",
+    "de": "Mitglied nach Name oder E-Mail suchen",
+    "translated": true
+  },
+  {
+    "key": "team.slogan",
+    "prefix": "team",
+    "en": "Team Slogan",
+    "de": "Team-Slogan",
+    "translated": true
+  },
+  {
+    "key": "team.update",
+    "prefix": "team",
+    "en": "Update Team",
+    "de": "Team aktualisieren",
+    "translated": true
+  },
+  {
+    "key": "teamScoreBreakdown.noMembers",
+    "prefix": "teamScoreBreakdown",
+    "en": "No team members available",
+    "de": "Keine Teammitglieder verfügbar",
+    "translated": true
+  },
+  {
+    "key": "weeklyScoreItem.thisWeekSoFar",
+    "prefix": "weeklyScoreItem",
+    "en": "This week so far",
+    "de": "Diese Woche bisher",
+    "translated": true
+  },
+  {
+    "key": "wellnessBadges.allBadges",
+    "prefix": "wellnessBadges",
+    "en": "All Badges",
+    "de": "Alle Abzeichen",
+    "translated": true
+  },
+  {
+    "key": "wellnessBadges.earned",
+    "prefix": "wellnessBadges",
+    "en": "earned",
+    "de": "verdient",
+    "translated": true
+  },
+  {
+    "key": "wellnessBadges.empty",
+    "prefix": "wellnessBadges",
+    "en": "No badges match your search.",
+    "de": "Keine Abzeichen entsprechen Ihrer Suche.",
+    "translated": true
+  },
+  {
+    "key": "wellnessBadges.search",
+    "prefix": "wellnessBadges",
+    "en": "Search badges...",
+    "de": "Abzeichen suchen...",
+    "translated": true
+  },
+  {
+    "key": "wellnessBadges.subtitle",
+    "prefix": "wellnessBadges",
+    "en": "Achievement badges earned by participants across wellness challenges",
+    "de": "Erfolgsabzeichen, die von Teilnehmenden in Wellness-Challenges verdient wurden",
+    "translated": true
+  },
+  {
+    "key": "wellnessBadges.system",
+    "prefix": "wellnessBadges",
+    "en": "System",
+    "de": "System",
+    "translated": false
+  },
+  {
+    "key": "wellnessBadges.title",
+    "prefix": "wellnessBadges",
+    "en": "Wellness Badges",
+    "de": "Wellness-Abzeichen",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.noDistributionData",
+    "prefix": "wellnessLeagues",
+    "en": "No distribution data",
+    "de": "Keine Verteilungsdaten",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.onDate",
+    "prefix": "wellnessLeagues",
+    "en": "On {{date}}",
+    "de": "Am {{date}}",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.subtitle",
+    "prefix": "wellnessLeagues",
+    "en": "Consistency-based activity tier distribution and trends",
+    "de": "Auf Konstanz basierende Verteilung der Aktivitätsstufen und Trends",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.tierDistribution",
+    "prefix": "wellnessLeagues",
+    "en": "Current Tier Distribution",
+    "de": "Aktuelle Stufenverteilung",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.tierTrends.emptySubtitle",
+    "prefix": "wellnessLeagues",
+    "en": "Try adjusting your date range",
+    "de": "Passen Sie den Datumsbereich an",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.tierTrends.emptyTitle",
+    "prefix": "wellnessLeagues",
+    "en": "No trend data available",
+    "de": "Keine Trenddaten verfügbar",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.tierTrends.footnote",
+    "prefix": "wellnessLeagues",
+    "en": "Trends reflect only employees currently active in the system.",
+    "de": "Die Trends berücksichtigen nur aktuell im System aktive Mitarbeitende.",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.tierTrends.monthly",
+    "prefix": "wellnessLeagues",
+    "en": "Monthly",
+    "de": "Monatlich",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.tierTrends.subtitle",
+    "prefix": "wellnessLeagues",
+    "en": "Distribution changes across activity tiers",
+    "de": "Verteilungsänderungen über Aktivitätsstufen",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.tierTrends.title",
+    "prefix": "wellnessLeagues",
+    "en": "Tier Trends Over Time",
+    "de": "Stufentrends im Zeitverlauf",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.tierTrends.weekly",
+    "prefix": "wellnessLeagues",
+    "en": "Weekly",
+    "de": "Wöchentlich",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.title",
+    "prefix": "wellnessLeagues",
+    "en": "Wellness Leagues",
+    "de": "Wellness-Ligen",
+    "translated": true
+  },
+  {
+    "key": "wellnessLeagues.unknown",
+    "prefix": "wellnessLeagues",
+    "en": "Unknown",
+    "de": "Unbekannt",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.ageTooltip",
+    "prefix": "wellnessScore",
+    "en": "Age {{ageGroup}}",
+    "de": "Alter {{ageGroup}}",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.aiGenerated",
+    "prefix": "wellnessScore",
+    "en": "AI-generated",
+    "de": "KI-generiert",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.avgScore",
+    "prefix": "wellnessScore",
+    "en": "Avg Score",
+    "de": "Durchschnittspunktzahl",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.byAgeGroupSubtitle",
+    "prefix": "wellnessScore",
+    "en": "Average score across age brackets",
+    "de": "Durchschnittlicher Score über Altersgruppen",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.byDepartmentSubtitle",
+    "prefix": "wellnessScore",
+    "en": "Average score ranked by performance",
+    "de": "Durchschnittlicher Score nach Leistung sortiert",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.byGenderSubtitle",
+    "prefix": "wellnessScore",
+    "en": "Average score across genders",
+    "de": "Durchschnittlicher Score nach Geschlecht",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.byGeographySubtitle",
+    "prefix": "wellnessScore",
+    "en": "Regional average scores",
+    "de": "Regionale Durchschnittswerte",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.componentTrendsSubtitle",
+    "prefix": "wellnessScore",
+    "en": "Identify which components are driving score changes",
+    "de": "Erkennen Sie, welche Komponenten die Score-Änderungen antreiben",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.componentTrendsTitle",
+    "prefix": "wellnessScore",
+    "en": "Component Trends Over Time",
+    "de": "Komponententrends im Zeitverlauf",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.compositionSubtitle",
+    "prefix": "wellnessScore",
+    "en": "Current period breakdown",
+    "de": "Aufschlüsselung des aktuellen Zeitraums",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.compositionTitle",
+    "prefix": "wellnessScore",
+    "en": "How the Wellness Score is Composed",
+    "de": "So setzt sich der Wellness-Score zusammen",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.correlationSubtitle",
+    "prefix": "wellnessScore",
+    "en": "How different factors influence Wellness Score",
+    "de": "Wie verschiedene Faktoren den Wellness-Score beeinflussen",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.correlationTitle",
+    "prefix": "wellnessScore",
+    "en": "Correlation: Challenges & Programs Impact",
+    "de": "Korrelation: Wirkung von Challenges & Programmen",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.cards.orgTrendSubtitle",
+    "prefix": "wellnessScore",
+    "en": "Score trend with component contributions overlay",
+    "de": "Score-Trend mit Überlagerung der Komponentenbeiträge",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.componentShort.activity",
+    "prefix": "wellnessScore",
+    "en": "Activity",
+    "de": "Aktivität",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.componentShort.generic",
+    "prefix": "wellnessScore",
+    "en": "Component",
+    "de": "Komponente",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.componentShort.health",
+    "prefix": "wellnessScore",
+    "en": "Health",
+    "de": "Gesundheit",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.componentShort.participation",
+    "prefix": "wellnessScore",
+    "en": "Participation",
+    "de": "Teilnahme",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.componentShort.program",
+    "prefix": "wellnessScore",
+    "en": "Program",
+    "de": "Programm",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.employeesCount",
+    "prefix": "wellnessScore",
+    "en": "{{count}} employees",
+    "de": "{{count}} Mitarbeitende",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.loadError",
+    "prefix": "wellnessScore",
+    "en": "Unable to load data. Please try again.",
+    "de": "Daten konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.pts",
+    "prefix": "wellnessScore",
+    "en": "pts",
+    "de": "Pkt.",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.regionsCount",
+    "prefix": "wellnessScore",
+    "en": "{{count}} regions",
+    "de": "{{count}} Regionen",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.retry",
+    "prefix": "wellnessScore",
+    "en": "Retry",
+    "de": "Erneut versuchen",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.byAgeGroup",
+    "prefix": "wellnessScore",
+    "en": "Wellness Score by Age Group",
+    "de": "Wellness-Score nach Altersgruppe",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.byDepartment",
+    "prefix": "wellnessScore",
+    "en": "Wellness Score by Department",
+    "de": "Wellness-Score nach Abteilung",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.byGender",
+    "prefix": "wellnessScore",
+    "en": "Wellness Score by Gender",
+    "de": "Wellness-Score nach Geschlecht",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.byGeography",
+    "prefix": "wellnessScore",
+    "en": "Wellness Score by Geography",
+    "de": "Wellness-Score nach Region",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.componentTrends",
+    "prefix": "wellnessScore",
+    "en": "Component Trends",
+    "de": "Komponenten-Trends",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.composition",
+    "prefix": "wellnessScore",
+    "en": "Wellness Score Composition",
+    "de": "Zusammensetzung des Wellness-Scores",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.correlation",
+    "prefix": "wellnessScore",
+    "en": "Correlation",
+    "de": "Korrelation",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.insights",
+    "prefix": "wellnessScore",
+    "en": "Insights",
+    "de": "Einblicke",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.orgTrend",
+    "prefix": "wellnessScore",
+    "en": "Org Wellness Score Trend",
+    "de": "Trend des Wellness-Scores der Organisation",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.sections.summary",
+    "prefix": "wellnessScore",
+    "en": "Summary",
+    "de": "Zusammenfassung",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.subtitle",
+    "prefix": "wellnessScore",
+    "en": "Measures improvement and consistency across your workforce",
+    "de": "Misst Verbesserung und Konstanz Ihrer Belegschaft",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.title",
+    "prefix": "wellnessScore",
+    "en": "Wellness Score",
+    "de": "Wellness-Score",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.totalScore",
+    "prefix": "wellnessScore",
+    "en": "Total Score",
+    "de": "Gesamtpunktzahl",
+    "translated": true
+  },
+  {
+    "key": "wellnessScore.weightLabel",
+    "prefix": "wellnessScore",
+    "en": "{{label}}: {{weight}}% weight",
+    "de": "{{label}}: {{weight}} % Gewichtung",
+    "translated": true
+  },
+  {
+    "key": "wellnessScoreReport.headerSubtitle",
+    "prefix": "wellnessScoreReport",
+    "en": "Individual employee wellness score details",
+    "de": "Details zum Wellness-Score einzelner Mitarbeitender",
+    "translated": true
+  },
+  {
+    "key": "wellnessScoreReport.headerTitle",
+    "prefix": "wellnessScoreReport",
+    "en": "Employee Wellness Scores",
+    "de": "Wellness-Scores der Mitarbeitenden",
+    "translated": true
+  },
+  {
+    "key": "wellnessScoreReport.hrAdminOnly",
+    "prefix": "wellnessScoreReport",
+    "en": "HR Admin Only",
+    "de": "Nur für HR-Admins",
+    "translated": true
+  },
+  {
+    "key": "wellnessScoreReport.subtitle",
+    "prefix": "wellnessScoreReport",
+    "en": "Employee-level wellness score breakdown",
+    "de": "Aufschlüsselung des Wellness-Scores pro Mitarbeitendem",
+    "translated": true
+  },
+  {
+    "key": "wellnessScoreReport.title",
+    "prefix": "wellnessScoreReport",
+    "en": "Wellness Score Report",
+    "de": "Wellness-Score-Bericht",
+    "translated": true
+  }
+]
