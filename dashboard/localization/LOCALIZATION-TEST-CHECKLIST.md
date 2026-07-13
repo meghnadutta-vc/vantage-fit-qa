@@ -10,26 +10,26 @@ Test German-deep first, then Arabic (RTL), then es/fr/pl (record status per lang
 | Module / Sub-module / Element | Testing Checklist | Status |
 |---|---|---|
 | **▸ GLOBAL CHROME** (persistent — test once per language) | | |
-| (whole chrome) | U1 U2 U3 U4 U6 U9 U10 · F8 · A1 A2 A3 (+U5 Arabic) — nav/labels translated, no bleed, layout fits, `<html lang>` matches, switch persists | ☐ |
-| Product rail (Recognition…Admin Hub) | U1 U9 — product names (shared shell; confirm FE scope) | ☐ |
-| Profile menu | U1 F1 — opens; items ("HR Admin Dashboard"…) translated | ☐ |
-| Create button → global chooser | U1 F1 F5 F9 — opens; options (Challenge/Announcement/Event/Content) translated | ☐ |
-| Left-nav items + group headers | U1 F1 F9 — links/groups translated; expanders open | ☐ |
-| Plan badge "Active Plan - Grow" | ⭕ A5 — backend `plan.name` (known-English) | ☐ |
-| Language switcher | U1 F1 F8 F9 — switches whole UI; 18 options; persists; **option names not translated (#4)** | ☐ |
-| Challenges / Licenses counters | U1 U7 — labels translated; numbers formatted | ☐ |
-| Contact Account Manager | U1 F1 — label translated; opens | ☐ |
+| (whole chrome) | U1 U2 U3 U4 U6 U9 U10 · F8 · A1 A2 A3 (+U5 Arabic) — nav/labels translated, no bleed, layout fits, `<html lang>` matches, switch persists | de: ✅ nav/labels German, no bleed, no overflow; F8 switch+persist ✅; **U10 `<html lang>`="en" ❌ #24** |
+| Product rail (Recognition…Admin Hub) | U1 U9 — product names (shared shell; confirm FE scope) | de: ◐ names English — shared shell (N1, confirm scope) |
+| Profile menu | U1 F1 — opens; items ("HR Admin Dashboard"…) translated | de: ✅ opens (items = shared shell) |
+| Create button → global chooser | U1 F1 F5 F9 — opens; options (Challenge/Announcement/Event/Content) translated | de: ✅ opens; options German ("Was möchten Sie erstellen?") |
+| Left-nav items + group headers | U1 F1 F9 — links/groups translated; expanders open | de: ✅ all German; expanders open |
+| Plan badge "Active Plan - Grow" | ⭕ A5 — backend `plan.name` (known-English) | ⭕ backend (expected EN) |
+| Language switcher | U1 F1 F8 F9 — switches whole UI; 18 options; persists; **option names not translated (#4)** | de: F1/F8 ✅ (switches+persists); **U1 option names English ❌ #4** |
+| Challenges / Licenses counters | U1 U7 — labels translated; numbers formatted | de: ✅ "Herausforderungen"/"Lizenzen" labels German |
+| Contact Account Manager | U1 F1 — label translated; opens | de: ✅ "Account-Manager kontaktieren" |
 | **▸ OVERVIEW — `/fit/overview`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 U7 U8 U10 · F8 · A1 A2 A4 · U5 — chrome translated; date format per locale | ☐ |
-| Country filter | U1 F1 F2 F9 — **opens + applies on click (wire-up #1: "All Countries" English)** | ☐ |
-| Date-range picker + presets | U1 F1 F2 F9 U7 — opens; presets translated (#2); value formatted (#3); custom-disabled note | ☐ |
-| KPI cards (Enrolled/Active, Incentivization, Participation) | U1 U7 ⭕ — labels FE; values backend | ☐ |
-| Leadership Insights (AI) | ⭕ A5 — backend/AI text | ☐ |
-| Org Wellness Score + Score Breakdown | U1 ⭕ — labels FE; scores backend | ☐ |
-| At a Glance tiles (Avg Steps/Active Min/Mindful Min/Avg Sleep) | U1 U7 — tile labels + units | ☐ |
-| Recommended Actions list | U1 F1 — item labels translated; deep-link | ☐ |
-| Workforce Health Snapshot | U1 ⭕ — labels FE; data backend | ☐ |
-| Ask Vantage Fit modal (⌘K) | U1 F1 ⭕ — launcher opens; chrome FE; answers backend | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 U7 U8 U10 · F8 · A1 A2 A4 · U5 — chrome translated; date format per locale | de: chrome ✅; **body = skeleton (O1) ⛔** — cards untestable |
+| Country filter | U1 F1 F2 F9 — **opens + applies on click (wire-up #1: "All Countries" English)** | de: **F1 ✅ opens, F2 ✅ applies** (selected "India" → label updated); **U1 "All Countries" English ❌ #1** |
+| Date-range picker + presets | U1 F1 F2 F9 U7 — opens; presets translated (#2); value formatted (#3); custom-disabled note | de: **F1 ✅ opens**; **U1 presets English ("This Month"/"Last Month"…) ❌ #2**; **U7 date "Jul 01, 2026" ❌ #3** |
+| KPI cards (Enrolled/Active, Incentivization, Participation) | U1 U7 ⭕ — labels FE; values backend | ⛔ body skeleton (O1); values ⭕ backend |
+| Leadership Insights (AI) | ⭕ A5 — backend/AI text | ⭕ backend/AI |
+| Org Wellness Score + Score Breakdown | U1 ⭕ — labels FE; scores backend | ⛔ body skeleton (O1); scores ⭕ backend |
+| At a Glance tiles (Avg Steps/Active Min/Mindful Min/Avg Sleep) | U1 U7 — tile labels + units | ⛔ body skeleton (O1) |
+| Recommended Actions list | U1 F1 — item labels translated; deep-link | ⛔ body skeleton (O1) |
+| Workforce Health Snapshot | U1 ⭕ — labels FE; data backend | ⛔ body skeleton (O1) |
+| Ask Vantage Fit modal (⌘K) | U1 F1 ⭕ — launcher opens; chrome FE; answers backend | de: ✅ F1 opens; chrome FE; answers ⭕ backend |
 | **▸ CHALLENGES › Create Challenge — `/fit/create-challenge`** | | |
 | (whole screen) | U1 U2 U3 U4 U6 U9 · F8 · A2 · U5 | ☐ |
 | Intro heading / "OR" / section heading | U1 U2 — translated; **#7 "…New Challenges" concat capitalisation** | ☐ |
