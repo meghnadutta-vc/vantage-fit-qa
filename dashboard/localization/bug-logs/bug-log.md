@@ -808,6 +808,44 @@ Evidence: evidence/functional/announcement_ready_de.png (both fields filled, Pub
   English** ("Announcements", "Create Announcement", "Write and publish…", "Publish"). So #15 is the
   list-page chrome + header + CTA + confirm dialog (#28), not the field labels. Evidence: evidence/functional/announcement_create-form_de.png
 
+---
+
+## Run 6 — 2026-07-13 — Polish (pl) — Overview page
+
+### i18n coverage (authoritative — from the FE i18n file)
+`/assets/i18n/fit/pl.json` exists, 982 keys: **973 translated to Polish, 0 missing, 9 left English**
+(OK, Podcast, System, Program, an email placeholder — universal/loanword terms). So Polish FE
+translation is ~99% complete.
+
+### AC1 (Polish) — PASS
+Switch to Polish re-renders the whole UI. Nav fully Polish with correct diacritics: "Przegląd",
+"Utwórz wyzwanie", "Aktywne/Zakończone wyzwania", "Programy", "Społeczność", "Zdrowie pracowników",
+"Analiza zdrowia", "Wynik dobrostanu", "Raporty", "Nagrody", "Konfiguracja", "Ustawienia",
+"Skontaktuj się z opiekunem konta". Group headers "WYZWANIA", "ANGAŻUJ". Widget "Język" / "Licencje".
+No German/English bleed.
+
+### Overview findings — all are the SAME language-agnostic wire-up bugs (Polish translation exists, not applied)
+Verified in pl.json:
+- **#1** "All Countries" → pl.json `targetAudience.filtersAll.country` = **"Wszystkie kraje"** (UI shows English)
+- **#2** "This Month" → `subheader.presets.this_month` = **"Bieżący miesiąc"** (UI shows English)
+- **#3/#11** date "Jul 01, 2026 - Jul 12, 2026" — English format (should be Polish locale format)
+- **#5** "Active Plan - Grow" → `fitMenu.activePlan` = **"Aktywny plan"** (UI shows English; "Grow" = plan tier)
+- **#8** NEW badge → `common.newTag` = **"NOWOŚĆ"** (UI shows "NEW"); FREE badge still English (no key)
+- **N2** "Ask Vantage Fit anything" chat widget — English (separate embedded widget)
+- **#24** `<html lang>` — expected still "en" (global bug, not re-fixed for pl)
+
+### Positive / no-new-bugs
+- **No layout breakage** — Polish text fits; diacritics (ł, ż, ą, ś, ę) render correctly; the
+  "Skontaktuj się z opiekunem konta" button wraps to 2 lines like other languages (fine).
+- **No Polish-specific defects** — every issue is a previously-logged language-agnostic FE bug;
+  the Polish translations themselves are present and render where components use the i18n key.
+- Overview dashboard **body** = skeleton loaders (O1, both en & pl) → cards untested (pre-existing, non-i18n).
+- Evidence: evidence/pl/overview_landing.png
+
+**Conclusion (Overview, Polish):** Polish is in good shape — translations exist and render; the only
+gaps are the same frontend wire-up/hardcoded-literal bugs already logged for German (#1, #2, #3, #5,
+#8) plus the global #24. No new bug IDs needed.
+
 ## Functional + UI pass — coverage summary
 **All 9 modules** now functionally walked (German) at safe depth. Behaviors verified working:
 navigation, validation gating (7 forms), multi-step wizard nav, dynamic add-rows, char counters,
