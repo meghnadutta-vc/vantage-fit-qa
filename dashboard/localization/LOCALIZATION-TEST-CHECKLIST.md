@@ -31,24 +31,24 @@ Test German-deep first, then Arabic (RTL), then es/fr/pl (record status per lang
 | Workforce Health Snapshot | U1 ⭕ — labels FE; data backend | ⛔ body skeleton (O1) |
 | Ask Vantage Fit modal (⌘K) | U1 F1 ⭕ — launcher opens; chrome FE; answers backend | de: ✅ F1 opens; chrome FE; answers ⭕ backend |
 | **▸ CHALLENGES › Create Challenge — `/fit/create-challenge`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 U9 · F8 · A2 · U5 | ☐ |
-| Intro heading / "OR" / section heading | U1 U2 — translated; **#7 "…New Challenges" concat capitalisation** | ☐ |
-| Template cards (Stress Free Month…) | ⭕ A5 — template names/descriptions backend | ☐ |
-| "Use Template" / "Create Challenge" buttons | U1 F1 F9 — translated; open builder | ☐ |
-| Challenge-type cards (Custom/Race/Journey/E-Marathon/Streak) + descriptions | U1 F9 — **#6 wire-up: English though `staticChallenges.*` translated** | ☐ |
-| Builder Step 1 (Logo, Name, Slogan, About, T&C, Auto-announce toggle) | U1 U2 F3 F6 F7 — labels/placeholders/counters; validation gating; accented input | ☐ |
-| Builder Step 2 (Set Duration — start/end date pickers) | U1 F1 F7 U7 — picker opens; DD/MM/YYYY per locale | ☐ |
-| Builder later steps (activities/targets → audience → rewards → publish) | U1 U2 F3 F4 F5 F7 — ⚠️ walk each step in-language; validation/toasts/dialogs localized | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 U9 · F8 · A2 · U5 | de: ✅ chrome/instructional German, no overflow; issues #6, #7 |
+| Intro heading / "OR" / section heading | U1 U2 — translated; **#7 "…New Challenges" concat capitalisation** | de: ✅ German ("Beginnen Sie…", "ODER"); **U2 "Neuen" concat cap ❌ #7** |
+| Template cards (Stress Free Month…) | ⭕ A5 — template names/descriptions backend | ⭕ backend content |
+| "Use Template" / "Create Challenge" buttons | U1 F1 F9 — translated; open builder | de: ✅ "Vorlage verwenden" / "Challenge erstellen" |
+| Challenge-type cards (Custom/Race/Journey/E-Marathon/Streak) + descriptions | U1 F9 — **#6 wire-up: English though `staticChallenges.*` translated** | de: **❌ #6 cards English (Custom/Race/Streak Challenge…)** |
+| Builder Step 1 (Logo, Name, Slogan, About, T&C, Auto-announce toggle) | U1 U2 F3 F6 F7 — labels/placeholders/counters; validation gating; accented input | de: ✅ German fields; **F3 gating ✅ (Next disabled→enables on Name)**; F6 accents ✅ (verified) |
+| Builder Step 2 (Set Duration — start/end date pickers) | U1 F1 F7 U7 — picker opens; DD/MM/YYYY per locale | de: ✅ German; date DD/MM/YYYY (verified) |
+| Builder later steps (activities/targets → audience → rewards → publish) | U1 U2 F3 F4 F5 F7 — ⚠️ walk each step in-language; validation/toasts/dialogs localized | ☐ not yet walked (deeper wizard) |
 | **▸ CHALLENGES › Active Challenges — `/fit/manage-challenge`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 U8 U9 · F8 · A2 A5 · U5 | ☐ |
-| Title + "Create Challenge" | U1 F1 — translated; opens builder | ☐ |
-| Section headers (Ongoing / Upcoming) + counts | U1 — translated | ☐ |
-| Challenge card (name/status/type/visibility/participation/dates) | U1 U7 ⭕ — "Private"/"Participation" FE; **status & type backend (#9/#10)**; dates (#11) | ☐ |
-| Row actions: View / Manage | U1 F1 F2 — translated; open detail / management | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 U8 U9 · F8 · A2 A5 · U5 | de: ✅ German ("Aktive Challenges", "Verwalten Sie…"), no overflow |
+| Title + "Create Challenge" | U1 F1 — translated; opens builder | de: ✅ German ("Challenge erstellen") |
+| Section headers (Ongoing / Upcoming) + counts | U1 — translated | de: ✅ "Laufende"/"Bevorstehende" |
+| Challenge card (name/status/type/visibility/participation/dates) | U1 U7 ⭕ — "Private"/"Participation" FE; **status & type backend (#9/#10)**; dates (#11) | de: "Privat"/"Teilnahme" FE ✅; **status/type ⭕ backend (#9/#10)**; dates #11 |
+| Row actions: View / Manage | U1 F1 F2 — translated; open detail / management | de: **F1/F2 ✅ "Ansehen" opens detail (/campaign/25411)**; "Verwalten" ✅ |
 | **▸ CHALLENGES › Past Challenges — `/fit/past-challenges`** | | |
-| (whole screen) | U1 U2 U3 U4 U6 U8 · F8 · A2 A5 | ☐ |
-| Card list (status "Completed", participation, dates) | U1 U7 ⭕ — labels FE; status/names backend; dates formatted | ☐ |
-| Row action: View | U1 F1 F2 — opens results detail | ☐ |
+| (whole screen) | U1 U2 U3 U4 U6 U8 · F8 · A2 A5 | de: ✅ German ("Vergangene Challenges") — verified |
+| Card list (status "Completed", participation, dates) | U1 U7 ⭕ — labels FE; status/names backend; dates formatted | de: labels FE ✅; status "Abgeschlossen"/names ⭕ backend; dates #11 |
+| Row action: View | U1 F1 F2 — opens results detail | de: ✅ (same component as Active — "Ansehen" opens detail) |
 | **▸ ENGAGE › Content Library — `/fit/programs/on-demand-content`** | | |
 | (whole screen) | U1 U2 U3 U4 U6 U8 · F8 · A2 A5 · U5 | ☐ |
 | Title + "Create" button | U1 F1 — translated; opens chooser | ☐ |
