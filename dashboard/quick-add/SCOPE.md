@@ -27,7 +27,7 @@
 |---|---|---|---|
 | Track Mood | Web modal (mood picker) | P1 | ✅ Done — 4 bugs (#22 save-color inversion, #23 +Add pre-fill mismatch, #24 mobile overlap, #25 touch targets) |
 | Log Sleep | Web modal (sleep duration) | P1 | ✅ Done — 4 bugs (#26 slider keyboard inaccessible, #27 +Add pre-fill mismatch, #28 mobile overlap, #29 touch targets); Summary/Diary data reflection confirmed |
-| Guided Meditation | Web player / modal (verify) | P2 | ⬜ Pending |
+| Guided Meditation | Web page (library) + audio player | P2 | ✅ Done — 3 bugs (#30 completed sessions not reflected in Mindful Minutes/Diary, #31 no completion feedback, #32 touch targets); keyboard-accessible player confirmed |
 
 ## C. +Add → Log Diary tab
 

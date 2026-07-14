@@ -513,3 +513,95 @@ Evidence: bounding-box data captured via accessibility snapshot, see conversatio
   since it may be an intentional (if inconvenient) design decision for this MVP; worth a product
   question rather than a defect report.
 
+---
+## Mindfulness → Guided Meditation — findings (AI-tested this session)
+
+## Bug #30 [Functional/Data - P2]
+[Mindfulness → Guided Meditation — completed sessions are not reflected anywhere]
+Played a full Guided Meditation session (Yoga Nidra, 10:04 total) to natural completion — seeked the
+underlying `<audio>` element to its final ~3 seconds and let the browser's native `ended` event fire
+for real, rather than idling the full 10 minutes — and then checked both places sleep/mood data is
+known to surface:
+- **Summary → Trends → Mindful Minutes**: stayed at "0 sec ↓", unchanged, even after a hard reload
+  (ruling out the known stale-cache-until-reload pattern from Bug #8).
+- **Diary**: no Meditation/Mindfulness card exists anywhere on the page at all. Snapshot, Calorie
+  Ledger, Sleep, Food Log, Intake, Distance, Activities, and Vitals cards are all present and correctly
+  populated with the day's other data, but there is no equivalent card for meditation/mindfulness
+  minutes.
+Expected: Completing a Guided Meditation session should increment "Mindful Minutes" on the Summary
+Trends widget (the metric exists and is clearly designed for this) and/or appear in the Diary,
+consistent with how Sleep and Mood are both tracked and displayed.
+Actual: No visible record of the completed session anywhere in the product.
+Note/Doubt: The session was completed via a JS-driven seek-to-end rather than a full real-time
+10-minute playthrough. This is a standard, valid QA technique for triggering a genuine `ended` event
+without idling, but if the backend's mindfulness-minutes logging depends on elapsed wall-clock/watch-
+time heuristics (rather than the `ended` event itself), a real full-duration playthrough should be
+re-verified to rule out that specific difference. Recommend a follow-up spot-check with an untouched,
+real-time playthrough of a short (5 min) session before treating this as fully confirmed for all
+possible logging implementations.
+Evidence: evidence/gm_05_after_completion.png, evidence/gm_06_diary.png (Summary Trends and Diary
+both captured post-completion, post-hard-reload).
+
+## Bug #31 [UX - P3]
+[Mindfulness → Guided Meditation — no completion/success feedback when a session finishes]
+When a session's audio reaches its end (`ended` event fires), the "Now playing" player dialog closes
+**silently** — no completion screen, toast, congratulatory message, or any other indication that the
+session finished successfully, either normally or with the same fanfare a user might expect from
+completing an activity elsewhere in the app.
+Expected: Some acknowledgment that the session completed — even a simple toast ("Session complete!")
+or a brief summary state before the dialog closes.
+Actual: Dialog disappears with no visible transition or message; the user is left back on the
+Mindfulness library page with no confirmation anything happened.
+Evidence: evidence/gm_04_player_paused.png (mid-session) vs. evidence/gm_05_after_completion.png
+(post-completion — player gone, no feedback).
+
+## Bug #32 [Accessibility - P3]
+[Mindfulness → Guided Meditation — touch target sizes]
+Measured via bounding boxes:
+- Session detail dialog / player dialog **Close (×) button**: 30×30px — under the 44×44px minimum,
+  consistent with the same pattern already logged across every other Quick Add modal (Bugs #5/#10/
+  #12/#25/#29).
+- Page-level **"Back" button** (top-left, next to the Summary/Challenges/Programs/Community tabs):
+  75×29px — height under the 44px minimum, same systemic pattern.
+- Player **Rewind 10 seconds / Forward 10 seconds** buttons: 43×43px — borderline, comparable to Log
+  Sleep's slider handles (42×42px, judged acceptable there given the surrounding tap area); not filed
+  as a separate defect, noted for completeness.
+- Player **Pause/Play** button: 58×58px — comfortably meets the minimum.
+Expected: All interactive controls ≥44×44px.
+Actual: Close (×) and Back fall clearly short; Rewind/Forward are borderline; Pause/Play meets the bar.
+Evidence: bounding-box data captured via `getBoundingClientRect()` in an evaluate script, see
+conversation trace.
+
+---
+### Notes / Doubts (not bugs) — Guided Meditation
+- **Player keyboard accessibility is a genuine positive finding**: Tab order through the player is
+  correct (Close player → Rewind 10 seconds → Play/Pause → Forward 10 seconds) and pressing Enter on
+  the focused Pause/Play button correctly toggled `audio.paused` in both directions. This is notably
+  **better** than Log Sleep's Bedtime/Wake up sliders, which are completely non-operable via keyboard
+  (Bug #26) despite having correct ARIA slider semantics.
+- **Player control accessible names are all correct and descriptive**: "Close player", "Rewind 10
+  seconds", "Pause"/"Play", "Forward 10 seconds" — no icon-only, unlabeled controls found in the
+  player, unlike the header's overflow icon (Bug #4).
+- **Back button navigation verified correct** under a real click-flow (Summary → +Add → Mindfulness →
+  Guided Meditation → Back → returns to Summary). An earlier test using direct URL navigation followed
+  by Back appeared to go to Diary instead of Summary — this was confirmed to be an artifact of manually
+  typing URLs (which alters the real browser history stack), not a product defect, and was excluded
+  from the final result.
+- **Five session thumbnails initially appeared broken** (5 Senses, Body Scan, 20 Minute Compassion for
+  Your Whole Body, 10 Minute Sleep Meditation, 12 Minute Sleep Gratitude Meditation) in a full-page
+  screenshot taken immediately after page load. Verified via `naturalWidth`/`complete` checks plus a
+  direct `fetch()` of the image URLs (both returned HTTP 200) that this was a **lazy-load timing
+  artifact only** — all five images render correctly once scrolled into view. Explicitly not filed as
+  a bug; noted here as a demonstration of verifying before reporting per the judgment rules.
+- Deep-linking directly to `/ng/fit/mindfulness` works correctly and renders identically to arriving
+  via the +Add flow.
+- Grammar/copy across the header, subtitle, all session titles and descriptions, and button labels
+  ("Start session →", "Begin session", "Now playing") reviewed — no issues found.
+- Desktop layout (featured card, 7 category grids, session card typography/spacing) reviewed via
+  screenshot — clean, consistent spacing and no overlap issues found.
+- Mobile (390×844) landing page reproduces the same global floating-widget overlap already logged as
+  Bugs #24/#28 (Chat widget + FAB), confirming it is a page-level issue independent of which Quick Add
+  surface is open. The detail dialog and player, however, render cleanly on mobile with **no** overlap,
+  since both are centered modals that render above the FAB/chat layer — unlike Track Mood/Log Sleep's
+  in-page Save button, which sits within the normal page layout below that layer.
+
