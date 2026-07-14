@@ -605,3 +605,169 @@ conversation trace.
   since both are centered modals that render above the FAB/chat layer — unlike Track Mood/Log Sleep's
   in-page Save button, which sits within the normal page layout below that layer.
 
+---
+
+## Log Diary → Log Water / Update Weight / Log Meal — findings (AI-tested this session)
+
+## Bug #33 [Accessibility - P2]
+[Log Diary → Log Water — modal focus trap]
+Opening the Log Water modal (via +Add or via Diary's "Log water" button) does **not** move keyboard
+focus into the dialog at all. `document.activeElement` remains `<body>` immediately after open, and
+pressing Tab moves focus to the page's overflow-menu icon button in the header, then to the Summary
+page's "Open Diary" snapshot card — i.e. the entire underlying page remains fully tabbable while the
+modal is visually on top of it.
+Expected: Per standard modal/dialog practice (WAI-ARIA dialog pattern), opening a modal should trap
+keyboard focus inside it (typically moving focus to the first focusable element or the dialog itself),
+and Tab should cycle only within the dialog until it's closed.
+Actual: No focus trap exists; a keyboard/screen-reader user can Tab straight past the modal into
+background page content while it is open.
+Note/Doubt: This is a more severe variant of the pattern behind Bugs #3/#26 (modal keyboard
+accessibility issues) — here the modal isn't just missing operable controls, it doesn't capture focus
+at all. Worth checking whether Track Mood/Log Sleep/Update Weight modals have the same gap (Update
+Weight was spot-checked this session and its slider/stepper controls ARE independently keyboard
+operable, but full focus-trap-on-open was not re-verified for it).
+Evidence: verified via `document.activeElement` inspection in an evaluate script, see conversation trace.
+
+## Bug #34 [Functional/Data - P2]
+[Log Diary → Water — Diary "Intake" card shows wrong unit and wrong goal value]
+After logging 750 ml of water (3 glasses) via Log Water, the Diary page's Intake card displays the
+Water line as **"25.36/ 2.5 L"** — both numbers are wrong. The numerator (25.36) is actually the
+fl-oz-equivalent of 750 ml, mislabeled with an "L" unit; the correct liters value would be 0.75. The
+denominator (2.5) doesn't match the 2000 ml (2 L) daily goal shown inside the Log Water modal itself
+either. This was verified to persist after a hard reload (not a stale-cache artifact).
+Expected: Diary Intake → Water should show "0.75/ 2 L" (or the equivalent in whatever unit the user
+last selected), consistently matching the goal shown in the Log Water modal.
+Actual: Shows "25.36/ 2.5 L" — an fl-oz numeral with an "L" label, and an unrelated goal denominator.
+Evidence: evidence/log-water/lw_02_diary_water_unit_bug.png
+
+## Bug #35 [Functional/Data - P3]
+[Summary → Trends — no Water tile exists]
+Summary → Trends only shows four tiles (Avg Steps, Active Minutes, Mindful Minutes, Avg Sleep) — there
+is no Water/Hydration trend tile at all, even after logging water today. This is a parity gap versus
+Sleep and Steps, which do get dedicated Trends tiles despite Mindful Minutes having its own separate
+data bug (#30).
+Expected: A Water/Hydration trend tile consistent with the other logged metrics, or an explicit product
+decision that Water intentionally has no trend (in which case this would not be a bug).
+Actual: No such tile exists anywhere in Trends.
+Note/Doubt: Filed as P3/Functional rather than a hard blocker since Water data IS visible elsewhere
+(Diary Intake card, albeit with the wrong unit per Bug #34) — this is a consistency/completeness gap,
+not a total data-loss bug like #30.
+Evidence: evidence/log-water/lw_00_modal_initial.png (Summary trends visible in earlier full-page
+captures this session show only 4 tiles).
+
+## Bug #36 [Functional/UX - P3]
+[Log Diary → Log Water — reopening the modal doesn't reflect today's already-logged total]
+After saving 750 ml via Log Water, reopening the modal (either via +Add → Log Diary → Log Water, or
+via Diary's "Log water" button) shows **0 ml / 0 of 8 glasses / "2000 ml to goal"** — as if nothing had
+been logged today, instead of reflecting the 750 ml already saved (e.g. "750 ml logged, 1250 ml to
+goal" or similar). This is the same root-cause pattern as Bugs #23/#27 (Track Mood/Log Sleep +Add entry
+points not pre-filling today's already-logged value), now confirmed for Log Water too.
+Expected: Reopening Log Water on a day with an existing entry should reflect the running total already
+logged (consistent with how Update Weight's Diary "Edit weight" flow correctly shows "Same as last log").
+Actual: Always resets to a blank 0 ml / 0 glasses state regardless of what's already logged today.
+Evidence: evidence/log-water/lw_03_reopen_no_prefill.png
+
+## Bug #37 [Copy/UI - P4]
+[Log Diary → Log Water — "Glasses" sub-label doesn't convert when unit is toggled]
+Switching the unit toggle from ml to fl oz correctly converts the main value (e.g. 750 ml → 25 fl oz),
+the "to goal" remaining amount, and the ruler tick labels — but the "Glasses" section's sub-label stays
+hardcoded as **"1 glass = 250 ml"** even when fl oz is selected (should read "1 glass ≈ 8.5 fl oz" or
+similar).
+Expected: All unit-dependent copy in the modal should convert together when the toggle changes.
+Actual: Only the "Glasses" sub-label is left stale in ml.
+Evidence: evidence/log-water/lw_01_floz_unit_glasses_label_bug.png
+
+## Bug #38 [Accessibility - P3]
+[Log Diary → Log Water — touch target sizes]
+Measured via `getBoundingClientRect()` (desktop and mobile 390×844 — identical results on both):
+- Close (×): 32×32px
+- Previous/Next day arrows: 29×29px
+- Remove/Add a glass (−/+): 34×34px
+- ml/fl oz unit toggle segments: 51×31px (height under threshold)
+All fall under the 44×44px minimum, consistent with the systemic pattern already logged across every
+other Quick Add modal (Bugs #5/#10/#12/#25/#29/#32).
+Expected: All interactive controls ≥44×44px.
+Actual: All measured controls in this modal fall short except the "Log water" submit button (375×48,
+passes).
+Evidence: bounding-box data captured via evaluate script, see conversation trace.
+
+## Bug #39 [Accessibility/Functional - P2]
+[Mobile (390×844) — bottom-nav "+" FAB has the wrong accessible name]
+On mobile, the header's "Quick add" button is not present at all — its mobile equivalent is a red "+"
+floating action button in the bottom nav bar. Clicking it correctly opens the same Quick Add sheet
+(Workout/Mindfulness/Log Diary/Track Habits, all submodules present) — so it IS functionally the Fit
+Quick Add entry point. However, its accessible name/label is **"Give recognition"**, which is an
+unrelated Vantage Circle recognition feature, not a description of what it actually does in the Fit
+module context.
+Expected: The FAB's accessible name should reflect its actual function in this context (e.g. "Quick add"
+or "Add entry"), matching the desktop button's "Quick add" label.
+Actual: Screen readers and other assistive tech would announce this control as "Give recognition,"
+which is actively misleading about what tapping it does inside Vantage Fit.
+Note/Doubt: This strongly suggests the bottom nav is a shared cross-product component (reused from the
+main Vantage Circle recognition app) that has not been re-labeled for the Fit module context — worth
+flagging to design/dev as a shared-component contextualization gap rather than a one-off typo.
+Evidence: evidence/log-water/lw_05_mobile_no_quickadd.png (FAB visible), confirmed via
+`getByRole('button', { name: 'Give recognition' })` successfully opening the Quick Add sheet.
+
+## Bug #40 [Functional/Data - P2]
+[Log Diary → Update Weight — wrong default "latest weigh-in" value before today's first log]
+Before any weight has been logged today, opening Update Weight (via +Add, on both desktop and mobile)
+shows a default "Your latest weigh-in" value of **165.0 lbs (74.8 kg)** — this does not match the
+actual last-known weight shown on Summary → Vitals, which reads **132.28 lbs**. The two values are
+unrelated (not a rounding or unit-conversion difference — 132.28 lbs ≈ 60.0 kg, not 74.8 kg).
+Expected: The modal's default/starting value should reflect the real last-logged weight (132.28 lbs),
+consistent with what Summary → Vitals displays.
+Actual: Shows an unrelated, seemingly hardcoded or stale default (165.0 lbs / 74.8 kg) instead.
+Note/Doubt: After saving a new weight (164.4 lbs) and reopening via Diary's "Edit weight" button, the
+modal correctly showed "Same as last log" with the right value (74.6 kg ≈ 164.4 lbs) — so the bug is
+specifically in the **before-any-log-today default**, not in the edit-existing-entry flow. Reopening
+via +Add (not Diary edit) after logging today's weight reproduced the same wrong default again (74.8 kg/
+165.0 lbs), suggesting +Add's "Update Weight" entry point may not be reading the true last-logged value
+at all, regardless of whether an entry exists for today — this compounds with the pattern in Bugs
+#23/#27/#36 but is more severe since it shows actively wrong data rather than merely blank/unfilled data.
+Evidence: evidence/update-weight/uw_00_prefill_mismatch.png, evidence/update-weight/uw_02_mobile_modal.png
+
+## Bug #41 [Accessibility - P3]
+[Log Diary → Update Weight — touch target sizes]
+Measured via `getBoundingClientRect()`:
+- Close (×): 32×32px
+- Previous/Next day arrows: 29×29px
+- lbs/kg unit toggle buttons: 29×29px
+- Reduce/Increase weight (−/+): **48×48px — passes**
+Expected: All interactive controls ≥44×44px.
+Actual: Close, day-nav arrows, and unit toggle fall short; Reduce/Increase weight and the Save/Update
+weight submit button (375×48) both pass.
+Evidence: bounding-box data captured via evaluate script, see conversation trace.
+
+---
+### Notes / Doubts (not bugs) — Log Water / Update Weight / Log Meal
+- **Log Water's "Any amount" drag-to-fine-tune ruler is completely inaccessible** — it has no `role`,
+  no `tabindex`, and its visual caret is `aria-hidden`. It cannot be reached or operated by keyboard at
+  all (worse than Log Sleep's Bug #26, which at least had ARIA slider semantics but wasn't operable).
+  Not filed as a separate numbered bug since the same functional outcome (adding water) is fully
+  achievable via the keyboard-and-mouse-operable Glasses +/− stepper, which was verified to work
+  correctly — but flagged here as a real gap for a future accessibility-focused pass.
+- **Log Water's over-goal behavior is a genuine positive finding**: adding glasses well past the 8-glass/
+  2000 ml goal (tested up to 12 glasses / 3000 ml) is handled gracefully with a "Daily goal reached"
+  message and no artificial cap — better than an arbitrary hard limit would be.
+- **Log Water's Clear button works correctly**, resetting both the glass count and ruler value to 0.
+- **Update Weight's slider IS keyboard-operable** — focusing it and pressing ArrowRight/ArrowLeft moves
+  the value in 0.2 lb increments, correctly synced with the numeric display and the +/− stepper buttons.
+  This is a genuine positive contrast with Log Sleep's Bug #26 (non-operable sliders).
+- **Update Weight has nice contextual copy**: the submit button reads "Save" the first time a weight is
+  logged for a day, and "Update weight" when editing an existing entry — a small but well-considered
+  detail. Diary's Vitals → Weight row similarly switches from "Log weight" to "Edit weight" once an
+  entry exists (mirroring Mood's existing "Edit mood" pattern), unlike Water which always shows
+  "Log water" regardless of whether today's entry exists (contributing to Bug #36).
+- **Weight data reflection confirmed correct**: after saving 164.4 lbs and a hard reload, both
+  Summary → Vitals ("164.4 lbs / Updated on 14 Jul 2026") and Diary → Vitals ("164.4 lbs") updated
+  correctly — consistent with the known stale-cache-until-reload behavior already logged for other
+  modules (Bug #8 and others).
+- **Log Meal reproduces Bugs #1/#2/#3 exactly**: clicking "Log Meal" (labeled "Track on app") opens the
+  same "Continue this in the Vantage Fit app" QR modal used by Sync Steps History/Measure Heart Rate.
+  Confirmed: (a) the Quick Add dropdown remains visibly open behind/around the modal and stays open
+  even after closing the modal via its Close (×) button (Bug #1/#2 pattern); (b) keyboard focus never
+  moves into the QR modal — `document.activeElement` stays on the "Log Meal" trigger button, and
+  Tab moves to the header's overflow-menu button next, confirming no focus trap (Bug #3 pattern). No
+  new bug numbers filed for these — logged here as confirmed reproductions across a third module.
+

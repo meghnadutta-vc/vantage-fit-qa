@@ -33,9 +33,9 @@
 
 | Submodule | Web behaviour (expected) | Priority | Test status |
 |---|---|---|---|
-| Log Water | Web modal (water intake) | P1 | ⬜ Pending |
-| Update Weight | Web modal (weight entry) | P1 | ⬜ Pending |
-| Log Meal | "Track on app" — mobile hand-off | P2 | ⬜ Pending |
+| Log Water | Web modal (water intake) | P1 | ✅ Done — 7 bugs (#33 no focus trap, #34 Diary unit/value wrong, #35 no Summary trend tile, #36 +Add pre-fill mismatch, #37 unit label stale, #38 touch targets, #39 mobile FAB mislabeled "Give recognition") |
+| Update Weight | Web modal (weight entry) | P1 | ✅ Done — 2 bugs (#40 wrong default weigh-in value, #41 touch targets); slider keyboard-accessible (contrast w/ Bug #26); Summary/Diary data reflection confirmed |
+| Log Meal | "Track on app" — mobile hand-off | P2 | ✅ Done — reproduces #1/#2/#3 (dropdown left open, focus not trapped in QR modal) |
 
 ## D. +Add → Track Habits tab
 
