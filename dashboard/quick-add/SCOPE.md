@@ -39,9 +39,14 @@
 
 ## D. +Add → Track Habits tab
 
+**Note (2026-07-14):** Live verification confirmed this tab contains **only** "Log Smoking" — there
+is no "Avoid Sugar" submodule anywhere in the +Add dropdown (checked all 4 tabs: Workout,
+Mindfulness, Log Diary, Track Habits). If "Avoid Sugar" exists elsewhere in the product (e.g. a
+separate Habits page outside +Add), it was not found from the Summary/Diary entry points tested.
+
 | Submodule | Web behaviour (expected) | Priority | Test status |
 |---|---|---|---|
-| Log Smoking | Web modal (smoking log) | P1 | ⬜ Pending |
+| Log Smoking | Web modal (smoking log) | P1 | ✅ Done — 4 bugs (#42 no focus trap, #43 backend save never reflected in Diary/Summary/reopen, #44 touch targets, #45 mobile chat-widget overlap on Save) |
 
 ## E. Overflow menu
 

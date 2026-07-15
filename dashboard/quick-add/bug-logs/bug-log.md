@@ -771,3 +771,89 @@ Evidence: bounding-box data captured via evaluate script, see conversation trace
   Tab moves to the header's overflow-menu button next, confirming no focus trap (Bug #3 pattern). No
   new bug numbers filed for these — logged here as confirmed reproductions across a third module.
 
+---
+## Track Habits → Log Smoking — findings (AI-tested this session)
+
+Scope note: live verification confirmed +Add → Track Habits contains **only** "Log Smoking" — there
+is no "Avoid Sugar" item anywhere in the Quick Add dropdown (checked all 4 tabs). SCOPE.md updated
+accordingly; if "Avoid Sugar" exists elsewhere in the product it was not found from the Summary/Diary
+entry points and needs a human pointer to the correct location.
+
+## Bug #42 [Accessibility - P2]
+[Track Habits → Log Smoking — modal focus trap]
+Opening the Log Smoking modal (via +Add → Track Habits) does not move keyboard focus into the dialog.
+`document.activeElement` remains `<body>` immediately after open, and pressing Tab moves focus to the
+page header's overflow-menu ("more-trigger") button in the background — the underlying page remains
+fully tabbable while the modal is visually on top of it.
+Expected: Opening a modal should trap keyboard focus inside it (WAI-ARIA dialog pattern).
+Actual: No focus trap exists; confirmed via `document.activeElement` inspection immediately after open
+and after one Tab press.
+Note/Doubt: Same root-cause pattern as Bug #33 (Log Water) — not filed as a fresh defect category, but
+given its own bug number since it's a distinct modal instance with its own repro evidence, consistent
+with how #33 itself was numbered separately from #3.
+Evidence: evidence/log-smoking/smoking_01_modal_open.png; verified via evaluate script, see
+conversation trace.
+
+## Bug #43 [Functional/Data - P2]
+[Track Habits → Log Smoking — saves succeed on the backend but are never reflected anywhere in the web UI]
+Selecting an answer ("Yes, I smoked" or "No, I didn't") and clicking Save fires
+`POST /vantagefit/api/v1/activity/save` with body
+`{"activity_id":1013,"activity_name":"Log Smoking","activity_type":"adherence","measuring_unit":"count","value":1,...}`
+and receives a genuine `200 {"status_message":"Activity Saved Successfully","userActivityId":2295087}`
+response — confirmed via direct network request/response inspection, not assumed. Despite this
+confirmed successful backend write:
+- **Diary → Vitals** shows only Mood/Heart Rate/Weight — no Smoking row exists, even after a hard
+  reload (ruling out stale cache).
+- **Summary → Trends** has no habit/smoking tile at all.
+- **Reopening the modal** (via +Add → Track Habits → Log Smoking) always shows both radios
+  unselected and Save disabled again, even immediately after a successful save in the same session —
+  tested twice, with two different answers ("No, I didn't" then "Yes, I smoked"), same result both times.
+Expected: A successfully saved Log Smoking entry should be visible somewhere on the web dashboard —
+at minimum a Vitals row (mirroring Mood/Heart Rate/Weight) and/or a pre-filled state on reopen.
+Actual: The data is genuinely persisted server-side (confirmed real `userActivityId`) but there is no
+read/display path for it anywhere in the web UI tested.
+Note/Doubt: This looks like a missing frontend read/render path rather than a broken write path, since
+the write is confirmed successful — worth flagging to dev as potentially a quick fix (the data already
+exists server-side).
+Evidence: evidence/log-smoking/smoking_02_no_selected.png; network request/response body captured via
+`browser_network_request`, see conversation trace.
+
+## Bug #44 [Accessibility - P3]
+[Track Habits → Log Smoking — touch target sizes]
+Measured via `getBoundingClientRect()`:
+- Close (×): 32×32px
+- Previous day arrow: 29×29px
+- Save button: 375×43px (1px under the 44px minimum)
+- Radio option rows ("Yes, I smoked" / "No, I didn't"): 375×52px and 379×53px — **pass**
+Expected: All interactive controls ≥44×44px.
+Actual: Close and day-nav arrow clearly fall short (consistent with the systemic pattern already
+logged across every other Quick Add modal — Bugs #5/#10/#12/#25/#29/#32/#38/#41); Save is borderline
+(1px short).
+Evidence: bounding-box data captured via evaluate script, see conversation trace.
+
+## Bug #45 [UI/UX - P3]
+[Track Habits → Log Smoking — mobile: "Chat with us" widget overlaps the Save button]
+On mobile viewport (390×844), with the Log Smoking modal open as a bottom sheet, the floating
+"Chat with us" support widget renders directly on top of the left portion of the Save button,
+visually confirmed via full-viewport screenshot.
+Expected: Floating widgets should not obstruct an open modal's primary action, consistent with the
+issue already logged for Track Mood/Log Sleep (Bugs #24/#28), though those affected an in-page Save
+button rather than a bottom-sheet Save button.
+Actual: The widget sits on top of part of the Save button's tappable area on this modal's bottom sheet.
+Note/Doubt: Log Water and Update Weight's mobile bottom sheets were previously confirmed clean with no
+such overlap — this appears specific to Log Smoking's bottom-sheet layout/scroll position, not a
+universal bottom-sheet issue, so it's filed as its own bug rather than assumed identical to #24/#28.
+Evidence: evidence/log-smoking/smoking_04_mobile_modal.png
+
+---
+### Notes / Doubts (not bugs) — Log Smoking
+- **Avoid Sugar does not exist under +Add**: confirmed by opening the live Track Habits tab, which
+  contains only "Log Smoking". Flagged to the user before testing and confirmed out of scope for this
+  session rather than assumed missing.
+- **Save correctly disabled until a radio is selected**, and toggling between "Yes"/"No" works
+  correctly (selection and Save-enabled state update as expected).
+- **Mobile FAB mislabeling reproduces Bug #39** ("Give recognition") — same root cause, not refiled.
+- The radio-based Yes/No interaction pattern and supportive helper text ("Tracking it daily helps you
+  stay mindful and cut back over time.") are a clean, simple design — no complaints on the interaction
+  model itself, only on what happens to the data after Save (Bug #43).
+
