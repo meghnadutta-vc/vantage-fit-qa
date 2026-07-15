@@ -1,0 +1,24 @@
+{
+  "name": "vantage-fit-qa",
+  "version": "1.0.0",
+  "description": "Manual QA / testing reports for the **Vantage Fit** Android app (Vantage Circle). This is the single home for all Vantage Fit testing — organized by **testing area**, one folder each.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meghnadutta-vc/vantage-fit-qa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/meghnadutta-vc/vantage-fit-qa/issues"
+  },
+  "homepage": "https://github.com/meghnadutta-vc/vantage-fit-qa#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}
