@@ -42,6 +42,11 @@
 | DYN-TC-023 | Preview Emails — save toast | Toggle an email + "Änderungen speichern" | Localized toast | **Localized ✓** — "E-Mail-Einstellungen erfolgreich gespeichert."; save button "Änderungen speichern" localized. Toggle + save + restore functional (config restored to 9/9). | PASS | P2 |
 | DYN-TC-024 | Upload Points — functional (wallet/country/type/upload/preview) | Select Reward + India + Primär, upload CSV, Preview | Works + localized | Functional ✓ (selects, dropzone upload via hidden file input, Preview all work). **Preview modal TITLE "Preview" is English** (button "Vorschau" localizes) — mixed. See **UP#1**. Not submitted (no points distributed). | FAIL | P3 |
 
+| DYN-TC-025 | Add Employees — upload + preview | Upload CSV → preview auto-opens | Works + localized | Functional ✓ (hidden file input → preview auto-opens). **Preview modal title "Preview" English** — same shared component as Upload Points → **UP#1** applies here too. Not submitted (no employees added). Evidence: dynflow_addemployees_de.png | FAIL | P3 |
+| DYN-TC-026 | Manage Challenges — "Verwalten" redirect | Click Verwalten on a card | Navigates to edit page | ✓ → `/fit/manage-challenge/edit-challenge/25423`. Click + redirect work. | PASS | P2 |
+| DYN-TC-027 | Employee Report — load + Export | Open report; click Exportieren | Data loads; export works | ✓ report auto-loads data; "Exportieren" opens a CSV/Excel format menu (functional). Filters/column-selector show RPT#1/#2 English (known). Evidence: dynflow_employeereport_export_de.png | PASS | P2 |
+| DYN-TC-028 | Content Library — row Edit + delete availability | Open a content row's action | Edit opens; delete available | Edit modal opens pre-filled ✓ — but **no delete action exists** in the Content Library UI (edit only). Also the EDIT modal reuses the "Verknüpften Inhalt erstellen" (create) title. See notes. | ◐ | P4 |
+
 ## Phase 4 — Summary
 
 - **Validation:** preventive across the board — the shared design-system submit button stays `aria-disabled`
@@ -58,3 +63,17 @@
   toasts, and the fr/es repeat. Recommend a follow-up on a throwaway/E2E tenant.
 - **Test data:** sent 1 notification + 1 email to the admin account (Anjan Pathak) only; deleted a few junk
   "Test Announcement" rows (cleanup). No new persistent content created.
+
+## Run 2 notes (2026-07-22)
+- **Functional:** navigation/redirection 24/24 PASS; Manage-Challenges "Verwalten" → edit page ✓; Employee
+  Report loads + "Exportieren" → CSV/Excel menu ✓; Content-Library row action opens an Edit modal ✓ (but
+  NO delete action exists in the Content Library UI — edit only; and the Edit modal reuses the *create*
+  title "Verknüpften Inhalt erstellen").
+- **Toasts:** Create Content create ("Inhalt erfolgreich erstellt") + Preview-Emails save ("E-Mail-
+  Einstellungen erfolgreich gespeichert.") LOCALIZED. New: **DF#1** generic loading toast English; **UP#1**
+  Upload-Points + Add-Employees shared CSV "Preview" modal title English.
+- **⚠ Cleanup pending:** created a test Linked-Content item **"QA localization test — please delete"** —
+  it CANNOT be removed via the UI (no delete control in Content Library); needs backend/manual removal.
+- **Still deferred:** Create Event full-submit create toast (mega-form; components already functionally
+  verified; toast expected localized), Add-Employees/Upload-Points success toasts (would add people /
+  distribute points), Announcement publish toast (org-wide; ANN#3 shows its strings are English).
