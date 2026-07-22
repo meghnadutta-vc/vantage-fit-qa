@@ -64,6 +64,25 @@
 - **Test data:** sent 1 notification + 1 email to the admin account (Anjan Pathak) only; deleted a few junk
   "Test Announcement" rows (cleanup). No new persistent content created.
 
+## Run 3 — 2026-07-22 (remaining success-path submits, UAT creation authorised, formal names)
+
+| Test Case ID | Description | Actual Result | Status | Priority |
+|---|---|---|---|---|
+| DYN-TC-030 | Content Library — edit/update item | Edit modal update saved; toast "Inhalt erfolgreich erstellt" (localized ✓) — but reuses the CREATE wording ("erstellt") for an update. Item renamed to formal "Managing Workplace Stress: A Practical Guide". | ◐ | P4 |
+| DYN-TC-031 | Upload Points — real upload success toast | Uploaded valid CSV (1 pt to self). Toast **"Success — File uploaded" ENGLISH** → **UP#2**. | FAIL | P3 |
+| DYN-TC-032 | Announcement — publish success toast | Published "Q3 Wellness Program — Now Live" (Atlanta/US). Toast **"Success — Announcement creation in progress ..." ENGLISH** → confirms **ANN#3** on the publish path (delete + publish both English). | FAIL | P3 |
+| DYN-TC-033 | Add Employees — upload success toast | Uploaded valid CSV ("QA Test Account", status=1). Toast **"The file was successfully uploaded. The processing time is typically 15 minutes, although this can vary." ENGLISH** → **AE#2**. Also DF#1 loading toast reproduced. | FAIL | P3 |
+| DYN-TC-034 | Create Event — full submit | NOT COMPLETED — date fields are calendar-only (ignore programmatic/typed values); form needs ~15 custom-widget interactions. Components (date/time/audience/image) already functionally verified; create-toast expected localized (per Create Content). Deferred. | NEEDS VERIFICATION | P3 |
+
+**Toast-localization pattern (refined):** LOCALIZED — Publish Notifications send, Send Custom Email send,
+Create Content create ("Inhalt erfolgreich erstellt"), Preview-Emails save. ENGLISH — Announcement delete
+dialog+toast+publish (ANN#3), Upload-Points success (UP#2), Add-Employees success (AE#2), generic loading
+toast (DF#1). Newer upload/interceptor/announcement toasts are unwired; core send/create/save toasts localize.
+
+**Test data created (UAT company 355, formal names):** Content item "Managing Workplace Stress: A Practical
+Guide" (no UI delete); 1 point to self; announcement "Q3 Wellness Program — Now Live" (Atlanta/US, deletable
+via list); employee "QA Test Account" / qa.test.account@vantagecircle.com (deactivate via status=0 if needed).
+
 ## Run 2 notes (2026-07-22)
 - **Functional:** navigation/redirection 24/24 PASS; Manage-Challenges "Verwalten" → edit page ✓; Employee
   Report loads + "Exportieren" → CSV/Excel menu ✓; Content-Library row action opens an Edit modal ✓ (but

@@ -116,10 +116,11 @@ publish. Test data left for cleanup: 1 Linked-Content item "QA localization test
 - **WL#1 · P3 · [FE]** — Wellness Leagues subtitle "Based on avg daily steps over 21 days" English (hardcoded/not-wired). *(Both pages also inherit RPT#1 filters + RPT#2 column selector.)*
 
 ### Rewards → Upload Points — `bug-logs/upload-points.md`
-- Static page: CLEAN. **UP#1 · P3 · [FE]** (dynamic) — the CSV **"Preview" modal title is English** while its trigger button is "Vorschau" (German) — mixed-language. (Wallet/country/type selects, dropzone upload, preview all functional.)
+- Static page: CLEAN. **UP#1 · P3 · [FE]** (dynamic) — the CSV **"Preview" modal title is English** while its trigger button is "Vorschau" (German) — mixed-language. **UP#2 · P3 · [FE]** — upload **success toast "Success — File uploaded" renders English**. (Wallet/country/type selects, dropzone upload, preview, submit all functional; 1-pt test upload succeeded.)
 
 ### Configuration → Add Employees — `bug-logs/add-employees.md`
 - **AE#1 · P3 · [FE]** — File-upload dropzone "Click to upload or drag and drop" English, while the identical control on Upload Points is German → wire-up inconsistency (string exists).
+- **AE#2 · P3 · [FE]** (dynamic) — upload **success toast "The file was successfully uploaded. The processing time is typically 15 minutes…" renders English**. Also the shared CSV "Preview" modal title is English (UP#1). (Upload + preview + submit functional; test employee "QA Test Account" accepted.)
 
 ### Configuration → Preview Emails — `bug-logs/preview-emails.md`
 - **PE#1 · P3 · [FE/BE TBD]** — All 9 email-type card titles + descriptions English (page chrome German); no `previewEmails.*` keys for them → hardcoded FE literals OR backend email-template metadata (triage).
@@ -133,7 +134,8 @@ publish. Test data left for cleanup: 1 Linked-Content item "QA localization test
 
 ### Frontend bugs [FE] — fixable in the web app now
 Overview #1, #2, #3, #4, #5, #7 · CC#1, #2, #3, #5 · MGC#2 (UI, non-loc) · RPT#1, #2, #3, #4 · SET#2 ·
-CL#1, #2, #3, #5 · CRC#1, #2 · EV#1, #2 · ANN#1, #2, #3 · ED#1 · WS#1 · WL#1 · AE#1 · FR#1.
+CL#1, #2, #3, #5 · CRC#1, #2 · EV#1, #2 · ANN#1, #2, #3 · ED#1 · WS#1 · WL#1 · AE#1, AE#2 · UP#1, UP#2 · DF#1 · FR#1.
+  *(Dynamic-flow toasts: ANN#3 confirmed on delete + publish; UP#2/AE#2 = English upload success toasts; DF#1 = English generic loading toast — all frontend.)*
 - Dominant sub-pattern: **wire-up gaps** — a translation exists in `fit/*.json` but the component renders
   English. Also: **not-externalised** newer builders (CRC#1/#2, ED#1), **locale formatting** (dates #5/RPT#4/CC#2,
   time EV#2, numbers), and **layout/truncation** (FR#1).
