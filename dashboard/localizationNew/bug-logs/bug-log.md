@@ -37,6 +37,10 @@ Blocked: **Health Insights** (external analytics iframe — not localizable in-d
 Announcements delete dialog + toast are English (**ANN#3**). Deferred (need disposable data / org-wide):
 Announcement publish toast, Preview-Emails save toast, Create Event/Content + Upload-Points/Add-Employees
 toasts.
+**Run 2 (2026-07-22):** nav/redirect sweep 24/24 PASS. Create Content create toast + Preview-Emails save
+toast LOCALIZED. 2 new mixed-language bugs: **DF#1** generic loading toast English; **UP#1** Upload-Points
+"Preview" modal title English. Still deferred: Add Employees + Create Event create toasts, Announcement
+publish. Test data left for cleanup: 1 Linked-Content item "QA localization test — please delete".
 
 ---
 
@@ -112,7 +116,7 @@ toasts.
 - **WL#1 · P3 · [FE]** — Wellness Leagues subtitle "Based on avg daily steps over 21 days" English (hardcoded/not-wired). *(Both pages also inherit RPT#1 filters + RPT#2 column selector.)*
 
 ### Rewards → Upload Points — `bug-logs/upload-points.md`
-- **CLEAN** — 0 defects.
+- Static page: CLEAN. **UP#1 · P3 · [FE]** (dynamic) — the CSV **"Preview" modal title is English** while its trigger button is "Vorschau" (German) — mixed-language. (Wallet/country/type selects, dropzone upload, preview all functional.)
 
 ### Configuration → Add Employees — `bug-logs/add-employees.md`
 - **AE#1 · P3 · [FE]** — File-upload dropzone "Click to upload or drag and drop" English, while the identical control on Upload Points is German → wire-up inconsistency (string exists).
@@ -166,6 +170,10 @@ CL#1, #2, #3, #5 · CRC#1, #2 · EV#1, #2 · ANN#1, #2, #3 · ED#1 · WS#1 · WL
 4. **Shared components fixed once, fixed everywhere** — report filter bar (RPT#1 → Wellness Score/Leagues),
    column selector (RPT#2 → Wellness Leagues), target-audience multiselect (EV#1 = CC#3), the date-picker
    calendar (CC#2 = RPT#4), `<html lang>` (Overview #4, every page), Ask-VF widget (CL#4, every page).
+5. **Generic/loading toasts unwired — DF#1 · P3 · [FE]** — the shared request toast "This request is taking
+   longer than expected. Please wait..." renders English (seen during Create-Content image processing);
+   likely a global HTTP-interceptor message → appears app-wide on slow requests. Contrast: most success
+   toasts (notification/email send, content create, settings save) ARE localized.
 
 ## Not yet covered (engagement gaps)
 - Dynamic flows (submit/send/publish/upload) + their validation & success toasts — deferred everywhere to

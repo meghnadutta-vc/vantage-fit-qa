@@ -29,6 +29,19 @@
 
 ---
 
+## Run 2 — 2026-07-22 (German; more modules + functional clicks/redirects)
+
+> Re-login required (sessions expired → Microsoft SSO dead-end); resumed after manual login as
+> meghna.dutta@vantagecircle.com. Outward sends targeted the admin only where possible.
+
+| Test Case ID | Description | Steps | Expected | Actual Result | Status | Priority |
+|---|---|---|---|---|---|---|
+| DYN-TC-020 | **Sidebar navigation / redirection sweep** | Click all 24 sidebar links | Each routes to its page | **24/24 PASS** — every leaf link (Overview, Challenges×3, Programs×2, Community×3, Comms×2, Workforce×3, Reports×6, Upload Points, Config×3) navigates to the correct route; all groups expand. | PASS | P2 |
+| DYN-TC-021 | Create Content (Linked) — create success toast | Fill form + image upload + crop + submit | Localized toast + redirect | **Localized ✓** — "Inhalt erfolgreich erstellt". Image crop dialog localized ("Absenden"/"Abbrechen"). Form + upload + crop + submit all functional. (Created test item "QA localization test — please delete" → cleanup.) | PASS | P2 |
+| DYN-TC-022 | **Create Content — request/loading toast** | During image processing | Localized | **English ✗** — "This request is taking longer than expected. Please wait..." (generic request/loading toast). See **DF#1**. | FAIL | P3 |
+| DYN-TC-023 | Preview Emails — save toast | Toggle an email + "Änderungen speichern" | Localized toast | **Localized ✓** — "E-Mail-Einstellungen erfolgreich gespeichert."; save button "Änderungen speichern" localized. Toggle + save + restore functional (config restored to 9/9). | PASS | P2 |
+| DYN-TC-024 | Upload Points — functional (wallet/country/type/upload/preview) | Select Reward + India + Primär, upload CSV, Preview | Works + localized | Functional ✓ (selects, dropzone upload via hidden file input, Preview all work). **Preview modal TITLE "Preview" is English** (button "Vorschau" localizes) — mixed. See **UP#1**. Not submitted (no points distributed). | FAIL | P3 |
+
 ## Phase 4 — Summary
 
 - **Validation:** preventive across the board — the shared design-system submit button stays `aria-disabled`
