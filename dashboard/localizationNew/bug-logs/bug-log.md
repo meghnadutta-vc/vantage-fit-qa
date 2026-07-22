@@ -31,6 +31,13 @@
 Clean modules (0 bugs): **Past Challenges · Settings · Publish Notifications · Upload Points**.
 Blocked: **Health Insights** (external analytics iframe — not localizable in-dashboard).
 
+**Dynamic-flow pass (2026-07-22, `test-cases/dynamic-flows.md`):** validation is preventive everywhere
+(disabled-submit + maxlength — no error strings). Success toasts localize in Publish Notifications
+("Benachrichtigung an 1 Benutzer gesendet.") + Send Custom Email ("E-Mail an 1 Benutzer gesendet."), but
+Announcements delete dialog + toast are English (**ANN#3**). Deferred (need disposable data / org-wide):
+Announcement publish toast, Preview-Emails save toast, Create Event/Content + Upload-Points/Add-Employees
+toasts.
+
 ---
 
 ## Module-wise bug list
@@ -88,6 +95,7 @@ Blocked: **Health Insights** (external analytics iframe — not localizable in-d
 ### Community → Create Announcement — `bug-logs/create-announcement.md`
 - **ANN#1 · P2 · [FE]** — Landing/list view 100% English despite a **complete** `announcementPage.*` (~66 keys) + `qna.announcement.*` German set. Pure wire-up.
 - **ANN#2 · P2 · [FE]** — Create form mixed: AI-generate + Titel + Beschreibung localize, but heading, subtitle, "Audience & Delivery", city/country selectors and the **Publish** CTA stay English (keys exist).
+- **ANN#3 · P3 · [FE]** — (dynamic flow) delete confirm-dialog ("Are you sure you want to delete?"/"…revert this!"/"Cancel"/"Delete") + success toast ("Success"/"Announcement successfully deleted.") render English though `announcementPage.deleteHeading/deleteText/success/deleteSuccess` German keys exist. Same wire-up as ANN#1/#2.
 
 ### Communications → Publish Notifications — `bug-logs/publish-notifications.md`
 - **CLEAN** — 0 defects. Attribute audience filter localizes ("ist in"/"Alle Abteilungen").
@@ -121,7 +129,7 @@ Blocked: **Health Insights** (external analytics iframe — not localizable in-d
 
 ### Frontend bugs [FE] — fixable in the web app now
 Overview #1, #2, #3, #4, #5, #7 · CC#1, #2, #3, #5 · MGC#2 (UI, non-loc) · RPT#1, #2, #3, #4 · SET#2 ·
-CL#1, #2, #3, #5 · CRC#1, #2 · EV#1, #2 · ANN#1, #2 · ED#1 · WS#1 · WL#1 · AE#1 · FR#1.
+CL#1, #2, #3, #5 · CRC#1, #2 · EV#1, #2 · ANN#1, #2, #3 · ED#1 · WS#1 · WL#1 · AE#1 · FR#1.
 - Dominant sub-pattern: **wire-up gaps** — a translation exists in `fit/*.json` but the component renders
   English. Also: **not-externalised** newer builders (CRC#1/#2, ED#1), **locale formatting** (dates #5/RPT#4/CC#2,
   time EV#2, numbers), and **layout/truncation** (FR#1).

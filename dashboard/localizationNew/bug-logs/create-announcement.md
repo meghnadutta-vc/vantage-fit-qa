@@ -49,6 +49,26 @@ Technical Notes: Frontend wire-up — some regions consume announcementPage.* ke
 Evidence: evidence/announcement_de_create.png
 ```
 
+### ANN#3 — Delete confirm-dialog + success-toast render in English (dynamic flow)
+```
+[Localization - P3]
+[Create Announcement — delete confirmation dialog + success toast (dynamic flow, 2026-07-22)]
+Deleting an announcement shows an English confirm dialog and English success toast on the German UI:
+ • Dialog: "Are you sure you want to delete?" / "You won't be able to revert this!" / "Cancel" / "Delete"
+ • Toast: "Success" / "Announcement successfully deleted."
+German keys exist for all of these: announcementPage.deleteHeading="Möchten Sie wirklich löschen?",
+announcementPage.deleteText="Dies kann nicht rückgängig gemacht werden!", announcementPage.success="Erfolg",
+announcementPage.deleteSuccess="Ankündigung erfolgreich gelöscht." (+ common cancel/delete).
+
+Expected (de): localized dialog + toast.
+Actual (de): all English.
+Technical Notes: Frontend wire-up — same root as ANN#1/#2 (the Announcements component does not consume
+  its announcementPage.* keys). Confirms the module is unwired for dynamic strings too. (Contrast: Publish
+  Notifications + Send Custom Email success toasts DO localize.) Publish success-toast not verified (would
+  post org-wide) but expected English by the same root cause.
+Evidence: evidence/dynflow_announcement_de_deletedialog.png
+```
+
 ---
 
 ## Cross-module
