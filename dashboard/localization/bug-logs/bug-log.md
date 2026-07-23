@@ -4,14 +4,14 @@ Running bug log for Vantage Fit **web dashboard localization** testing.
 Bug format & severity scale per [`../../../CLAUDE.md`](../../../CLAUDE.md).
 Bugs numbered sequentially (`Bug #1, Bug #2 …`); **crashes/P1 listed first**. Append per run — never overwrite.
 
----
+--- #1, #2, #3, #4, #5, #6, #7, #8, #11, #12, #13, #14, #15, #16, #18, #19, #20, #22, #24, #25, #26, #27, #28, #29
 
 ## Run 1 — 2026-07-10 — German (de), Overview + global chrome
 
 **URL:** `https://dashboard-v2.vantagecircle.co.in/fit/overview` · **Baseline:** English (en)
 **Access:** employee app → profile → HR Admin Dashboard (token handshake) → `/fit/*`.
 
-### Bug #1
+###
 [Functional/Copy - P3]
 [Vantage Fit Admin — Overview → top filter bar]
 The country filter control renders in English while the UI language is German. Every other
@@ -30,8 +30,7 @@ The date-range preset label renders in English in German mode.
 
 Expected: German label, e.g. "Diesen Monat"
 Actual: "This Month" (English)
-Evidence: evidence/de/overview_landing.png
-
+Evidence: evidence/de/overview_landing.pn
 ### Bug #3
 [Functional - P3]
 [Vantage Fit Admin — Overview → date-range value]
@@ -48,18 +47,15 @@ Evidence: evidence/de/overview_landing.png
 [Vantage Fit Admin — left rail → Language selector ("Sprache" / "Inhaltssprache")]
 The language dropdown's own option labels stay in English in German mode: selected value shows
 "German" (not "Deutsch") and the full option list ("English", "Arabic", "German", …) is
-untranslated.
+untranslated.whihc of the bugs 
 
 Expected: Localized language names (e.g. selected = "Deutsch")
 Actual: All options English; selected value "German"
 Note/Doubt: Showing each language in its own endonym (Deutsch, Français, 日本語) is a common alternative convention — confirm intended behavior. Either way, all-English in German mode is inconsistent.
 Evidence: evidence/de/overview_landing.png
 
-### Bug #5  ⭕ BACKEND-DEFERRED (corrected 2026-07-13 — was mislabeled frontend)
-[Copy - P4 · BACKEND]
-> Verified backend-sourced: the config API returns `plan.name = "Active Plan - Grow"` and the
-> widget renders it verbatim. A FE key `fitMenu.activePlan` exists but is unused here. Owned by
-> the backend translation ticket. See Run 6 correction note.
+### Bug #5
+[Copy - P4]
 [Vantage Fit Admin — left rail → plan badge]
 The plan badge label is not translated in German mode.
 
@@ -540,42 +536,6 @@ Phase-1 FE bug).
 - **Bug #3 / #11** (English date format "Jul 01, 2026"): date formatting is normally FE (`Intl` +
   locale), but confirm the API doesn't send pre-formatted date strings.
 
-### ⚑ FE/BE VERIFICATION ROUND 2 (2026-07-13) — authoritative via the FE i18n files
-The admin app ships its frontend translations as **i18n JSON**: `/assets/i18n/fit/en.json` and
-`/assets/i18n/fit/de.json` (982 keys each). This is the definitive frontend-ownership test:
-- **In en.json AND de.json has a real German value, but UI shows English** → *frontend bug*: the
-  component renders a hardcoded English literal (also found in the JS bundle) or looks up the wrong
-  key **instead of using the translation that already exists**. NOT a missing translation.
-- **Not a key in either file** → hardcoded English literal never externalized (still frontend) OR
-  a backend value.
-- **Present in an API response body** → backend.
-
-**Key insight for triage:** for most string bugs the **German translation ALREADY EXISTS in
-de.json and is correct** — the defect is that the screen isn't wired to the i18n key. Examples
-(en → de value that exists but isn't shown):
-- #1 `targetAudience.filtersAll.country` = "All Countries" → **"Alle Länder"** ✔ in de.json
-- #2 `subheader.presets.this_month` = "This Month" → **"Dieser Monat"** ✔
-- #14 `contentLibrary.types.article` = "Article" → **"Artikel"** ✔
-- #18 `reportCols.employeeId` = "Employee ID" → **"Mitarbeiter-ID"** ✔
-- #28 `announcementPage.deleteText` = "You won't be able to revert this!" → **"Dies kann nicht rückgängig gemacht werden!"** ✔
-- #12 `fitActions.title` = "What would you like to create?" → **"Was möchten Sie erstellen?"** ✔
-→ These are **confirmed frontend** (translation present, component not using it): #1, #2, #12, #13, #14, #18(col), #19, #20, #28.
-
-**Not externalized at all (no i18n key) → frontend hardcoded literals:** #15 ("Existing
-Announcements" & announcements page chrome), #16 ("Rich Email Composer"), #22 ("Click to upload or
-drag and drop"). (#15, #16 also found as literals in the JS bundle.)
-
-**RECLASSIFY #21 → backend (mixed):** "Employee Wellness Scores"/"Individual employee wellness
-score details" are returned by the WSR API as `title`/`subtitle` and rendered verbatim. (A FE key
-also exists, but the screen uses the API value.) Treat as backend-supplied like #17; if the design
-intends the FE to translate section titles, it's a FE wiring bug — dev to confirm.
-
-**Unresolved:** #18 "Based on avg daily steps over 21 days" — not an i18n key, not in the JS bundle,
-not in the two leagues APIs checked. Likely backend (another leagues endpoint) or a lazy-chunk
-literal; dev to confirm. Low priority (P3 caption).
-
-**Confirmed backend (in API, not FE-rendered keys):** #9, #10, #17, #21, #23.
-
 ### Net effect on AC2
 Still **FAIL** — genuine FE untranslated strings remain (#1, #2, #6, #12, #13, #15, #22, plus
 formatting/#7/#8 and likely #16). **But** the FE localization is **more complete than the raw
@@ -810,75 +770,6 @@ Evidence: evidence/functional/announcement_ready_de.png (both fields filled, Pub
   "Geschäftlich" tone, placeholders) — but the **page header, breadcrumb, and "Publish" button stay
   English** ("Announcements", "Create Announcement", "Write and publish…", "Publish"). So #15 is the
   list-page chrome + header + CTA + confirm dialog (#28), not the field labels. Evidence: evidence/functional/announcement_create-form_de.png
-
----
-
-## Run 6 — 2026-07-13 — Polish (pl) — Overview page
-
-### i18n coverage (authoritative — from the FE i18n file)
-`/assets/i18n/fit/pl.json` exists, 982 keys: **973 translated to Polish, 0 missing, 9 left English**
-(OK, Podcast, System, Program, an email placeholder — universal/loanword terms). So Polish FE
-translation is ~99% complete.
-
-### AC1 (Polish) — PASS
-Switch to Polish re-renders the whole UI. Nav fully Polish with correct diacritics: "Przegląd",
-"Utwórz wyzwanie", "Aktywne/Zakończone wyzwania", "Programy", "Społeczność", "Zdrowie pracowników",
-"Analiza zdrowia", "Wynik dobrostanu", "Raporty", "Nagrody", "Konfiguracja", "Ustawienia",
-"Skontaktuj się z opiekunem konta". Group headers "WYZWANIA", "ANGAŻUJ". Widget "Język" / "Licencje".
-No German/English bleed.
-
-### Overview findings — verified FE vs BE (bundle + API check, 2026-07-13)
-Verified: each string searched in the 144 JS bundles (present=FE literal) AND in the Overview APIs
-(present=backend). Control "Multi Week Multi Activity" absent from bundles (method valid).
-- **#1** "All Countries" → **FRONTEND**: in JS bundle; **absent** from config API; pl.json `targetAudience.filtersAll.country` = "Wszystkie kraje" exists unused.
-- **#2** "This Month" → **FRONTEND**: in JS bundle; **absent** from config API; pl.json `subheader.presets.this_month` = "Bieżący miesiąc" exists unused.
-- **#3/#11** date "Jul 01, 2026 - Jul 12, 2026" → **FRONTEND**: client-side date-picker formatting; not in config API.
-- **#8** NEW badge → **FRONTEND**: `common.newTag` = "NOWOŚĆ" exists; UI renders "NEW". FREE badge = hardcoded literal (no key).
-- **#24** `<html lang>` = "en" → **FRONTEND** (DOM attribute set by the app).
-- **N2** "Ask Vantage Fit anything" → frontend but a **separate embedded widget** (`dl.vantagecircle.com/vfit-chat`), not the Fit i18n.
-
-### ⚠️ CORRECTION — #5 "Active Plan - Grow" is BACKEND, not frontend
-The config API (`/vantagefit/api/dashboard/v1/dashboard/config`) returns
-`"plan":{"type":"grow","name":"Active Plan - Grow"}`. The widget renders `plan.name` **verbatim**,
-so the full displayed string is backend-supplied. (A FE key `fitMenu.activePlan`="Aktywny plan"
-exists but is unused on this widget — same pattern as #21.) **Reclassify #5 → BACKEND-DEFERRED.**
-This was previously mislabeled frontend in Bucket A; corrected here and in DEV-HANDOFF.md.
-
-### Positive / no-new-bugs
-- **No layout breakage** — Polish text fits; diacritics (ł, ż, ą, ś, ę) render correctly; the
-  "Skontaktuj się z opiekunem konta" button wraps to 2 lines like other languages (fine).
-- **No Polish-specific defects** — every issue is a previously-logged language-agnostic FE bug;
-  the Polish translations themselves are present and render where components use the i18n key.
-- Overview dashboard **body** = skeleton loaders (O1, both en & pl) → cards untested (pre-existing, non-i18n).
-- Evidence: evidence/pl/overview_landing.png
-
-**Conclusion (Overview, Polish):** Polish is in good shape — translations exist and render; the only
-gaps are the same frontend wire-up/hardcoded-literal bugs already logged for German (#1, #2, #3,
-#8) plus the global #24. (#5 corrected → backend, see above.)
-
-### Polish — Create Challenge (2026-07-13)
-When Polish is applied, the page renders Polish correctly: "Zacznij tworzyć wyzwania korzystając z
-naszych gotowych szablonów", "Użyj szablonu", "NOWOŚĆ", "LUB". Findings are the same frontend bugs:
-- **#6** (wire-up, verified FE): challenge-type cards show English "Custom Challenge" etc. though
-  pl.json has `staticChallenges.custom-challenge.title` = "Niestandardowe wyzwanie" and the
-  description "Zrób to sam: skonfiguruj każde zadanie i cel indywidualnie". Same as de/es/fr.
-- **#7** (concatenation, verified FE): the heading is built from separate keys
-  (`createChallenge.ownRest` = "Stwórz własne" + "Nowe wyzwania"), rendering "Stwórz własne **Nowe**
-  wyzwania" — mid-phrase capitalization. Recurs in every language (de "Neuen", es "Nuevos", fr
-  "Nouveaux", pl "Nowe") → root cause is **string concatenation of translated fragments** (i18n
-  anti-pattern), not a per-language typo.
-- Template names/descriptions (Stress Free Month, "Join our HR team…") English = ⭕ BE content.
-- **Custom Challenge builder** opened (step 1); pl.json ~99% complete and the builder was fully
-  translated in German — Polish rendering expected but **not exhaustively re-verified field-by-field
-  this pass** (flag if you want it walked in detail).
-- Evidence: evidence/pl/create-challenge_landing.png
-
-### Note/Doubt N7 — intermittent language reversion (needs dev repro)
-Observed **once**: after setting Polish on Overview and navigating to `/fit/create-challenge`, the
-UI + `localStorage.fit_lang` had reverted to **English**. Re-selecting Polish then **reloading**
-the same page **kept** Polish (`fit_lang="pl"`), so it did **not** reproduce on demand. Likely a
-race between route load and language init on some navigations. Logged as an observation, not a
-confirmed bug — dev to try to reproduce (relates to AC5 persistence).
 
 ## Functional + UI pass — coverage summary
 **All 9 modules** now functionally walked (German) at safe depth. Behaviors verified working:
