@@ -11,13 +11,17 @@
 ## Priority summary
 | Priority | Count | IDs |
 |---|---|---|
-| **P1** | 0 | — |
-| **P2** | 13 | OV#1, OV#2 · CC#1 · RPT#1, RPT#2 · CL#1 · EV#1 · CRC#1, CRC#2 · ANN#1, ANN#2 · ED#1 · WS#1 |
-| **P3** | 19 | OV#3, OV#5, OV#6, OV#7 · CC#2, CC#3, CC#4, CC#5 · MGC#1, MGC#2 · RPT#3, RPT#4, RPT#5 · CL#2, CL#3 · EV#2 · ANN#3 · SCE#1 · WL#1 · AE#1, AE#2 · UP#1, UP#2 · PE#1 · DF#1 · FR#1 · OV#4(a11y, cross-module) |
+| **P1** | 0 | — (all three P1 leads G4/G5/G6 executed Run 11; none is a P1 — see `p1-hunt-g5-g6-g4.md`) |
+| **P2** | 17 | OV#1, OV#2, **OV#12** · CC#1 · RPT#1, RPT#2 · CL#1 · EV#1 · CRC#1, CRC#2 · ANN#1, ANN#2 · ED#1 · WS#1 · **UP#4, UP#5** · **ES#1** |
+| **P3** | 19 (+ Run 5–13 addendum IDs; see ADDENDUM) | OV#3, OV#5, OV#6, OV#7 · CC#2, CC#3, CC#4, CC#5 · MGC#1, MGC#2 · RPT#3, RPT#4, RPT#5 · CL#2, CL#3 · EV#2 · ANN#3 · SCE#1 · WL#1 · AE#1, AE#2 · UP#1, UP#2 · PE#1 · DF#1 · FR#1 · OV#4(a11y, cross-module) |
 | **P4** | 4 | SET#1, SET#2 · CL#4, CL#5 |
 | Blocked | 1 | Health Insights (external iframe) |
 
-Clean modules (0 bugs): **Past Challenges · Publish Notifications** (Settings & Upload Points static-clean; dynamic bugs added).
+**⚠️ The "clean modules" claim below is superseded.** A corrected layout sweep (Runs 5+) found breakage in
+15 of 17 modules, including **Settings and Publish Notifications** — both previously signed off CLEAN. Those
+sign-offs were about *translation quality* (genuinely correct); the modules were simply never measured for
+layout with a working detector. See the **ADDENDUM** at the end of this file for all Run 5–12 bugs
+(+20 IDs across 6 languages).
 
 ---
 
@@ -568,3 +572,304 @@ Report filter bar (RPT#1 → Wellness Score/Leagues) · column selector (RPT#2 �
 target-audience multiselect (EV#1 = CC#3) · date-picker calendar (CC#2 = RPT#4) · date/time formatters
 (OV#5/RPT#4/CC#5/EV#2) · `<html lang>` (OV#4, every page) · Ask-VF widget (CL#4, every page) · generic loading
 toast (DF#1, every slow request) · newer rich-builders shipped with no i18n (CRC#1/#2, ED#1).
+
+---
+---
+
+# ADDENDUM — Runs 5–12 (2026-07-28)
+
+Bugs found after the 2026-07-22 compilation above. Sources: `ui-break-sweep-de.md`, `ui-break-sweep-es.md`,
+`spanish-full-sweep.md`, `desktop-1920-de-es-crud.md`, `p1-hunt-g5-g6-g4.md`, `multilang-fr-pt-pl-zh.md`.
+**Languages now covered: de · es · fr · pt · pl · zh-CN** (+ en baseline).
+
+> **Method note.** The pre-Run-5 sweeps used a detector that only caught `overflow:hidden` clipping, so the
+> Truncation/Overlap ✅ ratings above are unreliable. Runs 5+ use `scrollWidth > clientWidth` with overflow
+> classified as **CLIP** (cut off) / **SPILL** (collides) / **SCROLL** (`overflow:auto` data tables — NOT a
+> defect and excluded from counts).
+
+## Overview
+
+### OV#8a — At-a-Glance metric labels overflow at ≤1440 (German only) · P3 · [FE]
+[UI — Overview → At-a-Glance tiles, `.item-header` 113px]
+German labels overflow a 113px box and render over the tile icon. English **and** Spanish both fit in
+exactly 113px (0px headroom) — a zero-headroom container.
+**Expected:** labels fit or truncate gracefully in every language.
+**Actual:** de 3/4 overflow (+4 / +8 / +27). en/es fit exactly.
+**Note:** does NOT reproduce at 1920. Distinct from OV#8b.
+
+### OV#8b — Same tiles break in EVERY language incl. English at 1024 · P3 · [FE — responsive, not localization]
+[UI — Overview → At-a-Glance tiles at 1024]
+Container shrinks to 44px and all labels overflow regardless of language (en +5/+18/+18/+4).
+**Expected:** tiles reflow at narrow widths.
+**Actual:** every language overflows. **This is a responsive defect and must not be billed to localization.**
+Separate ticket/owner from OV#8a.
+
+### OV#9 — Stat-card headers overflow at 1024; Spanish worse than German · P3 · [FE]
+[UI — Overview → stat cards]
+de +69 / +63 / +35; **es +51 on the Incentivización card vs de +35** (*Incentivación* > *Anreize*).
+**Note:** a German-only test under-reports this card — evidence that "German is longest" is unsafe.
+
+### OV#12 — Workforce Health Snapshot / Wellness Tiers card is English in ALL SIX languages · P2 · [FE] wire-up
+[Localization — Overview → Workforce Health Snapshot / Wellness Tiers card]
+The whole card renders English in de/es/fr/pt/pl/zh-CN although complete translations exist for every
+string: *Workforce Health Snapshot*, *Wellness Tiers*, *Consistency based employee tiers*, *View Insights*,
+*Gold*, *Silver*, *Last 30 Days*.
+e.g. `Wellness Tiers` → Paliers de bien-être (fr) / Níveis de bem-estar (pt) / Poziomy dobrostanu (pl) /
+健康等级 (zh); `Gold` → Or / Ouro / Złoto / 黄金.
+**Expected:** card renders in the selected language.
+**Actual:** English in every language tested.
+**Why highest-value:** ONE card, ~7 keys, and the fix closes a translation leak **and** a layout break in six
+languages. The `.tiers-card` **+122px spill is identical in all six including Chinese** — where translated
+strings shrank and break counts halved — proving the overflow is caused by the untranslated English, not by
+text expansion.
+**Supersedes:** **OV#10** ("Last 30 Days" subtitle) and **OV#11** (tier row +122px) — same unwired card.
+
+### OV#10 — "Last 30 Days" subtitle English in all languages · P3 · [FE] → folded into OV#12
+### OV#11 — Tier row overflows +122px identically in all languages · P3 · [FE] → folded into OV#12
+
+## Create Challenge
+### CC#6 — Pre-built template grid overflows +151px at 1024 in every language · P3 · [FE — responsive]
+[UI — Create Challenge → `.pre-built-templates-wrapper` / template grid]
++151px in en/de/es/fr/pt/pl/zh alike → structural, not translation-driven.
+
+### CC#1 (extended) — template titles AND descriptions English; buttons localized · P2 · [FE]
+Full inventory: *Custom Challenge · Race Challenge · Journey Challenge · E-Marathon · Streak Challenge*, plus
+all 5 descriptions, render English while the card buttons render correctly ("Crear desafío" / "Challenge
+erstellen"). Mixed-language cards. Spanish values exist (*Desafío personalizado*, *Desafío de carrera*…).
+Also leaks onto **Manage Challenges** (Race Challenge / E-Marathon) in fr/pt/pl/zh.
+
+## Manage Challenges
+### MGC#3 — Card action row overflows at 1024 · P3 · [FE]
+de +62px / 97 cards · es +45px / 65 cards · en +30px / 65 cards.
+
+### MGC#4 — 5 broken card images · P3 · [FE-BE TBD]
+Identical count in every language and at every resolution → malformed CDN URLs, language-independent.
+
+## Past Challenges
+### PC#1 / PC#2 — card title clipped; 1 broken image · P3
+`card-title` CLIP +7…+12px on long *content* titles (authored data, not UI strings). 1 broken image.
+
+## Reports
+### RPT#6 — Report tables overflow at 1024 · NOT A DEFECT (recorded to prevent re-flagging)
+`.fit-table-scroll` +334 / +454 / +1002 are `overflow:auto` **scrollable** containers. Wide data tables are
+meant to scroll horizontally.
+
+### RPT#7 — Empty state instructs clicking a button that does not exist · P3 · [Copy]
+[Copy — Employee Report → empty state]
+*"Keine Daten verfügbar. Passen Sie die Filter an und klicken Sie auf **Generieren**."* — there is **no
+Generieren control anywhere on the page** (all 45 visible buttons/links enumerated). Instruction cannot be
+followed.
+
+### ES#3 — Column-selector shows English while the table header beside it is translated · P3 · [FE] wire-up
+[UI — Employee / Participant / Redemption Report → `.select-placeholder` 150px]
+Table header `Fecha de incorporación` ✅ vs selector chip `Date of Joining (+5 others)` ❌ — **same concept,
+same screen, same moment**. Redemption: `Fecha de transacción` vs `Transaction Date (+10 others)`.
+**Why this is conclusive:** the correct string is proven present, loaded and rendering on the same page, so
+"translation missing" is not an available explanation. Unambiguous wire-up defect.
+Also **clips +31 / +48px in all six languages** — because untranslated English does not shrink.
+
+## Configuration → Settings
+### SET#3 — Settings cards overflow at 1024; **French is worst** · P3 · [FE]
+`.banner-actions` (136px): **fr +87** > de +73 > pt +68 > en +67 > es +60 > pl +42 > zh 0.
+Overturns the earlier CLEAN rating for this module (that rating concerned translation quality, which is
+genuinely correct; the module was simply never measured for layout).
+
+## Configuration → Add Employees
+### AE#3 — Page header/dropzone overflows at 1024; Polish worst · P3 · [FE]
+pl +356 > fr +347 > pt +306 > de +299 ≈ es +299 > zh +184.
+
+## Community → Events
+### EV#3 — 12 broken images · P3 · [FE-BE TBD] — identical in all languages/resolutions.
+
+### EV#4 — Event tabs clipped; **NOT German-specific** · P3 · [FE]
+[UI — Events → `mat-mdc-tab-label` container 470px]
+**pl +177 (worst) · fr +136 · pt +127 · de clips · es +2 (fits) · zh 0.** No tab pagination in any language.
+**Correction:** Run 7 concluded from Spanish that this was "strongly German-specific." It is not — it clips
+in four languages. Priority should rise accordingly.
+**Note:** does NOT reproduce at 1920, so it affects ≤1440 only — it is not the functional blocker I once
+suspected (tabs are reachable on a normal desktop).
+
+### EV#5 — Invite-count label spills · P3 · [FE] — fr +42px, pt +27px in a ~125px box.
+
+## Communications → Publish Notifications
+### PN#1 — Zero-headroom title box + two-column overflow; **all non-English, Spanish worst** · P3 · [FE]
+[UI — Publish Notifications → `.notif-title` 150px]
+Fits "Notification Title" at **exactly** 150px. **es +8 > de +3**; `.two-column-layout` es +516 > fr/pl/zh
++512 > de +415 > pt +395 > en +381.
+**The title box clips at 1920 too** — a fixed 150px box does not grow with the viewport, so this is one of
+only three width-independent layout defects in the engagement.
+Overturns this module's earlier CLEAN rating (translation quality was correct; layout was never measured).
+
+### PN#2 — French "est dans" clips where English "is in" fits · P3 · [FE]
+[UI — Publish Notifications → audience operator, 50px box]
+French localizes the operator to *est dans* and it **CLIPS +6px**; de/es leave it as English `is in`, which
+fits.
+**Triage dependency:** the box was sized for the untranslated string, so **fixing the CC#3/EV#1 audience
+wire-up will introduce this clipping** wherever it is applied. Widen the box first.
+
+## Communications → Send Custom Email
+### SCE#2 — Two-column layout overflows at 1024 · P3 · [FE — responsive] — es +387, pt +395, pl +401, fr +364.
+
+## Workforce Health
+### WS#2 / WL#2 — filter chips clip in every language · P3 · [FE]
+Wellness Leagues chips (110/100px): pl +65 > de +62 > es +58 > pt +55 > fr +53 > zh +28.
+**ES#4 — the chips clip ONLY where the wire-up works.** On the other report surfaces the same filters stay
+English (RPT#1) and therefore fit. **So fixing RPT#1 will introduce this overflow across all six report
+surfaces — widen the chips before shipping the translation fix.** Wellness Leagues is a live preview of what
+the others will look like.
+
+### ES#2 — Mixed-language filter row on cold load · P3 · [FE]
+Row reads *"País: All Countries"*, *"Departamento: All Departments"* — Spanish label, English value, adjacent
+to a correctly-Spanish *"Todos los grupos de edad"*.
+
+## Rewards → Upload Points
+### UP#3 — Page container overflows +474px at 1024 · P3 · [FE — responsive] — same in all languages.
+
+### UP#4 — A failed upload gives the admin NO feedback whatsoever · **P2** · [FE]
+[Functional — Upload Points → submit]
+`POST /api/v1/employee/reward/upload` returned **400** with a detailed, actionable body:
+`Error in row 1: Domain validation failed: … , Award Amount not found or not an integer` — and **the UI
+displayed nothing**: no toast, no inline error, no row highlighting (MutationObserver captured zero toasts).
+**Expected:** surface the per-row errors the server already returned.
+**Actual:** silence.
+**Why it matters:** silent failure on a **data-writing** operation — an admin would conclude it worked. The
+server is doing its job; the frontend discards the payload, so the fix is cheap.
+**Inconsistency:** the same submit with a *client-side* error (missing country) DOES toast. Client-side
+validation surfaces; server-side 4xx does not.
+**Highest-value follow-up:** check whether other write flows (Add Employees, Create Content/Event/
+Announcement, Send Custom Email) discard 4xx the same way — that would multiply one P2 across modules.
+
+### UP#5 — Upload preview accumulates instead of replacing · **P2** · [FE]
+[Functional/UX — Upload Points → CSV preview]
+Selecting a second CSV renders a **second preview table below the first**; the previous file's rows remain.
+Confirmed **2 visible `<table>` elements** (3 rows + 2 rows) after two selections.
+**Expected:** preview reflects only the current file.
+**Actual:** old and new data shown together, each with its own header row.
+**Why it matters:** the real flow is upload → see errors → fix → re-upload. Exactly then the admin sees
+stale rows mixed with new and **cannot tell which data will be submitted** — on a screen that grants points.
+Combined with UP#4 the failure path is genuinely confusing.
+**Evidence:** `evidence/de_uploadpoints_preview_accumulates.png`
+
+### UP#6 — Validation toast hardcoded English · P3 · [FE] not-externalised
+[Localization — Upload Points → submit without country]
+Toast: **"Error / Please select a country"** in a German session.
+`"Please select a country"` → **no key in any of the 4 dictionaries**. `"Error"` → German *"Fehler"* exists.
+The module's own namespace **`pointsUpload.*` IS translated** (`pointsUpload.selectCountry` = *Land
+auswählen*) — so the module is wired for i18n and only its validation message was missed.
+**First error-state string ever captured in this engagement (dimension G8 was at zero) and it failed** —
+suggests other validation messages are likely hardcoded too.
+
+### UP#7 — Required field does not gate submit · P3 · [FE]
+`Absenden` was `aria-disabled="false"` while required **"Land auswählen\*"** was empty. Deviates from the
+documented app-wide preventive-validation pattern; validation is reactive on click.
+
+### UP#8 — Sample CSV template has English headers and no UTF-8 BOM · P4 · [FE-BE TBD]
+Downloaded template headers are English in a German session (`Receiver Employee Name`, `Point`, `Award
+Name`), file is plain ASCII with **no BOM**.
+**Note/Doubt:** the parser matches on those English headers, so localizing them would break upload unless
+both sides change together. **Needs product decision**, not a quick fix.
+
+## Cross-module — language/session behaviour
+### ES#1 — Cold page load renders shared filter components in English · **P2** · [FE] init-order
+[Functional/Localization — cross-module; confirmed on Content Library + Wellness Leagues]
+On a **cold load** the filters render English; navigating away and back **to the same route** re-renders them
+in the selected language. Same URL, same session, `fit_lang` unchanged.
+| Surface | Cold load | After in-app nav |
+|---|---|---|
+| Content Library | `All` / `All` | `Todos` / `Todos` |
+| Wellness Leagues | `All Countries` / `All Departments` | `Todos los países` / `Todos los departamentos` |
+**Why the direction matters:** cold load is what a user gets from a bookmark, refresh or shared link — so the
+**broken state is the default state**.
+**Scope (measured, not assumed):** all 11 in-app-measured modules were re-checked cold and **only 1 of 11
+differed** → component-specific, **not** systemic. Earlier sign-offs are NOT broadly invalidated.
+**Distinct from RPT#1:** RPT#1 stays English cold *and* warm (hardcoded default); ES#1 goes correct once the
+dictionary is warm (init-order race). **Two fixes, not one** — a dev treating them as one bug closes half.
+**Evidence:** `evidence/contentlibrary_es_coldload_filters_english.png`
+**Method rule adopted:** verify localization by **direct URL**, never by clicking the sidebar.
+
+### CC#2 (extended) — date picker fully English in German at 1920 · P3 · [FE]
+Calendar header `JUL 2026`; weekday headers `Monday…Sunday`; initials `M T W T F S S`. German needs
+`Juli 2026` and `Mo Di Mi Do Fr Sa So` — **even the initials are wrong** (German = M/D/M/D/F/S/S).
+Also the date **input format** is `30/07/2026` (placeholder `DD/MM/YYYY`) where German uses `30.07.2026` —
+day-first, so not US format either.
+**Evidence:** `evidence/de_1920_datepicker_english_calendar.png`
+
+### CC#3 (extended) — audience widget: fuller English inventory · P3 · [FE]
+Labels German (*Abteilung, Land/Region, Geschlecht, Altersgruppe*) but: operator **`is in` ×4**,
+**`(+124 others)` / `(+14)` / `(+3)` / `(+5)` ×4**, and inside the dropdown **`All`** and **`Undisclosed`**
+(should be *Alle* / *Nicht angegeben*). Country list all English (*Austria* not *Österreich*) — [BE] master
+data. Gender/age values English — [BE].
+
+### TERM#1 — Terminology split: *Herausforderung* vs *Challenge* · P3 · [Copy/Consistency]
+[Consistency — cross-module, German]
+| Surface | Term |
+|---|---|
+| Preview Emails | **Herausforderung**serinnerung, **Herausforderung**sstart, Abschluss der **Herausforderung** |
+| Sidebar + wizard | Aktive **Challenges**, **Challenge** erstellen, **Challenge**-Name, **Challenge**-Slogan |
+Same concept, two different words, both visible in one session. Needs a glossary decision applied
+product-wide.
+
+### REG#1 — Formal *Sie* against the product's informal *du* voice · P3 · [Copy/Register]
+[Consistency — Create Challenge landing, German]
+Heading: *"Erstellen **Sie Ihre** eigenen Neuen Challenges"* — formal register. Vantage Fit's voice is
+informal *du* (same defect class as B12 on the employee web). *"Neuen Challenges"* is also oddly inflected
+for a heading. **First concrete dashboard instance of the register split.**
+
+### DEL#1 — No delete control exists for challenges · P4 / Enhancement · [FE]
+Challenge cards expose only *Ansehen* and *Verwalten*. No delete anywhere → QA/test challenges (e.g. 25441)
+are **permanently unremovable** and test data accumulates in the tenant forever. Raise with product.
+
+## Identified and explicitly NOT bugs (recorded so they are not re-flagged)
+- **Activity master list** (21 items: *Steps, Walking/Running, Water Intake, Mood-O-Meter, Active Minutes*…)
+  renders English — **20 of 21 have no key in any dictionary** and it is served from
+  `/vantagefit/api/v1/challenge/multiweek/config` → **[BE], expected English**. Nuance: `"Steps"` *does* have
+  German *"Schritte"*, but under `reportCols.steps` / `contest.steps` (report + contest contexts), which does
+  not prove this list should localize. A bare re-fetch returned 401, so the source is inferred from the
+  endpoint + dictionary absence rather than read from the body. **Needs Product Confirmation** whether
+  activity names are in localization scope.
+- **`.fit-table-scroll` overflows** — `overflow:auto`, scrollable by design (see RPT#6).
+- **Data-table / content-title overflows** on cards — authored content, not UI strings.
+- **G5 comma-decimal in CSV** — server correctly rejects `12,5` as "not an integer". No silent corruption.
+- **G6 non-ASCII + semicolon CSV** — umlauts/accents/carons render clean; the semicolon delimiter German
+  Excel emits is auto-detected and parsed correctly. **Not a defect.**
+- **German empty states** — correctly localized and natural.
+## Accessibility (dimension G19 — first data ever collected, Run 13)
+
+### A11Y#1 — Images have no `alt` text, at scale · P3 · [FE]  (CROSS-MODULE)
+[Accessibility — Manage Challenges 103 · Past Challenges 24 · Create Challenge 9 · Events 1]
+`alt` attribute absent entirely, so screen readers announce filenames or nothing.
+**Expected:** meaningful `alt` on content images, `alt=""` on decorative ones.
+**Actual:** attribute missing.
+**Compounds MGC#4 / EV#3:** the broken images (5 and 12) also have no `alt`, so the user gets **neither the
+image nor a text fallback**. Language-independent (same DOM in all six languages).
+
+### A11Y#2 — Icon-only buttons with no accessible label · P3 · [FE]  (CROSS-MODULE)
+[Accessibility — Create Event 4 · Create Announcement 2 · Publish Notifications 2]
+No text content, no `aria-label`, no `title`. Extends SET#2 and CL#5 from single instances into a pattern.
+
+### U7#1 — Date values English on EVERY date-bearing surface, incl. 2 mixed-language fragments · P3 · [FE]
+[Localization — cross-module date formatter]
+All 6 report date pickers `Jun 28, 2026 - Jul 27, 2026`; Manage Challenges `19 May 2025 - 17 May 2026`;
+Past Challenges `13 Mar 2026`; Events `23 Oct 2024`; Content Library **`Friday 26 Jun`** (English weekday
+AND month in a German page); Wellness Leagues **`Am 27 Jul 2026`** (German preposition + English month).
+Extends RPT#4 / MGC#1 from "some modules" to **every** date-bearing surface. German needs `Juli` / `Freitag`.
+
+### U7#2 — Currency renders `$` in a German session on an India tenant · P3 · [FE-BE TBD]
+Overview shows **`$0`**. Neither the tenant (India, company 355) nor the session language implies USD.
+Confirms OV#6 with a concrete symbol. **Needs Product Confirmation** which currency is intended.
+
+### OV#4 — confirmed engagement-wide (was single-screen) · P3 · [FE]
+`document.documentElement.lang` is **`"en"` on every module in all six languages**, regardless of
+`fit_lang`. Screen readers apply English pronunciation to de/fr/pt/pl/zh content.
+
+### PN#2 — extended: audience-operator box clips at 1920 too; Polish worst · P3 · [FE]
+50px fixed box: **pl `należy do` +14px** · **fr `est dans` +6px** · de/es `is in` (untranslated) fits.
+**The width-independent group is therefore FOUR components, not three:** `.notif-title` 150px, report
+column-selector 150px, Wellness Leagues chips 110/100px, **audience operator 50px**. These are the only
+layout defects affecting desktop users — fix these first.
+
+## Dimensions tested and CLEAN (never tested before Run 13; all pass across 22 German modules)
+- **U2 raw i18n keys** — none leaked anywhere.
+- **U2 unresolved placeholders** — no `{0}`, `{{name}}`, `%s`.
+- **U3 other-language bleed** — no cross-language string contamination.
+- **U6 mojibake / tofu** — umlauts, accents, Polish diacritics and CJK all render correctly.
