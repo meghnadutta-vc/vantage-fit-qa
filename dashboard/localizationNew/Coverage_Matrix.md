@@ -61,3 +61,23 @@ Create-Challenge builder measured clean.
 detector that only caught `overflow:hidden` clipping. A corrected `scrollWidth > clientWidth` sweep found
 3 overflow bugs (OV#8/#9/#11) that worsen as the viewport narrows. **Treat every other module's ✅ in these
 two columns as unverified** — they were rated with the same flawed method (gap G11).
+
+## SPANISH coverage re-rating 2026-07-28 (Runs 7 + 8)
+
+Spanish was previously marked ✅ on the strength of **dictionary parity (a file check) + a 3-module
+spot-check**. It has now been executed properly: **18 of 19 modules for layout AND strings**
+(`bug-logs/ui-break-sweep-es.md`, `bug-logs/spanish-full-sweep.md`). Result: Spanish is **not** a mild case
+of German — it is worse on 3 measurements (PN#1 title, PN#1 two-column, OV#9 Incentivización), so the
+"German is longest, testing it covers everything" assumption is unsafe and should not be used to scope
+future passes.
+
+**⚠️ ES#1 invalidates the verification *method* used for much of this matrix.** A route renders **English on
+cold load** and Spanish only after in-app navigation (proven twice on Content Library and Wellness Leagues,
+same URL, `fit_lang=es`). Modules signed off by clicking through the sidebar may have been observed in their
+**good state only** — including the German pass. Treat ✅ in the *Missing tr.* / *Mixed-lang* /
+*Hardcoded EN* columns as **verified-on-warm-render**, pending the cold-load re-check tracked in
+`REMAINING_WORK.md`.
+
+**Triage dependency to respect:** ES#4 shows the Spanish filter chips overflow **only where the RPT#1
+wire-up works**. Fixing RPT#1 across the report surfaces will therefore *introduce* overflow on all six.
+Widen the chips before shipping the translation fix.
