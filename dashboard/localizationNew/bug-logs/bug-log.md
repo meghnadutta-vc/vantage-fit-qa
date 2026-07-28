@@ -897,3 +897,62 @@ that does not exist, exactly as in German.
   Spanish session, but both are the correct Spanish values (`manageChallenge.statusUpcoming`,
   `reportCols.value`) that merely coincide with Portuguese. Fixed by excluding values present in the active
   dictionary. **Neither was reported as a bug.** After the fix U3 is clean in all six languages.
+
+---
+
+# ARABIC (ar) — first ever test, 2026-07-28 (Run 15)
+
+Arabic ships a **complete 991-key dictionary** and is **selectable in the production language list**, but had
+never been opened in this engagement. It is the only RTL language among the 18 offered.
+
+### AR#1 — Arabic is fully translated but rendered LEFT-TO-RIGHT; RTL is not implemented · **P2** · [FE]
+[UI / Localization — global, all modules · check U5]
+
+Arabic strings render correctly (72 Arabic strings on Overview, glyphs and shaping fine —
+`آخر 30 يومًا`, `المستخدمين المسجلين`, `عرض المزيد`). **But no RTL direction is applied anywhere:**
+
+| Check | Expected for RTL | Actual |
+|---|---|---|
+| `<html dir>` | `rtl` | **(absent)** |
+| `body` computed direction | `rtl` | **`ltr`** |
+| `main` computed direction | `rtl` | **`ltr`** |
+| Elements with `dir="rtl"` | many | **0** |
+| Sidebar position | right edge | **left (x = 80)** |
+| "View more" arrows | point **left** (←) | **point right (→)** |
+
+**Expected:** `dir="rtl"` on the document, mirrored layout (nav on the right), mirrored directional icons and
+chevrons, right-anchored controls.
+**Actual:** the page is a left-to-right layout containing Arabic text. Arabic *text runs* appear
+right-aligned only because the browser applies bidi within a run — that is the browser doing it, not the app.
+**Impact:** for an Arabic reader the entire information architecture reads backwards — navigation, card
+order, progression arrows and control alignment all run the wrong way.
+**Severity judgment:** logged **P2** on the CLAUDE.md scale (high-impact, broken user flow — no crash and no
+data loss, so not P1 by the letter of the scale). **But it is effectively a market-readiness blocker:** an
+entire locale is live, fully paid-for in translation, and structurally unusable. Recommend a product decision
+on whether Arabic should remain user-selectable until RTL ships — that is a bigger question than the bug.
+**Evidence:** `evidence/ar_rtl_not_implemented_overview.png`
+
+### AR#2 — Mixed-language fragment inside one control · P3 · [FE]
+The date control reads **`آخر 30 يومًا` | `Jun 28, 2026 - Jul 27, 2026`** — Arabic label beside an English
+date range in the same widget. Same root cause as U7#1 / U7#3 (locale-unaware date formatter), now confirmed
+in a 7th language.
+
+### AR#3 — Numeral systems inconsistent within a single row · P3 · [FE-BE TBD]
+The Wellness-score breakdown shows **Arabic-Indic numerals inside translated strings**
+(`خطوط الأساس الصحية (٢٠٪)`, `المشاركة (٣٠٪)`) while the **data values on the same rows use Western digits**
+(`89`, `44`, `33`). So one row mixes `٢٠٪` and `89`.
+**Note/Doubt:** Western digits are common and often preferred in Arabic business UIs, so the *choice* is a
+judgment call — but **mixing both systems in one row is not**. Needs a product decision on which numeral
+system Arabic should use, then applied consistently. The Arabic-Indic digits are baked into the translation
+strings, so this cannot be fixed in the formatter alone.
+
+### AR#4 — `<html lang>` is `"en"` in Arabic too · P3 · [FE]
+Same as OV#4 — now confirmed in a 7th language. Especially damaging for Arabic, where a screen reader needs
+both the language **and** the direction to read correctly.
+
+## A1 locale propagation — VERIFIED CLEAN (dimension never tested)
+`POST /vantagefit/api/dashboard/v1/reports/employee-report/enrolled` carries **`accept-language: pl`** in a
+Polish session — the FE correctly tells the API which language is selected.
+**Why this matters for triage:** the backend *is* receiving the locale, so the untranslated backend strings
+([BE] items throughout this log) are a **backend-scope decision, not a missing-header bug**. That removes an
+entire hypothesis from the fix discussion.
