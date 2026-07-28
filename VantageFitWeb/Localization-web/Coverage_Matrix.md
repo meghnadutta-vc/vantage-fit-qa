@@ -6,7 +6,7 @@
 |---|---|---|---|---|---|---|---|---|---|
 | Summary | ✅ baseline | ✅ tested | ✅ tested | ✅ tested | ✅ tested | ⬜ | ⬜ | ⬜ | ⬜ |
 | Challenges | ⬜ | ✅ tested | ⬜ | ⬜ | ✅ tested | ⬜ | ⬜ | ⬜ | ⬜ |
-| Programs | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| Programs | ✅ baseline | ✅ tested | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | Community | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | Diary / Trends | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 

@@ -224,3 +224,45 @@ End every run with: screens covered (done/partial/blocked), bug counts by severi
   **Arabic (RTL) is the highest-risk untested language.**
 - **Health Insights** is an embedded external iframe (`dash-vfit.vantagecircle.org`) — often un-loadable →
   mark BLOCKED, not localizable in-dashboard.
+
+---
+
+## 11. Context · word · tone consistency (cross-module, per language)
+
+Translating each string correctly is not enough — the **same concept must read the same way everywhere**,
+and the **voice must be one voice**. Run this as a dedicated pass **after** the per-module string capture,
+using the strings you already collected (no extra browser driving needed — analyse the captured dumps).
+
+**A. Tone / register consistency (biggest offender).**
+- Languages with a formal/informal split (German *Sie/Ihr* vs *du/dein*; French *vous* vs *tu*; Spanish
+  *usted* vs *tú*; Portuguese *você/o senhor* vs *tu*) must pick ONE register and hold it product-wide.
+- Grep the captured German strings for formal markers `Ihr / Ihre / Ihnen / Sie` and informal `du / dein /
+  dich / dir` — if both appear, it's a tone bug. (Found: "**Ihr** neuestes Abzeichen" formal vs "**deiner**
+  Community", "Brauchst **du**…" informal → B12.) Vantage Fit's default voice is **informal du**.
+- Also check imperative vs infinitive button style is consistent ("Speichern" vs "Speichere").
+
+**B. Word / terminology consistency (build a glossary).**
+- For each key concept, list every rendering across modules and confirm they match:
+  rank, progress, challenge, week, streak, points, badge, activity, community, steps, minutes, etc.
+- Flag: same concept shown in **two languages** (tab "Challenges" EN vs body "Herausforderung" DE → B5), or
+  the **same root handled differently** (standalone "Week 1" EN vs adjective "Wöchentlicher" DE → B4), or a
+  **casing** split for one label across cards (fr "Minutes Actives" vs "actives" → B8).
+- Loanwords kept on purpose (Community, Wellness Score, Vantage Fit) are OK **if used consistently** — decide
+  once and apply everywhere; note as judgment/brand, not a defect, unless mixed.
+
+**C. Context / coherence (no mixed-language fragments).**
+- No single phrase or card should blend languages: "Aktualisiert am **14 Jul 2025**" (DE prefix + EN date →
+  B1), or a card with German labels next to an English "Week 1" (B4). These read as broken even when each
+  token is individually "correct".
+- **Exclude BE/content strings before flagging** — an English-month regex will also match user/content data
+  (e.g. a challenge titled "Announcement 17 Sep"); that is authored data, not a UI date. Filter out known
+  content titles (compare against the English baseline's content list) so date/mixed-language findings are
+  UI-only. (Learned in the 2026-07-28 skill test run.)
+- Check placeholders resolve in-context (the change-language alert's `{language}` token → B2) and that
+  units/dates sit naturally in the translated sentence.
+
+**D. How to report.** Add a **"Cross-module consistency analysis"** section to the consolidated bug log with
+three buckets — **Tone/register · Word/terminology · Context/coherence** — each marked ✅ consistent /
+❌ defect / ⚠️ judgment, cross-referencing the per-string bug IDs. New standalone defects (e.g. a register
+split) get their own bug ID; consistency views of existing bugs just reference them. Recommend a single
+**glossary + register decision** applied product-wide as the fix.

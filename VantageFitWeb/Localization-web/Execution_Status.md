@@ -9,7 +9,7 @@ paths currently return the SPA HTML shell (see summary Bug #10), but translation
 |---|---|---|---|---|---|---|
 | **Summary** | done | done | done (10 bugs) | done | de, fr, es, pt (+en baseline) | **DONE** |
 | **Challenges** | done | pt + de | done (B4/B5 recur; 0 new) | done | pt, de (fr/es pending) | **PARTIAL** |
-| Programs | — | — | — | — | — | pending |
+| **Programs** | done | en + de | done (B5 recur; **B11 new**) | done | en, de (fr/es/pt pending) | **PARTIAL** |
 | Community | — | — | — | — | — | pending |
 | Diary / Trends | — | — | — | — | — | pending |
 
@@ -27,6 +27,14 @@ paths currently return the SPA HTML shell (see summary Bug #10), but translation
   0 new bugs; recurrences of B4 ("Week 1") and B5 (German "Challenges" tab — with new proof that "Herausforderung"
   exists elsewhere on the page, so it's a tab-key gap). Challenge names correctly stay as BE data. fr/es + sub-tabs
   + detail page + create flow pending.
+
+- **2026-07-24 — Programs, langs en baseline + de.** Opened `/ng/fit/programs`. FE chrome localizes well
+  in German (subtitle, Library/Offerings sub-tabs, Health-bites header + "15-30 Sek. Tipps…", "Alle anzeigen",
+  footer, motivational tagline). B5 ("Challenges" tab) recurs. **NEW B11:** language preference reverted to
+  English after natural session expiry + re-login (not persisted). Observation: Programs Library content is
+  language-scoped (en full; de shows one localized bite) — BE/content coverage, not a translation defect.
+  English category labels "Excercise"/"Mindfuless" misspelled (verify if content data). fr/es/pt + Offerings
+  sub-tab + content detail pending.
 
 ## Bug count (Summary)
 - P2: 6 (Bugs #1,2,5,6,7 + SUM-LOC-013/014 rollups) · P3: 3 (#3,4,8) · P4: 2 (#9 judgment, #10 infra).

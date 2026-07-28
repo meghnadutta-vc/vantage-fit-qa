@@ -23,6 +23,8 @@
 | B8 | P3 | "Active Minutes" label capitalized inconsistently (fr & pt) |
 | B9 | P4 | "Wellness Score" stays English (confirm if intentional brand term) |
 | B10 | P4 | i18n JSON asset requests return the SPA HTML shell (infra) |
+| B11 | **P2** | Language preference not persisted — reverts to English after session expiry/re-login (FE/BE TBD) |
+| B12 | **P2** | German mixes formal "Ihr" and informal "du" — inconsistent tone/register (cross-module) |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -177,3 +179,79 @@ requests are dead/HTML-fallback and suggest a misconfigured asset path worth cle
 **Proof:** fetch of `/ng/assets/i18n/fit/en.json` → 200, `content-type: text/html`, body begins
 `"<!DOCTYPE html> <html lang=\"en\" data-beasties-container>"`.
 **Screenshot:** n/a (network/console evidence; recorded in `Execution_Status.md`).
+
+---
+
+## B11 — [P2] Language preference not persisted across sessions
+**Type:** Localization / Functional · **Layer:** Frontend / Backend (TBD)
+**Where:** Profile language ↔ Fit web, after a session expiry + re-login.
+
+**Description & proof:** A saved language reverts to English on the next login.
+- Saved profile Language = German earlier; Fit web rendered German that session (verified, `challenges_de.png`).
+- After the browser session expired and I re-logged in, the Fit web loaded in **English** (`html lang="en"`,
+  `programs_en_baseline.png`), and the profile "Edit Profile → Language" select read back **"English"**.
+- Re-selecting German + re-login restored German for that session only.
+
+**Expected:** a saved language preference persists across logout/login until changed.
+**Note/Doubt:** could be (a) language stored session-only, not persisted to the account, or (b) default-to-
+  English on session bootstrap. Reproduced once via natural session expiry. Needs dev confirmation of
+  intended persistence and whether it is FE (session/local) or BE (account preference). Discovered during
+  the Programs pass. [FE/BE — TBD]
+**Screenshot:** `../evidence/programs_en_baseline.png` (loaded EN after re-login).
+
+---
+
+## B12 — [P2] German mixes formal "Ihr" and informal "du" (inconsistent tone/register)
+**Type:** Localization / Copy (tone consistency) · **Layer:** Frontend
+**Where:** Cross-module — Summary vs the rest of the German UI.
+
+**Description & proof:** German has two politeness registers (formal *Sie/Ihr* vs informal *du/dein*). The
+Fit web mixes them, which reads as inconsistent voice.
+- **Informal (du)** dominates: "**Sieh**, was in **deiner** Community passiert" (Summary), "Scanne, um
+  **dich** auf **deinem** Smartphone anzumelden" (footer), "Brauchst **du** Hilfe mit Vantage Fit?" (footer),
+  "**Tritt** gegen Kollegen an und **verfolge deine** Aufgaben." (Challenges).
+- **Formal (Ihr)** appears in: "**Ihr** neuestes Abzeichen" (Summary — Sie-register possessive).
+→ One screen (Summary) alone contains both "Ihr neuestes Abzeichen" (formal) and "deiner Community" (informal).
+
+**Expected:** a single, consistent register across the product (Vantage Fit generally uses informal *du*).
+**Fix:** change "Ihr neuestes Abzeichen" → "Dein neuestes Abzeichen" (and audit all screens for stray Sie/Ihr).
+**Screenshot:** `../evidence/summary_de.png` ("Ihr neuestes Abzeichen" badge card).
+
+---
+
+# Cross-module consistency analysis (context · word · tone)
+
+Analysis across the modules captured so far (**German** across Summary/Challenges/Programs; fr/es/pt on
+Summary). Some points reinforce existing bugs seen through a consistency lens; the tone finding (B12) is new.
+
+### Tone / register consistency
+- **German formality is mixed** — see **B12** (formal "Ihr neuestes Abzeichen" vs informal du everywhere else).
+- Elsewhere the voice is consistently informal/imperative ("Sieh…", "Scanne…", "Tritt… an und verfolge…"),
+  which is fine **once** the stray "Ihr" is fixed.
+- fr/es/pt: no register split observed (those languages don't carry the T–V distinction as visibly here),
+  but fr/pt have a **casing** inconsistency (see below / B8).
+
+### Word consistency (same concept → same term?)
+- ✅ **Consistent:** "Rang" for *rank* (Wöchentlicher Rang / Gesamtrang), "Fortschritt" for *progress*
+  (Wöchentlicher / Meilenstein- / Gesamter Fortschritt), "Community" as a loanword throughout, "Vantage Fit"
+  (brand) — used the same way in every module.
+- ❌ **"challenge" rendered two ways:** nav tab left English "**Challenges**" (B5) while body copy uses German
+  "**Herausforderung**" (E-Marathon-/Renn-Herausforderung). Same concept, two words → pick one.
+- ❌ **"week" treated two ways:** standalone badge "**Week 1**" left English (B4) while the adjective is
+  translated ("**Wöchentlicher** Rang/Fortschritt"). Same root handled inconsistently.
+- ⚠️ **fr/pt casing:** "Minutes Actives" vs "Minutes actives" / "Minutos Ativos" vs "Minutos ativos" (B8) —
+  same label, two capitalizations across cards.
+
+### Context / coherence (mixed-language within one context)
+- ❌ **Mixed language inside one phrase:** "Aktualisiert am **14 Jul 2025**" — German prefix + English date (B1).
+- ❌ **Mixed language inside one card:** Challenge card shows German "Wöchentlicher Rang" beside English
+  "Week 1" (B4) → jarring within a single component.
+- ⚠️ **"Wellness Score"** English label in an otherwise-German Health card (B9 — judgment: brand or translate?).
+- ✅ Brand token "Vantage Fit" correctly kept English inside translated sentences (by design).
+
+### Consistency verdict
+Terminology is largely disciplined (rank/progress/community consistent), but three consistency defects stand
+out: **(1) mixed formal/informal register in German [B12, new], (2) the same concept shown in two languages
+in one place ("Week 1" + German label; German date-prefix + English date) [B1/B4], and (3) tab-vs-body word
+split for "challenge" [B5].** fr/pt add a minor casing inconsistency [B8]. Recommend a single glossary +
+register decision applied product-wide.
