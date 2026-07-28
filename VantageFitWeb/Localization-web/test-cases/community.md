@@ -1,9 +1,10 @@
 # Vantage Fit Web — Community module — Localization test cases
 
 **Surface:** `app.vantagecircle.co.in/ng/fit/community` (tab "Community"). Sub-tabs: **Social / Events**.
-**Account:** anjan.pathak@… (UAT), language = **German** (confirmed via My Info → Sprache: German).
-**Executed:** 2026-07-28 — German (de) only; this is the module's first test pass (never tested before).
-**Evidence:** `../evidence/community_de_social_tab.png`, `../evidence/community_de_events_tab.png`.
+**Account:** anjan.pathak@… (UAT). **Executed:** 2026-07-28 — German (de), first pass; **Spanish (es) added
+same day** to check whether B16 is language-specific.
+**Evidence:** `../evidence/community_de_social_tab.png`, `../evidence/community_de_events_tab.png`,
+`../evidence/community_es_social.png`.
 
 ## Screen inventory
 - Nav tabs + `+ Add`. Heading "Community", subtitle "What your wellness community is up to."
@@ -32,15 +33,22 @@
 | COM-LOC-012 | `<html lang>` attribute | Read lang attr | Matches locale | "de" (stuck, per known cross-module a11y gap — not re-logged, tracked separately) | — | — |
 | COM-LOC-013 | "A note from CEO" click behavior | Click the CEO card | Documented behavior | Opens the raw CDN **video file URL directly in a new tab** (no in-app player/modal) — functional observation, not a localization surface | PASS (behavior documented) | — |
 
+## Spanish (es) cross-check — 2026-07-28
+
+| Test Case ID | Description | Steps | Expected | Actual (es) | Status | Priority |
+|---|---|---|---|---|---|---|
+| COM-LOC-014 | Does B16 (chrome unlocalized) reproduce in Spanish? | Switch account to Spanish → open Community | Either localizes correctly, or reproduces the same English fallback | **Reproduces identically** — nav "Summary/Challenges/Programs/Community" (English), heading/subtitle/footer English; only shared-widget strings stay Spanish ("No hay ninguna publicación.", "Rango semanal"/"Progreso semanal", "Su última insignia") | FAIL (es) — B16 confirmed cross-language | P2 |
+| COM-LOC-015 | Badge widget register (Spanish) | Read badge widget text | Consistent informal voice | "**Su** última insignia" — formal, same structural slip as German's "Ihr neuestes Abzeichen" → B12 recurs in Spanish too | FAIL (es) — B12 | P2 |
+| COM-LOC-016 | Bottom mini-nav bar (Haus/Arbeit equivalent) | Read the floating bottom nav | Translated | "Inicio"/"Trabaja" — correctly Spanish, even while the main nav above is English → a THIRD component on this route with its own, different, correct locale resolution | PASS (but reinforces B16's oddity) | — |
+
 ## Notes / pending
-- **Headline finding:** Community's own FE chrome (heading, subtitle, both sub-tab labels, both sub-tab
-  section headers, footer, nav-bar-while-on-this-route) is **0% localized into German** — every module-owned
-  string rendered in English on both Social and Events, even though the account is confirmed set to German
-  and the SAME nav/footer correctly render German on Summary/Programs in the same session. Only strings that
-  ARE German are ones borrowed from already-localized shared components (empty-state text, the
-  Challenges/Summary rank-progress widget, the badge widget). This matches the skill's known pattern of
-  newer surfaces shipping with no i18n keys (§5) — see **new Bug** in bug log.
+- **Headline finding, now confirmed cross-language:** Community's own FE chrome (heading, subtitle, both
+  sub-tab labels, section headers, footer, nav-bar-while-on-this-route) is **0% localized in BOTH German and
+  Spanish** — the failure is module-wide and language-independent, unlike Diary/Trends where the same class
+  of bug is language-dependent (see `diary-trends.md` B19/B20). Only shared/reused-component strings (empty
+  state, challenge widget, badge widget, and even the bottom mini-nav) stay correctly localized in whichever
+  language is active — see **B16** in the bug log for the full cross-language write-up.
 - Social feed has no posts to inspect content-vs-chrome for post cards; re-test once posts exist.
-- fr/es/pt passes pending (not started — this was the German-only first pass per today's priority).
+- fr/pt passes still pending.
 - Accessibility/touch-target/contrast checks not separately run this pass — visual pass only found no obvious
   overlap/truncation issues.

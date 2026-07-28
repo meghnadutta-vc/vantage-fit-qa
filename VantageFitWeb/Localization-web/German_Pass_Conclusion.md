@@ -64,6 +64,19 @@ per-module notes) surfaced two things no single-module pass would have:
 - **Root-cause confirmation** for B14, B15, B16, B19 — all flagged FE/BE-TBD or "needs dev confirmation";
   an English-baseline comparison of the same routes would help distinguish "always broken" vs "German-only".
 
+## Addendum (added after the Spanish pass, same day)
+Two further bugs were found via a follow-up visual re-review of screenshots already captured during THIS
+German pass — a reminder that text-content extraction alone misses purely visual defects:
+- **B23 (P2):** ~28 Programs content-image URLs 404 (malformed CDN paths), rendering nearly every Library/
+  Offerings thumbnail as a solid black box. Visible in `programs_de_offerings_tab.png` above but not caught
+  until prompted by the user during the Spanish pass.
+- **B22 (P3, user-found):** the Trends Steps/Active-Minutes toggle's selection pill overlaps the neighboring
+  tab's text — visible in `trends_de_week_view.png` above, also missed until flagged by the user.
+
+Both are detailed in the consolidated `bug-logs/bug-log.md` and in `Spanish_Pass_Conclusion.md`, which also
+covers B24 (an intermittent Offerings-tab 502). See the skill's §8 update for the process fix (screenshots
+now get a deliberate visual pass, not just DOM-text extraction).
+
 ## Deliverables touched today
 `test-cases/{programs,community,diary-trends}.md` (new/extended) · `bug-logs/{programs,community,
 diary-trends,bug-log}.md` (new/extended, B13–B19 added) · `Execution_Status.md` · `Coverage_Matrix.md` ·

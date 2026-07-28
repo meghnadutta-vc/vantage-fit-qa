@@ -33,27 +33,35 @@ Only strings that DO render in German on this page are ones borrowed from alread
   components: "Es gibt keinen Beitrag" (empty-state), the challenge widget ("Wöchentlicher Rang/Fortschritt"
   — reused from Challenges), and the badge widget ("Ihr neuestes Abzeichen" — reused from Summary, and
   itself carrying the B12 register bug).
-Note/Doubt: two plausible explanations, not distinguished yet — (a) Community's own components were shipped
-  without i18n keys at all (matching the skill's known "newer surfaces ship with no i18n keys" pattern), and
-  the nav/footer regression is a related wire-up bug scoped to this route; or (b) a language-context/module
-  boundary issue where the Community feature module resolves its own (English-defaulted) locale instead of
-  inheriting the app-wide one, and that also clobbers the shared nav/footer while mounted. Needs dev
-  confirmation; recommend checking whether Community is a separately-lazy-loaded Angular module with its own
-  i18n/locale provider. [FE]
-Evidence: ../evidence/community_de_social_tab.png, ../evidence/community_de_events_tab.png
+Note/Doubt: **confirmed 2026-07-28 via a Spanish cross-check** — the identical pattern reproduces in Spanish
+  (nav/heading/subtitle/footer English; only "No hay ninguna publicación.", the challenge widget, and the
+  badge widget stay Spanish). This rules out explanation (a) as a *complete* story — if Community's own
+  components simply had no i18n keys, that alone wouldn't explain the nav/footer (which live outside
+  Community and localize correctly on every other route, in both languages) also going English while
+  mounted here. Explanation (b) — Community's mount resetting/overriding a shared locale-state service that
+  nav/footer also consume — better fits reproducing identically regardless of which language was active.
+  Needs dev confirmation; recommend checking whether Community is a separately-lazy-loaded Angular module
+  with its own i18n/locale provider that clobbers a shared signal on init. [FE]
+Evidence: ../evidence/community_de_social_tab.png, ../evidence/community_de_events_tab.png, ../evidence/community_es_social.png
 ```
 
-### Recurs: B12 — formal register (badge widget)
-"Ihr neuestes Abzeichen" (badge widget, reused from Summary) — same formal-register instance already logged
-under B12; appears here because the widget is shared, not a new occurrence.
+### Recurs: B12 — formal register (badge widget), confirmed in German AND Spanish
+"Ihr neuestes Abzeichen" (de) / "Su última insignia" (es) — badge widget, reused from Summary — same
+formal-register instance already logged under B12, now confirmed in both languages tested.
 
 ### Recurs: B4 — "Week 1" not translated
-Challenge widget shows "Week 1" in English, consistent with Summary/Challenges.
+Challenge widget shows "Week 1" in English, consistent with Summary/Challenges, in both de and es.
 
 ### Documented behavior (not a bug): CEO note opens raw video file
 Clicking "A note from CEO" opens the CDN video file URL directly in a new browser tab — no in-app player.
 Not a localization surface (no text chrome involved); noting for completeness only.
 
+### Documented behavior (not a bug, but worth flagging): the bottom mini-nav bar stays correctly localized
+The floating bottom nav ("Inicio"/"Trabaja" in Spanish, "Haus"/"Arbeit" in German) is a THIRD component on
+this route (distinct from the top nav and Community's own chrome) and resolves its language correctly in
+both — reinforcing that this route has multiple independently-resolving locale sources, not one shared state.
+
 ## Assignment
-- Frontend: **B16** (new, P2 — Community chrome + nav/footer regression) — highest priority for this module.
+- Frontend: **B16** (P2 — Community chrome + nav/footer regression, confirmed in both German and Spanish) —
+  highest priority for this module, now with stronger cross-language evidence for the root-cause narrowing.
 - Already tracked: B4, B12 recurrences (no new action; fix once at the shared-widget/copy level).

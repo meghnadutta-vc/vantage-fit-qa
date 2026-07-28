@@ -118,6 +118,69 @@ Evidence: ../evidence/programs_de_bitecontent_detail_overlap.png
 Clicking a partner-offer card (e.g. "Decathalon") opens the partner's own website in a new tab — there is no
 in-app "detail page" for Offerings. Out of scope for this app's localization (external site).
 
+---
+
+## Spanish cross-check (2026-07-28)
+**Evidence:** `../evidence/programs_es_bitecontent.png`.
+
+Re-ran the Offerings + bite-size-content-detail flow in Spanish specifically to resolve the open
+Note/Doubts on B12, B13, B14, B15. Results:
+- **B12 recurs** — "Para cuidar de **sus** necesidades de bienestar completa" (Offerings subtitle) carries
+  the identical formal-register slip as German's "Ihre umfassenden…", in the exact same structural position.
+- **B13 recurs identically** — "Written By" stays English in the Spanish bite-size content dialog too, with
+  every other string on that dialog translating. Confirms hardcoded FE string, not a per-locale missing key.
+- **B15 confirmed language-independent** — the CTA-overlap bug reproduces pixel-for-pixel in Spanish with a
+  different-length body paragraph, ruling out "German text is too long" as the cause. This is a template bug.
+- **B14 confirmed German-specific** — the same "Ver todo" (View all) flow in Spanish returns a **populated**
+  grid (3 items), not empty. The bug is isolated to German's locale handling on that one endpoint.
+- **New observation (not a bug):** the Spanish Library carousel/grid surfaces content titled literally
+  "Spanish Content" and "New SPANISH Updated English Content" — these read as QA/test placeholder titles
+  left in the CMS rather than genuine health content. Flagging for the content owner as a data-quality note,
+  not a translation defect (title text is BE/content data).
+
+---
+
+## Missed on the first pass — found via a second review (2026-07-28, prompted by user)
+
+### NEW: B23 — Content thumbnails render as solid black boxes (malformed CDN image URLs)
+```
+[Functional / Backend (data) - P2]
+[Programs → Library (Health-bites carousel + Excercise cards) and Offerings (partner cards)]
+28 unique image requests 404 on a single page load: 23 with a doubled ".png.png" extension, 1 with a
+doubled path segment ("VantageFit/content_image/VantageFit/content_image/..."), 4 genuinely missing named
+assets (clean URLs, e.g. "bite-contents/sleep-management/sleep-management-01.png"), plus the fallback image
+itself ("content_image/default.png") also 404ing 7 times — so broken thumbnails have no working placeholder
+either. Visually this renders as solid black boxes across nearly every visible thumbnail on Library, and
+several cards on Offerings.
+
+Expected: thumbnails load their real image, or fall back to a working placeholder.
+Actual: ~all Library thumbnails and multiple Offerings cards show as blank black squares.
+Note/Doubt: this was originally NOTICED during the initial German pass (visible in
+  programs_de_offerings_tab.png as a large black box) but never logged — caught on a second review. URLs
+  contain no locale segment, so this is language-independent. [BE]
+Evidence: ../evidence/programs_library_broken_images.png, ../evidence/programs_de_offerings_tab.png
+```
+
+### NEW: B24 — Offerings tab intermittently shows "Unable to load offerings right now"
+```
+[Functional - P3]
+[Programs → Offerings tab]
+Observed the Offerings tab show an explicit error state (icon + "Unable to load offerings right now." +
+"Try again" button) instead of the partner-offer grid, coinciding with a 502 Bad Gateway on
+GET /vantagefit/api/v1/marketplace/categories. Clicking "Try again" recovered it on the next attempt.
+
+Expected: Offerings loads reliably.
+Actual: at least one 502 observed during testing; recovered cleanly on manual retry.
+Note/Doubt: appears to be intermittent backend flakiness, not a permanent failure — only seen once across
+  many page loads today. The existing error-state + retry UX is reasonable; flagging as a backend
+  reliability note for the /marketplace/categories endpoint. [BE]
+Evidence: ../evidence/programs_offerings_unable_to_load.png
+```
+
 ## Assignment (this run)
-- Frontend: B12 recurrences (register); B13 ("Written By"); B15 (needs confirmation before assigning).
-- Backend: B14 (empty View-all grid) — needs confirmation whether locale-specific.
+- Frontend: **B12** (confirmed cross-language, register fix at source-string level recommended); **B13**
+  (confirmed cross-language, hardcoded FE string); **B15** (confirmed cross-language, FE layout/template bug).
+- Backend: **B14** (confirmed German-specific — locale-handling bug on the paginated content endpoint);
+  **B23** (new, P2 — malformed content-image URLs, highest priority of this module's backend findings);
+  **B24** (new, P3 — intermittent 502 on marketplace/categories).
+- Content/data (FYI, not a bug): placeholder-looking Spanish library titles ("Spanish Content" etc.).

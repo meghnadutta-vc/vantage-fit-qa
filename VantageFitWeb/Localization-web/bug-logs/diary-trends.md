@@ -69,17 +69,65 @@ Community, where nav/footer DID regress). But almost everything else on this pag
 Expected: all page-owned strings translate, consistent with the metric switcher and shell that already do.
 Actual: only a handful of strings on this page are localized; most are English, with at least one proven
   inconsistency (Jan-Dec vs "Dieser Monat") within the same view.
-Note/Doubt: root cause not confirmed — could be the same "newer surface shipped without complete i18n keys"
-  pattern seen in Community (B16), but here scoped to just this page's content rather than the whole route
-  (nav/footer were unaffected). Needs dev confirmation. [FE]
-Evidence: ../evidence/trends_de_week_view.png, ../evidence/trends_de_year_view.png
+Note/Doubt: **confirmed 2026-07-28 via a Spanish cross-check — behavior is language-dependent.** In Spanish,
+  the same page's nav ALSO regresses to English (unlike German, where nav stayed correct) — see B19's entry
+  in the consolidated log. This is the same signature as B16/B20 and points to a missing-translation-cascade
+  triggered per-language, not a single fixed "this page was never wired" bug. [FE]
+Evidence: ../evidence/trends_de_week_view.png, ../evidence/trends_de_year_view.png, ../evidence/trends_es_week_english.png
 ```
 
 ### Recurs (via Trends page): B4 ("Week N" labels), B6 (hrs/mins units), B7 (weekday chart axis), B1 (dates)
-All four already-logged Summary-level bugs reproduce identically on this page — see B19 for detail; no
-separate action needed beyond the existing fixes for those IDs.
+All four already-logged Summary-level bugs reproduce identically on this page, in both German and Spanish —
+see B19 for detail; no separate action needed beyond the existing fixes for those IDs.
+
+---
+
+## NEW: B20 — Diary chrome + nav regress to English in Spanish (2026-07-28)
+```
+[Localization - P2]
+[Diary (/ng/fit/summary/diary), Spanish only]
+Diary was the best-localized screen found in German (only B17/B18 as gaps). The identical route in Spanish
+is nearly all English, including the app-shell nav — the same nav-drag-down signature as Community (B16).
+
+Expected: Diary localizes into Spanish as completely as it does into German.
+Actual: nav shows "Summary/Challenges/Programs/Community" (English); page content shows "Diary", "Snapshot",
+  "Calorie Ledger", "Recommended", "Meals/Resting/Active/Balance/Deficit", "Learn more", "Food Log",
+  "Sleep"/"No Data", "Intake"/"Calories"/"Water", "Distance"/"Moved"/"Jog / Run"/"Cycling", "Activities",
+  "Vitals"/"Mood"/"Heart Rate"/"Weight" — all English. Only "Pasos"/"Minutos Activos" (the reused Snapshot
+  widget, also present on the fully-Spanish Summary page) survive correctly in Spanish.
+Note/Doubt: this is the strongest evidence in the whole engagement that module-level i18n coverage does not
+  transfer between languages — the SAME route is excellent in German and badly broken in Spanish. Most
+  likely explanation: Diary's Spanish translation resource is missing/fails to load, and that failure
+  cascades to reset a shared locale signal nav also reads, while German's resource loads fine so nothing
+  cascades. Needs dev confirmation, ideally checking whether the Diary i18n namespace has an `es` file. [FE]
+Evidence: ../evidence/diary_de_full.png (contrast), ../evidence/diary_es_english_fallback.png
+```
+
+---
+
+## NEW: B22 — Trends metric-switcher pill overlaps neighboring tab text (user-found, 2026-07-28)
+```
+[UI - P3]
+[Trends (/ng/fit/activity-stats) — Steps/Active Minutes toggle at the top of the page]
+The sliding selection "pill" behind the active toggle option is wider than the option's own segment,
+overflowing into the neighboring tab and covering the start of its text.
+
+Expected: the pill's width always matches the selected segment; never overlaps the neighbor's label.
+Actual (Spanish, measured live): "Pasos" segment is 103.75px wide (x=257.5–361.25), but the `.tracker` pill
+  on top of it is 144px wide (x=257.5–401.5, z-index 1) — 40px wider than its segment, overlapping directly
+  onto "Minutos Activos" and hiding its leading "M" ("inutos Activos" visible instead).
+  Also visible (less severely) in German ("Schritte"/"Aktive Minuten" — longer label, smaller relative
+  overflow, same fixed-width pill).
+Note/Doubt: root cause narrowed via DOM measurement — the pill's width appears fixed/independently computed
+  rather than derived from the active segment's actual rendered width. Reproduces in both languages tested,
+  so it's a language-agnostic layout bug that shorter translated labels expose more visibly. Not verified
+  against English baseline. [FE]
+Evidence: ../evidence/trends_es_toggle_overlap.png, ../evidence/trends_de_week_view.png (comparison)
+```
 
 ## Assignment
-- Frontend: **B17** (caloric-deficit sentence), **B18** ("mile" unit word), **B19** (Trends page — highest
-  priority for this module, P2). B1/B4/B6/B7 recurrences — no new action, same fix covers all surfaces.
+- Frontend: **B17** (caloric-deficit sentence, de), **B18** ("mile" unit word, de), **B19** (Trends page —
+  P2, now confirmed language-dependent), **B20** (new — Diary regression in Spanish, P2, highest priority
+  for this module alongside B19), **B22** (new — toggle pill overlap, P3, language-agnostic UI bug).
+  B1/B4/B6/B7 recurrences — no new action, same fix covers all surfaces.
 - Needs verification (not logged as bug): mood value "Not Good" — FE/BE TBD.

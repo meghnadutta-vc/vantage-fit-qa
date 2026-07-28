@@ -24,13 +24,18 @@
 | B9 | P4 | "Wellness Score" stays English (confirm if intentional brand term) |
 | B10 | P4 | i18n JSON asset requests return the SPA HTML shell (infra) |
 | B11 | **P2** | Language preference not persisted — reverts to English after session expiry/re-login (FE/BE TBD) |
-| B12 | **P2** | German mixes formal "Ihr" and informal "du" — inconsistent tone/register (cross-module; 3 surfaces) |
-| B13 | P3 | "Written By" label not translated in bite-size content detail (Programs) |
-| B15 | P3 | CTA button overlaps body text in bite-size content intro screen (Programs) — root cause TBD |
-| B16 | **P2** | Community module chrome 0% localized; nav/footer regress to English while on this route |
-| B17 | **P2** | "You are currently in a caloric deficit" sentence not translated (Diary) |
-| B18 | P3 | "mile" unit word not translated in Diary's Distance section |
-| B19 | **P2** | Trends (`/activity-stats`) page mostly unlocalized; inconsistent even within itself |
+| B12 | **P2** | Formal/informal register mixing — cross-module, **cross-language** (de "Ihr", es "Su/sus"; 5 confirmed surfaces) |
+| B13 | P3 | "Written By" label not translated in bite-size content detail (Programs) — confirmed de + es |
+| B15 | P3 | CTA button overlaps body text in bite-size content intro screen (Programs) — confirmed de + es, language-independent |
+| B16 | **P2** | Community module chrome 0% localized; nav/footer regress to English while on this route — confirmed de + es |
+| B17 | **P2** | "You are currently in a caloric deficit" sentence not translated (Diary, de) |
+| B18 | P3 | "mile" unit word not translated in Diary's Distance section (de) |
+| B19 | **P2** | Trends (`/activity-stats`) page mostly unlocalized; **es also drags nav down** (de doesn't) — inconsistent even within itself |
+| B20 | **P2** | Diary chrome + nav regress to English in Spanish — Diary was the best-localized screen in German |
+| B21 | P3 | Spanish "challenge" rendered two ways: nav "Retos" vs body "Desafío" (parallel to B3, different mechanism) |
+| B22 | P3 | Trends metric-switcher selection pill overlaps neighboring tab's text — worse in Spanish (user-found) |
+| B23 | **P2** | Programs content thumbnails render as solid black boxes — malformed CDN URLs (23 double-`.png.png`, broken fallback) |
+| B24 | P3 | Offerings tab intermittently shows "Unable to load offerings right now" — transient 502 on marketplace/categories |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -43,6 +48,13 @@ Reports-type screens.)
 **Programs (2026-07-28):** **B14** — "Alle anzeigen" content grid returns empty (`GET /content/category/20`)
 while the same category has content via a sibling endpoint (`POST /content/byCategoryName`) — likely a
 locale-handling gap on the paginated endpoint. P2, FE/BE TBD pending an English-baseline comparison.
+
+**Programs (2026-07-28, missed on first pass — found via a second review prompted by the user):** **B23** —
+28 unique content-image URLs 404 on a single page load (23 double-extensioned `.png.png`, 1 with a doubled
+path segment, 4 genuinely missing named assets, plus the `default.png` fallback itself 404ing) — renders as
+solid black boxes across nearly every Library and Offerings thumbnail. P2, locale-independent. **B24** — an
+intermittent 502 on `/marketplace/categories` occasionally shows "Unable to load offerings right now"; a
+manual retry recovers it. P3, backend reliability note.
 
 ---
 
@@ -211,29 +223,37 @@ requests are dead/HTML-fallback and suggest a misconfigured asset path worth cle
 
 ---
 
-## B12 — [P2] German mixes formal "Ihr" and informal "du" (inconsistent tone/register)
+## B12 — [P2] Formal/informal register mixing (cross-module, cross-language)
 **Type:** Localization / Copy (tone consistency) · **Layer:** Frontend
-**Where:** Cross-module — Summary, Programs (Offerings sub-tab + bite-size content body) vs the rest of the
-German UI.
+**Where:** Cross-module — Summary, Programs (Offerings sub-tab + bite-size content body), Community (badge
+widget) — in **both German and Spanish**, the two T–V-distinction languages tested so far.
 
-**Description & proof:** German has two politeness registers (formal *Sie/Ihr* vs informal *du/dein*). The
-Fit web mixes them, which reads as inconsistent voice.
-- **Informal (du)** dominates: "**Sieh**, was in **deiner** Community passiert" (Summary), "Scanne, um
-  **dich** auf **deinem** Smartphone anzumelden" (footer), "Brauchst **du** Hilfe mit Vantage Fit?" (footer),
-  "**Tritt** gegen Kollegen an und **verfolge deine** Aufgaben." (Challenges).
-- **Formal (Ihr/Ihre/Ihren)** appears in 3 confirmed surfaces:
-  1. "**Ihr** neuestes Abzeichen" (Summary — Sie-register possessive).
-  2. "Um **Ihre** umfassenden Wellness-Bedürfnisse zu erfüllen" (Programs → Offerings sub-tab subtitle).
-  3. "**Ihren** Körper mit den richtigen Nährstoffen…" (Programs → bite-size content intro **body copy**,
-     not just UI chrome — shows the register split reaches authored content text too).
-→ Summary alone already contains both registers ("Ihr neuestes Abzeichen" formal + "deiner Community"
-informal); Programs adds two more formal instances, one of them inside content body text.
+**Description & proof:** German (*Sie/Ihr* vs *du/dein*) and Spanish (*usted/su* vs *tú*) both have two
+politeness registers, and the Fit web mixes them in both languages, reading as inconsistent voice.
+- **German — informal (du)** dominates: "**Sieh**, was in **deiner** Community passiert" (Summary), "Scanne,
+  um **dich** auf **deinem** Smartphone anzumelden" (footer), "Brauchst **du** Hilfe…" (footer), "**Tritt**
+  gegen Kollegen an und **verfolge deine** Aufgaben." (Challenges), "Erfasse **deinen** Schlaf…" (Diary).
+- **German — formal (Ihr/Ihre/Ihren)** on 3 surfaces: "**Ihr** neuestes Abzeichen" (Summary/Community badge
+  widget), "Um **Ihre** umfassenden Wellness-Bedürfnisse zu erfüllen" (Programs → Offerings), "**Ihren**
+  Körper mit den richtigen Nährstoffen…" (Programs → bite-size content **body copy**).
+- **Spanish — informal (tú)** dominates: "Escanea para iniciar sesión en **tu** teléfono" (footer),
+  "¿Necesitas ayuda…?" (footer, tú-conjugated verb), "Compite con **tus** compañeros…" (Challenges subtitle).
+- **Spanish — formal (su/sus)** on the SAME 2 surfaces as German: "**Su** última insignia" (Summary/Community
+  badge widget — exact structural counterpart of "Ihr neuestes Abzeichen"), "Para cuidar de **sus**
+  necesidades de bienestar completa" (Programs → Offerings — exact structural counterpart of "Ihre
+  umfassenden…").
+→ The register split isn't a German-specific translation slip — it recurs on the **identical two strings**
+in Spanish, meaning the source content/copy itself (or a shared template both locales translate literally)
+carries the inconsistency, not a one-off per-language mistake.
 
-**Expected:** a single, consistent register across the product (Vantage Fit generally uses informal *du*).
-**Fix:** change "Ihr neuestes Abzeichen" → "Dein neuestes Abzeichen", "Ihre umfassenden" → "Deine
-umfassenden", "Ihren Körper" → "Deinen Körper" (and audit all screens/content templates for stray Sie/Ihr).
+**Expected:** a single, consistent register across the product (Vantage Fit's default voice is informal).
+**Fix:** German: "Ihr neuestes Abzeichen"→"Dein neuestes Abzeichen", "Ihre umfassenden"→"Deine umfassenden",
+"Ihren Körper"→"Deinen Körper". Spanish: "Su última insignia"→"Tu última insignia", "sus necesidades de
+bienestar completa"→"tus necesidades de bienestar completa". Recommend fixing at the source-string level
+(likely the same underlying English/authoring template) so the fix propagates to both locales at once.
 **Screenshot:** `../evidence/summary_de.png`, `../evidence/programs_de_offerings_tab.png`,
-`../evidence/programs_de_bitecontent_detail_overlap.png`.
+`../evidence/programs_de_bitecontent_detail_overlap.png`, `../evidence/summary_es_fresh.png`,
+`../evidence/community_es_social.png`.
 
 ---
 
@@ -244,12 +264,14 @@ umfassenden", "Ihren Körper" → "Deinen Körper" (and audit all screens/conten
 **Description & proof:** The bite-size content detail dialog is otherwise fully localized into German
 ("Einführung" heading, full body paragraph, "Fangen wir an" CTA), but the author byline label stays English.
 
-**Expected:** "Written By" renders in German (e.g. "Geschrieben von").
-**Actual:** label shows "Written By"; the value "Vantage Fit Team" correctly stays as-is (proper noun/brand).
+**Expected:** "Written By" renders in the active language (e.g. German "Geschrieben von", Spanish "Escrito por").
+**Actual:** label shows English "Written By" in **both German and Spanish** (confirmed 2026-07-28); the value
+"Vantage Fit Team" correctly stays as-is (proper noun/brand) in both.
 **Note/Doubt:** could not classify via the i18n dictionary — `/assets/i18n/fit/de.json` returns the SPA HTML
-shell (see B10), blocking key-lookup. Given every other string on this exact dialog translates, a hardcoded
-FE string is the likely explanation, but not confirmed via bundle search. [FE — likely, TBD]
-**Screenshot:** `../evidence/programs_de_bitecontent_detail_overlap.png`.
+shell (see B10), blocking key-lookup. Reproducing identically in 2 languages, with every other string on
+this exact dialog translating in both, strongly supports a hardcoded FE string (not a per-locale missing
+key) — though still not confirmed via bundle search. [FE — likely]
+**Screenshot:** `../evidence/programs_de_bitecontent_detail_overlap.png`, `../evidence/programs_es_bitecontent.png`.
 
 ---
 
@@ -267,67 +289,70 @@ exists and renders elsewhere on the same page.
 
 **Expected:** the modal lists the same German health-bites content the carousel shows.
 **Actual:** modal grid renders empty; the paginated endpoint doesn't return content the other endpoint does.
-**Note/Doubt:** not yet confirmed whether this reproduces in English (→ general API bug, not localization) or
-is German-specific (→ a locale param mishandled on the paginated endpoint specifically). Needs an
-English-baseline comparison and dev confirmation. [BE — likely, TBD]
+**Note/Doubt:** **confirmed German-specific** — re-tested the identical flow in Spanish (2026-07-28) and the
+same "View all" modal (`Ver todo` → "Consejos rápidos") returned **3 populated items**, not empty. This rules
+out a general API bug and points specifically to the paginated endpoint mishandling the `de` locale
+parameter (or German content rows for category 20 missing whatever field the paginated query filters on).
+Narrows the fix to backend locale-handling for German specifically. [BE]
 **Screenshot:** `../evidence/programs_de_viewall_empty_modal.png`.
 
 ---
 
 ## B15 — [P3] CTA button overlaps body text in bite-size content intro screen
-**Type:** UI · **Layer:** Frontend (unconfirmed — see note)
-**Where:** Programs → Health-bites → bite-size content detail, step 1 ("Einführung").
+**Type:** UI · **Layer:** Frontend
+**Where:** Programs → Health-bites → bite-size content detail, step 1 ("Einführung"/"Introducción").
 
-**Description & proof:** The "Fangen wir an" CTA button renders visually in the middle of the intro
-paragraph inside the phone-frame preview (`.bite-device` container), splitting one sentence into two halves
-above and below the button.
+**Description & proof:** The CTA button ("Fangen wir an" / "Empecemos") renders visually in the middle of
+the intro paragraph inside the phone-frame preview (`.bite-device` container), splitting one sentence into
+two halves above and below the button. **Confirmed identical in both German and Spanish** (2026-07-28) —
+same overlap, same position, different body text length in each language.
 
 **Expected:** CTA sits below/after the body text with clear separation, not interrupting it.
 **Actual:** button (`position: static`, no transform/negative margin) sits between two fragments of the same
-paragraph in render order; the container doesn't scroll-overflow (scrollHeight == clientHeight), so this
-isn't the classic "translated text is longer than English" overflow.
-**Note/Doubt:** root cause not confirmed — could not isolate why the visual position interleaves with the
-text via DOM/computed-style inspection. Needs an English-baseline comparison to rule out a language-agnostic
-template bug vs. a German-text-length trigger. Flagging as UI pending that confirmation, not as a
-localization defect. [Layer TBD]
-**Screenshot:** `../evidence/programs_de_bitecontent_detail_overlap.png`.
+paragraph in render order; the container doesn't scroll-overflow (scrollHeight == clientHeight).
+**Note/Doubt:** reproducing identically across two languages with different text lengths **rules out** a
+translated-text-length overflow trigger — this is a language-agnostic template/layout bug (a static-positioned
+CTA is placed inside the content flow rather than pinned after it), not a localization defect. Reclassified
+from "Layer TBD" to a confirmed FE UI bug. [FE]
+**Screenshot:** `../evidence/programs_de_bitecontent_detail_overlap.png`, `../evidence/programs_es_bitecontent.png`.
 
 ---
 
 ## B16 — [P2] Community module chrome not localized (0% coverage); nav/footer regress to English on this route
 **Type:** Localization · **Layer:** Frontend
 **Where:** Community — both Social and Events sub-tabs, plus the shared app nav/footer while on this route.
+**Confirmed in both German and Spanish** (2026-07-28) — identical symptom in both languages.
 
-**Description & proof:** Every Community-owned string renders in English regardless of the account's German
-setting, on both sub-tabs — and the shared nav/footer (which correctly render German on Summary/Programs in
-the same session) also regress to English specifically while on this route.
-- Social tab (EN): "Community" heading, "What your wellness community is up to." subtitle, "Social"/"Events"
-  tab labels, "FROM LEADERSHIP", "A note from CEO", "CHIEF EXECUTIVE OFFICER".
-- Events tab (EN): "Event Calendar", weekday abbreviations "MON TUE WED THU FRI SAT SUN", "Upcoming events",
-  "No upcoming events scheduled."
-- Nav/footer (EN, only on this route): "Summary/Challenges/Programs/Community" tabs, "Scan to sign in on your
-  phone", "Sweat now, Shine later.", "© 2026 Vantage Fit. Built for healthier teams.", "Need Help with
-  Vantage Fit?" — reloading Summary/Programs immediately after in the same session shows these correctly in
-  German, ruling out a session-wide language revert.
-- The only German strings on the page are borrowed from already-localized shared components: "Es gibt
-  keinen Beitrag" (empty state), the challenge widget ("Wöchentlicher Rang/Fortschritt"), and the badge
-  widget ("Ihr neuestes Abzeichen" — carries B12).
+**Description & proof:** Every Community-owned string renders in English regardless of the account's
+language setting, on both sub-tabs — and the shared nav/footer (which correctly localize on Summary/Programs
+in the same session) also regress to English specifically while on this route. Verified twice:
+- **German:** Social tab (EN): "Community" heading, subtitle, "Social"/"Events" tabs, "FROM LEADERSHIP", "A
+  note from CEO". Events tab (EN): "Event Calendar", weekday abbreviations, "Upcoming events". Nav/footer
+  (EN, only on this route). Only German strings: "Es gibt keinen Beitrag" (empty state), challenge widget
+  ("Wöchentlicher Rang/Fortschritt"), badge widget ("Ihr neuestes Abzeichen" — carries B12).
+- **Spanish:** identical pattern — nav shows "Summary/Challenges/Programs/Community" (English, not
+  "Resumen/Retos/Programas/Comunidad"), heading/subtitle/footer English. Only Spanish strings: "No hay
+  ninguna publicación." (empty state), challenge widget ("Rango semanal/Progreso semanal"), badge widget
+  ("Su última insignia" — carries B12).
+- Reloading Summary/Programs immediately after, in the same session, shows nav/footer correctly localized in
+  both languages — ruling out a session-wide language revert.
 
-**Expected:** Community chrome localizes like the other three modules; nav/footer stay German everywhere.
-**Note/Doubt:** root cause narrowed (not fully confirmed) via the cross-module consistency pass — **this is
-NOT a session-wide language revert.** If the account's language had actually reverted, the reused shared
-components (empty-state text, challenge widget, badge widget) would also render English, since they pull
-from the same i18n context as everything else — instead they stay correctly German. The puzzling part is
-that the app-shell nav/footer (which live OUTSIDE Community's own component tree) also flip to English while
-mounted here, then flip back to German on Summary/Programs. That rules out "Community was simply never wired
-to i18n" as a complete explanation (a module that just doesn't consume translations wouldn't be able to
-affect its siblings) — it points instead to something in Community's mount/bootstrap **resetting or
-overriding a shared language-state service** that nav/footer also read from, reverting it to an English
-default for as long as Community stays mounted. The same "one correctly-German string stranded in an
-all-English view" signature appears on Trends (B19 — "Dieser Monat"), suggesting a related mechanism, but
-Trends does NOT drag the nav/footer down with it, so the two aren't identical. Needs dev confirmation,
-ideally by inspecting whether Community's module init touches a global locale/language store. [FE]
-**Screenshot:** `../evidence/community_de_social_tab.png`, `../evidence/community_de_events_tab.png`.
+**Expected:** Community chrome localizes like the other modules; nav/footer stay localized everywhere.
+**Note/Doubt:** root cause narrowed (not fully confirmed) — **this is NOT a session-wide language revert.**
+If the account's language had actually reverted, the reused shared components (empty-state text, challenge
+widget, badge widget) would also render English in both languages tested — instead they stay correctly
+localized in each. The puzzling part is that the app-shell nav/footer (which live OUTSIDE Community's own
+component tree) also flip to English while mounted here, in both languages, then flip back on
+Summary/Programs. That rules out "Community was simply never wired to i18n" as a complete explanation (a
+module that just doesn't consume translations wouldn't be able to affect its siblings) — it points instead
+to something in Community's mount/bootstrap **resetting or overriding a shared language-state service** that
+nav/footer also read from, reverting it to an English default for as long as Community stays mounted, and
+doing so consistently regardless of which language was active. This is a genuinely different failure mode
+from B19/B20 (Trends/Diary), where the SAME mechanism only manifests in some languages, not others — see
+those bugs' notes. Needs dev confirmation, ideally by inspecting whether Community's module init touches a
+global locale/language store. [FE]
+**Screenshot:** `../evidence/community_de_social_tab.png`, `../evidence/community_de_events_tab.png`,
+`../evidence/community_es_social.png`.
 
 ---
 
@@ -358,95 +383,254 @@ legitimate account setting and not in scope here.
 
 ---
 
-## B19 — [P2] Trends (`/activity-stats`) page mostly unlocalized; inconsistent even within itself
+## B19 — [P2] Trends (`/activity-stats`) page mostly unlocalized; behavior differs by language
 **Type:** Localization · **Layer:** Frontend
-**Where:** Trends detail page, reached from Diary → "Trends ansehen".
+**Where:** Trends detail page, reached from Diary → "Trends ansehen"/"Ver tendencias".
 
-**Description & proof:** The metric switcher ("Schritte"/"Aktive Minuten") and the app shell (nav, footer)
-correctly stay German here, ruling out a session-wide language revert (contrast with B16, where nav/footer
-DID regress on Community). Almost everything else on this page's own content is English:
-- Range tabs "Week"/"Month"/"Year" — all 3 stay English in every state.
-- Chart title "Steps Overview" / "Active Minutes Overview" (per metric) — English.
-- "Activity Details" section header, "Today, [date]", value label "Steps Covered" — English.
-- Year-view month abbreviations "Jan Feb Mar…Dec" — English — **while** a nearby label "Dieser Monat" (This
-  month) on the very same Year view correctly renders German, proving a partial/inconsistent wire-up rather
-  than a blanket no-i18n gap.
-- Recurs on this page: weekday-axis abbreviations (B7, Week view), "Week 1…Week 5" (B4, Month view), and
-  "hrs"/"mins" units (B6, Active Minutes value).
+**Description & proof:** Almost all of this page's own content stays English in both German and Spanish —
+range tabs "Week"/"Month"/"Year", chart title "Steps Overview"/"Active Minutes Overview", "Activity Details"
+header, "Today, [date]", "Steps Covered" value label; plus recurrences of weekday-axis abbreviations (B7),
+"Week 1…Week 5" (B4), and "hrs"/"mins" units (B6). **But the shell behaves differently by language:**
+- **German:** the metric switcher ("Schritte"/"Aktive Minuten") AND the app shell (nav, footer) correctly
+  stay German — only this page's own content is affected. Year-view month abbreviations are English while a
+  nearby "Dieser Monat" label correctly renders German (partial wire-up, not zero coverage).
+- **Spanish:** the metric switcher stays Spanish ("Pasos"/"Minutos Activos"), but the **nav/shell also
+  regress to English** ("Back", "Summary/Challenges/Programs/Community") — the same nav-drag-down signature
+  seen on Community (B16) and Diary (B20), which does NOT happen on this same page in German.
 
-**Expected:** all page-owned strings translate, consistent with the metric switcher and shell that already do.
-**Note/Doubt:** root cause not confirmed — most likely explanation is this page's own component(s) shipping
-without complete i18n keys (the "Dieser Monat" outlier shows SOME strings here were externalized and others
-weren't, i.e. partial coverage, not zero coverage). Unlike B16 (Community), the shell (nav/footer) is
-unaffected here, so whatever mechanism drags nav/footer to English on Community does not reproduce on
-Trends — these are two distinct bugs with a superficially similar symptom, not the same root cause. Needs
-dev confirmation. [FE]
-**Screenshot:** `../evidence/trends_de_week_view.png`, `../evidence/trends_de_year_view.png`.
+**Expected:** all page-owned strings translate, consistent with the metric switcher that stays correct in
+both languages.
+**Note/Doubt:** the language-dependent shell behavior (nav fine in German, broken in Spanish, on the
+identical page) is the key diagnostic here — it suggests the nav-reset mechanism triggers only when a
+required translation resource is **missing for the requested language**, and German happens to have more of
+this page's content translated than Spanish does (consistent with the pattern seen on Diary, B20). Needs dev
+confirmation, ideally by checking whether this page's i18n namespace has complete `es` entries. [FE]
+**Screenshot:** `../evidence/trends_de_week_view.png`, `../evidence/trends_de_year_view.png`,
+`../evidence/trends_es_week_english.png`.
+
+---
+
+## B20 — [P2] Diary chrome + nav regress to English in Spanish (Diary was the best-localized screen in German)
+**Type:** Localization · **Layer:** Frontend
+**Where:** Diary (`/ng/fit/summary/diary`), Spanish only.
+
+**Description & proof:** In German, Diary was the single best-localized screen found across this entire
+engagement — every section (Snapshot, Calorie Balance, Nutrition Log, Sleep, Intake, Distance, Activities,
+Vitals) translated correctly, with only 2 minor gaps (B17, B18). **In Spanish, the same page is almost
+entirely English**, including the app-shell nav:
+- Nav: "Summary/Challenges/Programs/Community" — English, not "Resumen/Retos/Programas/Comunidad" (which
+  correctly appear on Summary/Challenges/Programs in the same Spanish session).
+- Page content: "Diary" (not "Diario"), "Snapshot", "Calorie Ledger", "Recommended", "Meals", "Resting",
+  "Active", "Balance", "Deficit", "Learn more", "Food Log", "Sleep", "No Data", "Intake", "Calories",
+  "Water", "Distance", "Moved", "Jog / Run", "Cycling", "Activities", "Vitals", "Mood", "Heart Rate",
+  "Weight" — all English.
+- Only two strings stay Spanish: "Pasos" and "Minutos Activos" — the same embedded Snapshot-widget labels
+  that are reused from Summary (which IS fully Spanish) — mirroring the "reverse signal" seen on Community
+  (B16) and Trends (B19): a shared/reused component surviving in the correct language inside an otherwise
+  all-English view.
+
+**Expected:** Diary localizes into Spanish as completely as it does into German.
+**Actual:** near-total English fallback on this route in Spanish, including the nav bar.
+**Note/Doubt:** this is the clearest evidence yet for the "missing-translation-resource triggers an
+English-default cascade that also resets the shell" theory floated for B16/B19 — the SAME route
+(`/summary/diary`) behaves completely differently by language (fully localized in German, almost fully
+English in Spanish), which a "component was never wired to i18n" explanation can't account for (that would
+break identically regardless of language). More likely: Diary's Spanish translation resource is missing or
+fails to load, and the failure cascades to reset a shared locale signal that nav also reads — while German's
+resource loads fine, so nothing cascades. Needs dev confirmation, ideally by checking whether the Diary
+i18n namespace has an `es` file/entries at all. [FE]
+**Screenshot:** `../evidence/diary_de_full.png` (German, for contrast), `../evidence/diary_es_english_fallback.png`.
+
+---
+
+## B21 — [P3] Spanish "challenge" rendered two ways: nav "Retos" vs body "Desafío"
+**Type:** Localization / Copy (terminology consistency) · **Layer:** Frontend
+**Where:** Challenges module, Spanish.
+
+**Description & proof:** Unlike German (where the nav tab stays English — B3), Spanish DOES translate the
+nav tab to "**Retos**". But the Challenges page body uses a **different** Spanish word for the same concept:
+"**Desafío** e-Marathon (finaliza en 23 días)", "**Desafío** de carrera (termina en 3 días)".
+
+**Expected:** one Spanish word for "challenge" used consistently between the nav tab and body copy.
+**Actual:** "Retos" (nav) vs "Desafío" (body) — same concept, two different words.
+**Note/Doubt:** this is the Spanish-language counterpart of the word-split pattern behind B3 (German tab
+"Challenges" vs body "Herausforderung"), but the mechanism is different: B3 is an untranslated-tab bug (one
+side is literally English), while this is a genuine **terminology/glossary inconsistency** — both sides ARE
+translated, just inconsistently. Confirms the product needs a single cross-language glossary decision for
+this term, not just a missing-translation fix. [FE — copy/glossary fix, not a wiring bug]
+**Screenshot:** `../evidence/challenges_es_fresh.png`.
+
+---
+
+## B22 — [P3] Trends metric-switcher selection pill overlaps the neighboring tab's text (worse in Spanish)
+**Type:** UI · **Layer:** Frontend
+**Where:** Diary → Trends (`/ng/fit/activity-stats`) → the "Steps"/"Active Minutes" toggle at the top.
+**Found by the user** during manual review of the Spanish evidence; verified live and root-caused 2026-07-28.
+
+**Description & proof:** The two-option toggle ("Pasos"/"Minutos Activos" in Spanish, "Schritte"/"Aktive
+Minuten" in German) has a sliding highlight ("tracker") pill behind the selected option. When "Steps" is
+selected, the pill overlaps the start of the neighboring "Active Minutes" label, visibly covering its first
+letter(s) — worse in Spanish, where "Minutos Activos" loses its leading "M" ("inutos Activos").
+- Measured live (Spanish, selected = Pasos): the "Pasos" flex segment is **103.75px** wide (257.5–361.25px),
+  but the absolutely-positioned `.tracker` pill sitting on top of it is **144px** wide (257.5–401.5px, `z-index:
+  1`) — **40.25px wider** than its own segment, overflowing directly into the "Minutos Activos" segment
+  (which starts at x=361.25) and visually covering its text.
+- The same overlap is visible in the German screenshot too (`Schritte`/`Aktive Minuten`), less severe there
+  because "Schritte" (8 chars) yields a wider segment than "Pasos" (5 chars) — same fixed/mismatched pill
+  width, smaller relative overflow.
+
+**Expected:** the selection pill's width matches the selected segment's actual rendered width in every
+language, never overlapping the neighboring tab's text.
+**Actual:** the pill has a fixed or independently-computed width that doesn't track the segment's real
+width, so shorter translated labels (like Spanish "Pasos") make the mismatch — and the resulting text
+overlap — more visible.
+**Note/Doubt:** root cause narrowed via live DOM measurement (not just visual inspection): fix likely means
+computing the tracker's width from the active segment's `getBoundingClientRect()` (or using CSS that lets it
+fill `100%` of its flex parent) instead of a fixed pixel value. Not verified against English baseline, but
+reproduces in both languages tested, so this is a language-agnostic layout bug that translation exposes to
+different degrees depending on label length. [FE]
+**Screenshot:** `../evidence/trends_es_toggle_overlap.png`, `../evidence/trends_de_week_view.png` (German, for comparison).
+
+---
+
+## B23 — [P2] Programs content thumbnails render as solid black boxes (malformed CDN image URLs)
+**Type:** Functional / Backend (data) · **Layer:** Backend
+**Where:** Programs → Library tab (Health-bites carousel + all "Excercise" category cards) and Offerings tab
+(partner-offer cards). **Found by the user** flagging a UI issue on Trends, which prompted a full re-review
+of today's evidence that surfaced this — it was originally observed during the initial German pass (the
+black box visible in `programs_de_offerings_tab.png`) but never logged as a bug.
+
+**Description & proof:** On a single Programs page load, **28 unique image requests 404** (41 including
+retries) out of the content thumbnails for Library + Offerings. Visually, this renders as **solid black
+boxes in place of nearly every content thumbnail** — the featured Health-bites carousel item and all 5
+"Excercise" category cards on Library; multiple partner-offer cards on Offerings. Three distinct causes
+bundled into the same visual symptom:
+1. **Double file extension (23 of 28 unique URLs):** e.g.
+   `.../content_image/355_216849_1653998324.png.png`, `.../355_1753805_1653650225.png.png` — the filename
+   already had `.png` and something appended `.png` again, producing a URL that can't resolve.
+2. **Doubled path segment (1 URL, also double-extension):**
+   `.../VantageFit/content_image/VantageFit/content_image/355_221322_1784701264.png.png`.
+3. **Genuinely missing named assets (4 URLs, cleanly formed, no double-extension):**
+   `bite-contents/sleep-management/sleep-management-01.png`, `bite-contents/burnout-prevention/
+   burnout-prevention2.png`, `bite-contents/importance-of-regular-walking/importance-regular-walking-01.png`,
+   `bite-contents/depression-awarness/depression-awarness2.png` (note: "awarness" is also misspelled in the
+   URL slug) — these never 404'd due to a URL-construction bug, they simply don't exist on the CDN.
+4. **Compounding factor:** the fallback/placeholder image itself, `.../content_image/default.png`, **also
+   404s** (7 of the 41 requests) — so when a real thumbnail fails, there is no working fallback either,
+   which is why the result is a blank black box rather than a generic placeholder icon.
+
+**Expected:** content thumbnails load their real cover image, or fall back to a working placeholder if the
+real image is genuinely missing.
+**Actual:** ~all visible thumbnails on Library, and multiple partner-offer cards on Offerings, render as
+solid black squares.
+**Note/Doubt:** this is backend/data (malformed image-URL construction, likely a double-suffixing bug when
+the asset pipeline appends `.png`/`.jpg` to a filename that already has an extension) — not a localization or
+frontend rendering defect; the URLs contain no locale segment, so this is expected to affect every language
+and was incidentally observed during both the German and post-Spanish-relogin sessions today. [BE]
+**Screenshot:** `../evidence/programs_library_broken_images.png`, `../evidence/programs_de_offerings_tab.png`.
+
+---
+
+## B24 — [P3] Offerings tab intermittently fails to load ("Unable to load offerings right now")
+**Type:** Functional · **Layer:** Backend
+**Where:** Programs → Offerings tab.
+
+**Description & proof:** Observed the Offerings tab render an explicit error state — icon, "Unable to load
+offerings right now.", and a "Try again" button — in place of the partner-offer grid. Console showed a
+`502 Bad Gateway` on `GET /vantagefit/api/v1/marketplace/categories` at the same moment. Clicking "Try
+again" recovered the tab on the next attempt (confirmed live, 2026-07-28).
+
+**Expected:** Offerings loads reliably; if a transient backend error does occur, a retry succeeds (which it
+does here — the graceful error state + working retry button is a reasonable UX pattern already in place).
+**Actual:** the categories endpoint returned 502 at least once during testing; the tab correctly showed an
+error state instead of silently breaking, and recovered on retry.
+**Note/Doubt:** appears to be backend flakiness/an intermittent 502 rather than a permanent failure — only
+reproduced once across many page loads today. Logging as a lower-severity reliability note for the backend
+team to check `marketplace/categories` error rates, not a blocking defect (the retry path works). [BE]
+**Screenshot:** `../evidence/programs_offerings_unable_to_load.png`.
 
 ---
 
 # Cross-module consistency analysis (context · word · tone)
 
-**Updated 2026-07-28** — this pass now covers **all 5 Fit modules in German** (Summary, Challenges,
-Programs, Community, Diary/Trends; fr/es/pt spot-checked on Summary only). Run per SKILL §11, analysing the
-strings already captured during each module's execution — no extra browser driving needed for this section.
+**Updated 2026-07-28 (Spanish pass)** — this analysis now covers **all 5 Fit modules in both German and
+Spanish** (Summary, Challenges, Programs, Community, Diary/Trends; fr/pt still spot-checked on Summary
+only). Run per SKILL §11, analysing the strings already captured during each module's execution.
 
 ### Tone / register consistency
-- **German formality is mixed** — see **B12**, confirmed on **3 surfaces**: "Ihr neuestes Abzeichen"
-  (Summary, also reused on Community's badge widget), "Ihre umfassenden Wellness-Bedürfnisse" (Programs →
-  Offerings), "Ihren Körper" (Programs → bite-size content body) — vs. informal *du* everywhere else,
-  including Diary ("Erfasse **deinen** Schlaf"). The bite-size-content instance shows the split reaches
-  authored content copy, not just FE chrome.
-- Elsewhere the voice is consistently informal/imperative ("Sieh…", "Scanne…", "Tritt… an und verfolge…",
-  "Erfasse deinen Schlaf…"), which is fine **once** the stray "Ihr/Ihre/Ihren" instances are fixed.
-- Community and Trends can't be scored for register — their own chrome is in English (B16/B19), so there's no
-  German prose there to check yet; re-run this check once those bugs are fixed.
-- fr/es/pt: no register split observed (those languages don't carry the T–V distinction as visibly here),
-  but fr/pt have a **casing** inconsistency (see below / B8).
+- **Register mixing is cross-language, not a German quirk** — see **B12**, now confirmed on the SAME two
+  structural surfaces in both languages: the badge widget ("**Ihr** neuestes Abzeichen" / "**Su** última
+  insignia") and the Programs → Offerings subtitle ("**Ihre** umfassenden…" / "**sus** necesidades…"), plus
+  German's third surface in bite-size content body ("**Ihren** Körper…"). Both languages otherwise run
+  informal (German *du*; Spanish *tú*) everywhere else, including Diary ("Erfasse **deinen** Schlaf") and
+  Challenges ("Compite con **tus** compañeros…"). The SAME two strings carrying the formal slip in both
+  languages is strong evidence the inconsistency originates upstream — likely a shared English source string
+  or template both locales translate literally — rather than being two independent per-language mistakes.
+- Community and Trends can't be fully scored for register in either language — their own chrome is English
+  (B16/B19/B20), so there's limited native prose there to check; Diary can't be scored in Spanish either,
+  for the same reason (B20).
+- fr/pt: no register split observed on Summary (not yet re-checked on other modules), but fr/pt have a
+  **casing** inconsistency (see below / B8).
 
 ### Word consistency (same concept → same term?)
-- ✅ **Consistent:** "Rang" for *rank* (Wöchentlicher Rang / Gesamtrang), "Fortschritt" for *progress*
-  (Wöchentlicher / Meilenstein- / Gesamter Fortschritt), "Community" as a loanword throughout (correctly
-  untranslated on every nav tab **and** as Community's own page heading — a deliberate, consistently-applied
-  choice, not a defect), "Vantage Fit" (brand) — used the same way in every module.
-- ❌ **"challenge" rendered two ways:** nav tab left English "**Challenges**" (B3) while body copy uses German
-  "**Herausforderung**" (E-Marathon-/Renn-Herausforderung). Same concept, two words → pick one.
-- ❌ **"week" treated two ways:** standalone badge "**Week 1**" left English (B4) while the adjective is
-  translated ("**Wöchentlicher** Rang/Fortschritt"). Same root handled inconsistently — and on Trends'
-  Month view, the SAME split repeats as "Week 1…Week 5" axis labels.
-- ❌ **NEW — "steps"/"active minutes" split by component, not just by string:** Diary and the Trends metric
-  switcher both say "Schritte"/"Aktive Minuten" (German), but the Trends chart content immediately below the
-  switcher says "Steps Overview"/"Steps Covered"/"Active Minutes Overview" (English) — the *same concept*,
-  translated one way in the picker and left English one screen-region away. This is the clearest evidence
-  yet that these are wire-up gaps in specific components, not a vocabulary disagreement.
-- ⚠️ **fr/pt casing:** "Minutes Actives" vs "Minutes actives" / "Minutos Ativos" vs "Minutos ativos" (B8) —
-  same label, two capitalizations across cards.
+- ✅ **Consistent within each language:** "Rang"/"Rango" for *rank*, "Fortschritt"/"Progreso" for *progress*,
+  "Vantage Fit" (brand) — used the same way in every module, in both languages.
+- ⚠️ **"Community" loanword choice differs by language, but consistently within each:** German keeps
+  "Community" untranslated everywhere (nav tab + Community's own heading); Spanish translates it to
+  "Comunidad" everywhere. Neither is a defect — each language is internally consistent, just a different
+  brand/loanword call per locale. Worth a product decision, not a bug.
+- ❌ **"challenge" split two different ways depending on language:**
+  - German: nav tab stays English "**Challenges**" while body uses German "**Herausforderung**" (B3) — an
+    untranslated-tab bug, one side is literally not translated.
+  - Spanish: nav tab correctly translates to "**Retos**", but body copy uses a **different** Spanish word,
+    "**Desafío**" (B21, new) — both sides ARE translated, just to different words. Same underlying concept,
+    two distinct failure modes depending on language: German has a missing translation, Spanish has a
+    glossary inconsistency.
+- ❌ **"week" treated two ways:** standalone badge "**Week 1**" left English in both languages (B4) while the
+  adjective translates ("Wöchentlicher"/"semanal"). Recurs on Trends' Month view as "Week 1…Week 5" in both
+  languages too.
+- ❌ **"steps"/"active minutes" split by component, not just by string, in both languages:** Diary and the
+  Trends metric switcher say "Schritte"/"Aktive Minuten" (German) or "Pasos"/"Minutos Activos" (Spanish), but
+  the Trends chart content one screen-region away says "Steps Overview"/"Steps Covered"/"Active Minutes
+  Overview" — English, in both languages. Confirms this is a wire-up gap in a specific component, not a
+  vocabulary disagreement, and that the gap is language-independent (it's simply missing everywhere).
+- ⚠️ **fr/pt casing:** "Minutes Actives" vs "Minutes actives" / "Minutos Ativos" vs "Minutos ativos" (B8).
 
 ### Context / coherence (mixed-language within one context)
-- ❌ **Mixed language inside one phrase:** "Aktualisiert am **14 Jul 2025**" (Summary, B1); the same pattern
-  recurs as "Heute · **28 July 2026**" (Diary) — German word + English-formatted date, every time.
-- ❌ **Mixed language inside one card:** Challenge card shows German "Wöchentlicher Rang" beside English
-  "Week 1" (B4) → jarring within a single component.
-- ⚠️ **"Wellness Score"** English label in an otherwise-German Health card (B9 — judgment: brand or translate?).
-- ✅ Brand token "Vantage Fit" correctly kept English inside translated sentences (by design).
-- ❌ **NEW — the "reverse" pattern: a lone correctly-German string stranded inside an all-English view.**
-  Community's post-feed empty state ("Es gibt keinen Beitrag") is the only German string on an otherwise
-  fully-English page (B16); Trends' Year view has "Dieser Monat" as the only German label beside English
-  month abbreviations and chart titles (B19). **This is diagnostically useful, not just another instance of
-  mixed language:** if the account's language had genuinely reverted to English on these routes, these
-  shared/reused strings would be English too, since they pull from the same i18n context as everything else.
-  Their surviving in German is the strongest evidence that B16 and B19 are **wire-up/mounting bugs specific
-  to those routes**, not a session-wide language revert (B11) recurring — see the updated Note/Doubt on both.
+- ❌ **Mixed language inside one phrase, both languages:** "Aktualisiert am **14 Jul 2025**" (German,
+  Summary, B1); "Heute · **28 July 2026**" (German, Diary); "**Today, 28 Jul 2026**" fully English (both
+  languages, Trends) — same locale-unaware date formatter regardless of which language is active.
+- ❌ **Mixed language inside one card:** Challenge card shows localized rank/progress labels beside English
+  "Week 1" (B4), in both languages.
+- ⚠️ **"Wellness Score"** stays English in an otherwise-localized Health card in both languages (B9 —
+  judgment: brand or translate?).
+- ✅ Brand token "Vantage Fit" correctly kept English inside translated sentences, in both languages.
+- ❌ **The "reverse" pattern — a lone correctly-localized string stranded inside an all-English view — is
+  the single most diagnostically important signal from this whole pass, and it now has THREE independent
+  confirmations:** Community's empty state ("Es gibt keinen Beitrag" / "No hay ninguna publicación." — B16,
+  reproduces in both languages); Trends' Year view ("Dieser Monat" in German only — B19); and now Diary in
+  Spanish, where "Pasos"/"Minutos Activos" survive correctly inside an otherwise all-English page (B20). If
+  any of these routes had genuinely reverted to English at the session/account level, these reused strings
+  would be English too, since they pull from the same i18n context as everything else. Their surviving
+  localized is what rules out a language revert and points to route-specific wiring/loading bugs instead —
+  see the refined Note/Doubt on B16, B19, B20.
+- ❌ **NEW — a single route can be fully localized in one language and almost entirely broken in another.**
+  Diary is the clearest case: the best-localized screen found in German, but B20 shows it's ~90% English in
+  Spanish, with the nav bar dragged down too. Programs' "View all" empty-grid bug (B14) shows the same
+  asymmetry in miniature: broken in German, fine in Spanish. **Together these prove that localization
+  coverage must be audited per (module × language) pair — a module passing in German is no signal at all
+  about whether it passes in Spanish, or any other language.**
 
 ### Consistency verdict
-Terminology is largely disciplined where components ARE localized (rank/progress/community/steps-in-the-
-switcher all consistent), but the picture across all 5 modules is: **(1)** mixed formal/informal register in
-German, now on 3 surfaces including authored content copy **[B12]**; **(2)** the same concept shown in two
-languages in one place — "Week 1"/German label, German date-prefix/English date, "Schritte"/"Steps Overview"
-**[B1/B4]**; **(3)** tab-vs-body word split for "challenge" **[B3]**; and **(4)**, newly surfaced by running
-this check module-by-module, **two entire routes (Community, Trends) where the module's own chrome never
-localizes at all**, distinguishable from a language revert precisely because a handful of shared strings on
-each route correctly stay German **[B16, B19]**. fr/pt add a minor casing inconsistency **[B8]**. Recommend:
-a single glossary + register decision applied product-wide, PLUS a targeted audit of Community's and Trends'
-component trees for missing/broken i18n wiring — these two are now the highest-value fix targets, well above
-polish-level issues like B8/B9.
+Terminology is largely disciplined where components ARE localized, but the cross-language pass surfaces a
+sharper picture than the German-only pass did: **(1)** register mixing recurs on the identical two strings
+in German and Spanish **[B12]**, suggesting a shared-source-string origin rather than independent mistakes;
+**(2)** "challenge" is inconsistent in BOTH languages but for different reasons — untranslated tab in German
+(B3), inconsistent glossary in Spanish (B21); **(3)** the same concept splits by component regardless of
+language ("Week 1", "Steps Overview") **[B1/B4]**; **(4)** two routes (Community, Trends) fail to localize
+their own chrome in every language tested **[B16, B19]**; and **(5)**, the headline finding of this update,
+**module-level localization quality does not transfer between languages** — Diary and Programs' "View all"
+each pass in one language and fail in the other **[B20, B14]**. Recommend: a single glossary + register
+decision applied product-wide (fixed once at the source-string level so it propagates to every language);
+a targeted engineering audit of Community/Trends/Diary's i18n wiring, specifically checking for missing or
+partial translation resources **per language**, not just per component.

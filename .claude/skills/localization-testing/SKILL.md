@@ -195,6 +195,14 @@ for (const h of hrefs){ const a=[...document.querySelectorAll('a[href]')].find(x
   wait ~2s and re-snapshot.
 - Take a screenshot at every distinct state into `evidence/` with descriptive names; reference the filename
   in the test case / bug.
+- **Actually look at every screenshot before moving on — don't just extract text from the DOM.** Two P2/P3
+  bugs (a toggle-selector pill overlapping neighboring text; ~30 content thumbnails rendering as solid black
+  boxes from malformed CDN URLs) sat in screenshots already captured for translation-string review and were
+  missed for a full session, because `browser_evaluate` text-dumps don't surface purely visual defects
+  (overlap, broken images, misalignment). Read each saved screenshot with the image tool as a deliberate
+  step — not just when something already looks off — the same way the per-screen checklist (§4) is applied
+  to text. (Learned 2026-07-28: a user caught the toggle overlap; a follow-up screenshot re-review then
+  caught the black-box image bug too.)
 
 ---
 
