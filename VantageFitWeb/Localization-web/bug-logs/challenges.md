@@ -37,12 +37,68 @@ Evidence: ../evidence/challenges_es_fresh.png
 - Challenge NAMES (BE/user data) stay as authored in all languages: "QA-BOT Custom 0721",
   "Custom Challenge - I", "Adherence Task Verification", "September Challenge", "Race Challenge", etc. [BE data]
 - `<html lang>` correct (pt→pt, de→de, es→es).
-- Register consistent throughout in Spanish (informal "tus" in the subtitle, no "su/sus" spotted on this page).
+
+### Correction: register is NOT consistent throughout in Spanish (found on deeper pass, 2026-07-28)
+The earlier note above ("no su/sus spotted") only checked the listing subtitle. Opening a challenge detail
+page's weekly task list finds **3 more formal-register instances**: "Camine 5.000+ pasos…", "Beba al
+menos…", "Registre su entrenamiento…" — all formal/usted imperatives, contrasting with informal "tus" on the
+listing subtitle. Logged as a new B12 surface in the consolidated log (3rd Spanish surface).
+
+### NEW: B27 — Water weekly-task sentence garbled (untranslated unit + pluralization error)
+```
+[Localization / Copy (data-integrity) - P2]
+[Challenge detail page — weekly task list, water-intake task]
+"Beba al menos 67.6 fl oz vasos de agua 1 días esta semana" — three defects: "fl oz" stays English,
+"67.6 fl oz vasos" is a nonsensical unit+count combination, and "1 días" should be singular "1 día" (the
+sibling steps/strength tasks correctly say "1 día").
+
+Expected: "Beba al menos [N] vasos de agua 1 día esta semana" (or a properly localized volume), matching the
+correct pattern on the other two tasks.
+Actual: garbled sentence combining an untranslated imperial unit with incorrect grammar.
+Note/Doubt: likely backend-templated (2 of 3 tasks pluralize correctly, suggesting a per-task-type template
+  or unit-substitution bug specific to the water task). [BE — likely]
+Evidence: ../evidence/challenges_es_water_task_bug.png
+```
+
+### Copy observation (minor, not a full bug): awkward status-sentence grammar
+Challenge detail page shows "Este desafío tiene **Finalizado**" (es) / "Ce défi a **Terminé**" (fr) /
+"Este desafio tem **Encerrado**" (pt) for completed/past challenges — grammatically odd in all three
+languages (a capitalized status word interpolated into a sentence template reads like "This challenge has
+Finished" rather than "ha finalizado"/"est terminé"/"foi encerrado"). Confirmed in 3 languages now — same
+shared-template pattern as B27. Flagging for content-team awareness; not logged as its own numbered bug.
+
+### French pass (2026-07-28) — confirms Spanish findings, no new distinct bugs
+- Nav/chrome/sub-tabs were English at time of testing (session-wide B25 state); functional switching and
+  detail-page navigation both worked correctly.
+- **B27 recurs identically**: "Buvez au moins 67.6 fl oz verres d'eau pendant 1 jours cette semaine" — same
+  3 defects as Spanish, confirming a shared backend template issue (see consolidated log).
+- **B12 register**: task instructions use formal "vous" imperatives (Faites/Buvez/Enregistrez) — 3rd
+  language on the same structural surface (informal-contrast not independently reconfirmed due to B25).
+- Reward-point-style backend strings (equivalent to Spanish's "Gane X puntos") not specifically re-checked
+  this pass; not a gap expected to change the finding.
+
+### Portuguese pass (2026-07-28) — confirms, plus a register judgment call
+- **B27 recurs a 4th time**: "Beba pelo menos 67.6 fl oz copos de água em 1 dias esta semana." — identical
+  3 defects. 4/4 languages tested now show this exact pattern.
+- **B12 register — checked, does NOT clearly apply.** Task instructions ("Caminhe/Beba/Registre") and the
+  Offerings-equivalent possessive ("suas necessidades") use the standard "você"-based forms — but unlike
+  Spanish "usted"/French "vous", Portuguese's "você"/"seu/sua" is the everyday default, not a marked formal
+  register with an actively-competing informal "tu" in use elsewhere in the app. No "tu"-form instance was
+  found to contrast against, so this is flagged as checked-and-inconclusive, not confirmed mixing — see the
+  consolidated log's B12 entry for the full reasoning.
+- Functional switching and detail-page navigation both worked correctly.
+
+### Functional (not localization) checks — 2026-07-28
+- Upcoming/Past sub-tab switching: ✅ works correctly (URL updates, content changes).
+- Challenge card → detail page navigation: ✅ works correctly.
+- "+Add" quick-add button: toggled to an "active" visual state but no menu/navigation was observed —
+  inconclusive; not pursued further per blast-radius guidance on create-flows.
 
 ### Not verified this run (coverage gaps)
-- fr pass; Ongoing/Upcoming/Completed sub-tabs; a challenge **detail** page; the create-challenge (+Add) flow — all languages.
+- fr pass; the create-challenge (+Add) flow (entry point inconclusive, not forced further).
 
 ## Assignment
 - **Frontend:** B4 (Week 1) recurs in all 3 languages tested; B3 (German "Challenges" tab) confirmed
-  de-specific; **B21** (new — Reto/Desafío glossary inconsistency, Spanish only).
-- **Backend:** none.
+  de-specific; **B21** (Reto/Desafío glossary inconsistency, Spanish only); B12 (register) — 3rd Spanish
+  surface found on the task-instruction sentences.
+- **Backend:** **B27** (new — garbled water-task sentence).

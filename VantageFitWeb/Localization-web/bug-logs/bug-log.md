@@ -24,7 +24,7 @@
 | B9 | P4 | "Wellness Score" stays English (confirm if intentional brand term) |
 | B10 | P4 | i18n JSON asset requests return the SPA HTML shell (infra) |
 | B11 | **P2** | Language preference not persisted — reverts to English after session expiry/re-login (FE/BE TBD) |
-| B12 | **P2** | Formal/informal register mixing — cross-module, **cross-language** (de "Ihr", es "Su/sus"; 5 confirmed surfaces) |
+| B12 | **P2** | Formal/informal register mixing — **3 languages confirmed** (de "Ihr", es "Su/sus/Camine", fr "Votre/vos/Faites") on the same 3 positions; pt checked, doesn't clearly apply (no competing informal form found) |
 | B13 | P3 | "Written By" label not translated in bite-size content detail (Programs) — confirmed de + es |
 | B15 | P3 | CTA button overlaps body text in bite-size content intro screen (Programs) — confirmed de + es, language-independent |
 | B16 | **P2** | Community module chrome 0% localized; nav/footer regress to English while on this route — confirmed de + es |
@@ -36,6 +36,10 @@
 | B22 | P3 | Trends metric-switcher selection pill overlaps neighboring tab's text — worse in Spanish (user-found) |
 | B23 | **P2** | Programs content thumbnails render as solid black boxes — malformed CDN URLs (23 double-`.png.png`, broken fallback) |
 | B24 | P3 | Offerings tab intermittently shows "Unable to load offerings right now" — transient 502 on marketplace/categories |
+| B25 | **P2** | Effective/runtime language desyncs from `<html lang>` + saved preference mid-session (no re-login) — generalizes B14/B16/B19/B20 |
+| B26 | P3 | Adherence-activity answer option "Yes" not translated (backend `configuration` API data) — should be "Sí" |
+| B27 | **P2** | Water weekly-task sentence garbled: untranslated "fl oz", nonsensical "fl oz vasos", and "1 días" pluralization error |
+| B28 | P3 | Log Water "1 glass = 250 ml" label doesn't convert when switching to fl oz (value + slider do convert) |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -226,7 +230,7 @@ requests are dead/HTML-fallback and suggest a misconfigured asset path worth cle
 ## B12 — [P2] Formal/informal register mixing (cross-module, cross-language)
 **Type:** Localization / Copy (tone consistency) · **Layer:** Frontend
 **Where:** Cross-module — Summary, Programs (Offerings sub-tab + bite-size content body), Community (badge
-widget) — in **both German and Spanish**, the two T–V-distinction languages tested so far.
+widget), Challenges (weekly task instructions) — confirmed in **German, Spanish, and French**.
 
 **Description & proof:** German (*Sie/Ihr* vs *du/dein*) and Spanish (*usted/su* vs *tú*) both have two
 politeness registers, and the Fit web mixes them in both languages, reading as inconsistent voice.
@@ -245,15 +249,44 @@ politeness registers, and the Fit web mixes them in both languages, reading as i
 → The register split isn't a German-specific translation slip — it recurs on the **identical two strings**
 in Spanish, meaning the source content/copy itself (or a shared template both locales translate literally)
 carries the inconsistency, not a one-off per-language mistake.
+- **Spanish surface 3 (2026-07-28 deep-dive):** Challenges' weekly task instructions use **formal ("usted")
+  imperatives** — "**Camine** 5.000+ pasos…", "**Beba** al menos…", "**Registre** su entrenamiento…" (informal
+  equivalents would be "Camina", "Bebe", "Registra") — while the SAME app's footer and subtitles use informal
+  "tú" throughout, showing the split also reaches backend-templated task copy, not just static UI strings.
+- **French — confirmed on the SAME 3 structural positions (2026-07-28):** "**Votre** dernier badge"
+  (Summary/Community badge widget), "Pour répondre à l'ensemble de **vos** besoins en matière de bien-être."
+  (Programs → Offerings subtitle), and the challenge task instructions "**Faites** 5 000+ pas…", "**Buvez**
+  au moins…", "**Enregistrez** votre entraînement…" (formal "vous" imperatives; informal "tu" equivalents
+  would be "Fais", "Bois", "Enregistre"). This is the SAME 3 positions as German/Spanish, in a 3rd language —
+  very strong confirmation of a shared-source-string origin. **Caveat:** an informal French contrast
+  (equivalent to footer "tú"/"du") was not independently reconfirmed this pass, because the session was in
+  the B25 English-fallback state for most French FE chrome at the time — the structural match to the
+  already-proven 2-language pattern is the evidence here, not a fresh French-only mixing observation.
+- **Portuguese — checked, does NOT clearly apply (judgment call, 2026-07-28):** the same 3 positions show
+  "**A sua** medalha mais recente" (badge widget), "Para cuidar de **suas** necessidades…" (Offerings), and
+  "**Caminhe/Beba/Registre**" (task imperatives) — superficially similar to the de/es/fr formal forms. But
+  Portuguese's "seu/sua" and "você"-conjugated imperatives are the **standard, unmarked** way to address
+  someone in most everyday Portuguese (unlike Spanish "usted" or French "vous", which are clearly marked
+  formal registers with an actively-competing informal "tú"/"tu" in daily use) — no "teu/tua" or "tu"-form
+  instance was found anywhere in the app to contrast against. Without a competing informal form actually in
+  use, this is **not confirmed as register mixing** for Portuguese; flagging as checked-and-inconclusive
+  rather than force-fitting the pattern from the other three languages. If Portuguese content should
+  actually target the less-common "tu" register, that's a separate product/brand-voice decision, not a
+  bug this pass can substantiate.
 
 **Expected:** a single, consistent register across the product (Vantage Fit's default voice is informal).
 **Fix:** German: "Ihr neuestes Abzeichen"→"Dein neuestes Abzeichen", "Ihre umfassenden"→"Deine umfassenden",
 "Ihren Körper"→"Deinen Körper". Spanish: "Su última insignia"→"Tu última insignia", "sus necesidades de
-bienestar completa"→"tus necesidades de bienestar completa". Recommend fixing at the source-string level
-(likely the same underlying English/authoring template) so the fix propagates to both locales at once.
+bienestar completa"→"tus necesidades de bienestar completa", task imperatives "Camine/Beba/Registre"→"Camina/
+Bebe/Registra". French: "Votre dernier badge"→"Ton dernier badge"/"Vos besoins"→"tes besoins" (register
+choice pending product decision), "Faites/Buvez/Enregistrez"→"Fais/Bois/Enregistre". Recommend fixing at the
+source-string level (likely the same underlying English/authoring template) so the fix propagates to all
+three locales at once.
 **Screenshot:** `../evidence/summary_de.png`, `../evidence/programs_de_offerings_tab.png`,
 `../evidence/programs_de_bitecontent_detail_overlap.png`, `../evidence/summary_es_fresh.png`,
-`../evidence/community_es_social.png`.
+`../evidence/community_es_social.png`, `../evidence/challenges_es_water_task_bug.png`,
+`../evidence/summary_fr_fresh.png`, `../evidence/programs_fr_offerings.png`, `../evidence/challenges_fr_ongoing.png`,
+`../evidence/summary_pt_fresh.png`, `../evidence/programs_pt_offerings.png` (Portuguese, for the judgment-call comparison).
 
 ---
 
@@ -289,12 +322,20 @@ exists and renders elsewhere on the same page.
 
 **Expected:** the modal lists the same German health-bites content the carousel shows.
 **Actual:** modal grid renders empty; the paginated endpoint doesn't return content the other endpoint does.
-**Note/Doubt:** **confirmed German-specific** — re-tested the identical flow in Spanish (2026-07-28) and the
-same "View all" modal (`Ver todo` → "Consejos rápidos") returned **3 populated items**, not empty. This rules
-out a general API bug and points specifically to the paginated endpoint mishandling the `de` locale
-parameter (or German content rows for category 20 missing whatever field the paginated query filters on).
-Narrows the fix to backend locale-handling for German specifically. [BE]
-**Screenshot:** `../evidence/programs_de_viewall_empty_modal.png`.
+**Note/Doubt:** **confirmed German-specific in 2 clean re-tests** — Spanish (`Ver todo` → "Consejos rápidos")
+returned **3 populated items**; French returned **2 populated items**. Both non-German languages worked fine
+in those sessions, pointing to the paginated endpoint mishandling the `de` locale parameter specifically. [BE]
+**Complication found in Portuguese (2026-07-28):** the same modal returned **0 items** — but this retest
+happened while the session was confirmed in the **B25** English-fallback state at the time (the main Library
+carousel was showing the full English-baseline content set, not Portuguese-scoped content). Because there's
+no visible per-request locale parameter or header on this call (checked request headers — none present; the
+backend must resolve language from server-side session state), this result **cannot be cleanly attributed
+to Portuguese** — the backend may have been resolving the session to English (or some other fallback) at
+call-time, and it's not yet known whether English's own "View all" for this category is populated or empty.
+**This needs a re-test in a clean (non-desynced) Portuguese session to actually resolve**, and ideally an
+English-baseline check of the same endpoint too — until then, B14's true scope (German-only vs.
+German-plus-whatever-B25-falls-back-to) is not fully settled. [BE]
+**Screenshot:** `../evidence/programs_de_viewall_empty_modal.png`, `../evidence/programs_pt_library_viewall_empty.png`.
 
 ---
 
@@ -321,7 +362,8 @@ from "Layer TBD" to a confirmed FE UI bug. [FE]
 ## B16 — [P2] Community module chrome not localized (0% coverage); nav/footer regress to English on this route
 **Type:** Localization · **Layer:** Frontend
 **Where:** Community — both Social and Events sub-tabs, plus the shared app nav/footer while on this route.
-**Confirmed in both German and Spanish** (2026-07-28) — identical symptom in both languages.
+**Confirmed in German, Spanish, French, AND Portuguese** (2026-07-28) — identical symptom in all four
+languages tested.
 
 **Description & proof:** Every Community-owned string renders in English regardless of the account's
 language setting, on both sub-tabs — and the shared nav/footer (which correctly localize on Summary/Programs
@@ -334,8 +376,12 @@ in the same session) also regress to English specifically while on this route. V
   "Resumen/Retos/Programas/Comunidad"), heading/subtitle/footer English. Only Spanish strings: "No hay
   ninguna publicación." (empty state), challenge widget ("Rango semanal/Progreso semanal"), badge widget
   ("Su última insignia" — carries B12).
+- **French:** same pattern again — nav/heading/subtitle/footer English on both sub-tabs; only "Aucune
+  publication." (empty state), the challenge widget, and the badge widget ("Votre dernier badge") stay French.
+- **Portuguese:** same pattern a 4th time — only "Não há postagem.." (empty state; note the doubled period,
+  a small copy typo) and the shared widgets stay Portuguese.
 - Reloading Summary/Programs immediately after, in the same session, shows nav/footer correctly localized in
-  both languages — ruling out a session-wide language revert.
+  all four languages — ruling out a session-wide language revert.
 
 **Expected:** Community chrome localizes like the other modules; nav/footer stay localized everywhere.
 **Note/Doubt:** root cause narrowed (not fully confirmed) — **this is NOT a session-wide language revert.**
@@ -350,9 +396,12 @@ nav/footer also read from, reverting it to an English default for as long as Com
 doing so consistently regardless of which language was active. This is a genuinely different failure mode
 from B19/B20 (Trends/Diary), where the SAME mechanism only manifests in some languages, not others — see
 those bugs' notes. Needs dev confirmation, ideally by inspecting whether Community's module init touches a
-global locale/language store. [FE]
+global locale/language store. [FE] **Update 2026-07-28:** a deep-dive Spanish re-pass found the same
+nav/chrome-to-English pattern reproducing on Summary, Programs, and Challenges too — intermittently, without
+the deterministic 100%-of-visits behavior seen on Community — see **B25** for the generalized finding. This
+makes it more likely Community is a permanent/deterministic case of B25's mechanism, not a separate bug.
 **Screenshot:** `../evidence/community_de_social_tab.png`, `../evidence/community_de_events_tab.png`,
-`../evidence/community_es_social.png`.
+`../evidence/community_es_social.png`, `../evidence/community_fr_events.png`, `../evidence/community_pt_events.png`.
 
 ---
 
@@ -404,7 +453,9 @@ both languages.
 identical page) is the key diagnostic here — it suggests the nav-reset mechanism triggers only when a
 required translation resource is **missing for the requested language**, and German happens to have more of
 this page's content translated than Spanish does (consistent with the pattern seen on Diary, B20). Needs dev
-confirmation, ideally by checking whether this page's i18n namespace has complete `es` entries. [FE]
+confirmation, ideally by checking whether this page's i18n namespace has complete `es` entries. [FE] See
+**B25** — this language-dependent shell behavior is now confirmed to reproduce on other modules too
+(Summary, Programs, Challenges), supporting a shared root cause rather than a Trends-specific gap.
 **Screenshot:** `../evidence/trends_de_week_view.png`, `../evidence/trends_de_year_view.png`,
 `../evidence/trends_es_week_english.png`.
 
@@ -438,7 +489,8 @@ English in Spanish), which a "component was never wired to i18n" explanation can
 break identically regardless of language). More likely: Diary's Spanish translation resource is missing or
 fails to load, and the failure cascades to reset a shared locale signal that nav also reads — while German's
 resource loads fine, so nothing cascades. Needs dev confirmation, ideally by checking whether the Diary
-i18n namespace has an `es` file/entries at all. [FE]
+i18n namespace has an `es` file/entries at all. [FE] Generalized in **B25**: the same fresh-load, no-relogin
+English fallback was subsequently confirmed on Summary and Programs too, so this is not unique to Diary.
 **Screenshot:** `../evidence/diary_de_full.png` (German, for contrast), `../evidence/diary_es_english_fallback.png`.
 
 ---
@@ -477,19 +529,21 @@ letter(s) — worse in Spanish, where "Minutos Activos" loses its leading "M" ("
   (which starts at x=361.25) and visually covering its text.
 - The same overlap is visible in the German screenshot too (`Schritte`/`Aktive Minuten`), less severe there
   because "Schritte" (8 chars) yields a wider segment than "Pasos" (5 chars) — same fixed/mismatched pill
-  width, smaller relative overflow.
+  width, smaller relative overflow. **Confirmed a 3rd and 4th time in French and Portuguese** ("Pas"/"Minutes
+  Actives" and "Passos"/"Minutos Ativos" — both show the same leading-letter-hidden overlap).
 
 **Expected:** the selection pill's width matches the selected segment's actual rendered width in every
 language, never overlapping the neighboring tab's text.
 **Actual:** the pill has a fixed or independently-computed width that doesn't track the segment's real
-width, so shorter translated labels (like Spanish "Pasos") make the mismatch — and the resulting text
-overlap — more visible.
+width, so shorter translated labels (like Spanish "Pasos" or French "Pas") make the mismatch — and the
+resulting text overlap — more visible.
 **Note/Doubt:** root cause narrowed via live DOM measurement (not just visual inspection): fix likely means
 computing the tracker's width from the active segment's `getBoundingClientRect()` (or using CSS that lets it
 fill `100%` of its flex parent) instead of a fixed pixel value. Not verified against English baseline, but
-reproduces in both languages tested, so this is a language-agnostic layout bug that translation exposes to
-different degrees depending on label length. [FE]
-**Screenshot:** `../evidence/trends_es_toggle_overlap.png`, `../evidence/trends_de_week_view.png` (German, for comparison).
+reproduces in all four languages tested, so this is a language-agnostic layout bug that translation exposes
+to different degrees depending on label length. [FE]
+**Screenshot:** `../evidence/trends_es_toggle_overlap.png`, `../evidence/trends_de_week_view.png` (German, for
+comparison), `../evidence/trends_fr_toggle.png`, `../evidence/trends_pt_toggle.png`.
 
 ---
 
@@ -525,9 +579,10 @@ real image is genuinely missing.
 solid black squares.
 **Note/Doubt:** this is backend/data (malformed image-URL construction, likely a double-suffixing bug when
 the asset pipeline appends `.png`/`.jpg` to a filename that already has an extension) — not a localization or
-frontend rendering defect; the URLs contain no locale segment, so this is expected to affect every language
-and was incidentally observed during both the German and post-Spanish-relogin sessions today. [BE]
-**Screenshot:** `../evidence/programs_library_broken_images.png`, `../evidence/programs_de_offerings_tab.png`.
+frontend rendering defect; the URLs contain no locale segment, and this is confirmed reproducing in German,
+Spanish, French, and Portuguese sessions today (as expected for a language-independent data bug). [BE]
+**Screenshot:** `../evidence/programs_library_broken_images.png`, `../evidence/programs_de_offerings_tab.png`,
+`../evidence/programs_fr_offerings.png`, `../evidence/programs_pt_offerings.png`.
 
 ---
 
@@ -548,6 +603,126 @@ error state instead of silently breaking, and recovered on retry.
 reproduced once across many page loads today. Logging as a lower-severity reliability note for the backend
 team to check `marketplace/categories` error rates, not a blocking defect (the retry path works). [BE]
 **Screenshot:** `../evidence/programs_offerings_unable_to_load.png`.
+
+---
+
+## B25 — [P2] Effective/runtime language desyncs from `<html lang>` and the saved profile preference, mid-session
+**Type:** Localization / Functional · **Layer:** Frontend (likely; see note)
+**Where:** Observed on Summary, Programs, Challenges — during a deeper Spanish re-pass, 2026-07-28.
+**This is the single most important finding of the deep-dive pass** — it ties B14, B16, B19, and B20 together
+under one likely mechanism instead of three-to-four unrelated per-module gaps.
+
+**Description & proof:** Mid-session, with **no re-login and no language change**, Summary (previously
+confirmed fully Spanish earlier the same day) started rendering its nav and section headings in English —
+"Summary/Challenges/Programs/Community", "Snapshot", "Trends", "Vitals", "Health" — while `document
+.documentElement.lang` still reported **"es"** and the account's saved language (checked via My Info) was
+still confirmed **Spanish**. Reproduced identically on 4 consecutive fresh page loads (not a one-off
+render glitch). The same session then showed:
+- **Programs' Library tab serving the full English content set** (all the EN-baseline test/QA titles —
+  "Excercise", "Mindfuless", "CREATED FROM SITE PART 5", etc.) instead of the Spanish-scoped content
+  (2 items) seen earlier that same day — meaning the **backend content query itself**, not just FE chrome,
+  was using English as the effective language.
+- **Challenges' sub-tab labels and subtitle in English** ("Ongoing/Upcoming/Past", "Compete with peers &
+  colleagues, track your tasks.") on the same pass.
+- Meanwhile, `<html lang>` stayed "es" throughout, and clearly-backend-sourced strings (from the
+  `/vantagefit/api/v1/configuration` response — "Ofertas de socios", "Próximos Eventos", adherence-activity
+  text) continued to render correctly in Spanish, as did reused widgets (challenge/badge cards, "Pasos").
+
+**Expected:** the effective language used for rendering and content-fetching stays consistent with
+`<html lang>` and the saved preference for the whole session, on every route.
+**Actual:** two (or more) language-state signals are observably out of sync — `<html lang>` / saved
+preference say Spanish, but something governing which translations load and which locale param content
+APIs use had silently fallen back to English, without any user action (re-login, language switch) to trigger
+it.
+**Note/Doubt:** root cause not confirmed, but this reframes several existing bugs:
+- **B16 (Community)** fails this way on *every* visit, in every language tested — consistent with Community
+  never successfully resolving the runtime language at all (a permanent/deterministic case of this bug).
+- **B19 (Trends)** and **B20 (Diary, Spanish)** show the SAME signature but only in some sessions/languages
+  — consistent with an intermittent version of the same desync, possibly triggered by a failed/slow
+  translation-resource fetch that falls back to English and, in doing so, resets a shared "current language"
+  value that the nav/shell also reads.
+- **B14 (Programs "View all" empty in German)** may be a data-fetch case of the same desync — the paginated
+  endpoint receiving an unintended `en` (or no) locale parameter instead of `de`.
+This needs dev confirmation by inspecting the actual language-state management (is there a single source of
+truth, or can a failed resource load silently overwrite it?) — but the practical QA implication is immediate:
+**a module or screen passing a language check once, earlier in a session, is not a guarantee it will still
+pass later in the same session.** [FE — likely, TBD]
+**Screenshot:** `../evidence/summary_es_partial_fallback.png`, `../evidence/programs_es_library_english_content.png`.
+
+---
+
+## B26 — [P3] Adherence-activity answer option "Yes" not translated
+**Type:** Localization · **Layer:** Backend
+**Where:** `/vantagefit/api/v1/configuration` response → `adherenceActivities[].options`.
+
+**Description & proof:** The adherence-activity object is otherwise fully Spanish — name "Caminata
+matutina", prompt "¿Saliste a caminar por la mañana hoy?", subtitle "Una caminata sencilla puede llenarte de
+energía y despejar tu mente." — but its answer options are `[{"id":0,"displayText":"No"},{"id":1,
+"displayText":"Yes"}]`. "No" happens to be identical in Spanish (coincidence), but "**Yes**" should be
+"**Sí**" and stays English.
+
+**Expected:** both answer options localize; "Yes" → "Sí".
+**Actual:** "Yes" hardcoded/untranslated in the backend response.
+**Note/Doubt:** confirmed directly from the API response body (not inferred from rendered UI — this widget
+was not observed rendering on any screen tested today, so impact is unconfirmed, but the data defect itself
+is verified). [BE]
+
+---
+
+## B27 — [P2] Water weekly-task sentence garbled: untranslated unit + nonsensical phrasing + pluralization error
+**Type:** Localization / Copy (data-integrity) · **Layer:** Backend
+**Where:** Challenges → challenge detail page → weekly task list (e.g. "Kickstart Your February Fitness
+Challenge!", Week 1 tasks).
+
+**Description & proof:** Three weekly tasks are shown; two are correct, one is broken:
+- ✅ "Camine 5.000+ pasos **1 día** esta semana" (Walk 5,000+ steps 1 day this week) — correct singular "día".
+- ✅ "Registre su entrenamiento de fuerza/peso **1 día** esta semana" — correct singular.
+- ❌ "Beba al menos **67.6 fl oz vasos** de agua **1 días** esta semana" — three separate defects in one
+  sentence: (1) "fl oz" stays English/untranslated, (2) "67.6 fl oz vasos" is nonsensical — "vasos" means
+  "glasses" (a count), but it's placed directly after an imperial fluid-ounce measurement, producing "67.6 fl
+  oz glasses" instead of either a glass-count ("8 vasos") or a volume ("2 L"), (3) "1 días" should be
+  singular "1 día" — the same {count} día(s) template that correctly pluralizes on the other two tasks fails
+  specifically on this one.
+
+**Expected:** "Beba al menos [N] vasos de agua 1 día esta semana" (or the equivalent volume, properly
+localized), matching the correct pattern on the sibling tasks.
+**Actual:** garbled, partially-untranslated, grammatically incorrect sentence shown to every Spanish-language
+user with this challenge/task type.
+**Confirmed identically in French (2026-07-28):** "Buvez au moins **67.6 fl oz verres** d'eau pendant **1
+jours** cette semaine" — the exact same three defects (untranslated "fl oz", nonsensical "fl oz verres", and
+"1 jours" instead of singular "1 jour"), while the sibling tasks ("Faites 5 000+ pas… 1 jour…", "Enregistrez
+votre entraînement… 1 jour…") pluralize correctly.
+**Confirmed a 4th time in Portuguese (2026-07-28):** "Beba pelo menos **67.6 fl oz copos** de água em **1
+dias** esta semana." — same three defects again ("fl oz" untranslated, "fl oz copos" nonsensical, "1 dias"
+instead of singular "1 dia"), while "Caminhe 5.000+ passos 1 dia…" and "Registre seu treino… 1 dia…" both
+correctly pluralize. **4 for 4 languages tested show the identical break pattern** — this is about as strong
+as evidence gets for a shared backend template/unit-substitution bug rather than a per-language mistake.
+**Note/Doubt:** the task text is most likely backend-templated (given the {count} day pluralization pattern
+recurring correctly on 2 of 3 tasks, in all four languages), so classified BE pending confirmation; the
+water-specific task appears to use a different/broken template or unit-substitution path than the
+steps/strength tasks, and that broken path is shared across languages rather than re-implemented per locale.
+[BE — likely]
+**Screenshot:** `../evidence/challenges_es_water_task_bug.png`, `../evidence/challenges_fr_ongoing.png`,
+`../evidence/challenges_pt_water_task.png`.
+
+---
+
+## B28 — [P3] Log Water "1 glass = 250 ml" label doesn't convert when switching to fl oz
+**Type:** Localization / Functional (unit consistency) · **Layer:** Frontend
+**Where:** Diary → "Log Water" modal → unit toggle (ml / fl oz).
+
+**Description & proof:** Switching the modal's unit toggle from ml to fl oz correctly converts the main
+goal value (5000 ml → 169 fl oz) and the "Any amount" slider scale (0–5000 → 0–169), but the static helper
+label **"1 glass = 250 ml" stays in ml** — it should read the fl-oz equivalent (≈ 8.5 fl oz) when that unit
+is active.
+
+**Expected:** every value and label in the modal converts together when the unit toggle changes; partial
+conversion is a data-integrity risk (a user in fl-oz mode sees a glass-size reference in the wrong unit).
+**Actual:** the main value/slider convert; this one static label does not.
+**Note/Doubt:** this specific pattern (Log Water's glass-size label staying metric in fl-oz mode) matches a
+previously-known observation from prior testing on this app; this is its first time being formally logged in
+this repo's bug log. [FE]
+**Screenshot:** `../evidence/diary_es_log_water_floz.png`.
 
 ---
 

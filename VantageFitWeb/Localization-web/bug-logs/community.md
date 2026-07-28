@@ -61,7 +61,17 @@ The floating bottom nav ("Inicio"/"Trabaja" in Spanish, "Haus"/"Arbeit" in Germa
 this route (distinct from the top nav and Community's own chrome) and resolves its language correctly in
 both — reinforcing that this route has multiple independently-resolving locale sources, not one shared state.
 
+## French cross-check (2026-07-28) — confirms, no new bugs
+**B16 reproduces identically** — nav/heading/subtitle/footer English on both Social and Events; only
+"Aucune publication." (empty state), the challenge widget, and the badge widget ("Votre dernier badge" —
+carries B12, 3rd language) stay French. Now confirmed in 3 languages.
+
+## Portuguese cross-check (2026-07-28) — confirms, no new bugs
+**B16 reproduces a 4th time** — only "Não há postagem.." (empty state; note the doubled period, a minor
+copy typo) and the shared widgets stay Portuguese. Confirmed in all 4 languages tested.
+
 ## Assignment
-- Frontend: **B16** (P2 — Community chrome + nav/footer regression, confirmed in both German and Spanish) —
-  highest priority for this module, now with stronger cross-language evidence for the root-cause narrowing.
+- Frontend: **B16** (P2 — Community chrome + nav/footer regression, confirmed in German, Spanish, French,
+  AND Portuguese) — highest priority for this module, now with 4-language evidence for the root-cause
+  narrowing.
 - Already tracked: B4, B12 recurrences (no new action; fix once at the shared-widget/copy level).

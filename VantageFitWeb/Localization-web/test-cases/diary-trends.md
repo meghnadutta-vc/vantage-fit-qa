@@ -65,5 +65,21 @@ and `app.vantagecircle.co.in/ng/fit/activity-stats` (Trends, reached via Diary �
   English in Spanish (same signature as B16/B20) — so Trends' shell-affecting behavior is itself
   language-dependent, not a fixed property of the page.
 - fr/pt passes not started.
-- Did not test: editing mood/heart-rate/weight (Vitals edit buttons), "Log Water" flow, date-stepper beyond
-  today (Previous/Next Day), or whether Diary has historical-date content to compare against.
+
+## Functional flows — Spanish deep-dive (2026-07-28)
+**Evidence:** `../evidence/diary_es_mood_edit.png`, `../evidence/diary_es_log_water_floz.png`.
+
+| Test Case ID | Description | Steps | Expected | Actual (es) | Status | Priority |
+|---|---|---|---|---|---|---|
+| DTR-LOC-026 | Vitals "Edit mood" flow | Click "Edit mood" | Opens mood-tracker modal | ✅ Opens correctly — "How are you feeling?", 5-point mood scale (Horrible→Awesome), reason chips (Exercise/Education/Family/…), "Update" button — all English (consistent with session state), no functional issues, no layout overlap | PASS (functional); English chrome per general pattern | — |
+| DTR-LOC-027 | "Log Water" flow — open + unit toggle | Click "Log water" → toggle ml/fl oz | Modal opens, all values convert together | Modal opens correctly; switching to fl oz correctly converts the main goal value (5000ml→169fl oz) and the "Any amount" slider scale; **but the "1 glass = 250 ml" helper label does NOT convert** → **new Bug B28** | FAIL (es) — B28 | P3 |
+| DTR-LOC-028 | "Log Water" flow — submit | Add 1 glass → click "Log water" (submit) | Water value updates; success feedback shown | Value updated correctly (functional ✅ — confirmed via before/after read); toast/success-message capture was inconclusive (observer read immediately after click, before any toast could render) — **Needs Verification**, not asserted as a missing-toast bug | Needs Verification | — |
+| DTR-LOC-029 | Date-stepper — Previous Day | Click "Previous day" arrow | Navigates to prior date, data updates | ✅ Works correctly — moved to "Monday · 27 July 2026", Snapshot/Calorie/Water values all updated to that day's (zero) data | PASS (functional) | — |
+
+### Notes
+- Diary/Trends' core interactive flows (mood edit, water logging incl. unit toggle, date navigation) are all
+  **functionally sound** — the issues found are localization/copy (B28) and unverified toast timing, not
+  broken functionality.
+- Did not test: heart-rate/weight edit flows specifically (only mood was opened), whether Diary has richer
+  historical-date content to compare against, or the mobile-app-only "Edit heart rate on the app" flow (not
+  reachable from web by design, per its label).

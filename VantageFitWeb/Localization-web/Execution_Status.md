@@ -8,10 +8,10 @@ paths currently return the SPA HTML shell (see summary Bug #10), but translation
 | Module | Phase 1 Discover | Phase 2 Execute | Phase 3 Bugs | Phase 4 Report | Languages | Status |
 |---|---|---|---|---|---|---|
 | **Summary** | done | done | done (10 bugs) | done | de, fr, es, pt (+en baseline) | **DONE** |
-| **Challenges** | done | pt + de + es | done (B3/B4 recur; **B21 new**, es-only) | done | pt, de, es (fr pending) | **PARTIAL** |
-| **Programs** | done | en + de + es | done (B3 recur; B11 new; Offerings+detail: B12 x2, B13, B14, B15 new, all confirmed cross-language except B14 which is de-only) | done | en, de, es (fr/pt pending) | **PARTIAL** |
-| Community | done | de + es | done (**B16 new**, confirmed both languages; B4/B12 recur via shared widgets) | done | de, es (fr/pt pending) | **PARTIAL** |
-| Diary / Trends | done | de + es | done (B17/B18 de-only; B19 language-dependent; **B20 new**, es-only; B1/B4/B6/B7 recur) | done | de, es (fr/pt pending) | **PARTIAL** |
+| **Challenges** | done | pt + de + es + fr | done (B3/B4 recur; B21 es-only; B27/B12 confirmed 4/4 languages, pt=judgment call on B12) | done | pt, de, es, fr | **DONE** (all 4 langs) |
+| **Programs** | done | en + de + es + fr + pt | done (B3 recur; B11 new; B12/B13/B15/B23 confirmed 3-4 languages; B14 de-specific but pt result confounded by B25) | done | en, de, es, fr, pt | **DONE** (all 4 langs) |
+| Community | done | de + es + fr + pt | done (**B16** confirmed 4/4 languages; B4/B12 recur via shared widgets) | done | de, es, fr, pt | **DONE** (all 4 langs) |
+| Diary / Trends | done | de + es + fr + pt | done (B17/B18 de-only; B19/B20/B22 confirmed language-dependent or 4-language; B1/B4/B6/B7 recur) | done | de, es, fr, pt | **DONE** (all 4 langs) |
 
 ## Run history
 - **2026-07-24 — Summary, langs de/fr/es/pt.** Scaffolded `VantageFitWeb/Localization-web/`; captured
@@ -91,9 +91,15 @@ paths currently return the SPA HTML shell (see summary Bug #10), but translation
 - P2: 6 (Bugs #1,2,5,6,7 + SUM-LOC-013/014 rollups) · P3: 3 (#3,4,8) · P4: 2 (#9 judgment, #10 infra).
 - FE: 10 · BE: 0 (BE data strings behaved as expected).
 
-## Bug count (all modules, running total as of 2026-07-28, post-Spanish-pass + 2nd-review pass)
-- **P2:** B1,B2,B3,B4,B5,B11,B12,B14,B16,B17,B19,B20,B23 = 13 · **P3:** B6,B7,B8,B13,B15,B18,B21,B22,B24 = 9 · **P4:** B9,B10 = 2.
-- FE: 20 (B1–B9,B12,B13,B15,B16,B17,B18,B19,B20,B21,B22) · BE: 3 (B14, B23, B24) · FE/BE TBD: B11.
+## Bug count (all modules, running total as of 2026-07-28, post Portuguese pass — all 4 languages × 5 modules)
+- **P2:** B1,B2,B3,B4,B5,B11,B12,B14,B16,B17,B19,B20,B23,B25,B27 = 15 · **P3:** B6,B7,B8,B13,B15,B18,B21,B22,B24,B26,B28 = 11 · **P4:** B9,B10 = 2.
+- FE: 22 (B1–B10,B12,B13,B15,B16,B17,B18,B19,B20,B21,B22,B25,B28) · BE: 5 (B14,B23,B24,B26,B27) · FE/BE TBD: B11.
+- **28 total bugs logged across this engagement.** Both the French and Portuguese passes added zero new bug
+  IDs — every finding confirmed an existing bug recurring (or, for B14, confirmed NOT recurring, then
+  complicated by a confounded Portuguese retest), which is itself a
+  valuable result: B16, B22, B23, B27 are now each confirmed in **all 4** languages tested, and B12 in 3 of 4
+  (checked-but-inconclusive in Portuguese, for a documented linguistic reason) — making a shared-cause /
+  shared-fix case much stronger than 1-2 language evidence would.
 - **B22** (new, user-found): Trends' Steps/Active-Minutes toggle has a selection-pill width mismatch that
   overlaps the neighboring tab's text — reproduces in both German and Spanish, worse in Spanish where the
   shorter label "Pasos" makes the fixed-width pill's overflow more visible.
@@ -114,19 +120,77 @@ paths currently return the SPA HTML shell (see summary Bug #10), but translation
   the **language axis** (fr/pt still partial; other 12 profile languages incl. Arabic RTL untested) and the
   **server axis** (US/Europe/E2E).
 
+- **2026-07-28 — deep-dive re-pass ("do not miss anything")**, covering sub-tabs, functional flows, unit
+  toggles, and dynamic states not reached by the earlier spot-check. Headline finding: **B25** — the
+  effective/runtime language observably desyncs from `<html lang>` and the saved profile preference
+  **mid-session, with no re-login or language change**. Confirmed on Summary, Programs, and Challenges (not
+  just Community/Trends/Diary as first thought) — reproduced on 4 consecutive fresh loads, and shown to
+  affect backend content queries too (Programs' Library served the full English-baseline content set
+  instead of the Spanish-scoped set seen earlier the same day). This reframes B14/B16/B19/B20 as likely
+  symptoms of one shared mechanism rather than four unrelated per-module gaps — Community looks like a
+  permanent/deterministic case of it, Trends/Diary/Summary/Programs an intermittent one.
+  Also found: **B26** (adherence-activity "Yes" not translated, verified via the `configuration` API
+  response), **B27** (a challenge water-task sentence with an untranslated unit, nonsensical phrasing, and a
+  pluralization error), **B28** (Log Water's "1 glass = 250 ml" label doesn't convert to fl oz), and a 3rd
+  Spanish surface for **B12** (challenge task instructions use formal "usted" imperatives). Functional checks
+  (category filter, mood edit, water logging, date-stepper, sub-tab navigation, challenge-detail navigation)
+  all passed with no breakage. One item (create-challenge "+Add" entry point) was inconclusive and not
+  pursued further per blast-radius guidance; one item (Log Water success toast) was inconclusive due to
+  observer timing, not asserted as a defect.
+
+- **2026-07-28 — French (fr) pass across all 5 modules.** Switched account to French (native re-login flow,
+  as usual). The session was in the **B25 English-fallback state from the very first fresh French load**
+  (nav/chrome English on Summary immediately, no reload needed to trigger it) — likely cumulative staleness
+  from many language switches earlier the same day, not evidence French specifically triggers it faster.
+  Within that constraint, this pass **confirmed every relevant existing bug recurs in French, found zero new
+  bugs, and strengthened the cross-language case for five of them**: **B12** (register) — "Votre dernier
+  badge", "vos besoins…", "Faites/Buvez/Enregistrez" (formal "vous") on the identical 3 structural positions
+  already found in German/Spanish; **B16** (Community) — identical chrome failure; **B22** (toggle overlap)
+  — reproduces, "Pas" being even shorter than Spanish's "Pasos" makes it at least as visible; **B23** (broken
+  images) — reproduces (locale-independent, as expected); **B27** (garbled water task) — "Buvez au moins
+  67.6 fl oz verres d'eau pendant 1 jours cette semaine", the identical 3-defect pattern. **B14 confirmed NOT
+  to recur** (French's "View all" grid returned 2 populated items), further isolating it as German-specific.
+  Functional checks (sub-tab switching, challenge-detail navigation, View-all modal) all passed. Did not
+  independently reconfirm French's informal-register contrast (footer "tu" forms) — the session's chrome was
+  English for most of this pass, so B12's French evidence rests on structural-position matching to the
+  already-proven German/Spanish pattern, not a fresh French-specific mixing observation.
+
+- **2026-07-28 — Portuguese (pt) pass across all 5 modules — completes module coverage for all 4 tested
+  languages.** Switched to Portuguese; session was again in the B25 fallback state from the first load.
+  **Confirmed a 4th time:** B16 (Community chrome), B22 (toggle overlap), B23 (broken images), B27 (garbled
+  water task — "Beba pelo menos 67.6 fl oz copos de água em 1 dias esta semana", the identical 3-defect
+  pattern now seen in all 4 languages tested). **New nuance on B12:** Portuguese's "seu/sua"/"você"-based
+  forms superficially match the formal pattern found in de/es/fr, but Portuguese doesn't have an actively-
+  competing informal "tu" form in use elsewhere in the app the way the other three languages do — so this
+  pass explicitly does NOT confirm register mixing for Portuguese; flagged as checked-and-inconclusive
+  rather than force-fitted, which is itself a useful result (the pattern isn't universal across every
+  Romance/T-V language, just the ones with genuine competing forms in active use). **New complication on
+  B14:** Programs' "View all" grid was empty in Portuguese too, but this occurred while the session was
+  confirmed in the B25 state (Library's main carousel was serving the full English content set) — and this
+  endpoint has no visible per-request locale parameter, so the empty result can't be cleanly attributed to
+  Portuguese specifically. B14's "German-specific" conclusion now needs a caveat: it may really be "German,
+  plus whatever B25 falls back to," which hasn't been isolated. Functional checks (sub-tab switching,
+  challenge-detail navigation, View-all modal) all passed cleanly.
+
 ## What was NOT done (gaps)
-- French and Portuguese passes across Community/Programs/Diary-Trends (Summary/Challenges have pt; only
-  Summary has fr) — pending. Other profile languages (12 more, incl. **Arabic = RTL**, pt-BR/pt-PT
-  variants) — untested.
+- **All 4 tested languages (German, Spanish, French, Portuguese) now cover all 5 Fit modules.** The
+  remaining language gap is entirely the **other 12 profile languages** (incl. **Arabic = RTL**, pt-BR/pt-PT
+  variants), not module coverage within the 4 already tested.
 - Whether picking an unsupported-by-Fit language (e.g. Korean/Russian/Japanese) leaves Fit in English — untested.
-- Dynamic-flow (toasts/validation) and functional (clicks/redirects) localization on Summary sub-actions
-  (+Add) — only static rendering covered this run; Diary/Trends navigation itself was functionally verified.
-- Challenges: fr pass, sub-tabs (Ongoing/Completed/etc.), detail page, create flow — pending.
-- Programs: fr/pt passes — pending. Spanish library content-quality issue (placeholder titles) needs a
-  content-owner follow-up, not a QA action.
-- Community: fr/pt passes; social feed post-card content (empty this run); Events "create event" flow if
-  present — pending. B16's root cause needs dev confirmation (now narrowed via cross-language evidence).
-- Diary/Trends: fr/pt passes; date-stepper beyond today (Previous/Next Day with historical data); Vitals
-  edit flows (mood/heart rate/weight) and "Log Water" flow — pending. B19/B20 root causes need dev
-  confirmation (check whether the relevant i18n namespaces have complete `es` entries).
+- **Done in the 2026-07-28 deep-dive** (previously listed as gaps, now closed): Challenges sub-tabs
+  (Ongoing/Upcoming/Past) and a challenge detail page; Programs' category/subcategory filters (functional);
+  Community's Events sub-tab explicitly re-verified in Spanish; Diary's Vitals-edit, Log Water (incl. unit
+  toggle), and date-stepper flows; a toast-capture attempt (inconclusive) and a category-filter empty state.
+- Still pending: the **create-flows** specifically — Challenges' "+Add" entry point didn't visibly open a
+  menu on the one attempt made (not forced further); Community's "create event"/add-post flows; Programs'
+  "About this challenge" info popover and any Offerings partner-detail beyond the external redirect already
+  documented. None of these were pursued further, consistent with blast-radius guidance for create/submit
+  actions.
+- Toast/validation capture beyond what was attempted (Log Water) — the technique needs a `wait(~2s)` before
+  reading captured toasts, which wasn't done consistently; treat today's "no toast" results as inconclusive,
+  not confirmed absence.
+- **B25's root cause** (the runtime-language desync) is the single highest-value open question — needs dev
+  access to the actual language-state management code, which QA testing alone can't resolve. An English
+  baseline re-check partway through a long session (to see if English *also* intermittently shows the wrong
+  language) would help characterize it further.
 - US/Europe/E2E servers — not started (India-only so far, all modules).

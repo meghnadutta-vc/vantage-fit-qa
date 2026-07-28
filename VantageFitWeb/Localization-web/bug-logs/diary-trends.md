@@ -125,9 +125,53 @@ Note/Doubt: root cause narrowed via DOM measurement — the pill's width appears
 Evidence: ../evidence/trends_es_toggle_overlap.png, ../evidence/trends_de_week_view.png (comparison)
 ```
 
+---
+
+## Functional deep-dive (2026-07-28) — Vitals, Log Water, date-stepper
+
+### NEW: B28 — Log Water "1 glass = 250 ml" label doesn't convert to fl oz
+```
+[Localization / Functional (unit consistency) - P3]
+[Diary → Log Water modal → ml/fl oz toggle]
+Switching the unit toggle to fl oz correctly converts the main goal value and the "Any amount" slider, but
+the static "1 glass = 250 ml" label stays in ml.
+
+Expected: every value/label converts together; this label should show the fl-oz equivalent (~8.5 fl oz).
+Actual: only the main value and slider convert; the glass-size reference stays metric.
+Note/Doubt: matches a previously-known observation from prior testing on this app; first time formally
+  logged in this repo. [FE]
+Evidence: ../evidence/diary_es_log_water_floz.png
+```
+
+### Confirmed functional (no defects): mood edit, water logging, date navigation
+"Edit mood" opens a fully-functional 5-point mood tracker with reason chips; "Log Water" correctly updates
+the water total on submit (verified via before/after read); "Previous day" correctly navigates and reloads
+that day's data. All English chrome (consistent with B20/the session's language state at the time), no
+functional breakage, no layout overlap found on any of these three flows.
+
+### Needs Verification (not logged as a bug): toast on Log Water submit
+Attempted to capture a success toast via a MutationObserver after submitting Log Water; none was captured,
+but the check ran immediately after the click rather than waiting ~2s as the skill recommends — inconclusive,
+not asserted as a missing-toast defect.
+
 ## Assignment
 - Frontend: **B17** (caloric-deficit sentence, de), **B18** ("mile" unit word, de), **B19** (Trends page —
   P2, now confirmed language-dependent), **B20** (new — Diary regression in Spanish, P2, highest priority
-  for this module alongside B19), **B22** (new — toggle pill overlap, P3, language-agnostic UI bug).
+  for this module alongside B19), **B22** (new — toggle pill overlap, P3, language-agnostic UI bug), **B28**
+  (new — Log Water glass-size label unit conversion, P3).
   B1/B4/B6/B7 recurrences — no new action, same fix covers all surfaces.
-- Needs verification (not logged as bug): mood value "Not Good" — FE/BE TBD.
+- Needs verification (not logged as bug): mood value "Not Good" — FE/BE TBD; Log Water success toast timing.
+
+## French cross-check (2026-07-28) — confirms, no new bugs
+- **Diary is also English-fallback in French** (matching Spanish's B20, not German's clean pattern) —
+  further confirms module-level localization quality doesn't transfer between languages; it's now 1-of-3
+  languages tested where Diary localizes fully (German only).
+- **B22 (toggle pill overlap) reproduces on Trends** — "Pas"/"Minutes Actives", with "Pas" being even
+  shorter than Spanish's "Pasos", making the overlap at least as visible. 3rd language confirmed.
+- Session's nav on Trends was also English in French (matching Spanish's B19 update, not German's clean nav).
+
+## Portuguese cross-check (2026-07-28) — confirms, no new bugs
+- **Diary is also English-fallback in Portuguese** — now 1-of-4 languages tested where Diary localizes
+  fully (German only; es/fr/pt all show the B20-style fallback in the sessions tested today).
+- **B22 (toggle pill overlap) reproduces a 4th time** — "Passos"/"Minutos Ativos", same leading-letter-hidden
+  overlap as the other three languages.

@@ -177,10 +177,42 @@ Note/Doubt: appears to be intermittent backend flakiness, not a permanent failur
 Evidence: ../evidence/programs_offerings_unable_to_load.png
 ```
 
+---
+
+## Effective-language desync (2026-07-28 deep-dive) — see B25 in the consolidated log
+Category/Subcategory filters on Offerings work correctly (functionally verified — selecting "Físico"
+narrows the grid, empty state renders when no matches). But re-opening Library later in the same Spanish
+session (no re-login, no language change) served the **full English-baseline content set** instead of the
+Spanish-scoped 2-item set seen earlier that day — confirming the content-fetch API itself, not just FE
+chrome, is subject to the runtime-language desync documented in **B25**. This is Programs' clearest evidence
+that B25 affects backend queries, not only translated UI strings.
+
 ## Assignment (this run)
 - Frontend: **B12** (confirmed cross-language, register fix at source-string level recommended); **B13**
   (confirmed cross-language, hardcoded FE string); **B15** (confirmed cross-language, FE layout/template bug).
 - Backend: **B14** (confirmed German-specific — locale-handling bug on the paginated content endpoint);
   **B23** (new, P2 — malformed content-image URLs, highest priority of this module's backend findings);
-  **B24** (new, P3 — intermittent 502 on marketplace/categories).
+  **B24** (new, P3 — intermittent 502 on marketplace/categories); **B25** (new, P2 — effective-language
+  desync, confirmed here to also affect content queries, not just chrome).
 - Content/data (FYI, not a bug): placeholder-looking Spanish library titles ("Spanish Content" etc.).
+
+## French cross-check (2026-07-28) — confirms, no new bugs
+- **B23 (broken images)** reproduces identically — same black-box thumbnails on Offerings.
+- **B14 (empty "View all" grid) does NOT reproduce** — French returned 2 populated items, matching Spanish
+  and further confirming B14 is German-specific.
+- **B12 register**: Offerings subtitle "Pour répondre à l'ensemble de **vos** besoins en matière de
+  bien-être." — formal "vos", same structural position as German "Ihre"/Spanish "sus" — 3rd language on
+  this exact surface.
+- Category/subcategory filter chrome was English at time of testing (session-wide B25 state); not
+  separately functional-tested in French (already verified functional in Spanish).
+
+## Portuguese cross-check (2026-07-28) — confirms B23, complicates B14
+- **B23 (broken images)** reproduces identically — 4th language confirmation.
+- **B14 result is ambiguous, not a clean recurrence:** the "View all" grid returned 0 items in Portuguese —
+  but the main Library carousel was simultaneously showing the full English-baseline content set (confirming
+  B25 was active at the time), and no per-request locale header/param exists on this call (the backend
+  resolves language from server-side session state). This result can't be cleanly attributed to Portuguese
+  specifically — see the consolidated log's updated B14 note. Needs a clean-session re-test.
+- **B12 register**: Offerings subtitle "Para cuidar de **suas** necessidades abrangentes de bem-estar" uses
+  the standard "você"-based possessive — see the judgment-call note in `challenges.md`/consolidated log:
+  not confirmed as register mixing for Portuguese specifically (no competing "tu"-form found).

@@ -96,7 +96,50 @@ dumps at all.
 - Dynamic-flow/functional testing beyond what was click-tested (Vitals edit, Log Water, create-flows) —
   same gaps as the German pass, not yet covered in either language.
 
-## Deliverables touched today (Spanish pass)
+## Deep-dive re-pass (2026-07-28, "do not miss anything") — a second addendum
+
+The user asked for a more thorough Spanish pass, explicitly not to miss anything. This covered every
+sub-tab, functional flow, and dynamic state not reached by the first pass: Challenges' Upcoming/Past tabs
+and a challenge detail page, Programs' category filters and content-refresh behavior, Community's Events
+tab (explicit re-check), and Diary's Vitals-edit/Log-Water/date-stepper flows.
+
+### The headline finding: B25 — effective language desyncs from `<html lang>` mid-session, no re-login
+While re-testing Summary — already confirmed fully Spanish earlier the same day — it came back **partially
+English** (nav + section headings) on 4 consecutive fresh loads, with **no re-login and no language change**
+in between. `<html lang>` still read "es" and My Info still showed Spanish saved. The same session then
+showed **Programs' Library switch from serving Spanish-scoped content to the full English-baseline content
+set** — proving the desync reaches backend content queries, not just FE chrome strings. This reframes the
+whole engagement's understanding of B14/B16/B19/B20: instead of four separate per-module translation gaps,
+the evidence now points to **one shared mechanism** — an effective/runtime "current language" value that can
+silently diverge from the saved preference — with Community as a apparently permanent/deterministic case of
+it, and Trends/Diary/Summary/Programs as an intermittent one. **Practical implication: a module passing a
+language check once is not a guarantee it still passes later in the same session.**
+
+### Three more bugs found in the same pass
+- **B26** — the backend `configuration` API's adherence-activity answer options are `["No","Yes"]`; "No"
+  is coincidentally correct in Spanish, but "Yes" should be "Sí" and isn't.
+- **B27** — a challenge's water-intake weekly task reads "Beba al menos 67.6 fl oz vasos de agua 1 días esta
+  semana": an untranslated imperial unit, a nonsensical unit+count combination ("fl oz vasos"), and a
+  pluralization error ("1 días" should be "1 día") — while the sibling steps/strength tasks on the same
+  challenge are correctly formed. Also newly found on this same screen: task instructions use **formal
+  "usted" imperatives** (Camine/Beba/Registre), a 3rd Spanish surface for the register-mixing bug **B12**.
+- **B28** — Log Water's "1 glass = 250 ml" helper label doesn't convert when the modal's unit toggle is
+  switched to fl oz, even though the main value and slider do.
+
+### Functional checks — all clean
+Category-filter selection, mood-edit modal, water-logging submission (verified via before/after data read),
+date-stepper navigation, and challenge-detail navigation all worked correctly with no functional breakage or
+layout overlap. Two items were inconclusive rather than confirmed-clean: the Challenges "+Add" entry point
+didn't visibly open a menu on the one attempt (not forced further, per blast-radius guidance), and a
+Log-Water success-toast capture attempt didn't wait long enough to be conclusive.
+
+### Updated bug tally (all modules, both languages, post deep-dive)
+- **P2 (15):** B1,B2,B3,B4,B5,B11,B12,B14,B16,B17,B19,B20,B23,B25,B27.
+- **P3 (11):** B6,B7,B8,B13,B15,B18,B21,B22,B24,B26,B28.
+- **P4 (2):** B9,B10.
+- **28 bugs total.** By layer: 22 Frontend · 5 Backend (B14,B23,B24,B26,B27) · 1 FE/BE-TBD (B11).
+
+## Deliverables touched today (Spanish pass, both rounds)
 `test-cases/{challenges,programs,community,diary-trends}.md` (extended) · `bug-logs/{challenges,programs,
-community,diary-trends,bug-log}.md` (extended — B12/B13/B14/B15/B16/B19 updated, B20/B21 added) ·
-`Execution_Status.md` · `Coverage_Matrix.md` · 8 new evidence screenshots · this document.
+community,diary-trends,bug-log}.md` (extended — B12/B13/B14/B15/B16/B19 updated, B20-B28 added) ·
+`Execution_Status.md` · `Coverage_Matrix.md` · 16 new evidence screenshots · this document.

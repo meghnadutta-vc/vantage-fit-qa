@@ -92,3 +92,17 @@ Spanish (es) added** (Library, Offerings, content detail, View-all); fr/pt still
   purely visual bugs.
 - B23's URLs contain no locale segment — confirmed language-independent by inspection, not re-tested in
   every language.
+
+## Filters + effective-language desync — Spanish deep-dive (2026-07-28)
+**Evidence:** `../evidence/programs_es_offerings_filtered.png`, `../evidence/programs_es_library_english_content.png`.
+
+| Test Case ID | Description | Steps | Expected | Actual (es) | Status | Priority |
+|---|---|---|---|---|---|---|
+| PRG-LOC-033 | Category filter functional | Select "Físico" in the Category dropdown | Grid filters correctly | ✅ Filters correctly; results narrow to 0 cards, showing an empty state | PASS (functional) | — |
+| PRG-LOC-034 | Category-filter empty state | Filter to a category with no matches | Translated empty message | "No offerings found in this category." — English (consistent with the session's effective-language state at the time, see B25) | FAIL (es, env-state-dependent) | P4 |
+| PRG-LOC-035 | Library content set matches account language | Re-open Library tab later in the same session (no re-login) | Same Spanish-scoped content as earlier (2 items) | **Now shows the full EN-baseline content set** (Excercise/Healthy Eating/Mindfuless categories, dozens of EN test-titled items) instead of the Spanish-scoped 2-item set seen earlier the same day — while `<html lang>` still reports "es" → **new Bug B25** (effective-language desync; this is the content-fetch manifestation) | FAIL (es) — B25 | **P2** |
+
+### Notes
+- B25 (documented fully in the consolidated bug log) shows the desync affects not just FE chrome strings but
+  the actual **content query** — Library switched from serving Spanish-scoped content to the full
+  English-baseline content set mid-session, with no re-login or language change performed.

@@ -42,7 +42,22 @@
 | CHL-LOC-016 | Challenge NAMES stay as authored (BE data) | Read card titles | Unchanged | "QA-BOT Custom 0721", "Custom Challenge - I", "Adherence Task Verification", "Announcement 17 Sep", "September Challenge II/September Challenge", "Race Challenge" — unchanged ✅ [BE data], expected | PASS | — |
 | CHL-LOC-017 | `<html lang>` correct | Read lang attr | Matches locale | "es" ✅ | PASS | P3 |
 
+## Sub-tabs, detail page, dynamic flow — Spanish deep-dive (2026-07-28)
+**Evidence:** `../evidence/challenges_es_upcoming.png`, `../evidence/challenges_es_past.png`,
+`../evidence/challenges_es_detail.png`, `../evidence/challenges_es_water_task_bug.png`.
+
+| Test Case ID | Description | Steps | Expected | Actual (es) | Status | Priority |
+|---|---|---|---|---|---|---|
+| CHL-LOC-018 | Upcoming sub-tab | Click "Upcoming" | Translated, functional | Tab switched correctly (functional ✅); chrome/subtitle English at time of testing — same session-wide effective-language desync seen elsewhere today (see **B25**), not a new tab-specific bug | Needs re-verification (env state) | — |
+| CHL-LOC-019 | Past sub-tab + challenge detail navigation | Click "Past" → click a challenge card | Opens detail page, translated | Navigation works correctly (functional ✅, URL updates to `...info)?tab=past&id=...`); chrome (breadcrumb, "Back", "Week 1") English per the same env state; **"Este desafío tiene Finalizado"** — awkward grammar/capitalization mixing a sentence template with a capitalized status word | PASS (functional); copy note on grammar | P4 |
+| CHL-LOC-020 | Weekly task list — reward-point text | Read "Gane 500 puntos"/"Gane 100 puntos" style reward lines (Upcoming tab) | Translated | ✅ correctly Spanish, even while surrounding chrome was English — another instance of the "reverse signal" (backend-sourced strings surviving) | PASS | — |
+| CHL-LOC-021 | Weekly task list — task instruction sentences | Read all 3 tasks on a challenge detail page | Translated, grammatically correct, consistent register | 2 of 3 correct ("Camine 5.000+ pasos 1 día esta semana", "Registre su entrenamiento… 1 día esta semana"); 1 broken: **"Beba al menos 67.6 fl oz vasos de agua 1 días esta semana"** — untranslated "fl oz", nonsensical "fl oz vasos", pluralization error "1 días" → **new Bug B27**. Also: all 3 tasks use **formal "usted" imperatives** (Camine/Beba/Registre) vs. informal "tú" everywhere else → **B12 recurs, 3rd Spanish surface** | FAIL (es) — B27, B12 | **P2** |
+| CHL-LOC-022 | Leaderboard section on detail page | Read "Leaderboard" heading + "You" row label | Translated | Both English ("Leaderboard", "You") — consistent with the broader English-chrome pattern, not a new distinct issue | FAIL (es) — general pattern | P3 |
+| CHL-LOC-023 | "+ Add" quick-add entry point | Click "+ Add" from Challenges | Opens a create-challenge (or quick-add) menu | Button toggled to "active" state but no visible menu/navigation occurred in the observed attempt — inconclusive, not pursued further (create-flows are lower priority per blast-radius guidance) | Needs Verification | — |
+
 ## Pending
 - French pass for Challenges (es and pt/de now covered; expect B4 to recur, B3 to NOT recur in fr given
   Latin-language nav tabs have translated so far, but this needs verifying directly).
-- Ongoing/Upcoming/Completed sub-tabs; a challenge **detail** page; the **+ Add** / create-challenge flow (dynamic) — pending in all languages.
+- The create-challenge (+Add) flow — entry point didn't visibly open on this attempt; not pursued given
+  blast-radius guidance and lower priority. Ongoing tab's own chrome not re-verified in this session's
+  degraded-language state (only Upcoming/Past were re-checked at that moment).
