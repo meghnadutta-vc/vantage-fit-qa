@@ -32,19 +32,29 @@ German is the deepest-tested language, but "done" applies to **2 of ~22 dimensio
       residual: cold-load the 3 known-affected components in German (~10 min). Detail + the RPT#1-vs-ES#1
       distinction: `bug-logs/spanish-full-sweep.md`.
 
-**The two credible P1 leads (nothing else in this engagement can produce a P1):**
-- [◐] **G5 — comma-decimal *input*. MECHANISM CONFIRMED 2026-07-28 (Run 10), impact test outstanding.**
-      Typing `12,5` into Settings → Maximale Teamgröße stores **`125`** with `validity.valid = true`,
-      `badInput = false`, and **no error message** — the locale separator is silently discarded, giving a
-      value 10× the intent. Typing it into a field already holding `500` gave **`500125`** (comma dropped,
-      digits appended). **Currently P2**, because that field is an integer with `max=500` so impact is
-      bounded. **→ THE ONE REMAINING TEST THAT COULD PRODUCE THIS ENGAGEMENT'S FIRST P1:** repeat on a field
-      where decimals are legitimate — a challenge task **target** (needs an activity added to the week
-      first) or an **Upload Points** value — and verify the stored value. **~20 min.** Applies to fr/es too.
-      Detail: `bug-logs/desktop-1920-de-es-crud.md`.
-- [ ] **G6 — CSV upload with non-ASCII / semicolon delimiters.** Only ASCII was ever uploaded. Test umlaut
-      names (Müller, Schröder), localized headers, and the semicolon delimiter German Excel emits by
-      default. **~45 min.**
+**The three P1 leads — ALL NOW EXECUTED 2026-07-28 (Run 11). None is a P1.**
+Detail: `bug-logs/p1-hunt-g5-g6-g4.md`. This closes the biggest credibility gap in the engagement: the
+"zero P1s" figure now reflects **testing**, not absence of testing.
+- [x] **G5 — comma-decimal input → RESOLVED, downgraded to P3.** CSV path is **safe** (server rejects
+      `12,5` as "not an integer"). Residual is the `type=number` path where the *browser* strips the comma
+      (`12,5`→`125`, `valid:true`, no error) — but the only affected field is an integer with `max=500`, so
+      impact is bounded. Re-test only if a decimal-accepting numeric input is ever added.
+- [x] **G6 — CSV non-ASCII + semicolon → PASSES, not a defect.** Umlauts/accents/carons render with no
+      mojibake; the semicolon delimiter German Excel emits is auto-detected and parsed correctly.
+- [ ] **G4 — export file contents → ⛔ BLOCKED ON TEST DATA.** The only one still unanswered. Employee,
+      Redemption and League reports all return **zero rows**, so no file with content can be exported.
+      **Needs seeded report data**, then check inside the file for translated headers, UTF-8 BOM (umlauts
+      surviving Excel) and locale-formatted dates/numbers. Partial finding already logged: the sample CSV
+      template has **English headers** and no BOM, and because the parser matches those headers, localizing
+      them would break upload unless both sides change together — **product decision needed**.
+
+**NEW Tier-1 item that replaced them (higher value than the leads it displaced):**
+- [ ] **Does UP#4 generalise?** A `400` from the Upload Points endpoint produced **no user feedback at all**
+      while the server returned a detailed per-row error body — a silent failure on a data-writing
+      operation. **Check whether other write operations discard 4xx the same way** (Add Employees CSV,
+      Create Content, Create Event, Create Announcement, Send Custom Email). If the pattern is shared this
+      is one P2 multiplied across modules, and it is cheap to fix because the server payload is already
+      correct. **~45 min.**
 
 **Tier 2 — German-specific, high yield, cheap:**
 - [ ] **G13 — glossary / register / tone pass (§11).** *Never run on the dashboard.* Found a P2 register bug
@@ -61,10 +71,11 @@ German is the deepest-tested language, but "done" applies to **2 of ~22 dimensio
       the employee web (B11)** and was never tested here. **~10 min.**
 
 **Tier 3 — whole dimensions still at zero for German:**
-- [ ] **G4** exported file contents (translated headers? UTF-8 BOM so umlauts don't mojibake in Excel?
-      locale-formatted dates/numbers inside?) — the Export *menu* was verified, no file was ever opened
+- [ ] **G4** exported file contents — **attempted Run 11, ⛔ blocked on test data** (see Tier 1 above)
 - [ ] **G7** timezone — 0 of 19 modules
-- [ ] **G8** error states — no 4xx/5xx/offline/permission-denied message ever triggered and read
+- [◐] **G8** error states — **first data captured Run 11 and it failed**: a client-side validation toast
+      renders hardcoded English ("Error / Please select a country", UP#6), and a server **400 renders nothing
+      at all** (UP#4). Still untested: 5xx, offline, permission-denied, and 4xx on other modules
 - [ ] **G9** sorting / collation (umlaut order: ä/ö/ü)
 - [ ] **G10** search with diacritics ("Ernährung")
 - [ ] **G19** a11y depth (focus order, SR announcement language, `aria-live` toast language, alt text)
