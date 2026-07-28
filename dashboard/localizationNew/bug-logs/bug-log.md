@@ -1045,3 +1045,37 @@ PN `.two-column-layout` degrades progressively: **+512px @1024 → +170px @1366 
 a pure responsive defect (OV#8b class), not a translation defect. Wellness Leagues chip:
 pl +65 > es +58 > pt +55 > fr +53 > zh +28. **Settings and Events clean at 1366 in all five.**
 `1 language` clips +7px in a 54px box in every language (untranslated English).
+
+---
+
+# DEEP-TIER ARABIC — Run 18 (2026-07-29)
+Detail: `bug-logs/deep-tier-arabic.md`
+
+### AR#1 — CONFIRMED GLOBAL (was a single-screen finding) · P2 · [FE]
+RTL audit run on **all 9 modules** (Overview, Manage/Past Challenges, Events, Publish Notifications,
+Settings, Content Library, Wellness Leagues, Employee Report). **Identical on every one:** `<html dir>`
+absent, `body`/`main` computed `ltr`, **0** elements with `dir=rtl`, text-align resolving LTR.
+**No partial RTL support and no module-level exception — RTL is not implemented anywhere in the product.**
+Dropdown panes anchor left-of-trigger (correct LTR, wrong RTL) as a direct consequence.
+
+### AR#3 — UPGRADED: both numeral systems inside the SAME string · P3 · [FE-BE TBD]
+`٧٣ المستخدمون غير نشطين لمدة تزيد عن 30 يومًا` — **Arabic-Indic `٧٣` and Western `30` in one sentence.**
+Also `ينتهي خلال ٤٣ أيام` (Arabic-Indic, from translation) vs `0 مشاركًا` (Western, from data), and
+`خطوط الأساس الصحية (٢٠%)` (Arabic-Indic with Western `%`).
+**Root cause identified:** translation strings were authored with Arabic-Indic numerals while runtime values
+are injected as Western digits, so any string interpolating a number mixes both. **Not fixable in the
+formatter** — the numerals are baked into `ar.json`. Needs a product decision then a dictionary re-author.
+
+### Arabic PASSES — F4 CRUD + toast, F1/F2 filters, script rendering
+Save `حفظ الإعدادات` · discard `تجاهل` · toast **`تم حفظ الإعدادات بنجاح.`** — all localized; 500→250→500
+reverted. Filter dropdown opens/applies with Arabic options; `Undisclosed` still English (CC#3). Arabic
+shaping and ligatures render correctly (526 strings on Manage Challenges), no tofu/mojibake — **the glyphs
+are fine, only the direction is wrong.**
+
+### Arabic layout across 4 widths — direction is the problem, not length
+1024: Overview 7 breaks / CL 6 / PN 2 · 1366: Overview 3 / PN 2 · 1440: PN 2 · **1920: only the two
+fixed-width components** (chip +35, column-selector +31). Arabic's chip overflow (+35) sits between Chinese
+(+28) and Hindi (+49), far below Hungarian (+119).
+**Blocked follow-up:** icon/chevron mirroring, logical padding, table column order and slider direction
+cannot be meaningfully audited until `dir=rtl` exists. **Re-test Arabic layout after RTL ships** — expect a
+fresh crop of bugs then.
