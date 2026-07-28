@@ -24,11 +24,13 @@ German is the deepest-tested language, but "done" applies to **2 of ~22 dimensio
 ### ❌ NOT done for German — ordered by value
 
 **Tier 1 — do these first:**
-- [ ] **Cold-load re-verification (NEW, added 2026-07-28 after ES#1).** The Spanish run proved that a route
-      renders **English on cold load** but Spanish after in-app navigation (`bug-logs/spanish-full-sweep.md`,
-      ES#1). German modules were largely verified by clicking through the sidebar — i.e. **possibly in their
-      good state only**. Re-open 4–5 German modules by direct URL (not by clicking) and diff. This can
-      invalidate existing ✅s and is now the highest-value German task. **~30 min.**
+- [x] ~~**Cold-load re-verification.**~~ **DONE + DOWNGRADED 2026-07-28.** I initially flagged this as the
+      highest-value German task, on the theory that ES#1 (English on cold load, Spanish after in-app nav)
+      meant modules clicked-through may have been verified in their good state only. **Measured: 10 of 11
+      modules render identically cold and warm.** ES#1 is component-specific, not systemic, so the German
+      sign-offs are **not** broadly invalidated and a German cold-load sweep is **low** value. Optional
+      residual: cold-load the 3 known-affected components in German (~10 min). Detail + the RPT#1-vs-ES#1
+      distinction: `bug-logs/spanish-full-sweep.md`.
 
 **The two credible P1 leads (nothing else in this engagement can produce a P1):**
 - [ ] **G5 — comma-decimal *input*.** Display formatting is covered; input is not. German users type `2,5`.
@@ -111,9 +113,9 @@ Findings: **ES#1** (P2, cold-load English filters, cross-module), ES#2, ES#3, ES
 AE#1 / CC#1 confirmed reproducing in Spanish.
 
 ### ❌ Not done for Spanish
-- [ ] **Cold-load re-measurement of 11 modules** batched via in-app nav in Run 8 — per **ES#1** their leak
-      counts are **floors, not totals**. List in `spanish-full-sweep.md`. **~30 min, high value** (ES#1
-      makes this the single most likely place more Spanish bugs are hiding).
+- [x] ~~Cold-load re-measurement of the 11 in-app-navigated modules~~ — **DONE 2026-07-28.** 1 of 11
+      differed (Participant Report, +1 leak `Active Users`). All Spanish per-module counts are now
+      cold-load-verified totals rather than floors.
 - [ ] **Create Challenge builder steps 2–5** (duration / audience / tasks / review) — only step 1 measured.
 - [ ] **G15 — Spanish dynamic flows** (validation, toasts, live submits). Zero coverage; German-only.
 - [ ] Widths 1366 / 768 / 375.
@@ -124,12 +126,19 @@ AE#1 / CC#1 confirmed reproducing in Spanish.
 - Not measured by design: Create-Content picker + Email Designer modals (**no i18n keys exist**, so no
   language can localize them — deduction from the dictionary, not a measurement).
 
-### ⚠️ ES#1 has consequences beyond Spanish — read before trusting ANY module's ✅
-Cold load vs in-app navigation give **different languages on the same route**. Every module in this
-engagement that was verified by clicking through the sidebar may have been verified in its **good state
-only**. This is gap **G1** turning from a hypothesis into a measured defect, and it applies to **German
-too** — the German sign-offs were largely done by in-app navigation.
-**Action: re-verify a sample of German modules on cold loads.** Added to the German Tier 1 list.
+### ES#1 — scope resolved by measurement (was flagged as engagement-wide; it is not)
+Cold load vs in-app navigation give **different languages on the same route** — but after re-measuring all
+11 affected modules on cold loads, **only 1 differed.** ES#1 is confined to three components (Content
+Library type filters, Wellness Leagues filter chips, Participant Report `Active Users`), so it does **not**
+qualify every ✅ in this engagement and does **not** invalidate the German pass.
+
+Still worth knowing: it is a genuine **P2** because the cold state is the state real users land in, and it
+is a **different defect from RPT#1** despite looking identical on screen — RPT#1 stays English in both
+states (hardcoded), ES#1 goes Spanish once the dictionary is warm (init-order race). Fixing one does not
+fix the other. Table in `bug-logs/spanish-full-sweep.md`.
+
+**Standing method rule regardless of scope:** verify localization by **direct URL**, not by clicking the
+sidebar — in-app navigation can hide this class of bug. (Saved to memory.)
 
 ## FRENCH (fr) / PORTUGUESE (pt) — not started on the dashboard
 Only dictionary parity (991/991, a *file* check) plus 3-of-19 module spot-checks exist for fr/es from the

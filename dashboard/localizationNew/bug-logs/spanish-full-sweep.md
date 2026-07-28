@@ -12,17 +12,50 @@ excluded automatically because en == es for them.
 
 ---
 
-## ⚠️ Read this before trusting the per-module leak counts
+## Cold-load re-measurement — DONE, and it narrows ES#1's scope
 
-Mid-run I found that **in-app navigation and cold page loads produce different results** (this is bug
-**ES#1** below). Because part of this sweep batched modules via in-app navigation, **those leak counts are a
-FLOOR, not a total** — cold-loading them may reveal more English.
+Mid-run I found that in-app navigation and cold page loads can produce different results (**ES#1**), which
+made every in-app-batched leak count a floor rather than a total. **All 11 affected modules have now been
+re-measured on genuine cold loads (direct URL, no clicking).** Result:
 
-| Measured on a **fresh load** (trustworthy) | Measured via **in-app nav** (floor only, re-measure) |
-|---|---|
-| Create Challenge (landing), Create Challenge builder, Past Challenges, Employee Report, League Report, Content Library, Wellness Leagues | Participant Report, Incentivisation Report, Wellness Score Report, Redemption Report, Wellness Score, Create Event, Create Announcement, Send Custom Email, Upload Points, Add Employees, Preview Emails |
+| Module | In-app nav | **Cold load** | Δ |
+|---|---|---|---|
+| Participant Report | 3 | **4** | **+1** — new leak `Active Users → Usuarios activos` |
+| Incentivisation Report | 1 | 1 | — |
+| Wellness Score Report | 3 | 3 | — |
+| Redemption Report | 2 | 2 | — |
+| Wellness Score | 3 | 3 | — |
+| Create Event | 0 | 0 | — |
+| Create Announcement | 1 | 1 | — |
+| Send Custom Email | 0 | 0 | — |
+| Upload Points | 1 | 1 | — |
+| Add Employees | 2 | 2 | — |
+| Preview Emails | 0 | 0 | — |
 
-Re-measuring the right-hand column on cold loads is logged as open work.
+**1 of 11 modules differed.** All per-module counts in this document are therefore now cold-load-verified
+totals, not floors.
+
+### Correction to my earlier framing of ES#1
+When I first found ES#1 I wrote that it meant *"any module verified by navigating in-app may have been
+verified in its good state only"*, and flagged the German sign-offs as broadly suspect. **The measurement
+does not support that scope.** 10 of 11 modules render identically cold and warm, so ES#1 is
+**component-specific, not systemic**, and the German pass is **not** broadly invalidated. ES#1 keeps its P2
+severity (the cold state is the default state a user sees), but its blast radius is three known components,
+not the whole dashboard.
+
+### What the re-measurement clarifies: RPT#1 and ES#1 are two different defects
+They look identical on screen — an English filter label — but behave differently:
+
+| | **RPT#1** | **ES#1** |
+|---|---|---|
+| Cold load | English | English |
+| After in-app nav | **still English** | **Spanish** |
+| Diagnosis | hardcoded English default — never localizes | **init-order race** — localizes once the dictionary is warm |
+| Seen on | the 6 report surfaces | Content Library filters, Wellness Leagues chips, Participant Report `Active Users` |
+
+The distinction matters for the fix: RPT#1 needs the strings wired up; ES#1 needs the component to render
+*after* the i18n dictionary resolves (or to re-render on dictionary load). Fixing one will not fix the other,
+and a dev who assumes they're the same bug will close half of it.
 
 ---
 
@@ -47,10 +80,13 @@ Reproduced, twice each:
 **Why the direction matters:** the cold state is exactly what a real user sees when they open a bookmark,
 refresh, or follow a link — so the *broken* state is the *default* state, and the passing state only
 appears after incidental navigation.
-**Note/Doubt:** this is the **inverse of OV#7** (which was stale strings *after* an in-place switch). It
-also means **any module ever verified by navigating in-app may have been verified in its good state only** —
-that is a direct hit on the reliability of earlier sign-offs, and it partially realises the risk logged as
-gap **G1**.
+**Note/Doubt:** this is the **inverse of OV#7** (which was stale strings *after* an in-place switch).
+**Scope — measured, not assumed:** all 11 in-app-measured modules were re-checked on cold loads and only
+**1 of 11** differed (Participant Report, +1 leak). So this is **component-specific, not systemic** — the
+affected components are the Content Library type filters, the Wellness Leagues filter chips, and the
+Participant Report `Active Users` label. Earlier sign-offs are **not** broadly invalidated.
+**Suspected cause:** an init-order race — the component renders its labels before the i18n dictionary
+resolves, and only picks up Spanish when re-created with a warm dictionary. Needs dev confirmation.
 **Evidence:** `evidence/contentlibrary_es_coldload_filters_english.png`
 
 ### ES#2 — [UI / Localization — P3] Mixed-language filter row on cold load

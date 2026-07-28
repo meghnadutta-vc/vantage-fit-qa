@@ -71,12 +71,16 @@ of German — it is worse on 3 measurements (PN#1 title, PN#1 two-column, OV#9 I
 "German is longest, testing it covers everything" assumption is unsafe and should not be used to scope
 future passes.
 
-**⚠️ ES#1 invalidates the verification *method* used for much of this matrix.** A route renders **English on
-cold load** and Spanish only after in-app navigation (proven twice on Content Library and Wellness Leagues,
-same URL, `fit_lang=es`). Modules signed off by clicking through the sidebar may have been observed in their
-**good state only** — including the German pass. Treat ✅ in the *Missing tr.* / *Mixed-lang* /
-*Hardcoded EN* columns as **verified-on-warm-render**, pending the cold-load re-check tracked in
-`REMAINING_WORK.md`.
+**ES#1 — cold-load defect, scope now measured (this note supersedes an earlier, broader claim).** A route can
+render **English on cold load** and Spanish only after in-app navigation (Content Library, Wellness Leagues;
+same URL, `fit_lang=es`). I initially flagged this as invalidating the verification *method* behind much of
+this matrix. **All 11 in-app-measured modules were then re-checked on cold loads and only 1 differed**
+(Participant Report, +1 leak). ES#1 is therefore **component-specific, not systemic** — it does **not**
+qualify the ✅s in this matrix and does **not** invalidate the German pass.
+
+**But note it is a distinct defect from RPT#1**, despite looking identical on screen: RPT#1 stays English in
+both cold and warm states (hardcoded default); ES#1 renders Spanish once the i18n dictionary is warm
+(init-order race). Two fixes, not one.
 
 **Triage dependency to respect:** ES#4 shows the Spanish filter chips overflow **only where the RPT#1
 wire-up works**. Fixing RPT#1 across the report surfaces will therefore *introduce* overflow on all six.
