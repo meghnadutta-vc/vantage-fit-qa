@@ -1007,3 +1007,41 @@ candidates and both render correctly including conjuncts.
 `hu +119` › `ru +68` › `pl +65` › `de +62` › `es +58` › `pt +55` › `fr/nl/it/or +53` › `hi +49` ›
 `id +48` › `zh +28` › `ko +13`. **German ranks 4th** — the third independent demonstration that
 "test German because it's longest" is unsafe for this product.
+
+---
+
+# DEEP-TIER UPGRADE es/fr/pt/pl/zh — Run 17 (2026-07-29)
+Detail: `bug-logs/deep-tier-es-fr-pt-pl-zh.md`
+
+### F6#1 — Search folds case but NOT diacritics · P3 · [FE]  (CROSS-MODULE, ALL 18 LANGUAGES)
+[Functional — Content Library search / shared search component] · **dimension F6 never tested before**
+`Youtube` → 2 rows · **`Youtubé` → 0** · `Video` → 1 · **`Vídeo` → 0** · `VIDEO` → 1 (case-folding works).
+**Expected:** accent-insensitive matching, consistent with the case-insensitivity already implemented.
+**Actual:** the same normalisation lowercases but ignores diacritics.
+**Impact:** in every accented locale users type both with and without accents; *Nutrición* will not be found
+by typing *Nutricion*. Likely a one-line fix (NFD normalise + strip combining marks).
+**Evidence note:** the tenant has only ASCII titles, so the **mechanism** was proven (no folding either
+direction) rather than a real-world miss observed. States the limitation honestly.
+
+### SET#4 — Out-of-range value blocks save silently · P3 · [FE]
+[Functional/UX — Settings → max team size]
+`9999` (max 500) leaves the field invalid; clicking Save does **nothing** — no success toast, no error, and
+Save is **not** `aria-disabled`. **Data integrity is safe** (reload confirmed 500 persisted). The defect is
+feedback-only, and it is the **same silent-failed-write pattern as UP#4** — evidence of a systemic gap in how
+this app surfaces write failures.
+Also: the max clamp is **inconsistent** (`9999`→`500` once, stayed `9999` twice); not logged separately since
+the value never persists, but validation feedback is unpredictable.
+
+### F4 — CRUD + toast localization: PASSES in all five languages (positive result)
+`Configuración guardada correctamente.` (es) · `Paramètres enregistrés avec succès.` (fr) ·
+`Configurações salvas com sucesso.` (pt) · `Ustawienia zapisane pomyślnie.` (pl) · `设置保存成功。` (zh).
+All reverted to 500. Confirms save/create toasts localize while upload/announcement/loading toasts do not —
+now across five languages, not German alone.
+
+### F1/F2 — filter interaction PASSES (es representative); `Undisclosed` still English inside the dropdown (CC#3).
+
+### Layout @1366 completes the 4-width matrix for all five
+PN `.two-column-layout` degrades progressively: **+512px @1024 → +170px @1366 → 0 @1920** — confirming it as
+a pure responsive defect (OV#8b class), not a translation defect. Wellness Leagues chip:
+pl +65 > es +58 > pt +55 > fr +53 > zh +28. **Settings and Events clean at 1366 in all five.**
+`1 language` clips +7px in a 54px box in every language (untranslated English).
