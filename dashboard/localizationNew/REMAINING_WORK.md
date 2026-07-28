@@ -162,6 +162,20 @@ fix the other. Table in `bug-logs/spanish-full-sweep.md`.
 **Standing method rule regardless of scope:** verify localization by **direct URL**, not by clicking the
 sidebar — in-app navigation can hide this class of bug. (Saved to memory.)
 
-## FRENCH (fr) / PORTUGUESE (pt) — not started on the dashboard
-Only dictionary parity (991/991, a *file* check) plus 3-of-19 module spot-checks exist for fr/es from the
-original pass — see **G14/G15**. Portuguese has no dashboard coverage at all.
+## FRENCH · PORTUGUESE · POLISH · CHINESE — layout + strings DONE 2026-07-28 (Run 12)
+Full detail: `bug-logs/multilang-fr-pt-pl-zh.md`. ~23 surfaces each @1024, dictionary-verified leak
+detection. All six requested languages (de, es, fr, pt, pl, zh-CN) now have layout + string coverage.
+
+### ❌ Still open for fr / pt / pl / zh
+- [ ] Widths **1920 / 1366 / 768 / 375** — Run 12 was 1024 only. Per Run 10 most 1024 breaks vanish at 1920,
+      so a 1920 pass would likely reduce these to the fixed-width trio. **~30 min for all four.**
+- [ ] **Dynamic flows / CRUD (G15)** — still German-only.
+- [ ] **Date / number / currency formatting** per locale — not examined. Polish and Chinese add new
+      conventions again.
+- [ ] **Register pass** — French *vous/tu*, Portuguese *você/tu*, Polish formal *Pan/Pani*. (Chinese has no
+      T–V split.)
+
+### ⚠️ The 12 other selectable languages are shipping untested
+`ar, nl, fr-CA, it, ko, ru, vi, id, hu, hi, or` — **all have complete 991-key dictionaries**, i.e. they are
+live for users and have never been opened. **Arabic (RTL) is the highest-risk** (mirroring, `dir`, icon
+flipping) and remains the single biggest untested surface in the engagement alongside the US/EU/E2E servers.
