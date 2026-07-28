@@ -22,12 +22,12 @@
 | CHL-LOC-002 | Weekly Rank / Weekly progress / Overall Rank / Milestone progress / Overall progress localized | Read card labels | Translated | pt & de all translated ✅ (de "Wöchentlicher Rang", "Wöchentlicher Fortschritt", "Gesamtrang", "Meilenstein-Fortschritt", "Gesamter Fortschritt") | PASS | P2 |
 | CHL-LOC-003 | Milestone/challenge-type phrasing localized | Read journey/marathon/race cards | Translated | de "Nächster Meilenstein: Chichen Itza", "E-Marathon-Herausforderung (endet in 27 Tagen)", "Renn-Herausforderung (endet in 7 Tagen)" ✅; pt equivalents ✅ | PASS | P2 |
 | CHL-LOC-004 | "Week 1" badge localized | Read card badge | Translated | **"Week 1" English in pt AND de** → Bug B4 (recurs) | FAIL | P2 |
-| CHL-LOC-005 | "Challenges" nav tab localized (de) | Read tab bar in German | de "Herausforderungen" | **de shows "Challenges"** → Bug B5 (recurs). NB: "Herausforderung" IS used elsewhere on this page (E-Marathon-/Renn-Herausforderung) → confirms a missing key for the tab specifically | FAIL (de) | P2 |
+| CHL-LOC-005 | "Challenges" nav tab localized (de) | Read tab bar in German | de "Herausforderungen" | **de shows "Challenges"** → Bug B3 (recurs). NB: "Herausforderung" IS used elsewhere on this page (E-Marathon-/Renn-Herausforderung) → confirms a missing key for the tab specifically | FAIL (de) | P2 |
 | CHL-LOC-006 | Challenge NAMES stay as authored (BE data) | Read card titles | Unchanged | "QA-BOT Custom 0721", "Custom Challenge - I", "Adherence Task Verification", "September Challenge", "Race Challenge" etc. unchanged in pt & de → [BE data], expected | PASS | — |
 | CHL-LOC-007 | `<html lang>` correct | Read lang attr | Matches locale | pt→"pt", de→"de" ✅ | PASS | P3 |
 | CHL-LOC-008 | Listing sub-tabs (Ongoing/Upcoming/Completed) localized | Switch tabs, read labels | Translated | **NOT VERIFIED** this run (only Ongoing loaded) | Needs Verification | P3 |
 | CHL-LOC-009 | Challenge detail page localized (open a challenge) | Open a card → detail | Translated | **NOT VERIFIED** this run | Needs Verification | P2 |
 
 ## Pending
-- French & Spanish passes for Challenges (expected to mirror pt/de: B4 recurs; B5 is de-specific).
+- French & Spanish passes for Challenges (expected to mirror pt/de: B4 recurs; B3 is de-specific).
 - Ongoing/Upcoming/Completed sub-tabs; a challenge **detail** page; the **+ Add** / create-challenge flow (dynamic).

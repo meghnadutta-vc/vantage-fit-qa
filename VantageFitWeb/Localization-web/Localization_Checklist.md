@@ -66,9 +66,19 @@ decision** applied product-wide.
 
 ---
 
-## Findings so far (2026-07-24, de across Summary/Challenges/Programs; fr/es/pt on Summary)
-- **Tone:** ❌ B12 — German mixes formal "Ihr neuestes Abzeichen" with informal "du/dein" elsewhere.
-- **Word:** ❌ B5 (tab "Challenges" EN vs body "Herausforderung" DE), ❌ B4 ("Week 1" EN vs "Wöchentlich…" DE),
-  ⚠️ B8 (fr/pt casing). ✅ "Rang"/"Fortschritt"/"Community"/"Vantage Fit" consistent.
-- **Context:** ❌ B1 (DE prefix + EN date), ❌ B4 (EN "Week 1" beside DE labels), ⚠️ B9 ("Wellness Score" EN).
+## Findings so far (2026-07-28 update — de across ALL 5 Fit modules: Summary/Challenges/Programs/Community/
+Diary-Trends; fr/es/pt spot-checked on Summary only)
+- **Tone:** ❌ B12 — German mixes formal "Ihr/Ihre/Ihren" (3 surfaces, incl. authored content body) with
+  informal "du/dein/deinen" elsewhere. Community/Trends not scorable yet — their own chrome is still English.
+- **Word:** ❌ B3 (tab "Challenges" EN vs body "Herausforderung" DE), ❌ B4 ("Week 1" EN vs "Wöchentlich…" DE,
+  recurs on Trends' Month view too), ❌ NEW — "Schritte"/"Aktive Minuten" (switcher) vs "Steps Overview"/
+  "Active Minutes Overview" (Trends content) — same concept, split by component not just by string,
+  ⚠️ B8 (fr/pt casing). ✅ "Rang"/"Fortschritt"/"Community"/"Vantage Fit" consistent everywhere they appear.
+- **Context:** ❌ B1 (DE prefix + EN date, recurs as "Heute · 28 July 2026" on Diary), ❌ B4 (EN "Week 1"
+  beside DE labels), ⚠️ B9 ("Wellness Score" EN), ❌ NEW — the "reverse" signal: a lone correctly-German
+  string (Community's empty state, Trends' "Dieser Monat") stranded inside an otherwise all-English view —
+  diagnostic proof that B16/B19 are route-specific wire-up bugs, not a session-wide language revert.
+- **Module-level (not a string-level finding, but the headline result of this pass):** Community (B16) and
+  Trends (B19) — two entire routes whose own chrome never localizes into German, versus Summary/Challenges/
+  Programs/Diary which localize well with only scattered gaps. This is now the top-priority fix area.
 - Full detail: `bug-logs/bug-log.md` → "Cross-module consistency analysis".

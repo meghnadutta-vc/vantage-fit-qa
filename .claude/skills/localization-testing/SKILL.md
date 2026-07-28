@@ -260,6 +260,15 @@ using the strings you already collected (no extra browser driving needed — ana
   UI-only. (Learned in the 2026-07-28 skill test run.)
 - Check placeholders resolve in-context (the change-language alert's `{language}` token → B2) and that
   units/dates sit naturally in the translated sentence.
+- **The "reverse" signal — a lone correctly-translated string stranded in an otherwise all-English
+  view — is a root-cause diagnostic, not just another defect instance.** If a whole route/module renders in
+  English while the account is confirmed set to a different language, check whether any shared/reused string
+  on that same view (an empty-state message, a widget borrowed from another module, a stray label) still
+  renders correctly translated. If one does, that rules out a session-wide language revert (that would take
+  every string down, including reused ones) and instead points to that specific route/component never being
+  wired to i18n (or its mount overriding a shared locale value) — a targeted FE fix, not an account/session
+  bug. (Learned in the 2026-07-28 run: Community's empty-state text and Trends' "Dieser Monat" both survived
+  in German while everything else on their respective pages was English.)
 
 **D. How to report.** Add a **"Cross-module consistency analysis"** section to the consolidated bug log with
 three buckets — **Tone/register · Word/terminology · Context/coherence** — each marked ✅ consistent /

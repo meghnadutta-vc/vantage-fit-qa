@@ -15,16 +15,16 @@ formal `Ihr/Ihre/Ihnen/Sie` vs informal `du/dein/dich/dir`; terminology `Week` /
 | Formal "Ihr/Sie" | **1** ("Ihr neuestes Abzeichen") | 0 | 0 | **B12** |
 | Informal "du/dein" | 2 (footer) | 3 (+ "Tritt… verfolge deine Aufgaben") | 2 (footer) | (baseline voice) |
 | English "Week" | 1 ("Week 1") | 1 ("Week 1") | 0 | **B4** |
-| "Challenges" tab (EN) | 1 | 1 | 1 | **B5** (systemic) |
-| "Herausforderung" (DE body) | 0 | 2 (E-Marathon/Renn-) | 0 | **B5** word-split proof |
+| "Challenges" tab (EN) | 1 | 1 | 1 | **B3** (systemic) |
+| "Herausforderung" (DE body) | 0 | 2 (E-Marathon/Renn-) | 0 | **B3** word-split proof |
 | English-month date | 4 (incl. "Aktualisiert am 14 Jul 2025") | 1 (false +, see below) | 0 | **B1** |
 | "Wellness Score" (EN) | 1 | — | — | **B9** |
-| English units (mins/sec/hrs/day) | 4 | — | — | **B3** |
+| English units (mins/sec/hrs/day) | 4 | — | — | **B6** |
 
 ## Verdict: skill reproduces every logged consistency finding
 - **Tone (B12):** aggregation pinpointed the lone formal outlier precisely — "Ihr neuestes Abzeichen" on
   **Summary only** (formal=1), while all three modules share the informal footer/body voice. ✅ reproduced.
-- **Word (B5):** "Challenges" tab English in **all 3** modules while Challenges body uses "Herausforderung"
+- **Word (B3):** "Challenges" tab English in **all 3** modules while Challenges body uses "Herausforderung"
   → the same-concept-two-languages split confirmed programmatically. ✅
 - **Word (B4):** "Week 1" English on Summary + Challenges beside translated German labels. ✅
 - **Context (B1):** mixed "Aktualisiert am 14 Jul 2025" (DE prefix + EN date) surfaced by the date grep. ✅
@@ -38,5 +38,5 @@ formal `Ihr/Ihre/Ihnen/Sie` vs informal `du/dein/dich/dir`; terminology `Week` /
 
 ## Conclusion
 The §11 consistency pass is validated: run against the three bug-logged modules it re-derived B1, B3, B4,
-B5, B9, and the new B12 with no misses, and exposed one regex false-positive now documented. Ready to apply
+B6, B9, and the new B12 with no misses, and exposed one regex false-positive now documented. Ready to apply
 to the remaining modules (Community, Diary/Trends) and the fr/es/pt passes.
