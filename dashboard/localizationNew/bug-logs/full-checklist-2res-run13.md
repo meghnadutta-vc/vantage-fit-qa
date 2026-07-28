@@ -17,11 +17,14 @@ other-language bleed, mojibake, date/number/currency formatting, `<html lang>`, 
 | Language | Layout @1440 | Layout @1920 | Enriched checklist (U2/U3/U6/U7/U10) |
 |---|---|---|---|
 | German | ✅ 22 modules | ✅ 14 modules | ✅ **22 modules** |
-| Spanish | ✅ (Run 7 @1024/1440) | ✅ 14 modules | ❌ **not done** |
-| French | ✅ (Run 12 @1024) | ✅ 14 modules | ❌ **not done** |
-| Portuguese | ✅ (Run 12 @1024) | ✅ 14 modules | ❌ **not done** |
-| Polish | ✅ (Run 12 @1024) | ✅ 14 modules | ❌ **not done** |
-| Chinese | ✅ (Run 12 @1024) | ✅ 14 modules | ⛔ **INVALID — see below** |
+| Spanish | ✅ (Run 7 @1024/1440) | ✅ 14 modules | ✅ **9 modules** |
+| French | ✅ (Run 12 @1024) | ✅ 14 modules | ✅ **8 modules** |
+| Portuguese | ✅ (Run 12 @1024) | ✅ 14 modules | ✅ **7 modules** |
+| Polish | ✅ (Run 12 @1024) | ✅ 14 modules | ✅ **7 modules** |
+| Chinese | ✅ (Run 12 @1024) | ✅ 14 modules | ✅ **12 modules (re-run, valid)** |
+
+**All six languages are now covered for the enriched checklist** (completed after the network recovered —
+see the Run 14 section at the end).
 
 ### ⛔ The Chinese enriched run is invalid, not a pass
 It returned "no findings" on all 9 modules **because the network failed mid-run** — 82 console errors and
@@ -152,3 +155,79 @@ untranslated text does not shrink. Strongest single confirmation of ES#3.
 - [ ] **A11y depth** beyond alt/label counts: contrast, focus order, screen-reader announcement language.
 - [ ] Per-module `test-cases/<module>.md` updates for the new languages.
 - [ ] 768 / 375 widths.
+
+---
+
+# Run 14 — completion after network recovery (2026-07-28)
+
+The host came back (HTTP 200) and the outstanding work was finished: the invalid Chinese run was repeated
+and es/fr/pt/pl were completed. **All six languages now have the enriched checklist.**
+
+## Two detector flaws found and corrected — both would have corrupted results
+
+### 1. Leaf-count guard produced a FALSE INVALID (not a false pass)
+I guarded against "data didn't load" with `leaves < 25`. That misfired on **legitimately sparse pages** — the
+report modules are genuinely short because they show an empty state. Re-probing with a **chrome-presence
+check** (`button/table/[class*=filter]` present) instead confirmed those four modules were fine and yielded
+real data. Direction matters: this flaw *withheld* valid findings rather than inventing clean ones.
+
+### 2. Bleed detector (U3) produced FALSE POSITIVES for related languages
+It flagged `Próximo [pt]` and `Valor [pt]` in a **Spanish** session. Verified against the dictionaries:
+- `Próximo` **is** the correct Spanish value (`manageChallenge.statusUpcoming`); it merely coincides with
+  Portuguese `common.next`
+- `Valor` **is** the correct Spanish `reportCols.value`; Portuguese uses the identical word
+
+The detector didn't exclude strings that are valid in the *current* language — fatal for cognate-rich pairs
+like es/pt. **Fixed** by excluding all values present in the active dictionary. After the fix: **U3 is clean
+in all six languages.** Neither false positive was reported as a bug.
+
+## U7#3 — [Localization — P3] NEW: "as-of date" mixed fragment in ALL SIX languages
+**Module:** Wellness Leagues · **[FE]** · one formatter, six languages
+
+The date **prefix localizes perfectly** while the **month never does**:
+
+| Language | Rendered | Should be |
+|---|---|---|
+| German | `Am 27 Jul 2026` | `Am 27. Juli 2026` |
+| Spanish | `El 27 Jul 2026` | `El 27 de julio de 2026` |
+| French | `Au 27 Jul 2026` | `Au 27 juillet 2026` |
+| Portuguese | `Em 27 Jul 2026` | `Em 27 de julho de 2026` |
+| Polish | `Na dzień 27 Jul 2026` | `Na dzień 27 lipca 2026` |
+| Chinese | `截至 27 Jul 2026` | `截至 2026 年 7 月 27 日` |
+
+This is the cleanest possible demonstration that the **translation layer works and the date layer does
+not** — the surrounding words prove the i18n wiring is correct on this very element. Same root cause as
+U7#1 / RPT#4 / CC#2: one locale-unaware formatter. Fixing that formatter resolves all of them across six
+languages simultaneously.
+
+Also confirmed identically in all six: `Friday 26 Jun` / `Wednesday 15 July` (English **weekday**), all
+report pickers `Jun 28, 2026 - Jul 27, 2026`, card ranges `19 May 2025`, `23 Oct 2024`.
+
+## RPT#7 confirmed cross-language
+The Chinese empty state reads **「无可用数据。请调整筛选条件并点击"生成"。」** — *click "Generate"* — for a
+button that **does not exist**, exactly as in German. Not a German-only copy slip.
+
+## Language-independent, confirmed by measuring all six
+Identical values in every language, which proves these are DOM/formatter defects rather than translation
+defects:
+- **`<html lang>` = `"en"`** — all six, every module (OV#4)
+- **Images without `alt`** — 103 Manage Challenges / 24 Past Challenges / 1 Events — all six (A11Y#1)
+- **Report column-selector clip** +31 / +48px — all six
+- **English dates** on every date-bearing surface — all six
+
+## Clean in all six languages (dimensions never tested before Run 13)
+- **U2 raw i18n keys** — none
+- **U2 unresolved placeholders** — none (`{0}`, `{{name}}`, `%s`)
+- **U3 other-language bleed** — none (after the detector fix)
+- **U6 mojibake / tofu** — none; umlauts, accents, Polish diacritics and CJK all render correctly
+- **Empty states** — correctly localized and natural in German and Chinese
+
+## Still outstanding after Run 14
+- [ ] **F1–F8 functional per language** (interactions, filters, sort, pagination, validation, CRUD, toasts,
+      dialogs, wizard) — **still German-only.** The largest remaining gap; cannot be done by DOM probe.
+- [ ] **U9 terminology / register** for es/fr/pt/pl/zh — TERM#1 and REG#1 are German-only findings.
+- [ ] **A1 locale propagation** — whether the FE sends `Accept-Language`/`lang` to the API.
+- [ ] **U8 error/loading states** per language — only empty states seen.
+- [ ] A11y depth: contrast, focus order, SR announcement language.
+- [ ] 768 / 375 widths.
+- [ ] The 12 other shipped languages (ar/nl/fr-CA/it/ko/ru/vi/id/hu/hi/or) — Arabic RTL highest risk.

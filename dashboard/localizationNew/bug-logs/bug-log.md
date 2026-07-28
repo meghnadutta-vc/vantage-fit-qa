@@ -873,3 +873,27 @@ layout defects affecting desktop users — fix these first.
 - **U2 unresolved placeholders** — no `{0}`, `{{name}}`, `%s`.
 - **U3 other-language bleed** — no cross-language string contamination.
 - **U6 mojibake / tofu** — umlauts, accents, Polish diacritics and CJK all render correctly.
+
+### U7#3 — "As-of date" mixed-language fragment in ALL SIX languages · P3 · [FE]
+[Localization — Wellness Leagues → as-of date]
+The prefix localizes correctly; the month never does:
+`Am 27 Jul 2026` (de) · `El 27 Jul 2026` (es) · `Au 27 Jul 2026` (fr) · `Em 27 Jul 2026` (pt) ·
+`Na dzień 27 Jul 2026` (pl) · `截至 27 Jul 2026` (zh-CN)
+**Expected:** `Am 27. Juli 2026`, `El 27 de julio de 2026`, `截至 2026 年 7 月 27 日` etc.
+**Why this is the cleanest evidence in the engagement:** the surrounding words prove the i18n wiring on this
+very element is correct — so the defect is unambiguously the **date formatter**, not the translation layer.
+Same root cause as U7#1 / RPT#4 / CC#2. **Fixing that one formatter resolves all of them in six languages
+simultaneously.**
+
+### RPT#7 — confirmed cross-language (was logged as German-only)
+Chinese empty state: 「无可用数据。请调整筛选条件并点击"生成"。」 — instructs clicking "Generate" for a button
+that does not exist, exactly as in German.
+
+## Detector corrections (Run 14) — recorded so results can be trusted
+- **Leaf-count load guard produced a FALSE INVALID.** Guarding on `leaves < 25` misfired on legitimately
+  sparse report pages (empty states). Replaced with a **chrome-presence** check. The flaw withheld valid
+  findings; it never invented clean ones.
+- **U3 bleed detector produced FALSE POSITIVES.** It flagged `Próximo`/`Valor` as Portuguese bleed in a
+  Spanish session, but both are the correct Spanish values (`manageChallenge.statusUpcoming`,
+  `reportCols.value`) that merely coincide with Portuguese. Fixed by excluding values present in the active
+  dictionary. **Neither was reported as a bug.** After the fix U3 is clean in all six languages.
