@@ -956,3 +956,54 @@ Polish session — the FE correctly tells the API which language is selected.
 **Why this matters for triage:** the backend *is* receiving the locale, so the untranslated backend strings
 ([BE] items throughout this log) are a **backend-scope decision, not a missing-header bug**. That removes an
 entire hypothesis from the fix discussion.
+
+---
+
+# ALL 18 LANGUAGES COMPLETE — Run 16 (2026-07-29)
+Detail: `bug-logs/all-18-languages.md`. Every language in the production selector has now been opened:
+en · de · es · fr · fr-CA · pt · pl · zh-CN · ar · or · hi · ru · ko · vi · hu · nl · it · id.
+All 18 dictionaries: **0 missing keys, 0 empty values.**
+
+### FRCA#1 — fr-CA partially falls back to metropolitan French · P3 · [FE]
+[Localization — cross-module; unique to fr-CA, the only regional-variant pair shipped]
+An **fr-CA** session renders `RÉPARTITION DU SCORE`. `"Répartition du score"` exists **only in `fr.json`**
+(`overview.scoreBreakdown`); fr-CA specifies *"Répartition du **pointage**"* and English is *"Score
+Breakdown"* — so the UI resolved the **fr** value in an **fr-CA** session. Not explicable as an English leak.
+**Partial, not total:** Quebec terms do render elsewhere in the same session (`main-d'œuvre`, `Balados`),
+while the Content Library type filter still shows `Podcast` where fr-CA specifies `Balado`.
+**Why it matters:** fr-CA is genuinely translated — 42 keys differ from fr with correct Québec terminology
+(*Balado, pointage, mieux-être, main-d'œuvre*). That work was paid for and roughly half of the visible
+differences never reach users. Cheap, high-satisfaction fix.
+
+### HU#1 — Hungarian: worst overflow in the engagement · P3 · [FE]
+`Alkalmazotti azonosító` overflows the 110px Wellness Leagues chip by **+119px** — **more than double** the
+container. Beats ru +68, pl +65, de +62.
+
+### RU#1 — Russian: worst break count at 1440 · P3 · [FE]
+**8 breaks on Overview** (others 0–4). `Зарегистрированные` spills +32px in a 214px box.
+
+### OV#7 — reproduced with cross-language evidence (upgraded from single-screen observation)
+An in-place switch Italian → Indonesian left the Wellness Leagues chip showing Italian
+`Tutte le fasce d'età` while the rest of the page was correctly Indonesian and `fit_lang = id`. A **cold
+load** then showed the correct `Semua Kelompok Usia`. **Two languages visible on one screen simultaneously** —
+the clearest reproduction in the engagement, and it re-confirms the rule: verify on a fresh load, never after
+an in-place switch.
+
+### U7#3 — now confirmed in FOURTEEN languages
+The date affix localizes correctly every time; the month never does. Includes postpositional languages where
+the affix correctly follows the date:
+de `Am` · es `El` · fr/fr-CA `Au` · pt `Em` · pl `Na dzień` · zh `截至` · ru `На` · vi `Vào` · nl `Op` ·
+it `Al` · id `Per` · **or `…ରେ`** · **hi `…को`** · **hu `…napon`** — all followed/preceded by `27 Jul 2026`.
+**Strongest evidence in the engagement that the translation layer works and the date layer does not.** One
+formatter fix resolves U7#1, U7#3, RPT#4, CC#2 and AR#2 in every language at once.
+
+### Script rendering — ALL 18 PASS (no tofu, no mojibake, no missing glyphs)
+Odia (`ସକ୍ରିୟ ଚ୍ୟାଲେଞ୍ଜ`, 526 strings) · Devanagari (`सक्रिय चुनौतियाँ`, 526) · Cyrillic
+(`Активные челленджи`) · Hangul (`진행 중인 챌린지`) · Han (`进行中的挑战`) · Arabic shaping
+(`المستخدمين المسجلين`) · heavy-diacritic Latin (vi/pl/hu/pt). Odia and Devanagari were the highest font-risk
+candidates and both render correctly including conjuncts.
+
+### Text-expansion ranking — use Hungarian and Russian as stress references, NOT German
+`hu +119` › `ru +68` › `pl +65` › `de +62` › `es +58` › `pt +55` › `fr/nl/it/or +53` › `hi +49` ›
+`id +48` › `zh +28` › `ko +13`. **German ranks 4th** — the third independent demonstration that
+"test German because it's longest" is unsafe for this product.
