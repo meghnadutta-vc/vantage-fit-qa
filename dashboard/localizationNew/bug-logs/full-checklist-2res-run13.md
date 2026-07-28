@@ -26,13 +26,13 @@ other-language bleed, mojibake, date/number/currency formatting, `<html lang>`, 
 **All six languages are now covered for the enriched checklist** (completed after the network recovered —
 see the Run 14 section at the end).
 
-### ⛔ The Chinese enriched run is invalid, not a pass
-It returned "no findings" on all 9 modules **because the network failed mid-run** — 82 console errors and
-report/card data never loaded, so there was no date/number/currency content to detect. A subsequent
-navigation failed with `ERR_NAME_NOT_RESOLVED` and `curl` to the host failed three times. **Discarded rather
-than recorded as clean.** Must be re-run.
-
-The run stopped at that point, so **es / fr / pt / pl enriched checklists remain outstanding.**
+### ⛔→✅ The first Chinese enriched attempt was invalid and was discarded (now re-run)
+The first attempt returned "no findings" on all 9 modules **because the network failed mid-run** — 82 console
+errors, report/card data never loaded, so there was no date/number/currency content to detect. It was
+**discarded rather than recorded as clean**; a later navigation failed with `ERR_NAME_NOT_RESOLVED` and
+`curl` failed three times, confirming the outage. **Re-run in Run 14 and now valid** (902 leaf nodes on
+Manage Challenges vs near-zero during the outage). Kept here as the record of why the first result was
+thrown away.
 
 ---
 
@@ -143,8 +143,8 @@ untranslated text does not shrink. Strongest single confirmation of ES#3.
 
 ## What is still NOT done
 
-- [ ] **Enriched checklist (U2/U3/U6/U7/U10) for es / fr / pt / pl** — blocked by the network outage.
-- [ ] **Chinese enriched checklist** — must be **re-run**; the attempt is invalid.
+- [x] ~~Enriched checklist for es / fr / pt / pl~~ — **done in Run 14.**
+- [x] ~~Chinese enriched checklist re-run~~ — **done in Run 14, valid.**
 - [ ] **U8 states** (empty / loading / error / success) per language — only German empty states seen.
 - [ ] **U9 terminology + tone** per language — TERM#1 and REG#1 exist for German only; French *vous/tu*,
       Portuguese *você/tu*, Polish *Pan/Pani* unexamined.
