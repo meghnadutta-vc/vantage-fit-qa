@@ -33,9 +33,15 @@ German is the deepest-tested language, but "done" applies to **2 of ~22 dimensio
       distinction: `bug-logs/spanish-full-sweep.md`.
 
 **The two credible P1 leads (nothing else in this engagement can produce a P1):**
-- [ ] **G5 — comma-decimal *input*.** Display formatting is covered; input is not. German users type `2,5`.
-      Test every numeric input (Settings team-size min/max, Upload Points values); submit; verify the stored
-      value. Silent truncation/misparse = data integrity. **~45 min.**
+- [◐] **G5 — comma-decimal *input*. MECHANISM CONFIRMED 2026-07-28 (Run 10), impact test outstanding.**
+      Typing `12,5` into Settings → Maximale Teamgröße stores **`125`** with `validity.valid = true`,
+      `badInput = false`, and **no error message** — the locale separator is silently discarded, giving a
+      value 10× the intent. Typing it into a field already holding `500` gave **`500125`** (comma dropped,
+      digits appended). **Currently P2**, because that field is an integer with `max=500` so impact is
+      bounded. **→ THE ONE REMAINING TEST THAT COULD PRODUCE THIS ENGAGEMENT'S FIRST P1:** repeat on a field
+      where decimals are legitimate — a challenge task **target** (needs an activity added to the week
+      first) or an **Upload Points** value — and verify the stored value. **~20 min.** Applies to fr/es too.
+      Detail: `bug-logs/desktop-1920-de-es-crud.md`.
 - [ ] **G6 — CSV upload with non-ASCII / semicolon delimiters.** Only ASCII was ever uploaded. Test umlaut
       names (Müller, Schröder), localized headers, and the semicolon delimiter German Excel emits by
       default. **~45 min.**
@@ -79,7 +85,12 @@ German is the deepest-tested language, but "done" applies to **2 of ~22 dimensio
 - **G2 visual screenshot review** — I reviewed *my own* new screenshots (which is how OV#8/#9, SET#3, EV#4,
   CC#6 were caught). The **original 79 screenshots from the 2026-07-21/22 pass have still never been
   visually re-reviewed.**
-- **G11 responsive** — 1024 / 1366 / 1440 now covered. **768 and 375 not tested.**
+- **G11 responsive** — 1024 / 1366 / 1440 / **1920 (Run 10)** now covered. **768 and 375 not tested.**
+- **G13 glossary/register** — the formal pass hasn't run, but Run 10 already produced two confirmed
+  instances: *Herausforderung* (Preview Emails) vs *Challenge* (sidebar/wizard), and a formal-*Sie* heading
+  on Create Challenge. The pass now has anchor evidence to build on.
+- **CRUD** — Update verified twice (with revert); Create verified through wizard steps 1–4 but **publish
+  withheld** (960-user blast radius); **Delete does not exist in the UI** for challenges.
 
 ### Loose ends from Run 5–6 specifically
 - [ ] **Create Content picker modal** never opened (`?action=create` doesn't auto-open it) — CRC#1/#2 not

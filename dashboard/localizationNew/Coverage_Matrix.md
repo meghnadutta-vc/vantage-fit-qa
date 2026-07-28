@@ -85,3 +85,25 @@ both cold and warm states (hardcoded default); ES#1 renders Spanish once the i18
 **Triage dependency to respect:** ES#4 shows the Spanish filter chips overflow **only where the RPT#1
 wire-up works**. Fixing RPT#1 across the report surfaces will therefore *introduce* overflow on all six.
 Widen the chips before shipping the translation fix.
+
+## DESKTOP (1920×1080) re-rating 2026-07-28 (Run 10) — de + es
+
+The Truncation/Overlap and Responsive columns above were built from **1024** measurements. At **1920** —
+the most common real desktop width — only **3 components** break in either language, and all three are
+**fixed-width boxes** that clip at every resolution:
+
+| Component | Box | de | es |
+|---|---|---|---|
+| `.notif-title` (Publish Notifications) | 150px | +3px | +8px |
+| Report column-selector chip | 150px | +31 / +48px | +31 / +48px |
+| Wellness Leagues filter chips | 110 / 100px | +62 / +23px | +58 / +11px |
+
+**OV#8, OV#9, OV#11, EV#4, SET#3, MGC#3, CC#6 do not reproduce at 1920.** Read the ❌ marks in those two
+columns as **"breaks at ≤1440"**, not "breaks everywhere" — the fix priority is correspondingly lower.
+**EV#4 specifically is re-rated down** from a suspected functional P2 to a narrow-viewport P3: at 1920 the
+German event tabs fit, so they are reachable on a normal desktop.
+
+Wide data tables reporting `+334 / +454 / +1002` are `overflow:auto` **scrollable** and are not defects.
+Broken images (5 Manage Challenges / 12 Events / 1 Past Challenges) are resolution- and language-independent.
+
+Detail + CRUD results: `bug-logs/desktop-1920-de-es-crud.md`.
