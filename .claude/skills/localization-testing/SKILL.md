@@ -283,3 +283,60 @@ three buckets — **Tone/register · Word/terminology · Context/coherence** —
 ❌ defect / ⚠️ judgment, cross-referencing the per-string bug IDs. New standalone defects (e.g. a register
 split) get their own bug ID; consistency views of existing bugs just reference them. Recommend a single
 **glossary + register decision** applied product-wide as the fix.
+
+---
+
+## 12. Dimensions this engagement has NOT covered (pick up from here)
+
+State as of 2026-07-28 for `VantageFitWeb/Localization-web/`: 5 modules × 4 languages (de/es/fr/pt),
+28 bugs. **Already well covered** — don't redo: runtime desync (found as B25), visual screenshot review
+(§8 rule, found B22/B23), language persistence (B11), the §11 consistency pass, unit-toggle conversion
+(B28), and cross-language confirmation of every bug. **What remains untested** is below. The sibling
+`dashboard-localization-testing` skill §9 carries the full 26-item gap list for the admin dashboard;
+these are the ones that apply to the **employee web** and are genuinely open here:
+
+**Data-integrity class (highest value — no P1 found yet, and these are where a P1 would live):**
+- **Comma-decimal input.** Display formatting is covered; *input* is not. de/fr/pt users type `2,5`.
+  The Log Water "Any amount" field, weight, and mood/vitals inputs all take numbers. Silent truncation
+  or misparse is a data-integrity bug.
+- **Large-value number grouping.** All test data was small integers, so `1.234.567` (de) vs `1,234,567`
+  (en) grouping is unverified — same gap the dashboard has (its G21).
+
+**Whole dimensions at zero:**
+- **Timezone.** Never probed, on any module, in any language. Dates/times appear on Summary, Challenges,
+  Diary, Trends, and Community Events.
+- **Error states.** No 4xx/5xx/offline/permission-denied message was ever deliberately triggered and read.
+  The one 502 seen (Programs Offerings) was incidental. Error text is where untranslated strings hide.
+- **Pseudo-localization.** Never used. Since hardcoded/not-externalised English is a dominant defect class
+  here too, the inventory of such strings is *what was noticed*, not *what exists*.
+- **Responsive at localized text lengths.** Never swept at 1366 / 1024 / 768 / 375 widths in a long
+  language — and B22 (toggle-pill overlap) proves this bug class exists here, found by the user rather
+  than by sweep.
+- **Sorting / collation** and **diacritic-insensitive search**, wherever the web exposes sortable lists or
+  search (verify applicability first — the employee web has fewer tabular surfaces than the dashboard).
+- **Accessibility depth.** Only `<html lang>` and a few aria-labels were checked. Untested: focus order,
+  screen-reader announcement language, `aria-live` toast language, alt text, form-error association.
+- **Concurrent tabs / locale precedence.** Two tabs with a language switch in one; and on first login,
+  whether the app follows browser `Accept-Language`, the account preference, or a hardcoded default.
+
+**Breadth:**
+- **Languages:** 4 of 16 profile languages tested. **Arabic (RTL) is the highest-risk untested one** — a
+  failure class (mirrored layout, icon direction, bidirectional number/date runs) that de/es/fr/pt cannot
+  predict. Also untested: Chinese Simplified (CJK line-breaking), Polish (3 plural forms), pt-BR/pt-PT as
+  distinct from generic Portuguese, and 8 others.
+- **Servers:** India only. US / Europe / E2E untested for every module and language.
+- **Create/submit flows:** Challenges "+Add" never opened a menu on the one attempt; Community
+  create-event/add-post flows and Programs' "About this challenge" popover all unexercised.
+
+**Process debt:**
+- **No regression log.** No bug has been re-verified after any environment/session change; nothing is
+  confirmed still-present or fixed. Consider a `Regression_Report.md` mirroring the dashboard's.
+- **Toast capture discipline.** The one Log-Water toast check was inconclusive because the observer was
+  read immediately after the click. Always `wait ~2s` before reading `window.__qaToasts` (§6) — an
+  unconfirmed "no toast" is not evidence of a missing toast.
+- **Unresolved backend/content items:** B14's true scope (German-only vs "German plus whatever B25 falls
+  back to") needs a clean-session re-test; and Programs' Spanish library placeholder titles ("Spanish
+  Content") need a content-owner follow-up.
+
+**Rule:** when you close one of these, note it in the relevant `*_Pass_Conclusion.md`; when you find a new
+gap, add it here so the next session starts from the real state rather than re-deriving it.

@@ -77,3 +77,37 @@ Sidebar-footer dropdown drives whole UI. Persists in `localStorage.fit_lang`. `<
 | OVW-TC-028 | "Recommended Actions" section localized | On Overview | Read title + 10 action items | Localized | Entire section English in de/fr/es (title, "System suggested next steps", all 10 items + descriptions). See Bug #1. | FAIL | P2 |
 | OVW-TC-029 | "At a Glance" activity strip localized | On Overview | Read title + Avg Steps/Active/Mindful Minutes/Avg Sleep + "/day" | Localized | Entirely English in de/fr/es. See Bug #1. | FAIL | P2 |
 | OVW-TC-030 | Delta labels consistent ("vs Prev period" / "vs Prev Quarter") | On Overview | Read deltas on stat + score cards | Consistent & localized | "vs Prev Quarter" localizes (vs. Vorquartal / vs trimestre précédent / vs. trimestre anterior) but "vs Prev period" stays English → inconsistent. See Bug #3. | FAIL | P3 |
+
+---
+
+## Run 2 — 2026-07-28 · German · UI-break focused cases (U4 emphasis)
+
+**Viewports:** 1440×900 primary, 1366×800, 1024×768. Fresh route load per measurement.
+**Method:** `scrollWidth > clientWidth` sweep (not overflow-property-gated), English control measurement,
+visual screenshot review (G2). **Gaps addressed:** G2 (visual review), G11 (responsive at localized lengths).
+
+| Test Case ID | Description | Check IDs | Steps | Expected | Actual (de) | Status | Priority |
+|---|---|---|---|---|---|---|---|
+| OVW-TC-031 | At-a-Glance metric labels fit their container | U4 | Fresh de load @1440 → measure `.item-header` scrollWidth vs clientWidth | Content ≤ box; no overlap with tile icon | **3 of 4 overflow**: Achtsamkeitsminuten +27px, Durchschnittlicher Schlaf +8px, Durchschnittliche Schritte +4px; text renders over the icon → **OV#8** | FAIL | P2 |
+| OVW-TC-032 | English control for the same container | U4 | Switch to en → fresh load → measure same elements | Some headroom exists | All 4 labels = **exactly 113px in a 113px box (0px headroom)** — container sized to English precisely | PASS (but proves the design flaw) | P2 |
+| OVW-TC-033 | At-a-Glance labels at 1366 | U4 | Resize 1366 → re-measure | No overflow | 3 labels overflow (+16 / +20 / +39px) → OV#8 worsens | FAIL | P2 |
+| OVW-TC-034 | At-a-Glance labels at 1024 | U4 | Resize 1024 → re-measure | No overflow | Box shrinks to 44px; overflow +73 / +77 / +96px — labels unreadable → OV#8 | FAIL | P2 |
+| OVW-TC-035 | Stat-card header + "Mehr anzeigen" fit at 1024 | U4 | Resize 1024 → read the 3 cards with action links | Action text intact | Clipped mid-word: "Me anzei" / "Meh anzeig"; overflow +69 / +63 / +35px → **OV#9** | FAIL | P2 |
+| OVW-TC-036 | Stat-card header at 1440/1366 | U4 | Read same cards at 1440 & 1366 | Comfortable | Readable but cramped — label wraps to 2 lines AND "Mehr anzeigen" wraps to 2 lines in a tight gap | PASS (degraded) | P3 |
+| OVW-TC-037 | Wellness Tiers tier row fits | U4 | Measure `.top-section` at 1440 / 1366 / 1024 | Fits or wraps | 1440 fits · 1366 +8px · 1024 +122px → **OV#11** | FAIL (≤1366) | P3 |
+| OVW-TC-038 | At-a-Glance subtitle localized | U1 F9 | Fresh de load → read card subtitle | "Letzte 30 Tage" | "**Last 30 Days**" (English) → **OV#10** | FAIL | P3 |
+| OVW-TC-039 | Same string localizes elsewhere on the page (wire-up proof) | F9 A2 | Compare `.font-medium` (filter preset) vs `.insight-subtitle` (card) on the same load | Both German | Filter = "Letzte 30 Tage" ✓ / card = "Last 30 Days" ✗ — one component consumes `subheader.presets.last_30_days`, the other renders a literal | FAIL (proves wire-up) | P3 |
+| OVW-TC-040 | Page-level horizontal scroll at all widths | U4 | Check `documentElement.scrollWidth` vs viewport at 1440/1366/1024 | No page h-scroll | No page-level horizontal scrollbar at any width (breakage is contained inside cards) | PASS | P3 |
+| OVW-TC-041 | Broken images / missing assets | U6 | Scan all `<img>` for naturalWidth===0 at all 3 widths | None broken | 0 broken images | PASS | P3 |
+| OVW-TC-042 | Ask-Vantage-Fit widget does not obscure content | U4 | Visual review at 1440 & 1024 | Widget doesn't cover card content | Floating widget **overlays the Wellness-Score card** (hides the "Programmtreue (20%)" row) — cross-module, same class as MGC#2 / CL#4 | FAIL (cross-module) | P3 |
+| OVW-TC-043 | Date-range control internally consistent | U1 U7 | Read the filter row | Preset + value both German-formatted | Mixed within one control: "Letzte 30 Tage" (de) + "Jun 28, 2026 - Jul 27, 2026" (English format) — OV#5 | FAIL | P3 |
+| OVW-TC-044 | Language switcher option names | U1 | Read the sidebar switcher | Options in the active language | Options in English ("German") — SET#1 | FAIL (known) | P4 |
+
+### Notes
+- The **English control (OVW-TC-032) is the most important result**: the At-a-Glance container has *exactly
+  zero* headroom in English, so it is guaranteed to break in any language that runs longer. This is a design
+  flaw, not a translation problem — recommend fixing the container, not the strings.
+- A shorter German translation already exists in the dictionary (`reportCols.avgSteps` = "Ø Schritte") and
+  would fit — a viable low-risk fix if the container can't be changed.
+- Not covered this run: number/currency VALUE formatting (all zeros in this tenant), tooltip contents,
+  Recommended-Actions deep links, 768/375 widths, fr/es/pt at these viewports.

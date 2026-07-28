@@ -176,3 +176,116 @@ fully populated). The older sidebar and a few CTAs localize correctly.
 - Challenge **status** ("Active") and **type** ("Multi Week Multi Activity"), "Ended on <date>" — from `overview/home/stream` / campaign APIs.
 - Deficiency names (Vitamin D, Sleep Quality, Stress Levels) and health-status values (Normal, Needs Attention) — verify data source.
 - Challenge names, plan name ("Grow"), tier names (Gold/Silver/Bronze) — product/data; confirm whether they should localize.
+
+---
+
+# Run 2 — 2026-07-28 · German · **UI-break focused pass** (1440 / 1366 / 1024)
+
+**Method:** fresh route load per measurement; `scrollWidth > clientWidth` sweep (catches text that
+**spills** as well as text that is clipped — the previous pass's detector only looked for `overflow:hidden`
+and therefore missed all of these); English control measurement for each finding; visual screenshot review
+per G2. **Viewports:** 1440×900 (primary), 1366×800, 1024×768.
+**Evidence:** `evidence/india_overview_de_1440_full.png`, `india_overview_de_1440_glance_overflow.png`,
+`india_overview_de_1024_break.png`.
+
+### OV#8 — "Auf einen Blick" metric labels overflow their fixed box and collide with the tile icon · P2 · [FE]
+```
+[UI / Localization - P2]  [Overview → "Auf einen Blick" (At a Glance) card → metric tiles]
+German metric labels are wider than their fixed 113px container and, because the container uses
+overflow-x: visible with text-overflow: clip (inert without overflow:hidden), the text SPILLS OUT and
+renders underneath/over the tile's circular icon instead of wrapping or ellipsing.
+
+Measured (.item-header, box = 113px at 1440):
+  • "Achtsamkeitsminuten"        content 140px → overflows by 27px   (worst)
+  • "Durchschnittlicher Schlaf"  content 121px → overflows by  8px
+  • "Durchschnittliche Schritte" content 117px → overflows by  4px
+  • "Aktive Minuten"             content 113px → fits exactly (control)
+
+English control on the SAME box (fresh en load): "Avg Steps" / "Active Minutes" / "Mindful Minutes" /
+"Avg Sleep" — ALL exactly 113px content in a 113px box, i.e. **0px headroom**. The container was sized to
+fit English precisely, so any longer language breaks it.
+
+Degrades with viewport (German):
+  1440 → 3 labels overflow (+4 / +8 / +27px)
+  1366 → 3 labels overflow (+16 / +20 / +39px)
+  1024 → 3 labels overflow (+73 / +77 / +96px), box shrinks to 44px — labels unreadable
+
+Expected: label wraps, ellipses, or the tile flexes; text never renders over the icon.
+Actual: text overlaps the icon glyph; final characters are visually obscured
+  ("Achtsamkeitsminute[icon]", "Durchschnittliche[icon]").
+Technical: `.item-header` fixed width + `overflow-x: visible` + `text-overflow: clip`. Either allow wrap /
+  set overflow:hidden+ellipsis, or use the SHORTER German translations that already exist in the
+  dictionary — `reportCols.avgSteps` = de **"Ø Schritte"** would fit comfortably.
+Note/Doubt: the three overflowing German strings are NOT present in fit/de.json by value, and a search of
+  the 3 loaded scripts didn't find them either (route chunks lazy-load → inconclusive per method). Data for
+  this card comes from POST /vantagefit/api/dashboard/v1/overview/home/stream, whose body the tooling could
+  not capture. So the STRING SOURCE is [FE-BE TBD]; the **overflow/collision itself is unambiguously [FE]**
+  (fixed-width, English-fitted container).
+Evidence: evidence/india_overview_de_1440_glance_overflow.png (1440), india_overview_de_1024_break.png (1024)
+```
+
+### OV#9 — Stat-card headers break at ≤1024: "Mehr anzeigen" clipped mid-word and colliding with the label · P2 · [FE]
+```
+[UI / Localization - P2]  [Overview → top stat cards (Registrierte Benutzer / Aktive Benutzer / Anreize)]
+At 1024px the German card label and the "Mehr anzeigen →" action share one row with no wrapping headroom;
+the action text is clipped mid-word and visually collides with the wrapped label.
+
+Rendered at 1024: card 1 shows "Me / anzei", card 2 "Meh / anzeig" — the arrow and part of the word are
+cut off. Measured (.header, box = 110px): "Registrierte Benutzer Mehr anzeigen→" overflows by 69px,
+"Aktive Benutzer Mehr anzeigen→" by 63px, "Anreize Mehr anzeigen→" by 35px.
+"Teilnahmequote" (no action link) is unaffected.
+
+Expected: the action link wraps/ellipses cleanly or the header reflows; no mid-word clipping.
+Actual: clipped, overlapping, unreadable at 1024. Readable but visibly cramped at 1440/1366
+  (label wraps to 2 lines and "Mehr anzeigen" also wraps to 2 lines within a tight gap).
+Technical: fixed-width header row; German label ~+35% vs English leaves no room for the CTA. Same
+  root class as OV#8 (English-fitted fixed widths).
+Evidence: evidence/india_overview_de_1024_break.png
+```
+
+### OV#10 — "Last 30 Days" renders English inside the German "Auf einen Blick" card · P3 · [FE] wire-up
+```
+[Localization - P3]  [Overview → "Auf einen Blick" card subtitle]
+The At-a-Glance card subtitle renders English "Last 30 Days" on a FRESH German load.
+
+PROVEN wire-up (not a missing translation, not the OV#7 stale-render bug):
+  • Key `subheader.presets.last_30_days` exists: en "Last 30 Days" / de "Letzte 30 Tage".
+  • On the SAME fresh load, the date-range filter renders it correctly: element `.font-medium`
+    = "Letzte 30 Tage" ✓, while element `.insight-subtitle` = "Last 30 Days" ✗.
+  So one component consumes the key and the other renders a literal.
+
+*** Explicitly NOT a re-open of OV#7. *** OV#7's note closed a "Last 30 Days" hypothesis — that referred to
+the date-range PRESET (which does localize correctly on fresh load, re-confirmed here). This is a DIFFERENT
+element (`.insight-subtitle` in the At-a-Glance card) that is English even on a fresh load.
+Expected: "Letzte 30 Tage".  Actual: "Last 30 Days".
+Evidence: evidence/india_overview_de_1440_full.png (both strings visible simultaneously)
+```
+
+### OV#11 — Wellness Tiers Gold/Silver/Bronze row overflows its container below 1440 · P3 · [FE]
+```
+[UI - P3]  [Overview → Wellness Tiers card → tier percentage row]
+`.top-section` ("Gold 23.7% Silver 33.2% Bronze 53.1%") overflows its container:
+  1440 → fits · 1366 → overflows by 8px · 1024 → overflows by 122px (box 152px).
+Expected: row wraps or scales at narrower widths.  Actual: content spills past the card.
+Note: tier NAMES (Gold/Silver/Bronze) staying English is a separate, already-documented product/brand
+  question (see the backend/data section) — this bug is purely the layout overflow.
+Evidence: measured at 1366 and 1024; see india_overview_de_1024_break.png
+```
+
+## Re-confirmed on this run (already-logged bugs, still reproducing in German)
+- **OV#2** — country filter still renders "All Countries" (English) on fresh de load.
+- **OV#4** — `<html lang>` = "en" while `localStorage.fit_lang` = "de".
+- **OV#5** — date-range VALUE still English/US format: "Jun 28, 2026 - Jul 27, 2026" (the preset label
+  beside it IS German — "Letzte 30 Tage" — making the control mixed-language within one row).
+- **CL#4** — "Ask Vantage Fit" widget English, and it **floats over the Wellness-Score card content**
+  (obscures the "Programmtreue (20%)" row at 1440 and more at 1024) — same overlap class as MGC#2.
+- **SET#1** — sidebar switcher lists language names in English ("German") regardless of UI language.
+- Sidebar footer mixes "Challenges 1540/∞" (English loanword) with "Lizenzen" (German).
+
+## Method note for future runs (why the previous pass found none of OV#8/#9/#11)
+The earlier detector only flagged elements with `overflow:hidden|clip` or `text-overflow:ellipsis`. Every
+overflow above has **`overflow-x: visible`**, so the text spills instead of being clipped and the old check
+returned zero. **Detect with `scrollWidth > clientWidth` regardless of the overflow property**, then
+classify: `hidden/clip` → CLIPPED, `visible` → SPILLS/collides. Also note a box-intersection check alone is
+insufficient — the shorter control label ("Aktive Minuten") geometrically intersects its icon box too
+without any visual defect; the reliable signal is content-wider-than-box.

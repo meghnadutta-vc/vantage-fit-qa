@@ -5,7 +5,7 @@
 
 | Module | Missing tr. | Incorrect tr. | Mixed-lang | Hardcoded EN | Validation | Toasts | Errors | Dialogs | Tooltips | Tables | Filters/Search | Pagination | Empty/Loading | Date/Time/Number | Currency | Timezone | Truncation/Overlap | Responsive | Sorting | Export | API/Backend | A11y |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Overview | ❌ #1 | ✅ | ❌ #1/#3 | ❌ #1 | N/A | N/A | N/A | N/A | ❓ | N/A | ❌ #2/#7 | N/A | ◐ | ❌ #5/#6 | ❓ #6 | N/A | ✅ | ◐ | N/A | N/A | ◐ (backend-deferred) | ❌ #4 |
+| Overview | ❌ #1/#10 | ✅ | ❌ #1/#3/#10 | ❌ #1 | N/A | N/A | N/A | N/A | ❓ | N/A | ❌ #2/#7 | N/A | ◐ | ❌ #5/#6 | ❓ #6 | N/A | ❌ **#8/#9/#11** | ❌ **#8/#9/#11 (1366/1024)** | N/A | N/A | ◐ (backend-deferred) | ❌ #4 |
 | Create Challenge | ❌ CC#1/#3/#4/#5 | ✅ | ❌ CC#1/#5 | ❌ CC#1/#4/#5 | ✅ (disabled-btn) | ◐ (no toast text) | ❓ | N/A | N/A | N/A | ❌ CC#3 ("is in") | N/A | ✅ | ❌ CC#2/#5 | ❓ (₹0/US) | N/A | ✅ | ◐ | N/A | N/A | ◐ (template/activity data) | ❌ (html lang) |
 | Manage Challenges | ❌ MGC#1 | ✅ | ◐ | ❌ MGC#1 | N/A | ◐ (no toast text) | ❓ | ❓ (no delete UI) | N/A | ◐ (cards) | N/A | ❓ | ❓ (couldn't trigger) | ❌ (dates) | N/A | N/A | ✅ | ◐ | N/A | N/A | ◐ (status/type data) | ❌ (html lang) |
 | Past Challenges | ✅ | ✅ | ✅ | ✅ | N/A | N/A | N/A | N/A | N/A | ◐ (cards) | N/A | N/A | ❓ (couldn't trigger) | ❌ (dates) | N/A | N/A | ✅ | ◐ | N/A | N/A | ◐ (type data) | ❌ (html lang) |
@@ -49,3 +49,15 @@ Legend refs = `bug-logs/<module>.md`. ❓ = needs verification, ◐ = partial. C
 | Rewards → Upload Points | ✅ tested (de deep) | ☐ | ☐ | ☐ |
 | Configuration → Add Employees | ✅ tested (de deep) | ☐ | ☐ | ☐ |
 | Configuration → Preview Emails | ✅ tested (de deep) | ☐ | ☐ | ☐ |
+
+**ALL-MODULE re-rating 2026-07-28 (Run 5).** A German UI-break sweep at 1024 found breakage in **15 of 17
+modules** — including **Settings and Publish Notifications, both previously signed off CLEAN**. The
+Truncation/Overlap and Responsive columns above are therefore **stale for every module**; see
+`bug-logs/ui-break-sweep-de.md` for per-module measurements (new IDs CC#6, MGC#3/#4, PC#1/#2, RPT#6, SET#3,
+AE#3, CL#6, EV#3/#4/#5, PN#1, SCE#2, WS#2, WL#2, UP#3). Only Preview Emails, Create Announcement and the
+Create-Challenge builder measured clean.
+
+**Overview Truncation/Overlap + Responsive re-rated 2026-07-28** (was ✅ / ◐): the earlier ✅ came from a
+detector that only caught `overflow:hidden` clipping. A corrected `scrollWidth > clientWidth` sweep found
+3 overflow bugs (OV#8/#9/#11) that worsen as the viewport narrows. **Treat every other module's ✅ in these
+two columns as unverified** — they were rated with the same flawed method (gap G11).
