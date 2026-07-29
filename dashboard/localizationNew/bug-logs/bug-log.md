@@ -1112,3 +1112,42 @@ The first Arabic register scan returned 0 for every marker — **a false negativ
 because JS `\b` word boundaries misfire on Arabic script. Re-run without `\b` gave the counts above. One
 substring false positive was also excluded: `حددي` matched `المحددين` (masculine plural participle), so the
 true feminine count is 0.
+
+---
+
+# DEEP-TIER: the 10 remaining languages — Run 19 (2026-07-29)
+Detail: `bug-logs/deep-tier-remaining-10.md`. `ru hu ko vi nl it id or hi fr-CA` now have CRUD + expanded
+modules + widths 1024/1440/1920.
+
+### F4 CRUD + toast: PASSES in all 10 (positive result)
+All ten produced a fully localized success toast and all ten reverted to 500 — e.g. Russian
+`Настройки успешно сохранены.`, Korean `설정이 성공적으로 저장되었습니다.`, Odia
+`ସେଟିଂସ୍ ସଫଳତାର ସହ ସେଭ୍ ହେଲା।`, Hindi `सेटिंग्स सफलतापूर्वक सहेजी गईं।`.
+**fr-CA cleared of FRCA#1 here:** its toast matches fr, but `settings.saved`/`settings.save`/
+`settings.discard`/`common.discard` are **identical in fr and fr-CA by design**, so this is not a fallback.
+FRCA#1 still rests solely on `overview.scoreBreakdown`.
+
+### PN#2 re-ranked — worst is INDONESIAN, not French · P3 · [FE]
+The 50px audience-operator box: **id `termasuk dalam` +55px** › hu +29 › pl +14 = ko +14 › fr/fr-CA +6 ›
+or +5. German and Spanish fit only because they leave the operator as untranslated English.
+**PN#1 `.notif-title` (150px) worst is RUSSIAN +21px** › es +8 › de +3.
+**Wellness Leagues chip worst is HUNGARIAN +119px** › nl 73 › ru 68 › pl 65 › it 63 › de 62 › … › ko 25.
+**Triage consequence:** any fix sizing these fixed-width boxes must be validated against **Indonesian,
+Hungarian and Russian** — not German or French, which are mid-pack or artificially "passing".
+
+### Leak set proven language-independent at module granularity
+Russian (19 modules) and Hungarian (17) produced **identical per-module leak counts**, and the other eight
+matched on every module tested. So RPT#1 / CL#1 / CC#1 / ANN / `Reward` / `Employee ID` / OV#12 are a
+**wire-up problem, not a translation problem — fixing each once fixes all 18 languages.**
+Upload Points `58px SPILL @1086` is likewise identical in all 10.
+
+### Overview confirms the OV#8a/OV#8b split for all 18
+Overview is **clean at ≥1440 in every language** and breaks only at 1024 — exactly the responsive-vs-
+localization split established earlier.
+**⚠️ Vietnamese Overview measured 0 breaks at 1024** where all others showed 5–9 — flagged as an outlier
+needing re-measure, **not** claimed as a pass.
+
+### OV#7 reproduced a SECOND time (method note)
+The Indonesian Wellness Leagues chip rendered **`Minden korcsopor` (Hungarian)** in an `id` session after an
+in-place switch; that figure is excluded from the Indonesian data. Second independent reproduction of OV#7
+(first was Italian-in-Indonesian). Re-confirms: **verify on a fresh load, never after an in-place switch.**
