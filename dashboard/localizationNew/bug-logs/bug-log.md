@@ -1151,3 +1151,38 @@ needing re-measure, **not** claimed as a pass.
 The Indonesian Wellness Leagues chip rendered **`Minden korcsopor` (Hungarian)** in an `id` session after an
 in-place switch; that figure is excluded from the Indonesian data. Second independent reproduction of OV#7
 (first was Italian-in-Indonesian). Re-confirms: **verify on a fresh load, never after an in-place switch.**
+
+---
+
+# F5 / F7 / F8 — Run 20 (2026-07-29), partial
+Detail: `bug-logs/f5-f7-f8-attempt.md`. Cut short by a network outage.
+
+### F5 — dialog layer is FULLY TRANSLATED (useful negative) ✅
+**35 dialog-related keys, all translated in de and es** — `common.areYouSure` (`Sind Sie sicher?`),
+`common.confirm/cancel/delete/discard`, `settings.dialog.title` (`Änderungen verwerfen?`),
+`settings.dialog.text`, `announcementPage.deleteHeading` (`Möchten Sie wirklich löschen?`),
+`announcementPage.deleteText`, `events.details.deleteFailed`. **No missing-translation problem in dialogs.**
+Content Library row actions also verified localized via `title` (`Inhalt ansehen`, `Inhalt bearbeiten`),
+which partially answers A11Y#2 for those controls.
+
+### REG#1 — REINFORCED: the formal-*Sie* register spans the whole dialog layer
+`Sind Sie sicher?` · `Sie haben nicht gespeicherte Änderungen…` · `Möchten Sie wirklich löschen?` — all
+formal *Sie* against the product's informal *du* voice. REG#1 previously rested on a single Create-Challenge
+heading; it is now **systematic across dialogs**, which raises its priority for the glossary/register decision.
+
+### U8 / G8 — first real error-state observation (obtained opportunistically) · P3 · [FE]
+With **every** settings API failing, the Settings page rendered its three card **headings** (correctly
+localized, from cached i18n) and **no card contents** — no toggles, no inputs, no save bar — and **no error
+message, no retry, no offline indicator**.
+**Same family as UP#4 (400 → no feedback) and SET#4 (invalid input → no feedback).** Together these now
+suggest a **systemic absence of error-state handling** rather than three isolated gaps.
+**Caveat:** observed during a real outage, not a controlled offline test. A deliberate offline/4xx/5xx pass is
+still required — but note the app's total-API-failure behaviour is now documented for the first time.
+
+### Blocked / not done
+- `settings.dialog.*` discard dialog not captured (network died mid-attempt).
+- Event delete dialog **not triggerable — all 3 Events tabs are empty (0 cards)**; blocked on test data.
+- **F7** wizard: not run this session; German steps 1–4 only (Run 10), step 5 never reached in any language.
+- **F8** logout/login persistence: not started, but **now unblocked** — `qa-credentials.local.txt` verified to
+  hold a non-empty PASSWORD and a USER_ID on the working `@vantagecircle.com` domain (checked without
+  printing either; the known-stale `fitvantage` domain is absent), so the test is recoverable.
