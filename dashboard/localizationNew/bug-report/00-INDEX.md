@@ -39,6 +39,26 @@ non-ASCII CSV upload, export file contents — were run deliberately. Two passed
 
 ---
 
+## 2b. Mapping to the ticket's acceptance criteria
+
+| # | Acceptance Criterion | Status | Where |
+|---|---|---|---|
+| **1** | Switching language updates the admin Fit UI | ✅ tested — **FAILS 2 ways** | `OV#7` stale strings after in-place switch · `ES#1` English on cold load → files 06, 01 |
+| **2** | No untranslated / **raw-key** strings on key screens | ✅ tested — **raw keys PASS** (zero found, 18 languages) · **untranslated FAILS** | `02-UNTRANSLATED.md` |
+| **3** | **Fallback behaves correctly when a translation is missing** | ✅ **PASSES** for whole-file-missing · ⚠️ single-key case **not proven** | `11-AC3-FALLBACK.md` |
+| **4** | No layout breakage per language | ✅ tested — **FAILS** | `03-UI-LAYOUT.md` |
+| **5** | Admin language preference persists across sessions | ✅ tested — **FAILS** (`F8#1`, client-side only) | `01`, `06` |
+
+**Scope note for whoever reports against the ticket:** roughly **60 % of the findings in this report are
+outside these five ACs** — locale formatting, accessibility, Arabic RTL, register/tone, CRUD and functional
+behaviour. That is additional value, not AC evidence. **Keep it separate when reporting AC completion.**
+
+**AC5 caveat:** the preference was proven **not server-persisted**, which answers the AC's intent. The literal
+**logout → login** leg was not performed — dashboard-v2 exposes no logout control in its profile menu. If a
+reviewer reads "across sessions" strictly as a login session, that leg is still open (~5 min).
+
+---
+
 ## 3. File guide — what each file contains and what testing produced it
 
 | File | Category | What was tested to produce it |
@@ -53,6 +73,7 @@ non-ASCII CSV upload, export file contents — were run deliberately. Two passed
 | **08-ENHANCEMENTS.md** | P4, suggestions, judgment calls | Items that are polish, parity gaps or product choices rather than defects. |
 | **09-NOT-A-BUG.md** | Investigated and cleared + dimensions that **passed** | ~a third of what was investigated. Recorded so it is **not re-opened**. |
 | **10-BLOCKED-NEEDS-DECISION.md** | Blocked on data/environment + needs product decision | Things that cannot be closed by QA alone. |
+| **11-AC3-FALLBACK.md** | **Ticket AC3** — fallback when a translation is missing | Deliberately induced failure: invalid/unknown locale, absent dictionary file, and dictionary-load interception. Also the run that **corrected FRCA#1's root cause**. |
 
 **Every file is split: FRONTEND section on top, BACKEND / source-TBD at the bottom.**
 Bugs repeated from file 01 are tagged **`⚠️ ALSO IN 01 — fix there first`**.
@@ -116,7 +137,8 @@ Wellness Score · Wellness Leagues · Upload Points
 | **F9** | Wire-up (translation exists but not rendered) | ❌ **the dominant defect class** |
 | **A1** | Locale propagation to API | ✅ **PASSES** — `accept-language` sent correctly |
 | **A2/A4** | Source + formatting-source confirmed | ◐ partial (12 items `[FE-BE TBD]`) |
-| **A3** | i18n files load, parity, fallback | ✅ **PASSES** — 18 × 991 keys |
+| **A3** | i18n files load + key parity | ✅ **PASSES** — 18 × 991 keys, 0 missing, 0 empty |
+| **A3b** | **Graceful fallback** | ◐ **see `11-AC3-FALLBACK.md`** — whole-file-missing ✅ PASSES; single-missing-key ⚠️ **not proven** (needs a network interceptor). *Previously overstated as a blanket pass — corrected.* |
 | **A5** | Backend strings identified and excluded | ✅ |
 
 **Other testing performed:** cross-language text-expansion ranking · cold-load vs warm-render comparison ·

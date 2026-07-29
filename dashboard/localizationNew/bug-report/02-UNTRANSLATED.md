@@ -68,11 +68,17 @@ validation messages are likely hardcoded too.
 Row reads **"País: All Countries"**, **"Departamento: All Departments"** — Spanish label, English value, side
 by side — next to a correctly-Spanish **"Todos los grupos de edad"**. One row, both languages.
 
-### FRCA#1 — fr-CA partially falls back to metropolitan French · P3 · [FE]
+### FRCA#1 — fr-CA renders the metropolitan French term instead of its own · P3 · [FE] source unconfirmed
 **A defect class unique to fr-CA** (the only regional-variant pair shipped).
-An fr-CA session renders **`RÉPARTITION DU SCORE`**. That string exists **only in `fr.json`**
-(`overview.scoreBreakdown`); fr-CA specifies *"Répartition du **pointage**"* and English is *"Score
-Breakdown"*. **So the UI resolved the `fr` value in an `fr-CA` session** — not explicable as an English leak.
+**⚠️ ROOT CAUSE CORRECTED — see `11-AC3-FALLBACK.md` for the full investigation.**
+An fr-CA session renders **`RÉPARTITION DU SCORE`** (confirmed on a **cold load**), but `fr-CA.json` specifies
+*"Répartition du **pointage**"* and `en.json` says *"Score Breakdown"* — and **`fr.json` is never loaded**
+(only `fr-CA.json` + `en.json` are fetched). **The rendered string exists in neither loaded dictionary**, so
+this is **not** a `fr-CA → fr` fallback chain as I first stated. Most likely a **hardcoded French string** (or
+component-level map) applied to any `fr*` locale, bypassing the dictionary.
+**To identify definitively:** search the JS bundle for `Répartition du score`.
+**Why the correction matters:** "fix the fallback chain" and "replace a hardcoded string with a key" are
+different fixes with different owners.
 **Partial, not total:** Québec terms *do* render elsewhere in the same session (`main-d'œuvre`, `Balados`)
 while the Content Library type filter still shows `Podcast` where fr-CA specifies `Balado`.
 **Why it matters:** fr-CA is **genuinely translated** — 42 keys differ from fr with correct Québec terminology
