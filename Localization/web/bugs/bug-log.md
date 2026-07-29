@@ -40,6 +40,7 @@
 | B26 | P3 | Adherence-activity answer option "Yes" not translated (backend `configuration` API data) — should be "Sí" |
 | B27 | **P2** | Water weekly-task sentence garbled: untranslated "fl oz", nonsensical "fl oz vasos", and "1 días" pluralization error |
 | B28 | P3 | Log Water "1 glass = 250 ml" label doesn't convert when switching to fl oz (value + slider do convert) |
+| B29 | P3 | Challenge card clips 36px in its fixed-width box — every width, **every language incl. English** (not a loc defect) |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -809,3 +810,48 @@ each pass in one language and fail in the other **[B20, B14]**. Recommend: a sin
 decision applied product-wide (fixed once at the source-string level so it propagates to every language);
 a targeted engineering audit of Community/Trends/Diary's i18n wiring, specifically checking for missing or
 partial translation resources **per language**, not just per component.
+
+---
+
+# ADDENDUM 2026-07-29 — English baseline + width/overflow pass
+
+Full run detail: `run-en-baseline-widths.md`.
+
+## B29 — [P3] Challenge card content overflows its fixed-width box by 36px and is clipped — in EVERY language including English
+**Type:** UI / Layout · **Layer:** Frontend (CSS) · **NOT a localization defect**
+**Where:** shared challenge card `.ch-slide` — Challenges listing, Summary, Community right rail.
+
+**Description & proof:** the card's inner content is 36px wider than its own fixed-width box, which is
+`overflow-x: hidden`, so the right-hand 36px is silently cut. Measured **identically at 1920 and 1440**, and
+**in English** — so translation length is not the cause.
+
+| Surface | Box | Overhang |
+|---|---|---|
+| Challenges listing | 545px | **+36px on all 10 cards, both card templates** |
+| Summary | 275px | +36px |
+| Community right rail | 268px | +36px |
+
+Measured: `.ch-slide-listing` clientWidth **545** / scrollWidth **581** / `overflow-x: hidden`;
+child widths `[545, 108, 509]`.
+
+**Expected:** content fits, or the container scrolls/wraps. **Actual:** 36px clipped at every width, every language.
+
+**Why it matters beyond P3:** `Coverage_Matrix.md` ("Truncation / overlap ✅ none seen") and `SUM-LOC-009`
+("No truncation/overlap seen in any of the 4") are both **wrong** — the method used (reading text content)
+cannot see clipping. **Fix this before any translation-length layout work**, or those findings will be
+contaminated by this 36px baseline.
+
+**Note/Doubt:** needs design confirmation — wider box, or narrower inner content?
+**Evidence:** `../evidence/challenges_en_1440_chslide_clip36.png`
+
+## Corrections to earlier records (verified live 2026-07-29)
+- Challenges sub-tabs are **`Ongoing / Upcoming / Past`** — "Completed" was wrong.
+- Diary's English label is **"Calorie Ledger"** (not "Calorie Balance") and **"Food Log"** (not "Nutrition Log").
+- Challenges subtitle copy has changed to *"Compete with peers & colleagues, track your tasks."*
+- **B23 not fixed** — re-measured on the English content set: 39 images, 1 broken, **4 still double-extension**,
+  26 console errors. The earlier "28 broken" figure was the de/es content set, so the lower count is a
+  content-set difference, not a fix.
+
+## Gaps closed by this run
+- **W7 — English baseline** now exists for Challenges, Community, Diary and Trends (previously only Summary + Programs).
+- **W1 / W2** — partially: overflow detector built and run at 1920 + 1440. 1024 and 1366 still open.

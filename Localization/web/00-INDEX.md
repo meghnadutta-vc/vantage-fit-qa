@@ -85,7 +85,7 @@ things the docs imply but never confirmed; discover them before assuming.
 | 4.1 | Subtitle "Compete with colleagues and track your tasks." | ✅ |
 | 4.2 | **Ongoing** sub-tab | ✅ |
 | 4.3 | **Upcoming** sub-tab | ◐ switched (functional ✅) but chrome read during the B25 degraded state → **needs re-verification** |
-| 4.4 | **Past / Completed** sub-tab | ◐ same caveat. ❓ **Naming inconsistency in our own docs** — "Completed" vs "Past"; confirm the real label |
+| 4.4 | **Past** sub-tab | ◐ same caveat. ✅ **Label confirmed 2026-07-29: `Ongoing / Upcoming / Past`** — "Completed" in earlier docs was wrong |
 | 4.5 | Sub-tab labels localized | ◐ CHL-LOC-008 = **Needs Verification** |
 
 ### 4b. Card types (4 distinct templates — each needs its own check)
@@ -190,12 +190,12 @@ things the docs imply but never confirmed; discover them before assuming.
 | 7.1 | Heading + date | "Today · 28 July 2026" | R | ✅ (❌ B1) |
 | 7.2 | **Date-stepper** | Previous day / Today / Next day | R | ✅ labels + **functional ✅** |
 | 7.3 | Snapshot card | Steps / Active Minutes | R | ✅ |
-| 7.4 | **Calorie Balance** card | "Recommended" kcal · Meals / Resting / Active / Balance breakdown · **deficit/surplus sentence** · "Learn more" link | R | ✅ → **FAILS: B17** (status sentence EN inside an otherwise-German card) |
+| 7.4 | **Calorie Ledger** card (EN label confirmed 2026-07-29; earlier docs said "Calorie Balance") | "Recommended" kcal · Meals / Resting / Active / Balance breakdown · **deficit/surplus sentence** · "Learn more" link | R | ✅ → **FAILS: B17** (status sentence EN inside an otherwise-German card) |
 | 7.5 | Flow: "Learn more" | Destination | R | ⬜ never clicked |
 | 7.6 | **Nutrition / Food Log** | Section + empty state | R | ✅ empty state localized |
-| 7.7 | Nutrition Log — **add a meal** | | **C** | ❌ never |
+| 7.7 | Nutrition Log — **add a meal** | | **C** | ⭕ **N/A if app-only** — verify the label, then close as by-design |
 | 7.8 | **Sleep** | Section + "No Data" + prompt | R | ✅ |
-| 7.9 | Sleep — log sleep | | **C** | ❌ never (may be app-only ❓) |
+| 7.9 | Sleep — log sleep | | **C** | ⭕ **N/A — app-only** (user-confirmed 2026-07-29: trackables labelled "track on app" are not web-loggable) |
 | 7.10 | **Intake** | Calories / Water values | R | ✅ (water stays metric — expected) |
 | 7.11 | **"Log Water"** modal — open | Modal chrome | R | ✅ |
 | 7.12 | Log Water — **unit toggle ml ⇄ fl oz** | Goal value · slider scale · **"1 glass = 250 ml" helper** | U | ✅ → **FAILS: B28** (helper label doesn't convert) |
@@ -203,10 +203,10 @@ things the docs imply but never confirmed; discover them before assuming.
 | 7.14 | Log Water — **submit** | Value update + success feedback | **C** | ◐ **value updated ✅ (verified by before/after read); toast INCONCLUSIVE** — observer read too early |
 | 7.15 | **Distance** | Covered / Jog-Run / Cycling + unit | R | ✅ → **FAILS: B18** ("mile" unit word EN) |
 | 7.16 | **Activities** | Section + empty state | R | ✅ |
-| 7.17 | Activities — add an activity | | **C** | ❌ never |
+| 7.17 | Activities — add an activity | | **C** | ⭕ **N/A — app-only** (user-confirmed) |
 | 7.18 | **Vitals** | Mood / Heart Rate / Weight + edit buttons + **aria-labels** | R | ✅ (aria-labels ✅ localized; ❓ mood **value** "Not Good" EN — Needs Verification, likely BE) |
 | 7.19 | **Mood edit** modal | "How are you feeling?" · 5-point scale (Horrible→Awesome) · reason chips (Exercise/Education/Family/…) · "Update" | **C/U** | ◐ opens ✅, functional ✅, **chrome all English at time of test** (session state), no overlap |
-| 7.20 | **Heart-rate edit** flow | | U | ❌ **never opened** |
+| 7.20 | **Heart-rate edit** flow | | U | ⭕ **N/A — app-only** ("Edit heart rate on the app") |
 | 7.21 | **Weight edit** flow | | U | ❌ **never opened** |
 | 7.22 | "Edit heart rate on the app" | app-only affordance | — | ✅ documented as not web-reachable by design |
 | 7.23 | Back navigation | → Summary (`?navBack=true`) | — | ✅ |
@@ -253,7 +253,11 @@ for a dashboard-style CRUD sweep — but what exists is barely covered:
 | **C** — Create event / RSVP | Community → Events | ❌ never |
 | **D** — any delete | — | ❓ **no delete operation identified on this surface** — confirm whether any exists |
 
-**Net: 2 of ~15 write operations have been exercised, both only partially.**
+**Scope clarification (user-confirmed 2026-07-29):** trackables whose UI says **"track on app"** are **not
+web-loggable by design** — sleep, activities, heart rate and (pending label check) meals. These are **⭕ N/A**,
+not gaps. That leaves a much smaller real write surface.
+
+**Net: of the genuinely web-available write operations, 2 have been exercised, both only partially.**
 
 ---
 
