@@ -44,6 +44,7 @@
 | B30 | P3 | Log Water modal has no dialog semantics (`role`/`aria-modal`/name) and does not move focus |
 | B31 | **P2** | Log Water submit with no amount closes the dialog with **zero feedback** (toast absence confirmed) |
 | B32 | P3 | Past challenge shows an end date **before** its start date (`07 Oct 2025 - 15 Sep 2025`) [FE-BE TBD] |
+| B33 | **P1** | **Fit i18n endpoint serves the SPA HTML shell, not JSON — Fit localization broken in EVERY language. Supersedes B10; likely explains B3/B16/B19/B20/B25** |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -966,3 +967,88 @@ It is a genuine gap, not N/A.
 - **Low-contrast tagline** — "Sweat now, Shine later." renders very light grey on light grey. Contrast not
   measured; flagged for the a11y depth pass, not asserted as a defect.
 - A11y counts on the Past tab: **1 of 16 images without `alt`**, **1 icon button without an accessible name**.
+
+---
+
+# ADDENDUM 2026-07-29 (third pass) — GERMAN pass · ROOT CAUSE FOUND
+
+Run detail: `run-de-fr-deepdive.md`. Language switched English → German via
+Profile → Edit Profile → Language → Save (forced logout, native re-login).
+
+## 🔴 B33 — [P1] The Fit i18n dictionary endpoint serves the SPA HTML shell instead of JSON — Fit localization is broken in EVERY language
+**Type:** Localization / Infrastructure · **Layer:** Frontend / serving config
+**Where:** `/ng/assets/i18n/fit/<lang>.json` — all languages.
+
+**Proof — three paths probed live, twice, with `cache: no-store`:**
+
+| Path | Status | Content-Type | Valid JSON | Keys |
+|---|---|---|---|---|
+| `/ng/assets/i18n/de.json` (global/perks) | 200 | **application/json** | ✅ | **1472** real German keys |
+| `/ng/assets/i18n/fit/de.json` | 200 | **text/html** | ❌ | — SPA shell |
+| `/ng/assets/i18n/fit/en.json` | 200 | **text/html** | ❌ | — SPA shell, **identical 115655 bytes** |
+
+The whole `/ng/assets/i18n/fit/` directory falls through to the SPA catch-all route and returns `index.html`
+(`<!DOCTYPE html> <html lang="en" …`) — for **every** language **including English**. Identical byte length
+for de and en proves it is one fallback document, not two dictionaries.
+
+**Measured effect on the German Summary, two consecutive fresh loads:** `<html lang>="de"`, profile saved as
+German, and **only ~10 % of visible strings render German** (7 of 69 by leaf count).
+
+**Why the remaining German strings still appear:** the **global** dictionary carries a small `fit.*` namespace
+— **48 keys** (`fit.steps`, `fit.health_tips`, `fit.distance`…). That is the residue that still works.
+
+**Evidence this is a REGRESSION, not the long-standing state:** strings that earlier German passes recorded as
+correctly translated on Fit — `Tagebuch`, `Kalorienbilanz`, `Vitalwerte`, `Momentaufnahme`,
+`Herausforderungen`, `Übersicht`, `Bibliothek`, `Schlaf` — are in **neither** loadable dictionary today, yet
+they rendered in German on 2026-07-24/28. So the Fit dictionary **was** being served then and **is not now**.
+
+**Expected:** `/ng/assets/i18n/fit/<lang>.json` returns the Fit dictionary as `application/json`.
+**Actual:** returns the SPA HTML shell; Fit has no usable dictionary in any language.
+
+**This supersedes and re-classifies B10** (previously logged **P4 "infra"**: *"i18n JSON asset requests return
+the SPA HTML shell"* with the note *"but translations still render"*). That note is no longer true. B10 is the
+same defect and it is **P1**, not P4.
+
+**It also very likely explains, in whole or part:** **B3** (nav tab English — now **all four** tabs, not just
+"Challenges"), **B16** (Community chrome 0 % localized), **B19** / **B20** (Trends/Diary routes English), and
+much of **B25** (the "runtime desync" — what looks like intermittent desync is consistent with the global
+dictionary loading while the Fit one never does, with variation in which components fall back to the 48-key
+residue). **Do not treat those as independent per-module wire-up bugs until B33 is fixed and the surface is
+re-measured.**
+
+**Fix this before any further localization testing on this surface.** Until it is fixed, every module in every
+language will read mostly-English, and per-module findings cannot be separated from this one root cause.
+
+**Evidence:** `../evidence/summary_de_fit_dict_broken.png`
+
+## German pass — what was confirmed despite B33
+
+| Bug | Result in German |
+|---|---|
+| **B1** | ✅ **CONFIRMED** — `Aktualisiert am 14 Jul 2025` / `Aktualisiert am 01 Apr 2026`: German prefix + English date. Header `Wednesday, 29 July 2026` fully English |
+| **B3** | ✅ **CONFIRMED and WIDENED** — not just "Challenges": **all four** nav tabs render English (`Summary/Challenges/Programs/Community`) |
+| **B4** | ✅ **CONFIRMED** — `Week 1` English inside a card whose other labels are German (`Wöchentlicher Rang`) |
+| **B6** | ✅ **CONFIRMED** — `2 hrs 54 mins`, `8 mins`, `0 sec`, `/day` all English |
+| **B7** | ✅ **CONFIRMED** — weekday axis `T F S S M T W` English |
+| **B12** | ✅ **CONFIRMED** — `Ihr neuestes Abzeichen` (formal *Ihr* against the informal house voice) |
+| **B29** | ✅ **CONFIRMED language-independent** — `.ch-slide` +36px in a 275px box, same as English |
+| **B11** | ❌ **DID NOT REPRODUCE** — the German preference **survived** the forced logout + re-login (`<html lang>="de"`, profile still German). B11 says it reverts to English. Either intermittent or fixed — **re-verify before citing B11** |
+
+## Language selector — definitive list (settles two open questions)
+
+`select[name=language]`, **17 options = 16 languages + "Please Select"**:
+English · Chinese Simplified · Dutch · French · French Canada · German · Italian · Korean · Portuguese ·
+Russian · Spanish · Vietnamese · **Arabic** · Hungarian · **Polish** · Japanese
+
+- **Arabic IS offered** — resolves the doc conflict. `Coverage_Matrix.md` was right; the enumerated "others"
+  list that omitted Arabic was incomplete.
+- **Polish and Chinese Simplified ARE offered.**
+- Only **4 of the 15 non-English options** ever had a Fit dictionary (de/fr/es/pt + pt variants) → **11
+  offered languages have no Fit translations at all**, independent of B33.
+- **All option names render in English** ("German", not "Deutsch") in an English session — the equivalent of
+  the admin dashboard's SET#1. Needs re-checking in a non-English session once B33 is fixed.
+
+## B2 — English case confirmed working
+The language-change alert read verbatim: **"You have changed your language to German. Please login again to
+access the site."** — correctly interpolated in an English session. B2's failure case (the literal
+`{language}` token) needs a switch **from** a non-English session; that is the de→fr switch, still to run.
