@@ -26,9 +26,11 @@ driven with **Playwright MCP**. All artifacts live under `Localization/dashboard
 | Bug IDs | `OV#1`, `CC#2`, `RPT#4`… (module-prefixed) | `B1`…`B28` (sequential) |
 | Modules | 19 (see §2) | 5 (Summary, Challenges, Programs, Community, Diary/Trends) |
 
-Also note `Localization/_superseded-dashboard-first-pass/` (no "New") — a **superseded** earlier dashboard engagement. Its
+Also note `Localization/_superseded-dashboard-first-pass/` — a **superseded** earlier dashboard engagement. Its
 `LOCALIZATION-TEST-SCOPE.md` check-ID system was worth keeping and is merged into §5 below; otherwise
-don't add to it. Current work goes in `localizationNew/`.
+**don't add to it and don't cite it**. Current work goes in `Localization/dashboard/`, with all bug files
+under `Localization/dashboard/bugs/` (curated report at the top, raw logs in `bugs/logs/`).
+See `Localization/README.md` for the authority model.
 
 ---
 
@@ -426,6 +428,13 @@ disagree, the log wins. See `Localization/README.md` and `bugs/logs/README.md`.
 **End every run with:** modules/screens covered (done / partial / blocked), bug counts by severity, and an
 explicit list of **what was NOT done and why** — blocked flows, NV items, deferred submits, languages and
 servers not covered. Then fold anything newly-missed into `GAP_REGISTER.md`.
+
+**Reporting the findings is a separate skill.** When testing is done and the bugs need to become a
+categorised report and then Jira tickets, use **`localization-bug-reporting`** — it covers the
+logs-vs-report authority model, why Jira tickets must be grouped by fix-unit rather than by category
+file, the layout-blocks-wire-up fix order, the developer-instruction block, the AC-label scheme, and the
+Atlassian-MCP specifics for this site.
+
 
 ---
 

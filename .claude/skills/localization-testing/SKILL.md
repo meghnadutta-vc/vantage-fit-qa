@@ -222,6 +222,12 @@ Localization/dashboard/
 End every run with: screens covered (done/partial/blocked), bug counts by severity, and an explicit list of
 **what was NOT done and why** (blocked flows, NV items, deferred submits, servers/languages not covered).
 
+**Reporting the findings is a separate skill.** When testing is done and the bugs need to become a
+categorised report and then Jira tickets, use **`localization-bug-reporting`** — it covers the
+logs-vs-report authority model, why Jira tickets must be grouped by fix-unit rather than by category
+file, the layout-blocks-wire-up fix order, the developer-instruction block, the AC-label scheme, and the
+Atlassian-MCP specifics for this site.
+
 ---
 
 ## 10. Scope reminders
