@@ -191,7 +191,11 @@ localization defect unless you check.
 
 ```js
 // browser_evaluate - run this FIRST, every run
-const r = await fetch('/api/v3/config/services', {cache:'no-store'}); r.status  // 502 => abort or annotate
+const r = await fetch('/api/v3/config/services', {cache:'no-store'}); r.status
+// 502 => OUTAGE: abort or annotate the run
+// 401 => MEANINGLESS: a bare fetch() carries no auth header, so 401 is expected even when
+//        the app is perfectly healthy. Do NOT read it as an outage (this misfired 2026-07-29).
+//        Confirm health instead by checking the page rendered real data.
 ```
 
 Confounded so far: the U8/G8 error-state observation, the Portuguese B14 retest (data point discarded), and
