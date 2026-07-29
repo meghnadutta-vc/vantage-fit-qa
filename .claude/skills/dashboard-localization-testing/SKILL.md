@@ -8,7 +8,8 @@ description: >
   dynamic-flow (validation + toast) and functional testing with blast-radius control, the exact
   (non-obvious) login path, and the 26 known coverage gaps that must not be repeated. Produces
   developer-ready QA docs under Localization/dashboard/. For the EMPLOYEE-FACING Fit web
-  (app.vantagecircle.co.in/ng/fit), use the `localization-testing` skill instead.
+  (app.vantagecircle.co.in/ng/fit), use the `localization-testing` skill instead. This skill FINDS bugs;
+  it does not file them — see `localization-bug-reporting` for reporting and ticket creation.
 ---
 
 # Localization Testing — Vantage Fit **Admin Dashboard**
@@ -20,11 +21,17 @@ driven with **Playwright MCP**. All artifacts live under `Localization/dashboard
 
 | | **This skill** | The `localization-testing` skill |
 |---|---|---|
-| Surface | Admin dashboard | Employee-facing Fit web |
+| Surface | **Admin** dashboard (HR admin) | **Employee** Fit web / app (heart icon) |
 | URL | `dashboard-v2.vantagecircle.co.in/fit/*` | `app.vantagecircle.co.in/ng/fit/*` |
 | Docs | `Localization/dashboard/` | `Localization/web/` |
 | Bug IDs | `OV#1`, `CC#2`, `RPT#4`… (module-prefixed) | `B1`…`B28` (sequential) |
 | Modules | 19 (see §2) | 5 (Summary, Challenges, Programs, Community, Diary/Trends) |
+| Language switch | Sidebar `<select>`, no re-login | Profile setting → forces logout/re-login |
+| Dictionary | Fetchable, 991 keys × 18 locales | Not fetchable — JSON path returns the SPA shell |
+
+**If the URL contains `app.vantagecircle.co.in/ng/fit`, you are on the wrong skill.** Stop and switch to
+`localization-testing`. (The admin login *passes through* `app.vantagecircle.co.in/ng/home` — that is the
+perks app, not the employee Fit web. See §1.)
 
 Also note `Localization/_superseded-dashboard-first-pass/` — a **superseded** earlier dashboard engagement. Its
 `LOCALIZATION-TEST-SCOPE.md` check-ID system was worth keeping and is merged into §5 below; otherwise
@@ -102,8 +109,14 @@ blast-radius control for anything outward-facing (§7).
 | 18 | Workforce Health → Wellness Leagues | | de deep | WL#1 |
 | 19 | Rewards → Upload Points | | de deep | UP#1, UP#2 |
 
-**Reality check on that table:** ✅ marks are **German on India**. French/Spanish got dictionary parity +
-3-module spot-checks only (60 de screenshots vs 4 fr / 5 es). US/Europe/E2E servers: 0 of 19. See §9.
+**Reality check on that table — the Coverage column is a 2026-07-22 snapshot and is now OUT OF DATE.**
+Current state as of **2026-07-29**: **all 19 reachable modules × all 18 languages** have been covered, at
+four depths (see §12), at **4 widths** (1024/1366/1440/1920). The per-module **bug IDs above are still
+current** — that is what this table is useful for now.
+
+What is still genuinely untested: **US / Europe / E2E servers — 0 of 19 modules** (the biggest remaining
+unknown, since locale formatting and timezone are exactly what varies per server), **timezone — 0 of 19**,
+and the **768 / 375** widths. See §9.
 
 **Wizard route order (Custom challenge):** `custom-challenge` (Info) → `challenge-duration` →
 `challenge-privacy` (Audience) → `challenge-config` (Tasks) → `challenge-review` → publish →
@@ -300,9 +313,9 @@ COMPLETE" — true per *module*, misleading per *dimension*. Coverage Matrix cel
 
 | ID | Gap | Test | Effort |
 |---|---|---|---|
-| **G1** | **Runtime language desync never tested.** A screen confirmed localized can regress to English **later in the same session, no re-login** — proven on the employee web (B25), where it also corrupted backend *content queries*, not just chrome. Every dashboard module was verified once and signed off, so **every ✅ is point-in-time only**. | Re-load 3–4 already-passing modules late in a long session; diff against the original pass. | 30 min |
+| **G1** | **Runtime language desync never tested.** A screen confirmed localized can regress to English **later in the same session, no re-login** — proven on the **employee web** (its bug B25 — *cross-surface precedent, tracked in `localization-testing`, not here*), where it also corrupted backend *content queries*, not just chrome. Every dashboard module was verified once and signed off, so **every ✅ is point-in-time only**. | Re-load 3–4 already-passing modules late in a long session; diff against the original pass. | 30 min |
 | **G2** | **The 79 screenshots were never visually reviewed** — captured as evidence for text findings, never scanned as artifacts. This exact omission hid two bugs for a full session on the employee web (toggle-pill overlap; ~28 thumbnails as solid black boxes from malformed CDN URLs). Neither appears in a DOM-text dump. The dashboard's only overlap/truncation findings (MGC#2, FR#1) were both accidental. | Re-open all screenshots; scan for overlap, truncation, clipping, broken images, misalignment. | 1 hr |
-| **G3** | **Language persistence across logout/login never tested** (check F8). Sessions expired repeatedly during the runs and nobody checked what language came back. This is a **P2 on the employee web** (B11). | Set de → logout → login → land on `/fit/overview` → check rendered language + `localStorage.fit_lang`. | 10 min |
+| **G3** | **Language persistence across logout/login never tested** (check F8). Sessions expired repeatedly during the runs and nobody checked what language came back. This is a **P2 on the employee web** (its bug B11 — *cross-surface precedent only*). | Set de → logout → login → land on `/fit/overview` → check rendered language + `localStorage.fit_lang`. | 10 min |
 | **G4** | **Exported file contents never opened.** The Export control and CSV/Excel menu were verified; **no file was ever downloaded and inspected.** Unknown: are headers translated in the file? is encoding UTF-8-with-BOM so umlauts/ñ don't become mojibake in Excel? are dates/numbers/currency locale-formatted inside? Export is a primary admin deliverable. | Export one report per language; open it; check headers + a diacritic + a date + a number. | 30 min |
 | **G5** | **Comma-decimal *input* never tested.** Display formatting is covered (OVW-TC-014, RPT-TC-011); **input is not.** de/fr users type `2,5`. Silent truncation, rejection, or misparse = **data-integrity bug and the only credible P1 lead** in an engagement currently reporting zero P1s. | Type comma-decimals into every numeric input (Settings team-size min/max, Upload Points values); submit; verify the stored value. | 45 min |
 | **G6** | **CSV upload with non-ASCII data never tested.** Only ASCII ("QA Test Account") was ever uploaded. Untested: umlaut/accented names (Müller, Nuñez, Šimek), localized CSV headers, and the **semicolon delimiter German Excel emits by default**. | Upload a CSV with accented names + semicolon delimiter; verify parse, stored values, and error text. | 45 min |
@@ -442,8 +455,10 @@ Atlassian-MCP specifics for this site.
 
 Translating each string correctly isn't enough — the **same concept must read the same way everywhere**
 and the **voice must be one voice**. Run this as a dedicated pass **after** per-module string capture,
-analysing the strings already collected (no extra browser driving needed). **Never yet run on the
-dashboard (G13) — likely to yield findings.**
+analysing the strings already collected (no extra browser driving needed). **Run across all 18 languages
+(2026-07-29) — yielded 5 defects: REG#1 (German formal *Sie* against the informal house voice), REG#2
+(Dutch mixes *u* / *je*), REG#3 (Korean mixes two politeness levels), AR#5 (Arabic addresses every user as
+grammatically masculine), TERM#1/TERM#2 (terminology + casing splits).**
 
 **A. Tone / register.** German (*Sie/Ihr* vs *du/dein*), French (*vous* vs *tu*), Spanish (*usted* vs
 *tú*) must pick ONE register product-wide. Grep captured strings for formal vs informal markers; if both
@@ -468,7 +483,7 @@ English while the account is confirmed set to another language, check whether **
 on that same view is still correctly translated (an empty-state message, a borrowed widget, a stray
 label). If one is, that **rules out a session-wide language revert** — every string would be English —
 and points instead to that route/component never being wired to i18n, or its mount overriding a shared
-locale value. This is what distinguished three separate bugs on the employee web (B16/B19/B20) from a
+locale value. This is what distinguished three separate bugs on the **employee web** (its B16/B19/B20 — *cross-surface precedent only*) from a
 simple account-language problem.
 
 **E. How to report.** Add a **"Cross-module consistency analysis"** section to the consolidated bug log
@@ -481,9 +496,11 @@ applied product-wide, fixed at the source-string level so it propagates to every
 
 ## 12. Scope & prioritisation
 
-- **Languages in scope:** German (deep) · French · Spanish · English (baseline). The switcher exposes
-  **18**; the other 15 — **especially Arabic (RTL)** — are untested and out of the confirmed scope, but
-  are a stated risk (G17). Note SET#1: switcher option names render in English regardless of UI language.
+- **Languages in scope: all 18 in the switcher have now been tested** (as of 2026-07-29), at four depths —
+  **deep:** de, ar, es, fr, pt, pl, zh-CN, ru, hu · **broad + CRUD:** ko, vi, nl, it, id, or, hi, fr-CA.
+  Dictionary completeness verified for all 18: **991 keys each, 0 missing, 0 empty.** **Arabic renders
+  left-to-right — RTL is not implemented (AR#1)**, and the follow-up RTL layout audit is blocked until
+  `dir="rtl"` exists. Note SET#1: switcher option names render in English regardless of UI language.
 - **Servers:** India · US · Europe · E2E. **India only so far** (G16).
 - **Highest-risk screens:** forms / filters / wizards (Create Challenge, Create Event, Publish
   Notifications, Send Custom Email, Reports, Upload Points, Add Employees) plus the known problem screens

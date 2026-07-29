@@ -14,13 +14,25 @@ description: >
 
 # Localization bug reporting — logs → report → Jira
 
-This skill covers the **reporting** half of a localization engagement. The testing half lives in
-`localization-testing` (employee Fit web) and `dashboard-localization-testing` (admin dashboard).
+This skill covers the **reporting** half of a localization engagement, for **either surface**. The testing
+half lives in `localization-testing` (employee Fit web) and `dashboard-localization-testing` (admin
+dashboard) — go there to *find* bugs; come here to *report* them.
 
-Worked reference — the admin-dashboard engagement, 2026-07-29: **~76 FE bugs, 12 `[FE-BE TBD]`, 0 confirmed
-BE, 19 modules, 18 languages → 12 report files → 13 Jira tickets (VB-349…VB-361)**. Artifacts:
+**Which surface am I reporting?** It changes the paths, the bug IDs and the FE/BE picture:
+
+| | Admin dashboard | Employee Fit web |
+|---|---|---|
+| Docs root | `Localization/dashboard/` | `Localization/web/` |
+| Bug IDs | `OV#1`, `CC#2`, `RPT#4`… | `B1`…`B28` (sequential) |
+| Source of record | `bugs/logs/bug-log.md` | `bugs/bug-log.md` |
+| Backend defects | **0** — backend out of scope, English expected | **5 confirmed** (B14, B23, B24, B26, B27) |
+| Dictionary claim | Complete, 991 keys × 18 — assertable | **Not** assertable (JSON returns the SPA shell) |
+
+**Worked reference — the admin-dashboard engagement, 2026-07-29:** ~76 FE bugs, 12 `[FE-BE TBD]`, 0 confirmed
+BE, 19 modules, 18 languages → **12 report files → 13 Jira tickets (VB-349…VB-361)**. Artifacts:
 `Localization/dashboard/bugs/` (report), `JIRA-FILING-GUIDE.md` (model), `JIRA-TICKETS-READY-TO-PASTE.md`
-(bodies), `JIRA-FILED.md` (what was filed).
+(bodies), `JIRA-FILED.md` (what was filed). The employee-web engagement has **not** yet been through this
+pipeline — its 28 bugs are logged but not categorised or filed.
 
 ---
 
@@ -146,9 +158,15 @@ These four prevent the most likely wrong fixes:
 > content) is **expected** — do not "fix" it. `accept-language` is already sent correctly, so backend English
 > is a **scope decision, not a missing-header bug**.
 >
-> **There are no missing translations.** All dictionaries are complete (**991 keys × 18 languages, 0 missing,
-> 0 empty**). The fix is almost never "add a translation" — it is **use the key that already exists**.
-> Check `/assets/i18n/fit/<lang>.json` before adding anything.
+> **There are no missing translations** *(admin dashboard — verify before asserting this on another
+> surface)*. All 18 dashboard dictionaries are complete: **991 keys each, 0 missing, 0 empty**. The fix is
+> almost never "add a translation" — it is **use the key that already exists**. Check
+> `/assets/i18n/fit/<lang>.json` before adding anything.
+>
+> On the **employee Fit web** this claim does **not** hold as written: `/ng/assets/i18n/fit/<lang>.json`
+> returns the SPA shell rather than JSON, so completeness cannot be asserted from the dictionary — and that
+> surface **does** have confirmed backend defects. Classify against the English baseline and API bodies
+> instead.
 >
 > **Two repro traps:** (a) switch language then **reload the route** — an in-place switch leaves stale strings
 > and will make a broken fix look like it worked; (b) verify by **direct URL**, not sidebar clicks — some
