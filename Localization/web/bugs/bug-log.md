@@ -1052,3 +1052,59 @@ Russian · Spanish · Vietnamese · **Arabic** · Hungarian · **Polish** · Jap
 The language-change alert read verbatim: **"You have changed your language to German. Please login again to
 access the site."** — correctly interpolated in an English session. B2's failure case (the literal
 `{language}` token) needs a switch **from** a non-English session; that is the de→fr switch, still to run.
+
+---
+
+# ⚠️ CORRECTION 2026-07-29 (fourth pass) — BACKEND OUTAGE during the German run
+
+**A backend outage was discovered AFTER the German pass was recorded.** It changes what can and cannot be
+claimed from that run. Recorded here rather than quietly amended.
+
+## What was found
+
+Every backend API returned **502 Bad Gateway (nginx)**: `/api/v3/config/services`,
+`/api/v1/userprofile/details` (×2), `/api/v2/notifications`, `/api/countries/live/company/false`,
+`/api/rewards/count`, `/api/v1/profile/badge/221322`, `/api/v1/popup/info/redemption`,
+`/api/v2/manager/budget/status`, `/api/managerGifting/user/countUnclaimedGifts`,
+`/api/v1/perksComm/…`, `/api/v1/active/popup/notifications`. 22 console errors.
+
+## Layer isolation — the decisive check
+
+| Layer | Probe | Result |
+|---|---|---|
+| Static assets | `/ng/assets/i18n/de.json` | **200 · application/json · valid JSON · 103,145 bytes** ✅ healthy |
+| Static assets | `/ng/assets/i18n/fit/de.json` | **200 · text/html · not JSON · 115,655 bytes** ❌ broken |
+| Backend API | `/api/v3/config/services` | **502 · 552 bytes** ❌ outage |
+
+## What this means for B33 — evidence STANDS
+
+**B33 is not a symptom of the outage.** Static-asset serving is demonstrably healthy — the *global*
+dictionary serves valid JSON from the same layer, in the same conditions, at the same moment. And the failure
+modes are different: B33 is a **200 returning the wrong content-type**, the outage is a **502**. The
+asymmetry between two sibling static paths is the finding, and it is unaffected.
+
+## What this INVALIDATES — the ~10 % German figure
+
+**The "~10 % of strings render German" measurement is CONFOUNDED and must be re-measured once the backend is
+healthy.** If any part of language resolution depends on an API call (e.g. `/api/v3/config/services` or
+`/api/v1/userprofile/details`, both 502 at the time), the outage could have contributed to the English
+fallback independently of B33. QA cannot separate the two contributions from the outside while the backend is
+down.
+
+**Treat as provisional until re-measured:** the 10 % figure, and the claim that B33 "likely explains
+B3/B16/B19/B20/B25". B33 itself is confirmed; its *blast radius* is not.
+
+## NOT logged as a bug — the blank profile page
+
+`/ng/myaccount/personalsetting` rendered **completely blank** (empty gradient, 0 visible strings) in the
+German session. **This is the outage, not a localization defect** — the page depends on
+`/api/v1/userprofile/details`, which was 502. It rendered fine in English minutes earlier, before the
+outage began. **Deliberately not logged as a bug.** Evidence kept for the record:
+`../evidence/profile_de_blank.png`.
+
+## Method note — this is the third time an outage has confounded this engagement
+
+The same thing happened during the U8/G8 error-state observation ("observed opportunistically during a real
+network outage") and the Portuguese B14 retest (discarded as confounded). **Standing rule for this surface:
+probe one backend API for health at the START of every run, and abort or annotate if it is 502.** A cheap
+one-line check prevents a whole run being unusable.

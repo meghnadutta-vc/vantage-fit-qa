@@ -183,6 +183,21 @@ other way too: load a known-good module in the same session.
 in German, is **~90% English in Spanish including the nav bar**. A German-only pass therefore systematically
 misreports this surface. **Verify each (module × language) pair independently.**
 
+### Check backend health BEFORE the run — outages have confounded this engagement three times
+
+A backend outage returns **502 Bad Gateway** on every `/api/*` call while **static assets keep serving
+normally**. The visible symptom is mass-English rendering and blank pages — indistinguishable from a
+localization defect unless you check.
+
+```js
+// browser_evaluate - run this FIRST, every run
+const r = await fetch('/api/v3/config/services', {cache:'no-store'}); r.status  // 502 => abort or annotate
+```
+
+Confounded so far: the U8/G8 error-state observation, the Portuguese B14 retest (data point discarded), and
+the 2026-07-29 German pass (its "~10 % German" figure had to be marked provisional). **If a run's headline
+number was measured during a 502, say so and re-measure.**
+
 ### Content-name false positives
 
 An English-month regex will match **authored data** — "Announcement 17 Sep" is a challenge name, not a UI
