@@ -280,6 +280,8 @@ standalone defects get a new `B<n>`; consistency *views* of existing bugs just r
 
 ```
 Localization/web/
+  00-INDEX.md                # ENTRY POINT: full module/submodule/flow/CRUD inventory + checklist
+  COVERAGE_ANALYSIS.md       # gap register W1-W19 - read before claiming completeness
   bugs/bug-log.md            # consolidated: FE section + BE section, B<n> IDs, detail, consistency analysis
   bugs/<module>.md           # per-module bugs
   test-cases/<module>.md     # per-module cases
