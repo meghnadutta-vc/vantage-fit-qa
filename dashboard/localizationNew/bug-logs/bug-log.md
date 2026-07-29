@@ -1186,3 +1186,53 @@ still required — but note the app's total-API-failure behaviour is now documen
 - **F8** logout/login persistence: not started, but **now unblocked** — `qa-credentials.local.txt` verified to
   hold a non-empty PASSWORD and a USER_ID on the working `@vantagecircle.com` domain (checked without
   printing either; the known-stale `fitvantage` domain is absent), so the test is recoverable.
+
+---
+
+# F5 / F7 / F8 — RESULTS, Run 21 (2026-07-29)
+Detail: `bug-logs/f5-f7-f8-results.md`
+
+### F8#1 — Language preference is NOT persisted server-side · **P2** · [FE]  (gap G3)
+[Functional/Localization — global]
+Removing `localStorage.fit_lang` and cold-loading `/fit/overview`: the app **wrote back `fit_lang="en"`**,
+rendered **fully English** (`All Countries`, `Last 30 Days`, `Enrolled Users`), reset the selector to English,
+and showed **0 German strings**.
+**Expected:** the admin's language choice persists with the account.
+**Actual:** it lives **only in browser localStorage** — lost on any new browser, new device, incognito window
+or cleared site data, silently reverting the admin to English.
+**Why P2:** dashboard analogue of **B11**, which is P2 on the employee web; a broken flow for every
+non-English admin.
+**Reversible — verified:** restored `fit_lang=de` and German renders again.
+**Scope limit stated:** the literal logout→login leg was **not** performed — dashboard-v2's profile menu has
+**no logout control** (only account identity) and the perks parent app showed none among 41 visible controls.
+Whether logout *also* clears localStorage is the one open sub-question. Accept-Language precedence (G23) is
+inconclusive because this browser is `en-GB`.
+
+### F5 — dialogs PASS · localized, blocking, Cancel correct ✅
+Route-guard dialog (trigger: dirty Settings → navigate away in-app): `.dialog-title` **Änderungen
+verwerfen?** · `.dialog-text` **Sie haben nicht gespeicherte Änderungen, die verloren gehen, wenn Sie diese
+Seite verlassen.** · actions **Abbrechen / Verwerfen**. Navigation correctly **blocked**; **Cancel** kept the
+edit intact. Earlier miss was my selector — the dialog uses custom `.dialog-*` classes, not CDK panes.
+Note: the `Verwerfen` button discards **immediately with no confirmation**.
+
+### A11Y#3 — Modal has no dialog semantics · P3 · [FE]
+`role`, `aria-modal`, `aria-labelledby`, `tabindex` all **null**; focus stays on **`BODY`**; **0** elements in
+the document have `role=dialog` or `aria-modal`. Screen readers won't announce it; focus is neither moved nor
+trapped. Joins A11Y#1 (no `alt`) and A11Y#2 (unlabelled icons).
+
+### F7 — wizard steps 1–4 pass; step 5 blocked, cause IDENTIFIED
+Validation gating confirmed at each step (`Weiter` `aria-disabled` true→false only when valid); all steps
+stayed German. **Step 4 requires DRAG-AND-DROP** — `Ziehen Sie zunächst Karten aus der
+Aktivitätsaufgabenliste` — **which is why every earlier click-based attempt failed.** `dragTo` did not land
+the card, so step 5 (Review) is still unreached. **Automation limitation, not a product defect.**
+
+### G5 — refined with a SECOND field; still no P1
+Challenge task target (`Ziel`, min 5000): `12,5` → **field silently cleared**; `10000,5` → **cleared**;
+`10000.5` → accepted but `valid:false`; `10000` → fine.
+**So two fields behave differently and both silently:** Settings turns `12,5` into **`125`** (10× wrong,
+valid, no error); the target field **empties**. Either way the admin is told nothing. Confirms G5 as a real
+**P3** class with **no P1** — the target clears rather than corrupts and Settings is bounded by its clamp.
+
+### REG#1 reinforced a third time
+Formal *Sie* now confirmed across headings, **dialogs** and **instructional text**
+(`Ziehen Sie zunächst…`, `Sind Sie sicher?`) against the informal *du* product voice — systematic.
