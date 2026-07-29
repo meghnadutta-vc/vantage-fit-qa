@@ -1108,3 +1108,60 @@ The same thing happened during the U8/G8 error-state observation ("observed oppo
 network outage") and the Portuguese B14 retest (discarded as confounded). **Standing rule for this surface:
 probe one backend API for health at the START of every run, and abort or annotate if it is 502.** A cheap
 one-line check prevents a whole run being unusable.
+
+---
+
+# ADDENDUM 2026-07-29 (fifth pass) — German re-run with a HEALTHY backend: B33 confirmed, regression quantified
+
+Full detail: `../German_Pass_Conclusion_2026-07-29.md`.
+
+**B33 CONFIRMED — the outage was not the cause.** With a live authenticated session serving real data,
+`/ng/assets/i18n/fit/de.json` still returns `text/html` (115,655 bytes, identical to the English one) while
+the sibling global dictionary serves valid JSON. **The "provisional" caveat on B33 is now REMOVED.**
+
+## Quantified regression — all 6 routes, German, 1440
+
+| Module | % German | Previously documented as |
+|---|---:|---|
+| Programs | **0 %** | "FE chrome localizes well in German" |
+| Diary | **3 %** | **"the best-localized screen in the whole engagement"** |
+| Trends | **5 %** | partial (B19) |
+| Community | **9 %** | 0 % (B16, already known) |
+| Summary | **16 %** | "strong localization" |
+| Challenges | **20 %** | "strong localization" |
+
+**≈9 % overall.** Every module except Community has regressed; the two worst were previously rated best.
+
+**Measurement honesty:** the earlier "~10 %" figure for Summary became 16 % because the **detector regex got
+broader**, not because the app changed. Rendering is unchanged.
+
+## Consequences for existing bugs
+
+- **B16 was never special** — its "own chrome 0 %, shared widgets localized" signature is now the signature
+  of every module. It was just the first one observed in this state.
+- **The "module quality does not transfer between languages" conclusion is IN DOUBT.** B14 (de-only) and B20
+  (es-only) were measured on different days; if the dictionary broke in between, the asymmetry is a **timing
+  artifact, not a language property.** Re-derive after B33 is fixed.
+- **New regression detail:** the Challenges subtitle now renders English *"Compete with peers & colleagues,
+  track your tasks."*; the 2026-07-24 German pass recorded *"Tritt gegen Kollegen an und verfolge deine
+  Aufgaben."* — a concrete before/after.
+
+## Hypothesis on the surviving strings — NOT verified
+
+The strings that still render German (`Schritte`, `Wöchentlicher Rang`, `Nächster Meilenstein`,
+`E-Marathon-Herausforderung (endet in 22 Tagen)`, `Ihr neuestes Abzeichen`, …) are **not in the global
+dictionary** (checked by value), so they are not global residue as first assumed. The clean split — metric and
+card labels work, section headings and CTAs don't — is **consistent with** two delivery mechanisms:
+build-time inlined bundle strings (working) vs runtime dictionary strings (broken by B33). **Stated as a
+hypothesis. Verifying it needs a dev or a JS-bundle search. Do not report as fact.**
+
+## Layout in German — no new defects
+
+Overflow counts identical to the English baseline at 1440 (Challenges 10×36px, Summary 1×36px, Community
+1×36px, Diary 0, Programs 1×10px, Trends 0 structural). **B29 confirmed language-independent.**
+**Text-expansion layout testing is impossible until B33 is fixed** — too little German renders to expand
+anything.
+
+## Also confirmed in German
+B1, **B3 (widened to all four nav tabs)**, B4, B6, B7, B12, B16, B19, **B23 not fixed** (33 images, 1 broken,
+4 double-extension, 23 console errors).
