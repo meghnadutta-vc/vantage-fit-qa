@@ -45,6 +45,7 @@
 | B31 | **P2** | Log Water submit with no amount closes the dialog with **zero feedback** (toast absence confirmed) |
 | B32 | P3 | Past challenge shows an end date **before** its start date (`07 Oct 2025 - 15 Sep 2025`) [FE-BE TBD] |
 | B33 | **P1** | **Fit i18n endpoint serves the SPA HTML shell, not JSON — Fit localization broken in EVERY language. Supersedes B10; likely explains B3/B16/B19/B20/B25** |
+| B34 | P4 | Language dropdown option names all English regardless of UI language (endonyms?) — judgment, independent of B33 |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -1165,3 +1166,65 @@ anything.
 ## Also confirmed in German
 B1, **B3 (widened to all four nav tabs)**, B4, B6, B7, B12, B16, B19, **B23 not fixed** (33 images, 1 broken,
 4 double-extension, 23 console errors).
+
+---
+
+# ADDENDUM 2026-07-29 (sixth pass) — de→fr switch: B2 failure case CLOSED, B33 proven language-independent, NEW B34
+
+## B2 — FAILURE CASE CLOSED with verbatim evidence
+
+Switching **from German** to French, the confirmation alert read **verbatim**:
+
+> *"Sie haben Ihre Sprache in **{language}** geändert. Bitte melden Sie sich erneut an, um auf die Website
+> zuzugreifen."*
+
+The literal **`{language}`** token renders. The surrounding German sentence translates correctly (it comes
+from the working perks dictionary), so **only the placeholder interpolation fails**. Compare the English
+session, captured the same day: *"You have changed your language to **German**. Please login again…"* —
+correctly interpolated. **B2 is confirmed, both directions, same day.** Native alert, so no screenshot is
+possible; text captured verbatim as proof.
+
+*Side note:* that sentence uses formal **"Sie / Ihre"** — another **B12** register instance, in the perks app.
+
+## B33 — proven LANGUAGE-INDEPENDENT
+
+| Language | `/ng/assets/i18n/fit/<lang>.json` | Bytes | `/ng/assets/i18n/<lang>.json` (global) |
+|---|---|---:|---|
+| **en** | 200 · `text/html` | **115,655** | — |
+| **de** | 200 · `text/html` | **115,655** | 200 · `application/json` · **1472 keys** ✅ |
+| **fr** | 200 · `text/html` | **115,655** | 200 · `application/json` · **1460 keys** ✅ |
+
+**Identical byte count for all three** = one and the same fallback document, served for every locale, while
+each language's *global* dictionary serves correctly. This is now airtight.
+
+**French Summary: 13 % French (9 of 70)**, nav tabs all English — the same profile as German's 16 %.
+Surviving French strings mirror German's exactly: `Pas`, `Moyenne de pas`, `Minutes actives`,
+`Sommeil moyen`, `Classement hebdomadaire`, `Progrès hebdomadaire`, `Hémoglobine`, `Mis à jour le …`.
+**B1 confirmed in French** (`Mis à jour le 14 Jul 2025` — French prefix, English date).
+
+## 🔬 THE DECISIVE CONTROL — the perks app localizes, Fit does not, same session
+
+In the **same German session**, the perks app (`/ng/myaccount/personalsetting`) rendered correctly localized:
+`Mein Profil` · `Meine Informationen` · `Meine Kontoeinstellungen` · `Arbeitsinformationen` ·
+`Kontaktinformationen` · `Bevorzugte Sprache:` · `Grundinformation` ·
+`Durchsuchen und bearbeiten Sie Ihre Informationen` · `Änderungen speichern` · `Bitte auswählen`.
+
+**So the language preference works, the i18n mechanism works, and dictionary loading works** — when the file
+is actually served. **Only Fit is broken, and the only difference is that Fit's dictionary file returns HTML
+instead of JSON.** Quote this control in the B33 ticket; it removes every alternative explanation.
+
+## B34 — [P4 / judgment] Language dropdown option names are all English regardless of UI language
+**Type:** Copy / Localization · **Layer:** Frontend · **Independent of B33** (it is in the perks app, where
+the dictionary works)
+**Where:** My Profile → Edit Profile → Language dropdown.
+
+In a **German** session all 16 option names render in English — `German`, `French`, `Spanish`, `Arabic`,
+`Polish`… — while the placeholder immediately above them, **`Bitte auswählen`**, IS German. So the option
+names are hardcoded or data-sourced, not dictionary-driven.
+
+**Judgment call, stated openly:** showing every language name in English is a defensible convention, and
+showing **endonyms** (`Deutsch`, `Français`, `العربية`) is arguably better because a user who cannot read the
+current UI language can still find their own. What is *not* defensible is the **inconsistency** — a German
+placeholder sitting directly above 16 English option names in a German UI.
+**Recommend:** endonyms, or English-plus-endonym (`German (Deutsch)`). Needs a product decision.
+**This is the exact counterpart of the admin dashboard's SET#1.**
