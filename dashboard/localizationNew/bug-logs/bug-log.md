@@ -1236,3 +1236,44 @@ valid, no error); the target field **empties**. Either way the admin is told not
 ### REG#1 reinforced a third time
 Formal *Sie* now confirmed across headings, **dialogs** and **instructional text**
 (`Ziehen Sie zunächst…`, `Sind Sie sicher?`) against the informal *du* product voice — systematic.
+
+---
+
+# U9 REGISTER & GLOSSARY — ALL 18 LANGUAGES, Run 22 (2026-07-29)
+Detail: `bug-logs/u9-register-glossary-all-languages.md`. Completes U9 (previously de + ar only).
+
+### HEADLINE — there is no product-wide register policy
+The same product addresses a **Spanish** admin informally (*tú*) and a **German** admin formally (*Sie*).
+Informal: **es** (`Selecciona…` 54/0) · **it** (`Contatta il tuo…` 47/0). Neutral-standard: **pt** (*você*) ·
+**vi** (*bạn*). Mostly impersonal: **pl**, **hu**. Formal: **de** (REG#1) · **fr/fr-CA** (`vous` ×19,
+`votre` ×28, 0 genuine informal) · **ru** (19/0) · **hi** (28/0) · **zh-CN** (您 ×42, 你 ×0) · **id**
+(*Anda* ×50) · **or** (ଆପଣ ×88). **Product decision needed: one register per market.**
+
+### REG#2 — Dutch mixes formal *u* and informal *je* · P3 · [FE content]  **NEW**
+Formal **35** (`Weet u het zeker?`, `Uw kop verschijnt hier` — `u` ×14, `uw` ×21) vs informal **19**
+(`Je hebt momenteel geen toegang…`, `Neem contact op met je accountmanager`). Dialogs say *u*, body copy says
+*je*. Dutch equivalent of REG#1; at 35 % of instances it is not a stray.
+
+### REG#3 — Korean mixes two politeness levels · P3 · [FE content]  **NEW**
+합니다체 **82** (`문제가 발생했습니다`) vs 해요체 **133** (`…하세요`). **Both are polite** — this is a *style*
+inconsistency (system messages vs instructions), not a politeness failure. Lower severity than REG#1/REG#2.
+
+### TERM#1 — now confirmed from the DICTIONARY (was a UI observation)
+German renders the `Challenge`/`Challenges` label keys as the English loanword while using
+**Herausforderung** elsewhere (`Herausforderungserinnerung`, `Herausforderungsstart`). Two words, one
+concept, confirmed in source data.
+
+### TERM#2 — Casing inconsistency for the same term · P4 · [Copy]
+Polish `Tydzień` vs `tydzień`; Russian `Неделя` vs `неделя` across standalone label keys. Same class as B8 on
+the employee web. Cosmetic.
+
+### Explicitly NOT defects (recorded so they are not re-flagged)
+- Singular/plural pairs (`Équipe`/`Équipes`, `Sfida`/`Sfide`, `Команда`/`Команды`, `चुनौती`/`चुनौतियां`) and
+  Arabic definite/indefinite (`التحدي`/`تحدٍّ`/`التحديات`) — **grammatically correct**.
+- Dutch loanwords (`Challenge`, `Team`, `Week`) — idiomatic for Dutch; a glossary/brand decision, not a bug.
+
+### Method — two detector flaws corrected, false positives excluded
+JS `\b` is ASCII-only and misfires on accented text (same flaw as the Arabic pass): it wrongly counted
+`Êtes-vous sûr ?` as informal French and `Użytkownik usunięty` as informal Polish. A loose Hungarian `/ja\b/`
+pattern inflated formal hits from **2 → 45**. Semantic false positives excluded by hand: French `Ton :` =
+**"Tone:"**; Vietnamese `quý trước` = **"previous quarter"**. All figures above are from the corrected pass.
