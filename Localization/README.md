@@ -42,10 +42,20 @@ languages, the same dictionaries, and the same recurring defect patterns span bo
 `dashboard/bugs/logs/` holds the 33 raw working files — see its own
 [README](dashboard/bugs/logs/README.md) for what is authoritative there.
 
+### `web/` — start at [`00-INDEX.md`](web/00-INDEX.md)
+
+The testing index: every module, submodule, surface, CRUD operation and UI flow enumerated (~95 rows) with
+per-item status, plus the U/F/A checklist to apply and a coverage summary. Then read
+[`COVERAGE_ANALYSIS.md`](web/COVERAGE_ANALYSIS.md) — gap register **W1–W19**, and the honest read on what
+"4 languages tested" actually means — **before calling any of it complete**.
+
 ### `web/bugs/`
 
 `bug-log.md` (consolidated, B1–B28) plus per-module logs: `challenges.md`, `community.md`,
 `diary-trends.md`, `programs.md`, `summary.md`.
+
+**Not yet done for this surface:** the 28 bugs have never been categorised into a report or filed to Jira —
+the pipeline in `localization-bug-reporting` has only been run on the dashboard. See W19.
 
 ## Authority — which file wins
 
