@@ -179,3 +179,39 @@ detection. All six requested languages (de, es, fr, pt, pl, zh-CN) now have layo
 `ar, nl, fr-CA, it, ko, ru, vi, id, hu, hi, or` — **all have complete 991-key dictionaries**, i.e. they are
 live for users and have never been opened. **Arabic (RTL) is the highest-risk** (mirroring, `dir`, icon
 flipping) and remains the single biggest untested surface in the engagement alongside the US/EU/E2E servers.
+
+---
+
+## F8 (gap G3) — READY TO RUN, blocked only on network (prepared 2026-07-29)
+
+**Why it wasn't attempted:** the test requires logout → login. With DNS down (`ERR_NAME_NOT_RESOLVED` from
+both shell and browser) a logout would destroy the authenticated session with no way to restore it. Not
+worth the risk for a test that takes 5 minutes once the host is up.
+
+**Pre-verified and ready:** `qa-credentials.local.txt` holds a non-empty `PASSWORD` and a `USER_ID` on the
+working `@vantagecircle.com` domain (checked without printing either; the known-stale `fitvantage` domain is
+absent). So re-login is recoverable.
+
+### Exact procedure
+1. Set language to **German** via the sidebar `<select>`; cold-load `/fit/overview`; confirm German renders
+   and record `localStorage.fit_lang` (expect `de`).
+2. Profile menu (top-right) → **Log out**.
+3. Re-login by the **only working path** (direct dashboard-v2 / app-root hits Microsoft SSO — dead end):
+   `https://api.vantagecircle.co.in/` → **Login** (native email/password form, *not* OTP, *not* Microsoft)
+   → lands on `app.vantagecircle.co.in/ng/home` → profile menu → **HR Admin Dashboard** (opens a new tab via
+   `auth/login-via-token/<uuid>`) → navigate to `/fit/overview`.
+4. **Record, before touching the switcher:**
+   - rendered language of `/fit/overview`
+   - `localStorage.fit_lang`
+   - whether the sidebar `<select>` shows German or English
+5. **Pass** = still German. **Fail** = reverted to English → that is the dashboard equivalent of **B11**,
+   which is a **P2 on the employee web**, so log it P2 with the same reasoning.
+
+### Also run in the same session (cheap, same setup)
+- **G23 concurrent-tab precedence:** open `/fit/overview` in a second tab while the first is German — does
+  the new tab honour `fit_lang` or the browser's `Accept-Language`?
+- **F8 console check:** watch for missing-i18n-key warnings on load in a non-English language.
+- **F5 remainder:** dirty Settings → click `button.discard-btn` → capture the `settings.dialog.*` dialog
+  (expect `Änderungen verwerfen?` / `Sie haben nicht gespeicherte Änderungen…`) → **Cancel**, don't confirm.
+- **F7 remainder:** walk the Create Challenge wizard to **step 5 (Review)** — never reached in any language —
+  and repeat steps 1–4 in one non-German language.
