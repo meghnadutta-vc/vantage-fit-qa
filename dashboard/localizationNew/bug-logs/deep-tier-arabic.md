@@ -38,11 +38,25 @@ Run 15 found Arabic-Indic digits in translated strings and Western digits in dat
 | `0 مشاركًا` · `2 مشاركًا` | Western digits (from runtime data) |
 | `خطوط الأساس الصحية (٢٠%)` | Arabic-Indic `٢٠` with a Western `%` sign |
 
-**Root cause is now clear:** the **translation strings** were authored with Arabic-Indic numerals while
-**runtime values** are injected as Western digits. Any string that interpolates a number therefore mixes
-both systems. **This cannot be fixed in the formatter alone** — the numerals are baked into `ar.json`.
-Needs a product decision (Arabic business UIs commonly use Western digits), then the dictionary re-authored
-to match.
+**⚠️ ROOT CAUSE CORRECTED (Run 18b).** I first concluded the Arabic-Indic numerals were "baked into
+`ar.json`" and therefore "not fixable in the formatter". **That was wrong.** Verified directly:
+
+| Check | Result |
+|---|---|
+| Arabic-Indic digits anywhere in `ar.json` | **0 of 991 keys** (verified twice) |
+| Western digits in `ar.json` | 24 keys, e.g. `الحد الأدنى: 5 · الحد الأقصى: 500 عضو لكل فريق` |
+| `(73).toLocaleString('ar')` | `73` (Western) |
+| `(73).toLocaleString('ar-EG')` | **`٧٣`** (Arabic-Indic) |
+
+So the dictionary contains **only Western digits**, and the Arabic-Indic digits seen on screen are produced
+**at runtime** by a locale-aware formatting path (an `ar-EG`-style locale) while other numbers are rendered
+as raw Western digits.
+
+**Corrected root cause:** *inconsistent runtime number formatting* — some values go through a locale-aware
+formatter, others don't. **This IS fixable in the formatter**, and no dictionary re-authoring is required.
+That changes both the owner and the effort of the fix, which is why the original claim mattered.
+A product decision is still needed on **which** numeral system Arabic should use — then applied to one code
+path.
 
 ## AR#2 — confirmed: `بتاريخ 28 Jul 2026`
 Arabic prefix + English month, making Arabic the **15th language** exhibiting U7#3. Also
@@ -90,3 +104,40 @@ fixed-width components clip, exactly as in the other six languages.
       logical padding/margin, table column order, slider and progress-bar direction. These are **blocked by
       AR#1**: there is no point auditing mirroring while direction is globally LTR. **Re-test the whole
       Arabic layout after RTL ships** — expect a fresh crop of layout bugs at that point.
+
+---
+
+## AR#5 — [Localization — P3] NEW: the Arabic translation addresses every user as grammatically masculine
+**Scope:** whole dictionary (991 keys) · **[FE] content** · dimension **U9**, never examined for Arabic
+
+Arabic inflects verbs and pronouns for the addressee's gender. The dictionary uses **masculine singular
+throughout**, with essentially no feminine or gender-neutral alternative:
+
+| Form | Count | Examples |
+|---|---|---|
+| `اختر` — *choose* (masc. sg. imperative) | **25** | `اختر الدولة`, `اختر المدينة` |
+| `حدد` — *select* (masc. sg.) | **16** | `لا توجد بيانات متاحة لعوامل التصفية المحددة.` |
+| `أدخل` / `ادخل` — *enter* (masc. sg.) | **11** | `أدخل موضوع البريد الإلكتروني` |
+| `انقر` — *click* (masc. sg.) | **6** | `انقر على «إنشاء» لتحميل التقرير.` |
+| `ـك` masculine possessive suffix | **41** | `تواصل مع مدير حسابك` (*your* account manager) |
+| `أنت` — *you* (masc.) | 3 | `هل أنت متأكد؟` |
+| **Feminine imperative forms** | **0** | — |
+
+**Expected:** either gender-neutral phrasing (Arabic UIs commonly use verbal nouns — `الاختيار` rather than
+`اختر`) or gendered variants selected from a user attribute.
+**Actual:** every female admin is addressed in the masculine.
+**Assessment:** this is a well-known Arabic localization issue and a **content/translation-quality decision**,
+not a code defect — which is why it is P3 and flagged for the localization vendor rather than engineering.
+It is consistent across all 991 keys, so it was a deliberate (or default) choice, not sporadic error.
+
+### Politeness register — PASSES ✅
+`يرجى` / `الرجاء` (*please*) used consistently across **18** strings
+(`يرجى التحقق مرة أخرى`, `فشل حفظ الإعدادات. يرجى المحاولة مرة أخرى.`). **No formal/informal mixing** —
+unlike German (REG#1) and the employee web (B12), Arabic holds one consistent polite register.
+
+### Method note — my first register pass was a FALSE NEGATIVE
+The initial scan reported **0 hits for every register marker**, which I did not report as "clean" because a
+UI full of buttons must contain imperatives. Cause: JavaScript `\b` word boundaries don't behave with Arabic
+script (Arabic letters aren't ASCII word characters). Re-running without `\b` produced the counts above.
+Also note one substring false positive: my `حددي` (feminine) pattern matched `المحددين` (a masculine plural
+passive participle) — the single "feminine" hit is **not** a feminine imperative, so the true count is **0**.

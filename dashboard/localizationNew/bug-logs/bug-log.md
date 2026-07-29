@@ -1079,3 +1079,36 @@ fixed-width components** (chip +35, column-selector +31). Arabic's chip overflow
 **Blocked follow-up:** icon/chevron mirroring, logical padding, table column order and slider direction
 cannot be meaningfully audited until `dir=rtl` exists. **Re-test Arabic layout after RTL ships** — expect a
 fresh crop of bugs then.
+
+### AR#3 — ROOT CAUSE CORRECTED (Run 18b) · P3 · [FE]
+I first stated the Arabic-Indic numerals were "baked into `ar.json`" and "not fixable in the formatter".
+**That was wrong.** `ar.json` contains **0 Arabic-Indic digits across all 991 keys** (verified twice) and 24
+keys with Western digits. Meanwhile `(73).toLocaleString('ar')` → `73` but `(73).toLocaleString('ar-EG')` →
+**`٧٣`**. So the on-screen Arabic-Indic digits are produced **at runtime** by a locale-aware formatting path
+while other numbers render as raw Western digits.
+**Corrected root cause: inconsistent runtime number formatting — fixable in the formatter, no dictionary
+re-author needed.** This changes the fix owner and effort. A product decision on which numeral system Arabic
+should use is still required, then applied to one code path.
+
+### AR#5 — Arabic addresses every user as grammatically masculine · P3 · [FE content / U9]
+Whole dictionary (991 keys). Masculine singular throughout with **zero** feminine forms:
+`اختر` (choose, masc) ×25 · `حدد` ×16 · `أدخل`/`ادخل` ×11 · `انقر` ×6 · masculine possessive `ـك` ×41
+(`مدير حسابك`) · `أنت` ×3 (`هل أنت متأكد؟`) · **feminine imperatives: 0**.
+**Expected:** gender-neutral phrasing (verbal nouns, e.g. `الاختيار` not `اختر`) or gendered variants.
+**Actual:** every female admin is addressed in the masculine.
+**Assessment:** a content/translation-quality decision for the localization vendor, not a code defect — hence
+P3. Consistent across all 991 keys, so deliberate or default rather than sporadic.
+
+### Arabic politeness register — PASSES ✅
+`يرجى`/`الرجاء` used consistently across 18 strings; **no formal/informal mixing**, unlike German (REG#1) and
+the employee web (B12).
+
+### ANN#1/#2 — confirmed in Arabic: Create Announcement renders ZERO Arabic strings
+21 visible leaves, `arabicStrings: 0` — the whole module is untranslated in Arabic, consistent with the
+"full dictionary, no wire-up" pattern logged for German.
+
+### Method note (recorded so the numbers can be trusted)
+The first Arabic register scan returned 0 for every marker — **a false negative**, not a clean result,
+because JS `\b` word boundaries misfire on Arabic script. Re-run without `\b` gave the counts above. One
+substring false positive was also excluded: `حددي` matched `المحددين` (masculine plural participle), so the
+true feminine count is 0.
