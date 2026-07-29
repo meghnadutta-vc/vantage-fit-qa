@@ -1228,3 +1228,63 @@ current UI language can still find their own. What is *not* defensible is the **
 placeholder sitting directly above 16 English option names in a German UI.
 **Recommend:** endonyms, or English-plus-endonym (`German (Deutsch)`). Needs a product decision.
 **This is the exact counterpart of the admin dashboard's SET#1.**
+
+---
+
+# ADDENDUM 2026-07-29 (seventh pass) — FRENCH functional + UI deep dive (the B33-unblocked half)
+
+Full detail: `../French_Pass_Conclusion_2026-07-29.md`. Every module traversed; **no functional breakage
+found in French** — all sub-tabs, the challenge detail page, both Programs sub-tabs, the View-all modal,
+Community's two sub-tabs, Trends' three ranges and the Log Water modal all work.
+
+## Two first-time quantifications
+
+**B22 measured, and French is WORSE than Spanish.** Trends switcher: segment `Pas` = **100px**, selection
+pill = **144px** → **44px overflow**. Spanish was 144 vs 103.75 = 40px. **A shorter translation makes the
+fixed-width pill overflow more** — `Pas` is shorter than `Pasos`. Confirms the prediction in the French notes.
+
+**Number formatting PASSES — new positive result.** `Gagnez 10 000 Fit Points` uses the French **space**
+thousands separator where English showed `Earn 10,000`. Backend-generated and correctly localized. Recorded
+as a PASS so it is not re-tested.
+
+## B27 — a FOURTH defect in the same sentence
+`Buvez au moins 2.0 L verres d'eau pendant 1 jours cette semaine`
+1. `2.0 L verres` nonsensical unit+noun · 2. `1 jours` pluralization · 3. `Buvez` formal (B12) ·
+4. **NEW — `2.0` uses a period; French requires `2,0`.** So the backend translates this sentence's *words*
+but not its *number format* — **the exact inverse of the `Gagnez 10 000` case, in the same product.**
+Inconsistent number formatting between two backend-generated strings.
+
+## B4 — strongest evidence yet
+The challenge detail page renders **`Week 1` directly beside `Tâches de la Semaine 1`** — the same concept in
+**two languages, one screen, one card.** Quote this instance.
+
+## B33 — NEW: it degrades ACCESSIBILITY too
+Diary aria-labels are mixed-language on one page: **French** `Accueil`, `Travailler` (global dictionary) vs
+**English** `Previous day`, `Next day`, `Log water`, `Quick add` (broken Fit dictionary). The July German
+records show these as German (`Stimmung bearbeiten`), so **aria-labels have regressed as well**. Screen-reader
+users get a half-translated interface. **Add to the B33 ticket.**
+
+## The "reverse signal" reproduced in French
+Trends Year view: **`Ce Mois`** (French) beside English `Jan Feb Mar Apr May Jun` — the same diagnostic as
+German's `Dieser Monat`. Proves component-level wire-up, not a session revert.
+*(Minor: `Ce Mois` should be `Ce mois` — casing, B8 family.)*
+
+## Confirmed in French
+**B1** (`Mis à jour le 14 Jul 2025`) · **B4** · **B12** (`Votre dernier badge` — **identical structural
+position** to de/es, 3-language structural match) · **B16** (both sub-tabs, 4th language) · **B19** ·
+**B22** (quantified) · **B23** (51 console errors) · **B27** (4 defects) · **B28** (**3rd language → proven
+language-independent**) · **B30** (**2nd language → language-independent**) · **B32** · **B33** (Programs
+**0 % French**, Log Water modal 100 % English).
+
+## Does NOT reproduce
+**B14** — "View all" opened **populated (170 items)**. Consistent with German-specific. **Caveat:** the
+session was serving the English content set (B25), so this is weaker than a clean French-content run.
+
+## UNTESTABLE, not untested
+**F6 accented-input search: there is NO search input anywhere on Programs** (0 visible inputs, confirmed by
+DOM scan). The Spanish `Buscar contenido...` note must refer to a different build/surface. **F6 cannot be
+tested on this surface as it stands.**
+
+## Split observation
+`Offres des partenaires` (heading) is **French** while the `Library`/`Offerings` sub-tab labels beside it are
+**English** — delivery is split even within one sub-tab. More support for the two-mechanism hypothesis.
