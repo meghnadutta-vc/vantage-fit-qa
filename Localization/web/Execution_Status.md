@@ -194,3 +194,54 @@ paths currently return the SPA HTML shell (see summary Bug #10), but translation
   baseline re-check partway through a long session (to see if English *also* intermittently shows the wrong
   language) would help characterize it further.
 - US/Europe/E2E servers — not started (India-only so far, all modules).
+
+- **2026-07-29 — Run 1: English baseline + overflow detection at 1920/1440 (all 6 routes).** Closed gap W7
+  (3 of 5 modules had no English baseline) and built the overflow detector (W1/W2, partial). **NEW B29** —
+  the shared `.ch-slide` challenge card is 36px wider than its own fixed box, `overflow-x:hidden`, identical
+  at both widths and **in English**; reaches Challenges (all 10 cards), Summary and Community. Corrected
+  live: sub-tabs are **`Ongoing / Upcoming / Past`** ("Completed" was wrong); Diary's English labels are
+  **"Calorie Ledger"** and **"Food Log"**; B23 **not fixed** (4 double-extension URLs, 26 console errors).
+  Detail: `bugs/run-en-baseline-widths.md`.
+
+- **2026-07-29 — Run 2: functional + visual + a11y (English).** Run 1 had measured without clicking or
+  looking at its own screenshots; this pass did both. **B29 CORRECTED** — visual review showed no text is
+  lost, so the finding is *negative headroom in the shortest language*, not "36px cut off". **NEW B30** (P3,
+  a11y — Log Water modal has no `role`/`aria-modal`/name and does not move focus). **NEW B31** (P2 —
+  submitting Log Water with no amount closes the dialog with **zero** feedback; toast absence **confirmed**
+  with a 2.5 s wait, closing DTR-LOC-028). **NEW B32** (P3 — a Past challenge shows `07 Oct 2025 - 15 Sep
+  2025`, end before start). **B28 upgraded to language-independent** — confirmed in English, so it is a
+  unit-conversion bug, not a translation defect. Also found an **unrecorded promotional interstitial modal**
+  over the Fit routes (now inventory surface 1.8), and confirmed in markup that heart rate is app-only but
+  **"Log weight" IS web-available and untested**.
+
+- **2026-07-29 — Run 3: German pass — HALTED at a root cause.** Switched en→de via the profile (forced
+  logout; recovered via the native form, credentials autofilled by the persistent Chrome profile so none was
+  handled). **B11 did NOT reproduce** — the German preference survived the re-login. Enumerated the language
+  selector definitively: **16 languages, Arabic / Polish / Chinese Simplified all offered** (resolves the doc
+  conflict), but only 4 ever had a Fit dictionary. **NEW B33 (P1)** — `/ng/assets/i18n/fit/<lang>.json`
+  returns the **SPA HTML shell** (`text/html`) for every language including English, identical bytes for de
+  and en, while the sibling global `/ng/assets/i18n/de.json` returns valid JSON with 1472 German keys.
+  Supersedes **B10** (was filed P4 "infra"). Confirmed in German: B1, **B3 widened to all four nav tabs**,
+  B4, B6, B7, B12, B29. Halted deliberately: a 5-module × 2-language sweep would record ~50 observations of
+  one defect. Detail: `bugs/run-de-fr-deepdive.md`.
+
+- **2026-07-29 — Run 4: CORRECTION — backend 502 outage confounded Run 3.** Discovered afterwards that every
+  `/api/*` call was returning **502 Bad Gateway** (22 console errors). Layer isolation proved **static asset
+  serving was healthy** (global dict = valid JSON at the same moment), so **B33's evidence stands** — a
+  200-with-wrong-content-type is a different fault from a 502. But the **"~10 % German" figure is CONFOUNDED
+  and marked provisional**, as is the claim that B33 explains B3/B16/B19/B20/B25. The blank My Profile page
+  seen in German was the outage (needs `/api/v1/userprofile/details`) and was **deliberately not logged as a
+  bug**. Third outage-confound in this engagement → a pre-run backend health check was added to the skill.
+
+## Bug count (all modules, running total as of 2026-07-29)
+- **P1:** B33 = 1 · **P2:** B1,B2,B3,B4,B5,B11,B12,B14,B16,B17,B19,B20,B23,B25,B27,**B31** = 16 ·
+  **P3:** B6,B7,B8,B13,B15,B18,B21,B22,B24,B26,B28,**B29,B30,B32** = 14 · **P4:** B9,B10(superseded by B33) = 2.
+- **33 bugs total.** By layer: 26 FE · 5 BE · 2 FE/BE TBD (B11, B32).
+- **B10 is superseded by B33** — same defect, re-rated P4 → P1.
+
+## Status of the German / French deep dive (requested 2026-07-29)
+- **German:** Summary only. Halted at B33, then invalidated by the outage. **Needs re-running.**
+- **French:** **not started** — deliberately, since it would measure B33 rather than French.
+- **Blocked as of 2026-07-29:** `api.vantagecircle.co.in` does not resolve on the local DNS resolver
+  (`8.8.8.8` resolves it to the same IP as `app.*`), so re-authentication is not possible. Backend APIs on
+  `app.*` now return **401** (healthy server, dead session) rather than 502.

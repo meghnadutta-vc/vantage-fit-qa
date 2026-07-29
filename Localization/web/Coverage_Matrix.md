@@ -67,7 +67,7 @@ Vietnamese, Hungarian, Polish, Japanese (Fit dictionaries were only fetched for 
 | **Highlights social (Posted by/Likes/Comments/relative time)** | ❌ all langs |
 | **Language-change alert `{language}`** | ❌ de/fr/es (EN ok) |
 | `<html lang>` (a11y) | ✅ correct per locale |
-| Truncation / overlap | ✅ none seen |
+| Truncation / overlap | ⚠️ **THIS RATING WAS WRONG — see B29.** Corrected 2026-07-29: no overflow detector had ever been run. Measuring `scrollWidth > clientWidth` found the shared `.ch-slide` card 36px over its fixed box **in English**, at both 1920 and 1440. Reading text content cannot see clipping. Re-rate only after B29 is fixed and a detector pass is run per language. |
 | Backend data strings | ✅ correctly unchanged |
 
 *Programs de+es: covers main page + **Offerings sub-tab** + **bite-size content detail pages**, both
