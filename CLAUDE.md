@@ -44,15 +44,33 @@ Work in the folder for the platform + area you're testing. These rules apply to
 
 ## What you produce (file structure)
 
-This repo holds **all** Vantage Fit QA, organized **platform-first**, then by testing area:
+This repo holds **all** Vantage Fit QA, organized **platform-first**, then by testing area —
+with **one documented exception: localization**, which is grouped topic-first under
+`Localization/` because the same languages, dictionaries and bug patterns span both surfaces.
 
 ```
+Localization/    ← ALL localization QA (both surfaces) — topic-first, see below
+  web/           ← employee-facing Fit web (app.vantagecircle.co.in/ng/fit)
+  dashboard/     ← admin dashboard (dashboard-v2.vantagecircle.co.in/fit/*)
 android/         ← Android app (driver: mobile-mcp / adb)
   ui-ux/
-dashboard/       ← Web dashboard (driver: Playwright MCP / browser)
-  localization/
+dashboard/       ← Web dashboard, NON-localization areas (driver: Playwright MCP)
+  Events/ create-content/ announcement/ diary/ summary/ …
 <platform>/      ← future platforms (ios, admin, …) as needed
-  <area>/        ← future areas (ui-ux, localization, functional, …)
+  <area>/        ← future areas (ui-ux, functional, …)
+```
+
+Inside `Localization/`, each surface follows:
+
+```
+Localization/<surface>/
+  bugs/                  ← ALL bug MD files for that surface live here
+    00-INDEX.md …        ← (dashboard) curated, categorised bug report — start here
+    logs/                ← (dashboard) raw per-module + per-run working logs
+    bug-log.md           ← source of record; the curated report is derived from it
+  test-cases/<module>.md
+  evidence/              ← screenshots
+  Execution_Status.md · Coverage_Matrix.md · GAP_REGISTER.md · …
 ```
 
 Inside each `<platform>/<area>/` folder:
@@ -65,11 +83,15 @@ evidence/                ← screenshots & accessibility dumps
                            (web localization: one subfolder per language, e.g. en/ fr/ es/ de/)
 ```
 
-- Work inside the relevant `<platform>/<area>/` folder.
-- Append to `bug-logs/bug-log.md` and `coverage-log.md` — never overwrite prior runs.
+- Work inside the relevant `<platform>/<area>/` folder — or `Localization/<surface>/` for localization.
+- Append to the bug log and `coverage-log.md` — never overwrite prior runs.
 - One test-case file per module/flow; put realistic **test data** in the test-case file itself.
 - **Always prioritise crashes** — log them P1 and list them first.
-- Web-dashboard localization has a detailed plan in `dashboard/localization/TEST-PLAN.md`.
+- **Localization entry points:** `Localization/README.md` (which surface, which file is authoritative),
+  `Localization/dashboard/bugs/00-INDEX.md` (curated admin-dashboard bug report + ticket-AC mapping),
+  `Localization/dashboard/Localization_Test_Plan.md` (scope/tenant/plan),
+  `Localization/dashboard/GAP_REGISTER.md` (G1–G26 known gaps — read before claiming completeness).
+  `Localization/_superseded-dashboard-first-pass/` is an abandoned earlier attempt — **do not add to it**.
 
 ---
 

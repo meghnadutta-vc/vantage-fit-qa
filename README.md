@@ -35,4 +35,4 @@ Each `<platform>/<area>/` folder contains:
 - Build under test: VFit PROD new design fixes · emulator-5554, Android 16 (API 36).
 
 **Dashboard — Localization**
-- Scaffolded; plan in [`dashboard/localization/TEST-PLAN.md`](dashboard/localization/TEST-PLAN.md). First run pending (Phase 1: FR/ES/DE frontend).
+- Scaffolded; plan in [`Localization/_superseded-dashboard-first-pass/TEST-PLAN.md`](Localization/_superseded-dashboard-first-pass/TEST-PLAN.md). First run pending (Phase 1: FR/ES/DE frontend).

@@ -10,7 +10,7 @@ stay in their own logs). Compiled 2026-07-24. Split into **Frontend** and **Back
 - Summary / Overview — `dashboard/summary/bug-logs/bug-log.md`
 - Diary P1 shared report — `shared-reports/2026-07-17-diary-p1-bug-report.md` (re-reports Diary bugs; see Appendix C)
 
-**Excluded (separate reports):** `dashboard/Events/`, `dashboard/announcement/`, `dashboard/localization*/`, `VantageFitWeb/Localization-web/`.
+**Excluded (separate reports):** `dashboard/Events/`, `dashboard/announcement/`, `Localization/_superseded-dashboard-first-pass*/`, `Localization/web/`.
 
 **Counts:** Frontend = 63 (P1 = 4 · P2 = 24 · P3 = 30 · P4/Enh = 5) · Backend = 3.
 Plus 8 retracted/withdrawn/parked/ignored (Appendix A/B) and 9 duplicate re-reports (Appendix C).

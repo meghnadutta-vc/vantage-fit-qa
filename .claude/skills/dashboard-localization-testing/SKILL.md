@@ -7,14 +7,14 @@ description: >
   U/F/A per-element check-ID system, frontend-vs-backend classification against the i18n dictionary,
   dynamic-flow (validation + toast) and functional testing with blast-radius control, the exact
   (non-obvious) login path, and the 26 known coverage gaps that must not be repeated. Produces
-  developer-ready QA docs under dashboard/localizationNew/. For the EMPLOYEE-FACING Fit web
+  developer-ready QA docs under Localization/dashboard/. For the EMPLOYEE-FACING Fit web
   (app.vantagecircle.co.in/ng/fit), use the `localization-testing` skill instead.
 ---
 
 # Localization Testing — Vantage Fit **Admin Dashboard**
 
 You are a Senior QA Engineer running localization validation on the Vantage Fit **admin dashboard**,
-driven with **Playwright MCP**. All artifacts live under `dashboard/localizationNew/`.
+driven with **Playwright MCP**. All artifacts live under `Localization/dashboard/`.
 
 ## Which surface am I testing? (read this first — two engagements exist)
 
@@ -22,11 +22,11 @@ driven with **Playwright MCP**. All artifacts live under `dashboard/localization
 |---|---|---|
 | Surface | Admin dashboard | Employee-facing Fit web |
 | URL | `dashboard-v2.vantagecircle.co.in/fit/*` | `app.vantagecircle.co.in/ng/fit/*` |
-| Docs | `dashboard/localizationNew/` | `VantageFitWeb/Localization-web/` |
+| Docs | `Localization/dashboard/` | `Localization/web/` |
 | Bug IDs | `OV#1`, `CC#2`, `RPT#4`… (module-prefixed) | `B1`…`B28` (sequential) |
 | Modules | 19 (see §2) | 5 (Summary, Challenges, Programs, Community, Diary/Trends) |
 
-Also note `dashboard/localization/` (no "New") — a **superseded** earlier dashboard engagement. Its
+Also note `Localization/_superseded-dashboard-first-pass/` (no "New") — a **superseded** earlier dashboard engagement. Its
 `LOCALIZATION-TEST-SCOPE.md` check-ID system was worth keeping and is merged into §5 below; otherwise
 don't add to it. Current work goes in `localizationNew/`.
 
@@ -117,7 +117,7 @@ blast-radius control for anything outward-facing (§7).
    project `CLAUDE.md` "leave blank" rule).
 2. **Phase 2 — Execute.** Run cases via Playwright on fresh route loads per language. Fill Actual /
    Status / Notes. Unverifiable → "Needs Verification" or "Needs Product Confirmation".
-3. **Phase 3 — Bugs.** Log failures grouped P1/P2/P3 in `bug-logs/<module>.md` using the CLAUDE.md bug
+3. **Phase 3 — Bugs.** Log failures grouped P1/P2/P3 in `bugs/logs/<module>.md` using the CLAUDE.md bug
    format, each tagged **[FE] / [BE] / [FE-BE TBD]** (§4).
 4. **Phase 4 — Report.** Update `Execution_Status.md` + `Coverage_Matrix.md`, name the next module,
    **STOP for confirmation.**
@@ -286,7 +286,7 @@ submit enables.
 ## 9. The 26 known gaps — G1–G26 (do not repeat these omissions)
 
 From a 2026-07-28 senior review of the 2026-07-21/22 pass. Full write-up with evidence in
-`dashboard/localizationNew/GAP_REGISTER.md`; the complete list is reproduced here so this skill is
+`Localization/dashboard/GAP_REGISTER.md`; the complete list is reproduced here so this skill is
 self-contained. **When starting any new dashboard localization work, pick up from this list — don't
 re-derive it.** When you close a gap, mark it in `GAP_REGISTER.md`; when you find a new one, add it.
 
@@ -402,7 +402,7 @@ COMPLETE" — true per *module*, misleading per *dimension*. Coverage Matrix cel
 ## 10. Deliverables (append, never overwrite prior runs)
 
 ```
-dashboard/localizationNew/
+Localization/dashboard/
   Localization_Skill.md / Localization_Test_Plan.md   # engagement reference
   Execution_Status.md        # per-module phase table + dated run history
   Coverage_Matrix.md         # module × 22 dimensions, + module × server
@@ -410,10 +410,18 @@ dashboard/localizationNew/
   Regression_Report.md       # re-verification log (currently EMPTY — populate it)
   Notes.md                   # open questions, NPC items, test-data debt
   test-cases/<module>.md     # cases with Status FILLED
-  bug-logs/<module>.md       # per-module bugs, P1/P2/P3, [FE]/[BE]/[FE-BE TBD]
-  bug-logs/bug-log.md        # consolidated: module-wise + priority-wise + patterns
+  bugs/                      # ALL bug MD files live here
+    00-INDEX.md              # curated dev-facing report: FE/BE totals, ticket-AC map, coverage
+    01-P1-P2-CRITICAL.md … 11-AC3-FALLBACK.md   # 12 categorised files, FE top / BE bottom
+    logs/<module>.md         # per-module bugs, P1/P2/P3, [FE]/[BE]/[FE-BE TBD]
+    logs/bug-log.md          # SOURCE OF RECORD — module-wise + priority-wise + patterns
+    logs/<run>.md            # point-in-time per-run records
   evidence/<server>_<module>_<lang>_<state>.png
 ```
+
+**Write order:** new findings go into **`bugs/logs/bug-log.md` first** (the source of record) and into the
+per-module log; the 12 `bugs/0*`–`1*` files are a **derived view** and are regenerated from it. If the two
+disagree, the log wins. See `Localization/README.md` and `bugs/logs/README.md`.
 
 **End every run with:** modules/screens covered (done / partial / blocked), bug counts by severity, and an
 explicit list of **what was NOT done and why** — blocked flows, NV items, deferred submits, languages and

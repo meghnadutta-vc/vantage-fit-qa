@@ -6,16 +6,16 @@ description: >
   a per-module 4-phase workflow, reliable language switching, frontend-vs-backend bug classification
   against the i18n dictionary, dynamic-flow (validation + toast) and functional (clicks/redirects)
   testing, plus the exact login path and tooling gotchas. Produces developer-ready QA docs under
-  dashboard/localizationNew/.
+  Localization/dashboard/.
 ---
 
 # Localization Testing — Vantage Fit Dashboard
 
 You are a Senior QA Engineer running frontend localization validation on the Vantage Fit admin
 dashboard (`https://dashboard-v2.vantagecircle.co.in/fit/...`), driven with **Playwright MCP**.
-Work **module by module**. All artifacts live under `dashboard/localizationNew/`.
+Work **module by module**. All artifacts live under `Localization/dashboard/`.
 
-Read the project `CLAUDE.md` and `dashboard/localizationNew/Localization_Test_Plan.md` first — they
+Read the project `CLAUDE.md` and `Localization/dashboard/Localization_Test_Plan.md` first — they
 hold scope, tenant, and the deliverable formats. This skill is the *how*.
 
 ---
@@ -48,7 +48,7 @@ hold scope, tenant, and the deliverable formats. This skill is the *how*.
    Status FILLED for this engagement).
 2. **Execute.** Run cases via Playwright on **FRESH route loads per language** (see §2). Fill Actual/Status/
    Notes. Unverifiable → "Needs Verification" / "Needs Product Confirmation".
-3. **Bugs.** Log failures grouped P1/P2/P3 in `bug-logs/<module>.md` using the CLAUDE.md bug format, with a
+3. **Bugs.** Log failures grouped P1/P2/P3 in `bugs/logs/<module>.md` using the CLAUDE.md bug format, with a
    FE/BE classification (§3) in Technical Notes.
 4. **Report.** Update `Execution_Status.md` + `Coverage_Matrix.md`, name the next module, STOP for confirm.
 
@@ -209,10 +209,10 @@ for (const h of hrefs){ const a=[...document.querySelectorAll('a[href]')].find(x
 ## 9. Deliverables (append, never overwrite prior runs)
 
 ```
-dashboard/localizationNew/
+Localization/dashboard/
   test-cases/<module>.md        # per-module cases (Phase 1 scope + Phase 2 executed)
-  bug-logs/<module>.md          # per-module bugs, P1/P2/P3, FE/BE tagged
-  bug-logs/bug-log.md           # consolidated: module-wise + priority-wise + FE/BE/TBD index + patterns
+  bugs/logs/<module>.md          # per-module bugs, P1/P2/P3, FE/BE tagged
+  bugs/logs/bug-log.md           # consolidated: module-wise + priority-wise + FE/BE/TBD index + patterns
   Execution_Status.md           # per-module phase status table + run history
   Coverage_Matrix.md            # module × dimension matrix + module × server matrix
   Localization_Skill.md / _Test_Plan.md / Notes.md / Regression_Report.md
@@ -288,7 +288,7 @@ split) get their own bug ID; consistency views of existing bugs just reference t
 
 ## 12. Dimensions this engagement has NOT covered (pick up from here)
 
-State as of 2026-07-28 for `VantageFitWeb/Localization-web/`: 5 modules × 4 languages (de/es/fr/pt),
+State as of 2026-07-28 for `Localization/web/`: 5 modules × 4 languages (de/es/fr/pt),
 28 bugs. **Already well covered** — don't redo: runtime desync (found as B25), visual screenshot review
 (§8 rule, found B22/B23), language persistence (B11), the §11 consistency pass, unit-toggle conversion
 (B28), and cross-language confirmation of every bug. **What remains untested** is below. The sibling

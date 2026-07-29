@@ -67,7 +67,7 @@ These cover the factors that span beyond the authoring form itself: **multi-tena
 
 ## 11. Localization — future scope (`BSC-L10N`)
 
-> Content authoring already supports 18 languages. This is the **future localization test scope** (both authored-content rendering and builder-UI localization). Ties to the web-dashboard localization plan in `dashboard/localization/`.
+> Content authoring already supports 18 languages. This is the **future localization test scope** (both authored-content rendering and builder-UI localization). Ties to the web-dashboard localization plan in `Localization/_superseded-dashboard-first-pass/`.
 
 | Test Case ID | Description | Preconditions | Steps | Expected Result | Actual Result | Status | Priority |
 |---|---|---|---|---|---|---|---|
