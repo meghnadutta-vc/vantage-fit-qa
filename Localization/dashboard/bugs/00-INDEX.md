@@ -109,7 +109,7 @@ Create Announcement · Publish Notifications · Send Custom Email · Email Desig
 Wellness Score · Wellness Leagues · Upload Points
 
 ⛔ **Health Insights** — external iframe (`dash-vfit.vantagecircle.org`), not localizable in-dashboard.
-◐ **Create Challenge wizard step 5 (Review)** — never reached; step 4 requires drag-and-drop.
+◐ **Create Challenge wizard step 5 (Review)** — reached in **German via the pre-built template path** (yielded CC#5); the **custom-challenge** path is still blocked because step 4 requires drag-and-drop, and step 5 is untested in other languages.
 
 ---
 
@@ -132,7 +132,7 @@ Wellness Score · Wellness Leagues · Upload Points
 | **F4** | CRUD + toasts | ✅ **PASSES in all 18** |
 | **F5** | Dialogs localized | ✅ **PASSES** (+ a11y defect) |
 | **F6** | Accented input in search | ❌ **FAILS — F6#1** |
-| **F7** | Wizard flow | ◐ steps 1–4 ✅ · step 5 blocked |
+| **F7** | Wizard flow | ◐ steps 1–4 ✅ · step 5 ✅ **de via template path** · custom path + other languages blocked |
 | **F8** | Switcher + persistence | ❌ **FAILS — F8#1** |
 | **F9** | Wire-up (translation exists but not rendered) | ❌ **the dominant defect class** |
 | **A1** | Locale propagation to API | ✅ **PASSES** — `accept-language` sent correctly |

@@ -167,5 +167,5 @@ Two things to state honestly, both already documented in `00-INDEX.md` §2b:
 
 ### Still open — flag on the parent, not as bugs
 US / Europe / E2E servers (**0 of 19 modules** — locale formatting and timezone are exactly what varies
-per server), G7 timezone (0/19), 768/375 widths, G4 export contents (blocked on data), wizard step 5
-(needs drag-and-drop). **This report is not a sign-off.**
+per server), G7 timezone (0/19), 768/375 widths, G4 export contents (blocked on data), wizard step 5 custom path
+(needs manual drag; the template path was completed in German). **This report is not a sign-off.**

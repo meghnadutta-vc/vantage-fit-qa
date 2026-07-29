@@ -583,8 +583,9 @@ frontend), FRCA#1, SET#1, UP#8.
   locale-formatted inside? **Export is a primary admin deliverable** — needs a seeded tenant.
 - **G21** — number grouping with large values.
 - **F5** — event/announcement delete dialogs never triggered.
-- **F7** — Create Challenge **wizard step 5 (Review) never reached in any language**; step 4 requires
-  drag-and-drop that automation could not land. Needs a manual pass.
+- **F7** — Create Challenge wizard step 5 (Review) **was** completed in German via the **pre-built template**
+  path (it yielded CC#5). Still open: the **custom-challenge** path, where step 4 requires drag-and-drop that
+  automation could not land, and step 5 in **languages other than German**. Needs a manual pass.
 - **G23** — `Accept-Language` precedence: inconclusive.
 - **Health Insights** — external iframe (`dash-vfit.vantagecircle.org`), not localizable in-dashboard.
 - **G7 — timezone: 0 of 19 modules.**

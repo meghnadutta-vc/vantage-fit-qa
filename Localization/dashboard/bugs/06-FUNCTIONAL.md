@@ -113,12 +113,23 @@ toasts are consistently **English** (UP#2, AE#2, ANN#3, DF#1 — see `02-UNTRANS
 
 ## ◐ Incomplete
 
-### F7 — Wizard step 5 (Review) never reached, in any language
-Steps 1–4 (Info → Duration → Audience → Config) walk correctly and stay localized, with validation gating
-confirmed at each step. **Step 4 requires drag-and-drop** — *"Ziehen Sie zunächst Karten aus der
-Aktivitätsaufgabenliste"* — **which is why every click-based attempt failed across several sessions.** A
-`dragTo` did not land the card either, so `Weiter` stayed disabled.
-**Automation limitation, not a product defect.** Needs manual drag or low-level pointer events.
+### F7 — Wizard step 5 (Review) reached via the TEMPLATE path only; the CUSTOM path is still blocked
+**Correction (2026-07-29):** earlier drafts of this report said step 5 was "never reached, in any language".
+**That was wrong.** Step 5 *was* reached in German via the **pre-built template** flow, which pre-fills the
+task list and therefore skips the drag-and-drop gate. Evidence:
+`../evidence/create-challenge_de_step_review.png` (*"Überprüfen Sie Ihre Challenge und senden Sie sie ab"*),
+`create-challenge_de_published_detail.png`, `create-challenge_de_template_prefilled.png`, and full detail in
+`logs/create-challenge.md`. It produced real findings — **CC#5** (English month values `22 July 2026` /
+`18 August 2026`, `Week 1/2/3` in English while the Config step correctly showed `Woche 1`, and a
+`Custom Image` label).
+
+**What genuinely remains blocked:** the **custom-challenge** path. Steps 1–4 (Info → Duration → Audience →
+Config) walk correctly and stay localized with validation gating confirmed at each step, but **step 4 requires
+drag-and-drop** — *"Ziehen Sie zunächst Karten aus der Aktivitätsaufgabenliste"* — which is why every
+click-based attempt failed across several sessions. A `dragTo` did not land the card either, so `Weiter` stayed
+disabled. **Automation limitation, not a product defect.** Needs manual drag or low-level pointer events.
+
+**Also still open:** step 5 has only been seen in **German**. Other languages are untested on that screen.
 
 ### G5 — comma-decimal input: confirmed P3, **no P1** found
 Two fields, two different behaviours, **both silent**:

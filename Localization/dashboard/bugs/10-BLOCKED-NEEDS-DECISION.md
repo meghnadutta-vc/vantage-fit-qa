@@ -33,11 +33,17 @@ unverified.
 
 ## ⛔ Blocked on tooling / interaction
 
-### F7 — Wizard step 5 (Review) never reached, in any language
-**Step 4 requires drag-and-drop** (*"Ziehen Sie zunächst Karten aus der Aktivitätsaufgabenliste"*) — which is
-why every click-based attempt failed across several sessions. A Playwright `dragTo` did not land the card.
+### F7 — Wizard step 5: the CUSTOM-challenge path is blocked (the template path was completed)
+**Correction (2026-07-29):** this was previously recorded as "step 5 never reached, in any language". **Wrong.**
+Step 5 was reached in **German via the pre-built template flow**, which pre-fills tasks and bypasses the
+drag gate — and it yielded **CC#5**. See `06-FUNCTIONAL.md` and `logs/create-challenge.md`.
+
+**Still blocked:** the **custom-challenge** path. **Step 4 requires drag-and-drop**
+(*"Ziehen Sie zunächst Karten aus der Aktivitätsaufgabenliste"*) — which is why every click-based attempt
+failed across several sessions. A Playwright `dragTo` did not land the card.
 **Not a product defect — an automation limitation.**
 **Unblock:** manual drag by a human tester, or low-level pointer-event simulation. **~15 min manually.**
+**Also open:** step 5 in **languages other than German** — untested on that screen.
 
 ### F8 — One open sub-question: does logout clear `localStorage`?
 The architectural finding is established (**F8#1** — language is client-side only, file 01). What remains
