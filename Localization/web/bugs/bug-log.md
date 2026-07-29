@@ -41,6 +41,9 @@
 | B27 | **P2** | Water weekly-task sentence garbled: untranslated "fl oz", nonsensical "fl oz vasos", and "1 días" pluralization error |
 | B28 | P3 | Log Water "1 glass = 250 ml" label doesn't convert when switching to fl oz (value + slider do convert) |
 | B29 | P3 | Challenge card clips 36px in its fixed-width box — every width, **every language incl. English** (not a loc defect) |
+| B30 | P3 | Log Water modal has no dialog semantics (`role`/`aria-modal`/name) and does not move focus |
+| B31 | **P2** | Log Water submit with no amount closes the dialog with **zero feedback** (toast absence confirmed) |
+| B32 | P3 | Past challenge shows an end date **before** its start date (`07 Oct 2025 - 15 Sep 2025`) [FE-BE TBD] |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -855,3 +858,111 @@ contaminated by this 36px baseline.
 ## Gaps closed by this run
 - **W7 — English baseline** now exists for Challenges, Community, Diary and Trends (previously only Summary + Programs).
 - **W1 / W2** — partially: overflow detector built and run at 1920 + 1440. 1024 and 1366 still open.
+
+---
+
+# ADDENDUM 2026-07-29 (second pass) — FUNCTIONAL · UI-visual · A11Y, English session
+
+The first pass of this date was measurement-only (overflow + strings). This pass did what it skipped:
+**clicked things, and looked at the screenshots.** Language: English (functional behaviour is largely
+language-independent; these findings are the baseline for every language pass).
+
+## ⚠️ B29 — CORRECTED severity and description
+
+The 36px `.ch-slide` overflow is real and reproducible (verified again with the promo modal dismissed:
+`clientWidth 545 / scrollWidth 581`), **but a visual review shows no text is lost** — badge, challenge name,
+progress bar and "View ↗" all sit inside the visible card. The overflowing 36px is **non-text** (padding or a
+decorative element).
+
+**Revised finding:** the card has **negative headroom** — it is already 36px over its own box in *English*,
+the shortest case. That is why it matters: any longer language pushes real text into the clipped region.
+**Not** "36px of content is currently cut off". Severity stays **P3**; the description was wrong and is fixed.
+Evidence: `../evidence/challenges_en_1440_clean_visual.png` (clean, modal-free full page).
+
+## B30 — [P3] Log Water modal has no dialog semantics and does not move focus
+**Type:** Accessibility · **Layer:** Frontend · **Language-independent**
+**Where:** Diary → Intake → "Log water" modal.
+
+| Check | Expected | Actual |
+|---|---|---|
+| `role` | `dialog` | **(none)** |
+| `aria-modal` | `true` | **(none)** |
+| Accessible name | `aria-label`/`labelledby` | **(none)** |
+| Focus after open | inside the dialog | **`BUTTON.empty-cta-btn` — still on the page behind** |
+
+A screen-reader user is not told a dialog opened, and keyboard focus stays on the underlying page.
+**This is the web-surface counterpart of the admin dashboard's A11Y#3** — same defect class, independently
+confirmed here. Dimension U10 on this surface had previously only ever been checked for `<html lang>`.
+
+## B31 — [P2] Log Water submit with no amount closes the dialog with ZERO feedback
+**Type:** Functional / UX · **Layer:** Frontend · **Language-independent**
+**Where:** Diary → Intake → "Log water" → submit without adding any water.
+
+**Steps:** open Log Water (state "0 of 8 glasses", "2000 ml to goal") → add nothing → click the submit
+"Log water" button.
+
+**Actual:** the **modal closes**. No success toast, no error message, no validation hint, no inline text, and
+the Intake value is unchanged (`/ 2.5 L`, no value). **Toast absence is CONFIRMED, not inconclusive** — a
+MutationObserver was installed *before* the click and read after a **2.5 s** wait (`window.__qaToasts` = `[]`).
+This closes the previously "Needs Verification" toast item on DTR-LOC-028.
+
+**Expected:** either the submit is gated with a localized validation message, or it confirms with a toast.
+**Actual:** silent no-op.
+
+**Ambiguity stated honestly:** QA cannot distinguish "validation silently blocked it" from "it submitted 0 and
+said nothing" from the outside. **The observable defect is the same either way: a write action gives the user
+no feedback whatsoever.** This is the same **silent-failure family** as the admin dashboard's SET#4 and UP#4
+(server/validation behaves, frontend says nothing) — now confirmed on the employee web too.
+
+## B32 — [P3] A past challenge displays an end date BEFORE its start date
+**Type:** Functional / Data display · **Layer:** [FE-BE TBD]
+**Where:** Challenges → **Past** tab.
+
+"New October New You" renders **`07 Oct 2025 - 15 Sep 2025`** — the end date precedes the start date by ~3
+weeks. Other rows on the same tab are well-formed (`20 Jan 2026 - 26 Jan 2026`, `10 Dec 2025 - 16 Dec 2025`).
+
+**Expected:** end ≥ start, or the range is not rendered. **Actual:** a backwards range shown to the user.
+**Needs a source call:** bad stored data vs a display bug that swaps the fields. Do not assign until decided.
+
+## New surface found — promotional interstitial modal (was not in any inventory)
+A modal appears over the Fit routes: **"Make memories, not just plans! / Redeem your points for hotels, cars,
+and activities / Redeem Now"**, with the page blurred behind it and a `button.vc-modal-close-btn` to dismiss.
+It is **not recorded in any test case or the module inventory**. It is a Vantage-Circle-wide promo rather than
+a Fit component, but it renders **on top of Fit** and therefore needs a localization check in every language.
+**Added to `00-INDEX.md` as surface 1.8.** Note: it was open during the first overflow measurement of this
+date — re-verified afterwards with it dismissed, and the numbers were identical, so no result was affected.
+
+## Updates to existing bugs
+
+- **B28 — scope upgraded to language-independent.** Previously found only in Spanish. **Confirmed in ENGLISH**
+  this run: toggling the Log Water unit to fl oz converts *"2000 ml to goal"* → *"68 fl oz to goal"* ✅ but
+  leaves *"1 glass = 250 ml"* ❌ metric. So B28 is **not** a translation defect at all — it is a
+  unit-conversion gap in the component. Re-classify accordingly; it will reproduce in all 18 languages.
+- **B23 — still present.** English content set: 39 images, 1 broken, **4 double-extension**, 26 console errors.
+
+## Functional checks that PASSED (recorded so they are not re-run)
+
+| Check | Result |
+|---|---|
+| Challenges sub-tab switching | ✅ `Ongoing → Upcoming → Past`; URL updates (`?tab=…`), active tab marked, content fully swaps |
+| **Upcoming** tab renders | ✅ — and uses a **different card template** (`.ch-slide*` count 0). Untracked component |
+| **Past** tab renders | ✅ 0 overflow breaks; uses a third template (title + date range) |
+| Log Water modal opens | ✅ |
+| Log Water unit toggle ml ⇄ fl oz | ✅ functional (values + slider convert; helper label does not — B28) |
+| Date-stepper icon buttons | ✅ have proper aria-labels ("Previous day" / "Next day") |
+| Promo modal dismiss | ✅ `button.vc-modal-close-btn` closes it |
+
+## Scope confirmed in the markup (user-stated, now verified)
+
+The aria-label reads literally **"Log heart rate on the app"** → heart rate is **⭕ app-only**, correctly out
+of scope. **But "Log mood" and "Log weight" are web-available** — and **"Log weight" has never been tested**.
+It is a genuine gap, not N/A.
+
+## Also observed
+- **Test-data pollution** on the Upcoming tab: `[E2E] Race 07-21 0721`, `Automated e2e run — safe to delete`,
+  `[E2E-CURL] water as water_log`, etc. Cosmetic for QA, but a real user on this tenant would see them.
+- **Reward strings carry formatted numbers** — "Earn 10,000 Fit Points" (comma thousands separator). A
+  **locale-formatting target that has never been tested** in any language.
+- **Low-contrast tagline** — "Sweat now, Shine later." renders very light grey on light grey. Contrast not
+  measured; flagged for the a11y depth pass, not asserted as a defect.
+- A11y counts on the Past tab: **1 of 16 images without `alt`**, **1 icon button without an accessible name**.
