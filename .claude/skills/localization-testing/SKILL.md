@@ -143,6 +143,20 @@ surface. Classify by other means:
   and another shows English, the translation **exists** → **FE wire-up gap**, not a missing translation.
   B3's proof: German body text says "Herausforderung" while the nav tab says "Challenges".
 
+**The backend pre-translates its own responses** (confirmed by the team, 2026-07-30) — the frontend does not
+translate backend strings. Two consequences:
+
+- A backend string renders translated **even when the frontend dictionary is broken**. So a translated string
+  is evidence of **backend** origin, and an English one of **frontend** origin.
+- **While B33 is live this is a perfect FE/BE separator** — translated = backend, English = frontend. Exploit
+  it for a full string inventory *before* B33 is fixed; the shortcut disappears afterwards.
+- Fixing B33 restores **frontend** strings only. Backend defects (B26, B27, activity master list) need
+  separate backend work — do not expect them to close with it.
+
+Real Fit API base: **`/vantagefit/api/v1/`** (`app/home`, `configuration`, `today/overview`,
+`dashboard/activities/all`, `foods/record`). **A bare `fetch` from page context returns 401** — no Bearer
+token — so response bodies cannot be read that way.
+
 **Backend defects DO exist on this surface.** Confirmed: **B14** (empty category grid — locale-handling gap
 on a paginated endpoint, `GET /content/category/20` empty while `POST /content/byCategoryName` has content),
 **B23** (malformed CDN image URLs), **B24** (intermittent 502 on `/marketplace/categories`), **B26**

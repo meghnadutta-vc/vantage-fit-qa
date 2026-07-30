@@ -1802,3 +1802,69 @@ No RTL-specific breakage appeared at 1024 or 1366. Combined with the earlier Ara
 **1024 · 1366 · 1440 · 1920 all now measured** — W1 is closed for Summary, and closed at 1440 for all 6
 routes. **Still open:** 1366/1024 on the other five routes, and **768/375 remain untested at any width**
 (mobile breakpoints were never in scope for this engagement, but they are where a reflow is most likely).
+
+---
+
+# ADDENDUM 2026-07-30 (fifteenth pass) — B33 REFINED: the backend pre-translates, which explains the survivors
+
+**User-supplied fact (2026-07-30):** *the backend sends its API responses already translated* — the frontend
+does not translate backend strings.
+
+This **replaces** the "two delivery mechanisms" hypothesis in the ninth-pass write-up with a simpler and
+better-supported explanation.
+
+## Revised explanation of B33's surviving translations
+
+Earlier I hypothesised the still-translated strings were **build-time inlined bundle strings**. That was a
+guess. The likelier explanation: **they are backend-sourced and arrive pre-translated**, so they are
+untouched by the broken frontend dictionary.
+
+**Corroborating evidence from rendered output** (all captured this session):
+
+| Rendered string | Why it must be backend-generated |
+|---|---|
+| `Buvez au moins 2.0 L verres d'eau pendant 1 jours cette semaine` | **Translated words + interpolated computed values** (2.0 L, 1 day). A static dictionary template cannot produce this |
+| `E-Marathon-Herausforderung (endet in 22 Tagen)` | Embeds a **computed day count** alongside German words |
+| `Renn-Herausforderung (endet in 2 Tagen)` | Same shape |
+| `Gagnez 10 000 Fit Points` | Computed points + French words + **French number formatting** |
+| `Nächster Meilenstein: Machu Pichu` | Milestone **data** + German label |
+| `Terminé` | Challenge **status** value |
+
+**Evidence limit, stated:** the API response bodies could **not** be read directly. A bare `fetch` from page
+context returns **401** — it carries no Bearer token, while the app's own requests return 200. (Same trap
+already recorded for the health check.) Reading bodies would need request interception, which the dashboard
+engagement already found impossible on Angular. **So this is corroboration, not proof.**
+The real Fit API base is **`/vantagefit/api/v1/`** (`app/home`, `configuration`, `today/overview`,
+`dashboard/activities/all`, `foods/record`) — recorded for whoever can read the bodies with a token.
+
+## Does it change B33? No — but it sharpens it in three ways
+
+1. **Blast radius is now precisely bounded: frontend strings only.** Backend strings are immune, which is
+   exactly why they are the survivors. B33 is a **frontend-serving** defect with **no backend component**.
+2. **It explains the per-module spread.** Programs **0 %** is almost entirely frontend chrome; Challenges
+   **20 %** is heavily backend-driven card data. The percentages are a rough measure of *how
+   backend-driven each module is*, not of how badly each is broken.
+3. **It sharpens the fix statement:** fixing B33 restores frontend strings. It will **not** touch the
+   backend-sourced defects — **B27** (garbled water sentence, wrong decimal separator, pluralization),
+   **B26** ("Yes" not translated), the ~40 activity names, `Leaderboard`/`You`. **Those need backend work and
+   must be tracked separately.** Do not expect the B33 fix to close them.
+
+## 🔑 Unexpected benefit — while B33 is broken, this surface is a PERFECT FE/BE separator
+
+Normally, classifying a string as frontend or backend on this surface is hard (there is no fetchable
+dictionary — that is gap **W4**/§4 of the skill). But **right now**:
+
+> **Anything still rendering translated = backend-sourced. Anything rendering English = frontend-sourced.**
+
+That is a clean, zero-effort classification rule that exists **only while B33 is live**. It should be
+exploited **before** the fix lands:
+
+**Recommended action — capture a full per-module string inventory in one non-English language NOW**, tagging
+every visible string translated/English. That produces an **authoritative FE/BE map** of the whole surface,
+which is otherwise expensive to derive and which closes the A2 dimension permanently. **After B33 is fixed
+this opportunity disappears.**
+
+## Superseded
+The ninth-pass "two delivery mechanisms (build-time inlined vs runtime dictionary)" hypothesis is
+**withdrawn** in favour of the above. It was explicitly labelled a hypothesis at the time; recording the
+withdrawal so the log stays trustworthy.
