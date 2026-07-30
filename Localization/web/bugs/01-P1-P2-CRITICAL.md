@@ -1,6 +1,6 @@
 # 01 — P1 & P2: FIX FIRST
 
-**1 P1 · 16 P2.** Ordered by **fix leverage**, not by bug number. This is the only file that **repeats**
+**1 P1 · 17 P2.** Ordered by **fix leverage**, not by bug number. This is the only file that **repeats**
 bugs — each also appears in its type-specific file, tagged as a repeat. **Fix from here.**
 
 **"One P1" is a tested result.** Three data-integrity candidates were hunted specifically; the unit-toggle
@@ -188,13 +188,51 @@ errors on a single Programs navigation.**
 **Compounds the accessibility findings:** these images also have no `alt`, so the user gets **neither the
 image nor a text fallback**.
 
+## 🔴 B40 — [P2] NEW — Thousands separator uses English convention; a French user misreads their own distance by 1000× · [FE-BE TBD]
+
+The logged distance renders **`5,000 m`** in a French session. **In French the comma is the DECIMAL separator**,
+so a French reader parses that as **5 metres**. The real value is 5,000 m = 5 km.
+
+**Why P2 and not cosmetic:** every other formatting bug here makes something *look* wrong. This makes the number
+**read as a different number** — on the user's own health record. Same tier as B27, for the same reason.
+
+**Two conventions on one screen**, so it is not one consistent formatter:
+
+| Location | Rendered | Grouping |
+|---|---|---|
+| Snapshot → steps goal | `0/5000` | **none** |
+| Activities → distance | **`5,000 m`** | **English comma** |
+
+**Also two distance units on one screen:** the Distance card says **`mile`** (imperial) while Activities reports
+**`m`** (metric).
+
+**Source needs a call before assignment.** `5.0 km` was entered and `5,000 m` came back after a round-trip. Check
+whether the API returns `5000` (frontend formats) or `"5,000"` (backend formats). **Same open question as the
+dashboard's `OV#6`/`RPT#5`.**
+
+Evidence: `../evidence/fr_diary_5000m_thousands_separator.png`
+
+---
+
 ## B27 — [P2] Water weekly-task sentence garbled — four defects in one string · [FE] · = **BE-15**
 Untranslated `fl oz`, the nonsensical `fl oz vasos`, and the pluralization error `1 días`. **Server-rendered**,
 so it is a backend string fix.
 
-## B31 — [P2] Log Water submit with no amount closes the dialog with zero feedback · [FE]
-No toast, no inline error, no validation block — the dialog simply closes. **Toast absence was confirmed with
-the observer installed before the action and a wait**, so this is not a timing artefact.
+## B31 — [P2] The app never confirms or denies a write · [FE] · **WIDENED 2026-07-30**
+
+**Originally logged as an error-handling gap** (Log Water submit with no amount closes the dialog silently).
+**A real successful write shows the success path behaves identically:**
+
+| Outcome | What the user sees |
+|---|---|
+| Submit **succeeds** — `POST /activity/save` → **200**, record created | dialog closes, **nothing said** |
+| Submit invalid / fails | dialog closes, **nothing said** |
+
+**Success and failure are indistinguishable.** That is the correct framing for a developer — not "the error case
+is missing a message" but **"there is no write confirmation at all."**
+
+Measured with the observer installed **before** the modal opened and a **2.5 s wait**: **0 toasts**, no
+`role=alert`, no `aria-live` node. **Not a timing artefact.**
 
 Same class as the dashboard's silent-failure family (UP#4 / SET#4). **Worth checking whether other Fit write
 flows discard failures the same way** — that would multiply one P2.

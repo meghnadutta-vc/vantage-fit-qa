@@ -53,6 +53,34 @@ independently in `bug-log.md` addendum 18.
 
 ---
 
+## 🔴 B40 — [P2] Thousands separator uses English convention in a French locale · [FE-BE TBD]
+
+**`5,000 m`** rendered in a French session for a 5 km activity. **French uses the comma as its DECIMAL
+separator**, so this reads as **5 metres** to a French user — a **1000× misreading of their own logged data.**
+Correct French is `5 000 m` (space or narrow no-break space), or better `5 km`.
+
+**Not one consistent formatter — two conventions on one screen:**
+
+| Location | Rendered | Grouping |
+|---|---|---|
+| Snapshot → steps goal | `0/5000` | **none** |
+| Activities → distance | **`5,000 m`** | **English comma** |
+
+That inconsistency usually means more than one code path, and it is the same shape as **BE-20** (`7.000` correct
+beside `67.6` wrong in a single payload).
+
+**Compounding: two distance units on one screen.** The Distance card is labelled **`mile`** (imperial, see B18)
+while Activities reports **`m`** (metric).
+
+**This closes the "large-number grouping never verified" gap below** — it is now verified, and it fails.
+
+**Source unconfirmed:** `5.0 km` in, `5,000 m` out after a round-trip through `activity/save` →
+`dashboard/activities/all`. **Check whether the API returns `5000` or `"5,000"` before assigning.**
+
+Evidence: `../evidence/fr_diary_5000m_thousands_separator.png`
+
+---
+
 ## B7 — [P3] Trend-chart weekday axis not localized · [FE]
 
 Renders `S M T W T F` — English weekday initials. German needs `M D M D F S S`, French `L M M J V S D`.
@@ -133,7 +161,7 @@ Those are different fixes with different owners.
 
 | Dimension | Status |
 |---|---|
-| **Large-number grouping** (`1.234.567` vs `1,234,567`) | **never verified** — no seeded data produces values that large |
+| ~~**Large-number grouping**~~ | **NOW VERIFIED — and it FAILS. See B40 above.** Closed by logging an activity with a distance ≥ 1000 |
 | **Currency** | **never verified on this surface** — no currency-bearing screen was reached. The dashboard found `$0` on an India tenant; unknown here |
 | **Timezone** | **0 of 5 modules.** Needs an account on a non-IST timezone |
 | **Percentages** | not systematically checked |

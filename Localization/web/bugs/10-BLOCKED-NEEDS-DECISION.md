@@ -71,8 +71,9 @@ Different fixes, different owners. **Needs a call before assignment.**
 
 ## Write flows never reached · W11 · **the highest-value functional gap remaining**
 
-**Unreached:** Challenges "+Add", Community create-event, Community add-post, and the full submit paths of the
-loggable-activity modals.
+**Now reached:** the **Log Activity** submit path — completed 2026-07-30, see W13 below.
+
+**Still unreached:** Challenges "+Add", Community create-event, Community add-post.
 
 **Why it matters:** write flows are where **validation, toasts and dialogs** all live — three dimensions this
 report can only partially assess without them.
@@ -89,14 +90,16 @@ of exactly that kind of debt, one of which is **now visible to real employees** 
 | Get a disposable test account | clean, needs provisioning |
 | Get a delete path | fixes the underlying problem too |
 
-## Toast localization on a successful write · W13
+## ~~Toast localization on a successful write~~ · W13 · **CLOSED 2026-07-30**
 
-**Currently unproven in either direction.** Earlier "no toast" results were captured **without** the required
-~2 s wait, so they are **unconfirmed, not negative** — a distinction that matters, because reading immediately
-after a click reliably yields a false "no toast".
+**Closed by completing one real write**, with the user's explicit authorisation. Debt recorded in
+`../TEST_DATA_DEBT.md` **before** the action; the record is **confirmed not deletable** and stands disclosed.
 
-**Unblock:** one submit, with the observer installed **before** the click and a ~2 s wait. Gated on the blast-
-radius decision above.
+**Result: there is no success toast at all.** `POST /activity/save` → 200, record created, modal closed,
+**0 toasts** with the observer installed before the modal opened and a 2.5 s wait.
+
+**So this gap cannot be a localization defect** — the feature is absent, not untranslated. It folded into a
+**widened B31**: success and failure are indistinguishable to the user.
 
 ---
 
@@ -160,7 +163,7 @@ translate in any language, including the 5 already tested. B39 gives every langu
 
 ## Nothing has been filed to Jira · W19
 
-**39 frontend bugs and 24 backend findings, none in front of a developer.** The dashboard's pipeline
+**40 frontend bugs and 24 backend findings, none in front of a developer.** The dashboard's pipeline
 (12 category files → 13 tickets grouped by **fix unit**) has not been run here.
 
 **When it is run, the grouping should differ from the dashboard's**, because the defect shape differs:
@@ -170,7 +173,7 @@ would misrepresent both the effort and the fix.
 
 ## No regression pass · W18
 
-**39 bugs, 0 re-verified.** Same gap the dashboard has.
+**40 bugs, 0 re-verified.** Same gap the dashboard has.
 
 **When run, it must sample late in a long session** — otherwise B25 will produce false passes.
 

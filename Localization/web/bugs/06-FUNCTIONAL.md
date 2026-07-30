@@ -5,8 +5,9 @@ Interaction, language persistence, silent failures, error and empty states, data
 **Produced by driven interaction**, not DOM inspection: modals opened, unit toggles flipped, forms inspected,
 toasts captured with an observer installed **before** the action and a wait after it.
 
-**Blast-radius control applied throughout:** UAT account, no outward-facing sends, and **no activity was ever
-submitted** in the Phase 2 pass — see the deliberate gap at the bottom of this file.
+**Blast-radius control applied throughout:** UAT account, no outward-facing sends. **One activity was submitted
+deliberately on 2026-07-30**, with the user's explicit authorisation, to close gap W13 — the debt was recorded in
+`../TEST_DATA_DEBT.md` **before** the write, and the record is **confirmed not deletable**.
 
 ---
 
@@ -19,6 +20,13 @@ submitted** in the Phase 2 pass — see the deliberate gap at the bottom of this
 ---
 
 ## 🔴 B25 — [P2] Runtime language desyncs from `<html lang>` and the saved preference, mid-session · [FE]
+
+> **⚠️ NEW LEAD 2026-07-30 — a candidate root cause.** The backend resolves language from the **account**, not
+> from the request (see `11-BACKEND.md` / BE-1). The frontend resolves it **client-side**. **B11** says the
+> preference **is not persisted** — so the client can hold language X while the account holds Y, giving
+> **chrome in X and content in Y.** That is B25's exact signature, *including the part that had no explanation*:
+> why the content query language drifts independently. **One cheap question closes or kills it: does the language
+> selector write to the account, or only to the client?**
 
 **No re-login. No language change.** The effective language observably drifts away from both `<html lang>` and
 the stored profile preference.
@@ -42,8 +50,8 @@ Community looks like the deterministic case, the others intermittent.
 B39 explains the **asymmetry**: content changes with language because it comes from the API; chrome never
 changes because it is hardcoded. That was the desync's most visible signature.
 
-**What B39 does not explain is why the *content* query language drifts.** That remains open and needs dev
-access to the language-state code. **Do not close B25 when B39 is fixed.**
+**What B39 does not explain is why the *content* query language drifts** — but the BE-1 + B11 lead above now
+offers a mechanism that does. Still needs dev confirmation. **Do not close B25 when B39 is fixed.**
 
 ### Practical rule for testers
 **If a whole module suddenly reads English, suspect B25 before logging a new bug.** Confirm by loading a
@@ -64,10 +72,18 @@ half-fixes.
 
 ---
 
-## 🔴 B31 — [P2] Log Water submit with no amount closes the dialog with zero feedback · [FE]
+## 🔴 B31 — [P2] The app never confirms or denies a write · [FE] · **WIDENED 2026-07-30**
 
-Submitting with no amount entered: **no toast, no inline error, no validation block.** The dialog simply
-closes, and the user has no way to know whether anything was recorded.
+Originally logged for the **error** path (Log Water submit with no amount closes silently). A **real successful
+write** was then completed and behaves **identically**:
+
+| Outcome | What the user sees |
+|---|---|
+| `POST /activity/save` → **200**, record created and visible in Diary | dialog closes, **nothing said** |
+| Submit invalid / fails | dialog closes, **nothing said** |
+
+**Success and failure are indistinguishable to the user.** The correct framing is not "the error case lacks a
+message" but **"there is no write confirmation at all."**
 
 **The toast absence is confirmed, not assumed** — the observer was installed **before** the click and read
 after a wait. This distinction matters: reading immediately after a click yields a **false** "no toast", and
@@ -153,7 +169,7 @@ behaviour, not an app defect. **Any focus audit must drive real keyboard input.*
 
 | Gap | Why, and what would close it |
 |---|---|
-| **Toast localization on a successful write** | **Not tested.** Capturing it requires **submitting** a form, which writes activity data to a real account **with no delete control** — permanent debt. To close: submit one activity with the observer installed **before** the click and a ~2 s wait, and accept the data as debt; or find a reversible write |
+| ~~**Toast localization on a successful write**~~ | **CLOSED 2026-07-30 — and the answer is that there is no success toast to localize.** One Hiking activity was submitted with the user's authorisation; debt recorded in `../TEST_DATA_DEBT.md` beforehand. Observer installed **before** the modal opened, 2.5 s wait: `POST /activity/save` → **200**, record created, modal closed, **0 toasts**. **This gap cannot be a translation defect — the feature is absent, not untranslated.** Folded into the widened B31 |
 | **Validation messages** | **Not reachable.** The Hiking form's submit is **not** gated (`disabled:false`, `aria-disabled:null`) but **every field ships a valid default**, so no invalid state can be reached without defeating the custom controls. **No validation message was reachable, so none could be checked for translation.** Distinct from the dashboard, where preventive gating was confirmed present |
 | **Accented input in search** | **N/A — the premise was wrong.** `/ng/fit/programs` has **zero `<input>` elements**; there is no search box on Fit web. This gap was inherited from the dashboard, which *does* have search and *does* fail it. Still to confirm: no search exists on Community or Challenges either |
 | **Create flows** | Challenges "+Add", Community create-event, Community add-post — **all unreached**, deferred on blast radius. This is where validation, toasts and dialogs all live, so it is the highest-value functional gap remaining |

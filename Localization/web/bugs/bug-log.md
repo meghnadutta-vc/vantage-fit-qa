@@ -2464,3 +2464,152 @@ withdrawn. The first was *"translated = backend, English = frontend"*. This one 
 the backend can't localize"*. **Both were reasonable inferences that a response body disproved in one request.**
 The lesson is the same both times: **read the body, don't reason from the header.**
 
+
+---
+
+# ADDENDUM 2026-07-30 (twentieth pass) — W13 CLOSED by a real write. NEW B40: thousands separator makes a French user's own data unreadable by 1000×.
+
+**Phase 3 of `DEEP_DIVE_PLAN.md` — write flows.** One activity submitted deliberately, with the user's explicit
+authorisation after being shown the cost. **Debt recorded in `../TEST_DATA_DEBT.md` BEFORE the write**, per the
+repo rule on irreversible actions.
+
+**What was written:** one **Hiking** activity — 30 min, 5.0 km, 384 kcal, today, French session. Realistic
+values, not junk, per the blast-radius rules. Self only; nothing outward-facing.
+
+---
+
+## ✅ W13 CLOSED — and the answer is that there is NO success toast at all
+
+**Method, done properly this time:** MutationObserver installed **before** the modal was even opened, plus
+`fetch` and `XMLHttpRequest` interceptors, then a **2.5-second wait** after the click before reading. The
+missing wait is exactly what made every earlier "no toast" result unconfirmed.
+
+| Measurement | Result |
+|---|---|
+| `POST /vantagefit/api/v1/activity/save` | **200 — the write succeeded** |
+| `GET /vantagefit/api/v1/dashboard/activities/all` | 200 — the list refreshed |
+| Modal state after submit | **closed** |
+| **Toasts captured by the observer** | **0** |
+| Visible toast-like nodes after 2.5 s | **none** — the only match was the notification-bell badge (`1`), not a toast |
+| Record actually created | **yes** — `Activities · 1 logged · Hiking · 3:07 PM · 30 mins · 5,000 m` |
+
+**So a fully successful write produces no confirmation whatsoever.** The dialog simply closes.
+
+### This reframes B31 into something worse
+
+**B31** logged: *submit with **no amount** → dialog closes with zero feedback.* That was read as an
+**error-handling** gap.
+
+**Now we know the success path behaves identically.** So:
+
+| Outcome | What the user sees |
+|---|---|
+| Submit succeeds (200, record created) | dialog closes, nothing said |
+| Submit invalid / fails | dialog closes, nothing said |
+
+**Success and failure are indistinguishable.** That is materially worse than B31 alone, and it is the correct
+framing to give a developer: this is not "the error case is missing a message", it is **"the app never confirms
+or denies a write."**
+
+**And it closes the localization question cleanly, if unsatisfyingly:** there is **no success-toast string to
+localize**, so W13 cannot be a translation defect. **You cannot have a localization bug in a string that does
+not exist.** Recorded as *"gap closed — the feature is absent, not untranslated."*
+
+**Severity note:** B31 stays **P2** and its description should be widened to cover the success path. Not raised
+to P1 — no data is lost, and the write does land correctly.
+
+---
+
+## ✅ Deletability CONFIRMED — the debt is permanent, as documented
+
+Checked directly on the created record:
+
+| Check | Result |
+|---|---|
+| Interactive controls inside the activity row | **none** (`buttons/[role=button]` = 0) |
+| The words *delete / supprimer / remove / retirer* anywhere on the page | **absent** |
+
+**So "no delete control" is confirmed, not assumed** — the one Hiking record is permanent and stays disclosed in
+`TEST_DATA_DEBT.md`. This also confirms the same claim as it appears in `10-BLOCKED-NEEDS-DECISION.md` and in the
+dashboard's DEL#1.
+
+---
+
+## 🔴 B40 — [P2] NEW — Thousands separator uses English convention, so a French user misreads their own data by a factor of 1000
+
+```
+[Locale formatting / Data comprehension — P2]
+[Diary → Activities card — and any distance value ≥ 1000]
+The logged distance renders as `5,000 m` in a French session.
+In French, the comma is the DECIMAL separator, so a French reader parses `5,000 m` as **5 metres**.
+The real value is 5,000 metres — 5 km. The number is off by 1000× to the person reading it.
+
+Expected: `5 000 m` (French uses a space or narrow no-break space) — or better, `5 km`.
+Actual:   `5,000 m` — English thousands grouping, unchanged in a French locale.
+
+Layer: [FE-BE TBD] — needs a source call (see below).
+Evidence: ../evidence/fr_diary_5000m_thousands_separator.png
+```
+
+### Why this is P2 and not a P3 cosmetic
+
+Every other formatting bug in this report makes something **look** wrong. This one makes the number **read as a
+different number**. The user logged a 5 km hike and is shown what a French reader parses as 5 metres — on their
+own health record. That is a comprehension defect, not a styling one, and it is the same tier as **B27**
+(garbled sentence) for the same reason.
+
+### The same page formats numbers two different ways
+
+| Location | Rendered | Grouping |
+|---|---|---|
+| Snapshot → steps goal | **`0/5000`** | **none** |
+| Activities → distance | **`5,000 m`** | **English comma** |
+
+**Two conventions on one screen**, so this is not a single global formatter applied consistently-but-wrongly —
+it is inconsistent, which usually means more than one code path. Same shape as the dashboard's number-formatting
+finding and as **BE-20** (`7.000` correct beside `67.6` wrong in one payload).
+
+### Also: two different distance units on one screen
+
+The **Distance** card is labelled **`mile`** (imperial — see B18) while the **Activities** card reports the same
+kind of value in **`m`** (metric). **A French user gets miles in one card and metres in the next.**
+
+### Source needs a call before assignment
+`5.0 km` was entered and `5,000 m` came back after a round-trip through `activity/save` →
+`dashboard/activities/all`. So the metres conversion and the grouping could be **either** side. **Do not assign
+until someone checks whether the API returns `5000` (frontend formats it) or `"5,000"` (backend formats it).**
+That single check decides the owner — the same question that is already open for `OV#6`/`RPT#5` on the dashboard.
+
+---
+
+## Confirmations from this pass — visually verified, no new IDs
+
+Everything below was read **from the rendered screenshot**, not from text extraction:
+
+| Bug | Confirmed as |
+|---|---|
+| **B8** | **`Minutes Actives`** — wrong casing, now **seen on screen** as well as in the API body. First visual confirmation of the reclassified backend defect |
+| **B1** | **`3:07 PM`** (12-hour, French session) · **`Today · 30 July 2026`** (English date, French session) |
+| **B18** | **`mile`** as the Distance card's unit — English word *and* imperial system, in French |
+| **B17** | **`You are currently in a caloric deficit`** — untranslated, confirmed in French as well as German |
+| **B39** | Diary chrome is **entirely English**: `Diary` · `Snapshot` · `View Trends` · `Calorie Ledger` · `Recommended` · `Meals` · `Resting` · `Active` · `Balance` · `Deficit` · `Learn more` · `Food Log` · `No food logged for this day.` · `Log meals` · `Sleep` · `No Data` · `Track your sleep to see insights` · `Add Sleep Data` · `Intake` · `Log water` · `Calories` · `Water` · `Distance` · `Moved` · `Jog / Run` · `Activities` · `1 logged` · `Vitals` · `Mood` · `Heart Rate` — **beside the French `Pas` and `Minutes Actives`** |
+
+**Note on B20:** this Diary was **~95% English chrome in a French session**, consistent with B20's Spanish
+finding. The French case had not previously been measured on Diary. Folded into B20 as a second language rather
+than a new ID.
+
+---
+
+## ⚠️ Method note — a screenshot was nearly filed as evidence while still loading
+
+The first full-page capture of the Diary caught it **mid-load, showing only grey skeletons.** Had it been filed,
+the evidence for B40 would have shown nothing at all.
+
+Caught by reading the image rather than trusting that the file existed, then re-capturing after an explicit
+**wait-for-`Hiking`**. Text extraction had already returned the loaded content, so the *finding* was never at
+risk — only its evidence.
+
+**Rule reinforced: after any navigation, wait for a specific expected string before capturing.** A screenshot
+taken "after the page loaded" is not the same as one taken after the *content* loaded — and the difference is
+invisible unless you open the file.
+

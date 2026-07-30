@@ -1,6 +1,6 @@
 # 00 — INDEX · Employee Vantage Fit web · localization bug report
 
-**Read this first.** Categorised view of **39 frontend bugs (B1–B39)** and **24 backend findings (BE-1–BE-24)**
+**Read this first.** Categorised view of **40 frontend bugs (B1–B40)** and **24 backend findings (BE-1–BE-24)**
 on the employee-facing Fit web app, `app.vantagecircle.co.in/ng/fit/*`.
 
 **Source of record:** [`bug-log.md`](bug-log.md) — 2,273 lines, 18 dated passes, every bug in full with all
@@ -38,7 +38,7 @@ Full proof (six independent methods) in `01-P1-P2-CRITICAL.md` and `bug-log.md` 
 
 | File | Contents | Count |
 |---|---|---|
-| **`01-P1-P2-CRITICAL.md`** | **Start here.** 1 P1 · 16 P2, ordered by fix leverage. **The only file allowed to repeat a bug** — everything here is cross-referenced from its type file | 17 |
+| **`01-P1-P2-CRITICAL.md`** | **Start here.** 1 P1 · 17 P2, ordered by fix leverage. **The only file allowed to repeat a bug** — everything here is cross-referenced from its type file | 18 |
 | `02-UNTRANSLATED.md` | English text on a localized screen | 15 |
 | `03-UI-LAYOUT.md` | Clipping, overlap, spill — **and the RTL/bidi defect** | 4 |
 | `04-LOCALE-FORMATTING.md` | Dates, times, numbers, units, currency | 8 |
@@ -59,7 +59,7 @@ Counts overlap across type files by design: one bug can be both a formatting and
 
 | | P1 | P2 | P3 | P4 | Total |
 |---|---:|---:|---:|---:|---:|
-| **Frontend (B1–B39)** | **1** | 16 | 18 | 4 | **39** |
+| **Frontend (B1–B40)** | **1** | 18 | 18 | 4 | **40** |
 | **Backend (BE-1–BE-24)** | 0 | 13 | 9 | 2 | **24** |
 
 **On "1 P1":** B39 is the only P1 and it is architectural. Three data-integrity candidates were specifically
@@ -77,8 +77,8 @@ nothing was found that silently corrupts stored user data. **"One P1" is a teste
 | **Viewport widths** | **4 / 4** — 1024 / 1366 / 1440 / 1920 | 768 / 375 (mobile) |
 | **Servers** | India only | **US / Europe / E2E — 0 of 5 modules.** Biggest single gap |
 | **Timezone** | — | **0 of 5 modules** |
-| **Write flows** | Log Water submit | Challenges "+Add", Community create-event / add-post |
-| **Regression** | — | **0 of 39 bugs re-verified** |
+| **Write flows** | Log Water submit · **Log Activity submit (completed 2026-07-30)** | Challenges "+Add", Community create-event / add-post |
+| **Regression** | — | **0 of 40 bugs re-verified** |
 
 **On the language axis:** testing 11 more languages would no longer change the frontend verdict — hardcoded
 literals cannot translate in *any* language, including the 5 already tested. Further language passes would
@@ -131,6 +131,6 @@ layout, and can invent problems that aren't there.
 - **Nothing filed to Jira.** The dashboard's 12-file → 13-ticket pipeline has not been run on this surface.
   The recommended grouping is by **fix unit**, not by category file — see `01-P1-P2-CRITICAL.md`, where the
   leverage order is already the ticket order.
-- **No regression pass.** 39 bugs, 0 re-verified. Until B25 is explained, **every pass result in this report
+- **No regression pass.** 40 bugs, 0 re-verified. Until B25 is explained, **every pass result in this report
   is point-in-time only.**
 </content>
