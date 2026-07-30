@@ -13,20 +13,28 @@ dashboard engagement was held to**, so the two are directly comparable. Sources:
 
 | Axis | Dashboard (reference) | **Employee web** | Web verdict |
 |---|---|---:|---|
-| Modules | 19 / 19 | **5 / 5** | ✅ **complete** |
-| Languages | 18 / 18 | **4 / 16** profile languages | ◐ 25 % |
-| — of which solid | de + ar deep, 7 more deep | **2** (de, es) | ⚠️ fr/pt degraded, see W5 |
-| Viewport widths | 4 (1024/1366/1440/1920) | **0** | ❌ **never measured** |
-| Servers | India only (1/4) | **India only (1/4)** | ◐ same gap |
-| Checklist dimensions | ~15 of 24 solid | **8 of 24 solid** | ◐ 33 % |
-| Dictionary completeness | verified 991×18, 0 missing | **cannot be asserted** (B10) | ❌ **blocked** |
-| RTL | tested → fails (AR#1) | **never tested** | ❌ |
-| Bugs → categorised report | 12 files | **0** | ❌ |
-| Bugs → Jira | 13 tickets filed | **0 of 28** | ❌ |
-| Gap register | G1–G26 | **none until this file** | ❌ |
-| Regression verification | none (empty) | **none** | ❌ same gap |
+| Modules | 19 / 19 | **5 / 5** | OK complete |
+| Languages | 18 / 18 | **5 / 16** profile languages (de, es, fr, pt, **ar**) | 31 % |
+| — of which solid | de + ar deep, 7 more deep | **3** (de, es, **ar**) | fr/pt degraded, see W5 |
+| Viewport widths | 4 (1024/1366/1440/1920) | **4 / 4 — ALL MEASURED 2026-07-30** | **W1 CLOSED** |
+| Servers | India only (1/4) | **India only (1/4)** | same gap |
+| Checklist dimensions | ~15 of 24 solid | **~12 of 24 solid** | 50 % |
+| Dictionary completeness | verified 991x18, 0 missing | **cannot be asserted — B33/B10** | **blocked** |
+| RTL | tested -> **fails** (AR#1, not implemented) | tested -> **RTL IS IMPLEMENTED** but **B35** bidi bug | **opposite of the dashboard** |
+| Contrast / keyboard a11y | not measured | **measured 2026-07-30** — B37 + focus PASS | **first time** |
+| Bugs -> categorised report | 12 files | **0** | not done |
+| Bugs -> Jira | 13 tickets filed | **0 of 38** | not done |
+| Gap register | G1–G26 | **W1–W19** | OK |
+| Regression verification | none (empty) | **none** | same gap |
 
-**28 bugs logged** — P2: 15 · P3: 11 · P4: 2 · **FE 22 · BE 5 · FE/BE TBD 1.**
+**38 bugs logged** (2026-07-30) — **P1: 1** (B33) · P2: 16 · P3: 18 · P4: 3.
+
+> **The single most important finding is B33** — `/ng/assets/i18n/fit/<lang>.json` serves the SPA HTML shell
+> instead of JSON, for **every** language including English, so **Fit has no usable dictionary**. It is a
+> **regression** (strings that rendered translated on 2026-07-24/28 are in neither loadable file today) and it
+> supersedes B10. Measured effect in German: Programs **0 %** translated, Diary **3 %**, Trends **5 %**,
+> Community **9 %**, Summary **16 %**, Challenges **20 %**. French and Arabic show the same profile.
+> **All string-quality, register and text-expansion work is blocked until it is fixed.**
 
 **One genuine advantage over the dashboard:** `<html lang>` is **correct per locale** here, whereas the
 dashboard has it permanently stuck at `"en"` (OV#4). Do not copy that finding across surfaces.
@@ -64,7 +72,7 @@ B22, B23, B27 confidently *systemic*, confirmed 4/4), but it is not the same as 
 
 ## 3. Checklist dimensions — 24 IDs, mapped to the dashboard's U/F/A system
 
-**✅ solid 8 · ◐ partial 8 · ⚠️ unreliable 1 · ❌ not done 7**
+**Recount 2026-07-30: solid ~12 · partial ~7 · untestable 1 (F6) · not done ~4** (A1, A3-blocked, A4, parts of F7)
 
 ### UI / UX
 
@@ -74,8 +82,8 @@ B22, B23, B27 confidently *systemic*, confirmed 4/4), but it is not the same as 
 | **U2** | No raw keys / unresolved placeholders | ◐ B2 (`{language}`) found **by observation**; no systematic raw-key scan ever run |
 | **U3** | Correct language, no cross-language bleed | ◐ no bleed scan run. B21 is an *intra*-language glossary split, not bleed |
 | **U4** | Layout intact — truncation / overflow / overlap | ⚠️ **UNRELIABLE.** `Coverage_Matrix` says "✅ none seen", yet **B15** (CTA overlaps body text) and **B22** (selection pill overlaps neighbouring tab) both exist — and both were found *only* by a dedicated visual re-review, not by the primary text-extraction method. No overflow detector, no width matrix. **Treat U4 as untested.** |
-| **U5** | RTL correct (Arabic) | ❌ **never** — no Arabic pass exists |
-| **U6** | Glyphs / encoding | ◐ Latin scripts only. No CJK, Cyrillic, Devanagari or Arabic ever rendered |
+| **U5** | RTL correct (Arabic) | **TESTED 2026-07-30** — RTL **IS** implemented (`dir=rtl`, layout mirrors, RTL-correct tab order). But **B35**: ~26 instances of numbers/units/dates in reversed visual order. **Opposite result to the dashboard AR#1** |
+| **U6** | Glyphs / encoding | Latin **+ Arabic** now rendered, no tofu/mojibake in either. Still no CJK, Cyrillic or Devanagari |
 | **U7** | Locale formatting (date/time/number/currency/units) | ✅ tested → **FAILS**: B1 dates, B6 units, B7 weekday axis, B27 unit phrasing, B28 unit-toggle label |
 | **U8** | States localized (empty / loading / error) | ◐ **empty ✅** (Community feed, Nutrition/Sleep/Activities) · **error ◐** (B24 transient 502 observed opportunistically) · **loading ✗** |
 | **U9** | Terminology + tone / register | ✅ **strongest dimension.** Method validated against 3 already-logged modules and re-derived B1/B3/B4/B6/B9 + new B12 with no misses. B12 register mixing confirmed in de/es/fr on the **identical 3 structural positions**; pt correctly recorded as checked-doesn't-apply |
@@ -87,10 +95,10 @@ B22, B23, B27 confidently *systemic*, confirmed 4/4), but it is not the same as 
 |---|---|---|
 | **F1** | Responds on interaction | ✅ filters, sub-tabs, date-stepper, challenge-detail nav |
 | **F2** | Sub-behaviour correct | ✅ category filter, sub-tab switching, View-all modal |
-| **F3** | Validation + validation messages | ❌ **not tested** |
+| **F3** | Validation + validation messages | **gating tested 2026-07-30**: Sleep `+` correctly disabled at the 8h cap; **submit is never gated on any form** (same shape as B31). **No free-text numeric input exists**, so the comma-decimal class is structurally impossible — a PASS. Validation *messages* still unseen |
 | **F4** | CRUD + toasts | ◐ **CRUD ✅** (water logging verified by before/after data read; mood edit; Vitals edit). **Toasts ✗ inconclusive** — the capture didn't wait ~2 s, so "no toast" results are **not** confirmed absence |
 | **F5** | Dialogs localized | ◐ modals opened (mood edit, Log Water, View-all). No confirm/delete dialogs reached |
-| **F6** | Accented input in search | ❌ **not tested** |
+| **F6** | Accented input in search | **UNTESTABLE** — there is **no search input anywhere** on this surface (0 visible inputs, DOM-confirmed). Record as N/A until a search field ships, not as a gap |
 | **F7** | Multi-step / create flows | ❌ **not tested** — Challenges "+Add" didn't open on the one attempt; Community create-event / add-post not pursued (blast-radius) |
 | **F8** | Switcher + persistence | ✅ tested → **FAILS**: B11 (preference not persisted across re-login), B25 (runtime desync) |
 | **F9** | Wire-up (translation exists, not rendered) | ✅ **the dominant defect class** — B3, B16, B19, B20 |
