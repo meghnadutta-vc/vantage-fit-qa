@@ -1,5 +1,11 @@
 # Vantage Fit Web — BACKEND localization bugs
 
+> **📁 This file is now the DETAIL source for [`11-BACKEND.md`](11-BACKEND.md).**
+> `11-BACKEND.md` is the categorised view — groups, owners, severity totals and fix order.
+> **This file holds the verbatim API response-body quotes**, which are the actual evidence. Both are current;
+> neither supersedes the other. Start at `11-BACKEND.md`, come here for proof.
+
+
 **Surface:** employee Fit web · `app.vantagecircle.co.in/ng/fit/*` · UAT
 **Method:** captured the running app's **actual API response bodies and request headers** (network capture,
 which carries the app's auth — a bare `fetch` returns 401). Session language = **Arabic**; cross-checked
@@ -210,7 +216,7 @@ question mark). Data-quality issue; a user sees the question twice.
 | **P2** | **14** | BE-1, BE-2*, BE-3, BE-6, BE-7, BE-8, BE-9, BE-13, BE-14†, BE-15, BE-16, **BE-20**, **BE-23**† |
 | **P3** | **8** | BE-4, BE-10, BE-11, BE-12, **BE-19**, **BE-21**, **BE-22** |
 | **P4** | **3** | BE-5, BE-17†, BE-18‡ |
-| **Total** | **23** | |
+| **Total** | **22** | |
 
 \* BE-2 needs a design answer first · † backend but **not localization** (BE-14, BE-17, BE-23) ·
 ‡ BE-18 is **rendered-only, unverified**

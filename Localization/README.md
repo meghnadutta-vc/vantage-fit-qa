@@ -11,8 +11,8 @@ languages, the same dictionaries, and the same recurring defect patterns span bo
 | Product | Fit **admin** dashboard (HR admin) | Fit **employee-facing** web |
 | URL | `dashboard-v2.vantagecircle.co.in/fit/*` | `app.vantagecircle.co.in/ng/fit/*` |
 | Modules | 19 | 5 (Summary, Challenges, Programs, Community, Diary/Trends) |
-| Bug IDs | module-prefixed — `OV#1`, `CC#2`, `RPT#4`… | sequential — `B1`…`B28` |
-| Languages | 18 shipped, 4 depth tiers | de / fr / es / pt passes |
+| Bug IDs | module-prefixed — `OV#1`, `CC#2`, `RPT#4`… | sequential — `B1`…`B39` + `BE-1`…`BE-23` |
+| Languages | 18 shipped, 4 depth tiers | de / fr / es / pt / **ar** passes |
 | Skill | `dashboard-localization-testing` | `localization-testing` |
 | Driver | Playwright MCP | Playwright MCP |
 
@@ -42,7 +42,19 @@ languages, the same dictionaries, and the same recurring defect patterns span bo
 `dashboard/bugs/logs/` holds the 33 raw working files — see its own
 [README](dashboard/bugs/logs/README.md) for what is authoritative there.
 
-### `web/` — start at [`00-INDEX.md`](web/00-INDEX.md)
+### `web/bugs/` — start at [`00-INDEX.md`](web/bugs/00-INDEX.md) ← **the categorised bug report**
+
+12 categorised files, same structure as the dashboard so the two are directly comparable — **except `11`,
+which is `11-BACKEND.md` here** (the dashboard had 0 backend defects; this surface has 23).
+
+**Read the B39 banner in `00-INDEX.md` first.** The Fit web module has **no i18n mechanism at all**, which
+means "untranslated string" does **not** mean here what it means on the dashboard — there is no key to wire.
+Reusing the dashboard's language or effort estimates on this surface produces wrong tickets.
+
+`bug-log.md` remains the **source of record** (2,273 lines, 18 dated passes). `BACKEND-BUGS.md` is the detail
+source for `11-BACKEND.md`. `FRONTEND-BUGS.md` is **superseded** and predates B39.
+
+### `web/` docs — testing index and coverage
 
 The testing index: every module, submodule, surface, CRUD operation and UI flow enumerated (~95 rows) with
 per-item status, plus the U/F/A checklist to apply and a coverage summary. Then read
@@ -54,8 +66,10 @@ per-item status, plus the U/F/A checklist to apply and a coverage summary. Then 
 `bug-log.md` (consolidated, B1–B28) plus per-module logs: `challenges.md`, `community.md`,
 `diary-trends.md`, `programs.md`, `summary.md`.
 
-**Not yet done for this surface:** the 28 bugs have never been categorised into a report or filed to Jira —
-the pipeline in `localization-bug-reporting` has only been run on the dashboard. See W19.
+**Categorised: yes** — 39 frontend bugs + 23 backend findings, in `web/bugs/00`–`11`, as of 2026-07-30.
+**Filed to Jira: not yet** — the dashboard's 13 tickets exist; this surface has none. See W19.
+When it is filed, the grouping must **differ** from the dashboard's: most of the untranslated-string findings
+here are one ticket referencing **B39**, not eleven separate tickets.
 
 ## Authority — which file wins
 

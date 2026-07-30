@@ -1,5 +1,14 @@
 # Vantage Fit Web — FRONTEND localization bugs
 
+> **📁 SUPERSEDED as a standalone report — kept for history.**
+> Its content is now distributed across the categorised folder: the P1/P2 tiers became
+> [`01-P1-P2-CRITICAL.md`](01-P1-P2-CRITICAL.md), the PASSES section became
+> [`09-NOT-A-BUG.md`](09-NOT-A-BUG.md), and the untestable section became
+> [`10-BLOCKED-NEEDS-DECISION.md`](10-BLOCKED-NEEDS-DECISION.md).
+> **It also predates B39**, so its framing of B33 as the root cause is out of date.
+> **Start at [`00-INDEX.md`](00-INDEX.md).**
+
+
 **Surface:** employee Fit web · `app.vantagecircle.co.in/ng/fit/*` · UAT
 **Compiled:** 2026-07-30 · Source of record: `bug-log.md` · Backend counterpart: `BACKEND-BUGS.md`
 
