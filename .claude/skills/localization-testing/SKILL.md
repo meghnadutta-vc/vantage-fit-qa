@@ -321,6 +321,15 @@ standalone defects get a new `B<n>`; consistency *views* of existing bugs just r
 
 ## 8. Playwright notes for this app
 
+- **⚠️ Never commit a full-page capture of Summary or Diary.** Their footer carries a **"Scan to sign in on your
+  phone" QR code**. Its caption is ambiguous about whether it encodes an auth token or just an app-download
+  link, and that is not a question worth settling by publishing it to a remote. **Use a viewport or
+  element-scoped capture instead** — the footer is never the evidence. Same rule for the haemoglobin reading and
+  the points balance, which are personal data on a real account. *(Caught 2026-07-30 only while pre-flighting a
+  push; the blob had to be scrubbed from six unpushed commits with `filter-branch`. Cheaper to avoid.)*
+- **After any navigation, wait for a specific expected string before capturing.** A capture taken "after the
+  page loaded" is not the same as one taken after the *content* loaded — the first Diary evidence shot for
+  **B40** caught only grey skeletons, and that is **invisible unless you open the file.**
 - **Take a screenshot at every distinct state** into `evidence/`. Naming in use: `<module>_<lang>.png`,
   `<module>_<lang>_<state>.png`, and per-bug crops `bug_B<n>_<what>_<lang>.png`. Reference the filename in
   the test case and in the bug.
