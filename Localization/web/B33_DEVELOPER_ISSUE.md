@@ -1,8 +1,34 @@
-# B33 + B38 — Fit is not translating. Two separate causes, both proven.
+# B39 + B38 — Fit is not translating. Root cause found; this supersedes the earlier B33 framing.
 
 **For:** developer / tech lead confirmation
 **Tested:** 2026-07-30 · `app.vantagecircle.co.in/ng/fit/*` · UAT · account language = **Arabic**
 (also reproduced in German and French)
+
+> ## ⚠️ CORRECTED 2026-07-30 — read this before the rest of the document
+>
+> An earlier version of this write-up described **cause 1** as *"the frontend translation file is not being
+> served"*, which reads as a **deployment or server-route bug with a cheap fix.** Further investigation
+> (bundle inspection — see **B39** in `bugs/bug-log.md`) shows that is **not the situation**, and acting on
+> the earlier framing would waste the team's time.
+>
+> **What is actually true:** the Fit web module **has no internationalization mechanism at all.** Its
+> interface strings are compiled into the JavaScript bundle as **static template literals**. Measured across
+> 101 loaded scripts (5.1 MB): the Fit chunk is the **largest bundle in the app** and contains **0** of the
+> app's **79** translation calls — no `translate` pipe, no `TranslateService`, no `.instant()`, no
+> `$localize`. Meanwhile one sibling chunk alone has **71**.
+>
+> **So serving a translation file would change nothing** — there is no code path that would read it. The
+> `/ng/assets/i18n/fit/` path returns the SPA shell for **any** filename, including `zzz.json` and
+> `NOT-A-LOCALE.json`, at an identical 115,655 bytes. That directory was never real; it is the SPA catch-all.
+>
+> | | Earlier framing (B33) | **Corrected (B39)** |
+> |---|---|---|
+> | Problem | The Fit translation file is not served | **The Fit module cannot consume a translation file** |
+> | Fix | Fix asset copy / server route | **Internationalize the Fit module** — add the translation service, externalise every string, author dictionaries |
+> | Effort | Hours | **Substantial project** |
+>
+> The evidence table below is still valid and is retained — it is now **a symptom** of B39 rather than the
+> cause. **B38 (cause 2) is unaffected and stands exactly as written.**
 
 ---
 
@@ -11,16 +37,91 @@
 The Fit web app shows almost everything in English even when the user's language is set to something else.
 There are **two independent causes**, and both need fixing:
 
-1. **The frontend translation file is not being served** — the server returns the website's homepage HTML
-   instead of the translation JSON, for every language including English.
+1. **The Fit frontend was built without any translation support** — its text is hardcoded into the compiled
+   bundle, so no language selection can change it. The rest of the product (Rewards, My Account, Perks) does
+   use a translation service; Fit does not.
 2. **The frontend never tells the backend which language the user chose** — no `Accept-Language` header, no
    locale parameter. So the backend replies in English too.
 
-Neither is a translation-content problem. The translations are not the issue; the plumbing is.
+Neither is a translation-content problem — nobody mistranslated anything.
+
+**Why the product looks *partly* translated, which is the confusing part:** the text that **does** appear in
+the user's language comes from the **backend**, and the text that stays English is the **frontend's own**.
+Live proof from a single French session on `/ng/fit/summary` — French where the API supplies the label,
+English where the bundle does:
+
+| From the API → **translated** | From the bundle → **always English** |
+|---|---|
+| `Pas` · `Progrès hebdomadaire` · `Hémoglobine` · `Mis à jour le 17 Jan 2024` | `Challenges` · `Wellness Score` |
+
+`Challenges` appears in the bundle as the literal `d(3,"Challenges")`. Evidence:
+`evidence/fr_summary_hardcoded_chrome_vs_api_labels.png`
 
 ---
 
-# CAUSE 1 — B33: the frontend translation file is not served
+# CAUSE 1 — B39: the Fit module has no translation mechanism
+
+*(The section below was written as B33 — "the file is not served". It is retained because the measurements
+are correct and reproducible, but read it as **a symptom of B39**, not as the cause. See the corrected
+summary at the top.)*
+
+## Proof A — the Fit bundle contains none of the app's translation calls
+
+Same application, same build. Scanned all 101 loaded scripts (5.1 MB):
+
+| Bundle | Size | Fit markers | translation calls |
+|---|---:|---:|---:|
+| **the Fit module chunk** | **1,072 KB** | **282** | **0** |
+| one sibling chunk | 284 KB | 0 | **71** |
+| main | 393 KB | 0 | 4 |
+| two others | 364 KB | 0 | 4 |
+| | | | **non-Fit total: 79** |
+
+## Proof B — the strings are literals in the compiled template
+
+`d(...)` is Angular's static-text instruction, not a key lookup:
+
+```js
+r(6,"h2"), d(7,"Calorie Ledger"), l()          // …and d(14,"Food Log")
+r(8,"h3",26), d(9,"Health bites")              // …and d(12,"15-30 sec tips")
+r(2,"h1"), d(3,"Challenges"), l(), r(4,"p"), d(5,"Compete with peers & colleagues, track your tasks.")
+```
+
+## Proof C — the i18n path is the SPA catch-all, not a missing file
+
+A filename that **cannot** be a locale returns the same bytes as a real one:
+
+| Requested | Status | `content-type` | Bytes |
+|---|---|---|---|
+| `/ng/assets/i18n/fit/de.json` | 200 | `text/html` | 115,655 |
+| `/ng/assets/i18n/fit/zzz.json` | 200 | `text/html` | 115,655 |
+| `/ng/assets/i18n/fit/NOT-A-LOCALE.json` | 200 | `text/html` | 115,655 |
+
+## Proof D — the app never asks for a Fit dictionary
+
+Resource timing shows exactly **one** app-initiated i18n request in the session:
+`/ng/assets/i18n/fr.json`. There is **no** app-initiated request to any `fit/` path.
+
+## Proof E — the working dictionary has no entry for today's Fit interface
+
+`/ng/assets/i18n/fr.json` (1,460 keys) has a `fit.*` namespace of only **48 legacy keys**
+(`fit.theme_of_the_week`, `fit.leaderboard`, `fit.fit_point_earned`). Of **12** live Fit UI strings searched
+by value in `en.json` — `Steps`, `Active Minutes`, `Wellness Score`, `Challenges`, `Ongoing`, `Upcoming`,
+`Water Intake`, `Avg Sleep`, `Weekly Rank`, `Highlights`, `Featured Content`, `Calorie Ledger` —
+**0 of 12 are present.**
+
+## What we have NOT proven — please correct us if you can
+
+- Only chunks **loaded in this session** were scanned. A Fit chunk for an unvisited route could exist, so
+  "0 translation calls in Fit" is proven for the principal Fit bundle, not for every byte of Fit code.
+- 5 of the 12 probe strings were not found in any loaded chunk either — they may be in an unloaded chunk or
+  may come from the API. **Recorded as inconclusive.**
+- This is static analysis plus rendered-output correlation, **not a source review.** You can confirm or
+  refute all of it in minutes with repo access, and we would rather be corrected than believed.
+
+---
+
+## Original B33 evidence — retained
 
 ## Proof — three requests, made side by side in the same session
 

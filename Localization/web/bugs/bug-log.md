@@ -1942,3 +1942,213 @@ English ⇒ **either**. Corrected; do not use the withdrawn version for classifi
 ## Net effect
 **Fixing B33 alone will not make Fit translated.** B33 fixes the frontend half; **B38** is the backend half.
 Both are needed.
+
+---
+
+# ADDENDUM 2026-07-30 (seventeenth pass) — ROOT CAUSE FOUND: the Fit web module has NO i18n layer at all. B39 supersedes B33's framing.
+
+**Phase 1 of `DEEP_DIVE_PLAN.md` (the language axis, gap W12).** The intent was to answer "does picking
+Korean/Japanese leave Fit silently in English?". The dictionary inventory that was meant to be a cheap
+warm-up instead surfaced the **architectural root cause of most of this engagement's 38 bugs.**
+
+No language switch was needed for any of it — all of it is measurable from one session.
+
+---
+
+## 🔴 B39 — [P1] NEW — the Vantage Fit web module ships with NO internationalization mechanism; its UI strings are compiled into the JS bundle as static literals
+
+```
+[Functional / Localization — P1]
+[Vantage Fit employee web — entire module, all 5 modules, all 16 profile languages]
+The Fit web module contains no i18n mechanism of any kind. Its interface strings are compiled directly
+into the Angular template as static text instructions, so NO language selection can ever translate them.
+This is not a missing dictionary and not an unwired key — there is nothing to wire.
+
+Expected: Fit UI strings resolve through the translation layer the rest of the app already uses.
+Actual:   Fit UI strings are hardcoded English literals in the bundle. Only text that arrives from the
+          BACKEND is translated, which is why the product looks partly localized.
+
+Layer: [FE] — architectural.
+Evidence: ../evidence/fr_summary_hardcoded_chrome_vs_api_labels.png (French session, English chrome)
+```
+
+### Proof 1 — the Fit chunk has zero translation mechanism, and the rest of the app does not
+
+Same app, same build, same Angular version. Scanned **101 loaded JS files, 5.1 MB**:
+
+| Bundle | Size | Fit markers | `\|translate` | `TranslateService` | `.instant(` | `$localize` | **i18n total** |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **`chunk-IZA2O2VY.js`** — the Fit module | 1,072 KB | **282** | 0 | 0 | 0 | 0 | **0** |
+| `chunk-WGFIWJCZ.js` | 284 KB | 0 | 0 | 0 | **71** | 0 | **71** |
+| `main-7GRQ5IJZ.js` | 393 KB | 0 | 0 | 0 | 4 | 0 | 4 |
+| `chunk-67IEXGKJ.js` | 330 KB | 0 | 0 | 0 | 0 | 2 | 2 |
+| `polyfills-P6A55ORB.js` | 34 KB | 0 | 0 | 0 | 0 | 2 | 2 |
+| | | | | | | **non-Fit total** | **79** |
+
+**The Fit chunk is the single largest chunk in the app and the only one with 0 of 79 i18n calls.**
+The surrounding product translates through a service; Fit does not use it.
+
+### Proof 2 — the strings are literals in the compiled template
+
+Extracted from `chunk-IZA2O2VY.js` (`d(...)` is Angular's text instruction):
+
+```js
+r(6,"h2"), d(7,"Calorie Ledger"), l(), ...  d(14,"Food L[og]")
+r(8,"h3",26), d(9,"Health bites"), l(), r(10,"p",27)(11,"strong"), d(12,"15-30 sec tips")
+r(2,"h1"), d(3,"Challenges"), l(), r(4,"p"), d(5,"Compete with peers & colleagues, track your tasks.")
+```
+
+These are **static template text**, not key lookups. Confirmed in bundle: `Calorie Ledger`,
+`Health bites`, `Compete with peers & colleagues…`, `Challenges`, `Food Log`, `15-30 sec tips`.
+
+### Proof 3 — the split on screen matches the split in the code exactly
+
+Live French session (`<html lang="fr">`), `/ng/fit/summary`, 47 unique leaf strings:
+
+| Renders in FRENCH (from the API) | Renders in ENGLISH (hardcoded chrome) |
+|---|---|
+| `Pas` (Steps) · `Progrès hebdomadaire` · `Hémoglobine` · `Mis à jour le 17 Jan 2024` | `Challenges` · `Wellness Score` |
+
+`Challenges` is the string found as `d(3,"Challenges")` in the chunk. **The strings that translate are the
+ones the backend supplies; the strings that don't are the ones in the bundle.** Three independent methods
+agree.
+
+### Proof 4 — `/ng/assets/i18n/fit/` does not exist; it is the SPA catch-all
+
+The path returns **identical 115,655-byte `text/html`** — the SPA shell, `<!DOCTYPE html>` — for
+**every** name tried, including ones that cannot be locales:
+
+| Requested | Status | Content-Type | Bytes |
+|---|---|---|---|
+| `/ng/assets/i18n/fit/de.json` | 200 | `text/html` | 115,655 |
+| `/ng/assets/i18n/fit/zzz.json` | 200 | `text/html` | 115,655 |
+| `/ng/assets/i18n/fit/NOT-A-LOCALE.json` | 200 | `text/html` | 115,655 |
+
+**A nonsense locale returns the same bytes as a real one**, so nothing is being served from that directory
+at all — the server is falling through to the SPA for an unmatched route.
+
+### Proof 5 — the app never requests a Fit dictionary
+
+Resource timing for this session shows exactly **one** app-initiated i18n request
+(`initiatorType: xmlhttprequest`): **`/ng/assets/i18n/fr.json`**. There is no app-initiated request to any
+`fit/` path. *(Every `fit/` entry in the timeline is from this investigation's own `fetch` probes —
+`initiatorType: fetch`. They are not app behaviour and must not be read as such.)*
+
+### Proof 6 — the app-wide dictionary cannot cover Fit either
+
+`/ng/assets/i18n/fr.json` (1,460 keys) **does** have a `fit.*` namespace — but only **48 keys**, and they
+are legacy/mobile-era (`fit.theme_of_the_week`, `fit.leaderboard`, `fit.fit_point_earned`, `fit.my_badge`).
+
+**None of 12 probed live Fit UI strings exists anywhere in `en.json`** — searched by value:
+`Steps` · `Active Minutes` · `Wellness Score` · `Challenges` · `Ongoing` · `Upcoming` · `Water Intake` ·
+`Avg Sleep` · `Weekly Rank` · `Highlights` · `Featured Content` · `Calorie Ledger` — **0 of 12 present.**
+
+So even the working dictionary has no entry for the current Fit interface.
+
+---
+
+## What B39 means for B33 — and for the developer write-up already produced
+
+**`B33_DEVELOPER_ISSUE.md` is now wrong in its framing and must be corrected before anyone acts on it.**
+
+B33's *evidence* was sound (the path returns the SPA shell). Its *implication* was not: it reads as a
+**serving/deployment bug** — "the file exists but isn't being served" — which implies a cheap fix
+(fix the asset copy step, or the server route). That is not the situation.
+
+| | B33 as written | B39 — what is actually true |
+|---|---|---|
+| Problem | The Fit translation file is not served | **There is no Fit translation file, because the Fit module has no mechanism to consume one** |
+| Implied fix | Fix asset deployment / server route | **Internationalize the Fit module**: add the translation service, externalise every string, author 16 dictionaries |
+| Effort | Hours | **Substantial project** |
+| Would B33's fix help? | assumed yes | **No.** Serving a dictionary to a module with 0 translation calls changes nothing |
+
+**B33 is retained** as the observable symptom and as Proof 4 above, but **B39 is the reportable root cause**
+and B33 should be closed into it rather than filed separately.
+
+---
+
+## What B39 explains retroactively
+
+This single finding accounts for a large share of the engagement's existing bugs, which were logged as
+independent per-module "wire-up gaps" because the bundle had never been inspected:
+
+- **B3 · B16 · B19 · B20** — Fit chrome English in a translated session → hardcoded literals, one cause
+- **The "reverse signal"** (a lone translated string stranded in an all-English view) → that string was
+  **API data**; the surrounding chrome cannot translate. The signal was real; the interpretation
+  ("the route's own chrome is unwired") was one level too shallow
+- **B25** (runtime language desync appearing to corrupt content) → content is backend-driven and *does*
+  change with language; chrome never changes because it can't. The asymmetry was the desync's signature
+- **Why German showed `Herausforderung` in body text but `Challenges` in the nav (B3)** → body text = API,
+  nav = bundle literal
+
+**Reclassification required:** every bug on this surface currently described as a "wire-up gap" needs
+re-reading. On the admin dashboard "wire-up gap" was correct and provable (991 keys existed, unused).
+**On the employee web there is no key to wire.** The two surfaces are not the same defect class, and the
+dashboard's language must not be reused here.
+
+---
+
+## Honest limits of this finding
+
+1. **Only chunks loaded in this session were scanned** (101 files, 5.1 MB). Angular lazy-loads per route;
+   a Fit chunk for an unvisited route could exist. Mitigation: the chunk found carries **282 Fit markers**
+   and contains the Summary, Challenges *and* Diary templates, so it is the principal Fit bundle — but
+   "0 i18n calls in the Fit module" is proven **for this chunk**, not for every byte of Fit code.
+2. **5 of 8 probe strings were not found in any loaded chunk** (`Active Minutes`, `Wellness Score`,
+   `Featured Content`, `Weekly Rank`, `Avg Sleep`). They are either in an unloaded chunk or arrive from the
+   API. **Recorded as inconclusive** — a bundle miss is not proof of absence, per the standing rule.
+3. `Wellness Score` renders **English in a French session** and was not found in the bundle. That is a
+   finding but not yet attributed; it may be an untranslated API value. Relates to **B9** (open product
+   call on whether "Wellness Score" is a brand term).
+4. This is **static analysis plus rendered-output correlation**, not a source-code review. A developer with
+   repo access can confirm or refute it in minutes — and should be asked to.
+
+---
+
+## Also found in the same pass — the app-wide dictionary (ADJACENT SURFACE, out of Fit scope)
+
+Recorded because it was measured and is worth passing to whoever owns Vantage Rewards. **These are NOT
+Fit bugs** — the namespaces are `rewards.*`, `rewardsNew.*`, `myaccount.*`. **Not counted in the Fit totals.**
+
+**Three locale codes have no dictionary file** — they return the same 115,655-byte SPA shell:
+**`pt-BR`, `pt-PT`, `zh`**. Note `zh-CN.json` **does** exist (1,461 keys), so a request for `zh` gets HTML
+while `zh-CN` gets JSON — a locale-code mismatch risk if any caller uses the short form.
+
+**Key parity vs `de.json` (1,472 keys — the largest):**
+
+| Locale | Keys | Missing vs de | Empty values | Reading |
+|---|---:|---:|---:|---|
+| de | 1472 | — | 0 | reference |
+| zh-CN | 1461 | 12 | 0 | current |
+| fr · es · ja · it · hu | 1459–1460 | 12–13 | 0–1 | current |
+| id | 1458 | 14 | 0 | current |
+| fr-CA | 1449 | 24 | 0 | current |
+| ar | 1443 | 41 | 0 | slightly behind |
+| ko · ru · vi | 1415–1416 | 57–58 | 0–1 | behind |
+| nl | 1372 | 101 | 0 | behind |
+| **en** | **1048** | **460** | 0 | **old generation** |
+| **pl** | **1043** | **457** | 0 | **old generation** |
+| **hi** | **1014** | **486** | 1 | **old generation** |
+
+Two observations worth a developer's attention:
+
+- **`en`, `pl` and `hi` are missing the same keys** (`rewards.select_badge`, `rewards.you_are_appreciating`,
+  `rewards.and`, `rewards.others`, `rewards.select_user`…) → they appear to be on an **older dictionary
+  generation**, roughly 30% smaller. Three vintages are visible in the data (~1014–1048 / ~1372–1449 / ~1458–1472).
+- **`en` — the base language — is missing 460 keys that `de` has**, and has 36 keys `de` lacks.
+  **Stated carefully:** this could equally mean `de.json` retains 460 dead keys. Which side is wrong needs a
+  developer answer; the *disagreement* is the finding, not the direction.
+- The newest cluster (`rewardsNew.2fa_*`, 12 keys) exists **only in `de`** — a 2FA feature translated into
+  German and no other language.
+
+---
+
+## Gap register impact
+
+| Gap | Status after this pass |
+|---|---|
+| **W12** — 12 of 16 languages untested | **Answered at the architecture level, not the observation level.** The question "does picking Korean leave Fit in English?" now has a *derived* answer: **yes, and so does every language including the 4 already tested** — because no language can translate hardcoded literals. A per-language observational sweep is now **low value for Fit chrome** and would only measure API translation coverage per language. **Re-scoped, not closed.** |
+| **W4** — dictionary completeness unassertable | **Explained, and now permanently unassertable for Fit.** Not "blocked pending a B33 fix" — there is no Fit dictionary to complete. The dashboard's strongest argument ("991 keys, 0 missing → every gap is wire-up") is **structurally unavailable on this surface**, and now we know why. |
+| **W8** — `accept-language` propagation | Already answered by **B38** (never sent). B39 compounds it: even if it were sent, frontend chrome would stay English. |
+| **W14** — glyphs / non-Latin | **Cannot be tested on Fit chrome** — hardcoded English has no glyphs to render. Only API-supplied text can exercise this. |
+
