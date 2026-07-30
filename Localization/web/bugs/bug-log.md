@@ -47,6 +47,7 @@
 | B33 | **P1** | **Fit i18n endpoint serves the SPA HTML shell, not JSON — Fit localization broken in EVERY language. Supersedes B10; likely explains B3/B16/B19/B20/B25** |
 | B34 | P4 | Language dropdown option names all English regardless of UI language (endonyms?) — judgment, independent of B33 |
 | B35 | **P2** | **Arabic/RTL: numeric, unit and date runs render in REVERSED visual order (no bidi isolation) — DOM is correct, rendering is wrong; invisible to text extraction** |
+| B36 | P3 | Water-amount slider is a custom DIV with no `role`/`aria-valuenow`/keyboard support — unusable by keyboard or screen reader |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -1446,3 +1447,88 @@ assessed for B35. Those need a visual check.
 - The Events tab now has data: `Time: 03:00 PM - 04:00 PM` — **12-hour AM/PM in an Arabic session.** Arabic
   locales commonly use 24-hour. **Needs product confirmation**, not logged as a bug.
 - Community Events weekday strip still `MON TUE WED…` English (B16/B33).
+
+---
+
+# ADDENDUM 2026-07-30 (tenth pass) — Arabic modals + the write operations never opened
+
+## ⚠️ CORRECTION to my own inventory — only ONE trackable is app-only
+
+Enumerated **every** write affordance on Diary with its aria-label:
+
+| Affordance | Availability |
+|---|---|
+| `Log meals` · `Add Sleep Data` · `Log activity` · `Edit weight` · `Edit mood` · `Log water` · `Quick add` | **web-available** |
+| **`Edit heart rate on the app`** | ⭕ **app-only — the ONLY one** |
+
+**I over-applied the user's scope note.** They said trackables *whose UI says "track on app"* are not
+web-loggable — which is true of **heart rate only**. I wrongly marked **sleep, meals and activities** as
+⭕ N/A. They are web-available and **untested**. Corrected in `00-INDEX.md`.
+
+**Genuinely untested web-available write operations: 5** — Log meals · Add Sleep Data · Log activity ·
+Edit weight (now opened, see below) · Quick add. Not 2 as previously claimed.
+
+## B30 — confirmed on a THIRD modal → it is the MODAL PATTERN, not one component
+
+| Modal | `role` | `aria-modal` | Accessible name | Focus moved in? |
+|---|---|---|---|---|
+| Log Water (en, fr, ar) | none | none | none | ❌ stays on `BUTTON.empty-cta-btn` |
+| **Log Weight (ar) — NEW** | **none** | **none** | **none** | ❌ stays on `BUTTON.vital-act` |
+
+**B30's scope widens from "the Log Water modal" to "every modal on this surface".** Confirmed in
+**3 languages × 2 modals**. Re-severity: still P3 by the scale, but it now affects every dialog.
+
+## B36 — [P3] NEW — the water-amount slider is a custom DIV with NO accessible semantics
+**Type:** Accessibility · **Layer:** Frontend · **Language-independent**
+**Where:** Diary → Log Water → "Any amount" ruler.
+
+The control is a `DIV.wl-ruler` with **`role: "(none)"`, no `aria-valuenow`, no `aria-valuemin/max`, no
+`tabindex`** — it is not an `input[type=range]` and carries no slider semantics at all.
+
+**Expected:** `role="slider"` with `aria-valuenow` / `aria-valuemin` / `aria-valuemax` and keyboard support,
+or a native `<input type="range">`.
+**Actual:** a mouse-drag-only div. **A keyboard or screen-reader user cannot set a water amount.**
+The `+`/`−` glass stepper remains usable, so the flow is not fully blocked — which is why P3 not P2.
+
+## Log Weight modal — first time ever opened. kg/lbs conversion PASSES
+
+- **Opens and works** ✅
+- **Conversion math is CORRECT:** displays **112.4** with `lbs` active; 51.0 kg = 112.43 lbs ✓. The ruler
+  scale switches to **80–550** (an lbs range). **This is a PASS** — unlike B28, this toggle converts properly.
+- Nice affordance: a **"Same as last log"** shortcut.
+- **100 % English in an Arabic session** — `Log Weight`, `Weight`, `lbs`, `kg`, `Update weight`,
+  `Same as last log`, `Today`. B33.
+
+### NEW observation — unit inconsistency between display and editor (P4 / judgment)
+The Vitals **card** displays **`kg 51.0`** while the **edit modal opens in `lbs` (112.4)**. Same value, two
+different units, one click apart. Either the card should follow the editor's unit or vice versa.
+**Needs product confirmation** — logged as a judgment call, not asserted as a defect (the modal may be
+correctly remembering a per-user unit preference).
+
+## 5 MORE B35 instances — inside the Log Water modal
+
+The route-level detector missed these because **the modal was closed when it ran.** Found by visual review:
+
+| Logical | Renders as |
+|---|---|
+| `500 ml` | **`ml 500`** |
+| `2 of 8 glasses` | **`of 8 glasses 2`** |
+| `1500 ml to goal` | **`ml to goal 1500`** |
+| `1 glass = 250 ml` | **`glass = 250 ml 1`** |
+| `0.5 / 2.5 L` (Intake card) | **`L 2.5 /0.5`** |
+
+**Method note:** run the B35 detector **with each modal open**, not just per route. Modal content is a
+separate measurement surface.
+
+## RTL modal layout — correct
+The Log Water modal mirrors properly: close `X` on the left, title right-aligned, glass on the right,
+controls right-aligned, and the `+`/`−` stepper order is mirrored. **No RTL layout defect in the modal.**
+
+## Judgment call — the numeric ruler stays LTR
+The "Any amount" ruler renders `0 250 500 750 1000` **left-to-right** inside an RTL modal. Numeric scales
+conventionally stay LTR even in RTL locales, so this is **probably correct** — but it is inconsistent with the
+surrounding flow. **Needs product confirmation; not logged as a defect.**
+
+## Also noted
+Calorie Ledger numbers use **comma** thousands grouping in Arabic (`6,546`, `-7,374`). Acceptable in many
+Arabic locales; flagged for the locale-formatting decision, not logged.

@@ -194,9 +194,9 @@ things the docs imply but never confirmed; discover them before assuming.
 | 7.4 | **Calorie Ledger** card (EN label confirmed 2026-07-29; earlier docs said "Calorie Balance") | "Recommended" kcal · Meals / Resting / Active / Balance breakdown · **deficit/surplus sentence** · "Learn more" link | R | ✅ → **FAILS: B17** (status sentence EN inside an otherwise-German card) |
 | 7.5 | Flow: "Learn more" | Destination | R | ⬜ never clicked |
 | 7.6 | **Nutrition / Food Log** | Section + empty state | R | ✅ empty state localized |
-| 7.7 | Nutrition Log — **add a meal** | | **C** | ⭕ **N/A if app-only** — verify the label, then close as by-design |
+| 7.7 | Nutrition Log — **add a meal** (`Log meals`) | | **C** | ❌ **NEVER TESTED — and it IS web-available** (verified 2026-07-30; my earlier N/A was wrong) |
 | 7.8 | **Sleep** | Section + "No Data" + prompt | R | ✅ |
-| 7.9 | Sleep — log sleep | | **C** | ⭕ **N/A — app-only** (user-confirmed 2026-07-29: trackables labelled "track on app" are not web-loggable) |
+| 7.9 | Sleep — log sleep (`Add Sleep Data`) | | **C** | ❌ **NEVER TESTED — and it IS web-available** (verified 2026-07-30; my earlier N/A was wrong) |
 | 7.10 | **Intake** | Calories / Water values | R | ✅ (water stays metric — expected) |
 | 7.11 | **"Log Water"** modal — open | Modal chrome + **dialog semantics** | R | ✅ opens → **FAILS a11y: B30** (no `role`/`aria-modal`/name; focus not moved into the dialog) |
 | 7.12 | Log Water — **unit toggle ml ⇄ fl oz** | Goal value · slider scale · **"1 glass = 250 ml" helper** | U | ✅ → **FAILS: B28**, now confirmed **in ENGLISH too** → language-independent unit-conversion bug, not a translation defect |
@@ -204,11 +204,11 @@ things the docs imply but never confirmed; discover them before assuming.
 | 7.14 | Log Water — **submit** | Value update + success feedback | **C** | ⚠️ → **NEW B31**: submitting with no amount **closes the dialog with zero feedback**. Toast absence **CONFIRMED** (observer + 2.5 s wait). Submit-with-amount still to re-verify |
 | 7.15 | **Distance** | Covered / Jog-Run / Cycling + unit | R | ✅ → **FAILS: B18** ("mile" unit word EN) |
 | 7.16 | **Activities** | Section + empty state | R | ✅ |
-| 7.17 | Activities — add an activity | | **C** | ⭕ **N/A — app-only** (user-confirmed) |
+| 7.17 | Activities — add an activity (`Log activity`) | | **C** | ❌ **NEVER TESTED — and it IS web-available** (verified 2026-07-30; my earlier N/A was wrong) |
 | 7.18 | **Vitals** | Mood / Heart Rate / Weight + edit buttons + **aria-labels** | R | ✅ (aria-labels ✅ localized; ❓ mood **value** "Not Good" EN — Needs Verification, likely BE) |
 | 7.19 | **Mood edit** modal (`aria-label="Log mood"`) | "How are you feeling?" · 5-point scale · reason chips · "Update" | **C/U** | ◐ opens ✅, functional ✅. **Check B30's dialog-semantics defect here too** |
 | 7.20 | **Heart-rate edit** flow | | U | ⭕ **N/A — app-only** ("Edit heart rate on the app") |
-| 7.21 | **Weight edit** flow (`aria-label="Log weight"`) | | U | ❌ **never opened — and it IS web-available** (confirmed in markup), so a genuine gap, not app-only |
+| 7.21 | **Weight edit** flow (`aria-label="Edit weight"`) | kg/lbs toggle · ruler · "Same as last log" | U | ✅ **opened 2026-07-30**: works, **kg/lbs conversion CORRECT** (51.0 kg → 112.4 lbs, ruler 80–550). 100 % English (B33). **B30 confirmed here → modal pattern.** Card shows kg while editor opens in lbs — P4 judgment |
 | 7.22 | "Edit heart rate on the app" | app-only affordance | — | ✅ documented as not web-reachable by design |
 | 7.23 | Back navigation | → Summary (`?navBack=true`) | — | ✅ |
 | 7.24 | Historical dates with richer data | | R | ❌ never — only today + one empty prior day |
@@ -254,9 +254,9 @@ for a dashboard-style CRUD sweep — but what exists is barely covered:
 | **C** — Create event / RSVP | Community → Events | ❌ never |
 | **D** — any delete | — | ❓ **no delete operation identified on this surface** — confirm whether any exists |
 
-**Scope clarification (user-confirmed 2026-07-29):** trackables whose UI says **"track on app"** are **not
-web-loggable by design** — sleep, activities, heart rate and (pending label check) meals. These are **⭕ N/A**,
-not gaps. That leaves a much smaller real write surface.
+**Scope clarification — CORRECTED 2026-07-30.** Trackables whose UI says **"track on app"** are not web-loggable.
+Enumerating every affordance shows that is **heart rate ONLY** (`aria-label="Edit heart rate on the app"`).
+**Log meals, Add Sleep Data and Log activity ARE web-available** — an earlier note wrongly marked them N/A.
 
 **Net: of the genuinely web-available write operations, 2 have been exercised, both only partially.**
 
