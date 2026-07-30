@@ -1382,3 +1382,67 @@ names stayed English → **B34 is language-independent**.
 Switching **from French**: *"Vous avez changé votre langue pour **{language}**. Veuillez vous reconnecter pour
 accéder au site."* — literal `{language}` again. **Broken from de and fr; works only from English.** Also
 formal *votre* → B12.
+
+---
+
+# ADDENDUM 2026-07-30 (ninth pass) — ARABIC full sweep: B35 quantified across all 6 routes
+
+Built a **programmatic B35 detector** (needed, because the bug is invisible to text extraction) and swept
+every route. Detector method: for each text node inside a `direction:rtl` element, split into tokens, measure
+each token's painted `x` via `Range.getBoundingClientRect()`, and compare **logical token order** against
+**visual left-to-right order**.
+
+## ⚠️ TWO detector corrections — recorded so the numbers can be trusted
+
+The first two versions of the detector were **wrong**, in opposite directions:
+
+1. **Multi-line false positives.** Comparing raw `x` across wrapped lines is meaningless — in RTL each new
+   line restarts from the right, so a token on line 2 has a smaller `x` than one on line 1 regardless of
+   correctness. This inflated Diary from 7 to **14**. Fixed with a **y-band guard**: skip any run whose tokens
+   span more than one line.
+2. **Arabic-text false positives — the serious one.** `التقدم الأسبوعي: 20%` paints as
+   `20% الأسبوعي: التقدم`, and my detector flagged it. **That is CORRECT RTL rendering** — reading
+   right-to-left gives the right order. For genuinely Arabic text, reversed visual x-order *is* correct.
+   This would have reported **7 false bugs on Challenges Ongoing, where the true count is 0.**
+   Fixed by only flagging runs containing **no Arabic characters** — a pure Latin/digit run inside an RTL
+   container is the genuine fault case.
+
+**Lesson for the skill:** a bidi-order detector must (a) compare within a line and (b) only judge LTR-script
+runs. Without both guards it produces confident nonsense.
+
+## B35 — confirmed instance count per route (post-correction)
+
+| Route | Genuine | Examples (logical → visual) |
+|---|---:|---|
+| **Challenges — Past** | **8** | `20 Jan 2026 - 26 Jan 2026` → **`Jan 2026 - 26 Jan 2026 20`** (every date range) |
+| **Summary** | ~8 | `4 hrs 19 mins` → **`hrs 19 mins 4`** · `24 - 30 Jul` → **`Jul 30 - 24`** · `0 sec` → **`sec 0`** |
+| **Diary** | **5** | `98 BPM` → **`BPM 98`** · `51.0 kg` → **`kg 51.0`** · `5.58 km` → **`km 5.58`** · `/ 2.5 L` → **`L 2.5 /`** |
+| **Community — Events** | **1** | `29 Jul • Time: 03:00 PM - 04:00 PM` → **`Jul • Time: 03:00 PM - 04:00 PM 29`** |
+| **Trends** | **1** | `28 Jul 2026` → **`Jul 2026 28`** |
+| **Programs — Library** | **1** | `15-30 sec tips` → **`sec tips 15-30`** |
+| Challenges — Ongoing | **0** | clean (the 7 apparent hits were correct Arabic) |
+| Community — Social | **0** | clean |
+| Programs — Offerings | **0** | clean |
+| Footer (global, every route) | 2 | `© 2026 Vantage Fit. Built for healthier teams.` → **`teams. Vantage Fit. Built for healthier 2026 ©`** |
+
+**≈26 genuine instances across the surface.** They cluster in exactly two shapes: **dates/date-ranges** and
+**value + Latin-unit pairs**. Both are B33 casualties — translated units and month names would be RTL-native
+and would not reorder.
+
+**Worst case for a user:** the Past-challenges tab, where **every** date range is mangled — `20 Jan 2026 -
+26 Jan 2026` reads as `Jan 2026 - 26 Jan 2026 20`. The start day is detached and thrown to the end.
+
+## RTL layout in Arabic — essentially clean
+
+Overflow measurement across the Arabic routes found **1 break total** (`wallet-svg-wrapper`, 61px, a header
+icon). **RTL mirroring does not introduce layout breakage** on this surface — a genuine positive, and further
+contrast with the dashboard where RTL is absent entirely.
+
+## Detector limitation — stated
+SVG chart axis labels are **not reachable** by the TreeWalker/Range approach, so Trends' axis was not
+assessed for B35. Those need a visual check.
+
+## Also noted (not logged as defects)
+- The Events tab now has data: `Time: 03:00 PM - 04:00 PM` — **12-hour AM/PM in an Arabic session.** Arabic
+  locales commonly use 24-hour. **Needs product confirmation**, not logged as a bug.
+- Community Events weekday strip still `MON TUE WED…` English (B16/B33).

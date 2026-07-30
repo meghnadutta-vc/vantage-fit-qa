@@ -183,6 +183,22 @@ other way too: load a known-good module in the same session.
 in German, is **~90% English in Spanish including the nav bar**. A German-only pass therefore systematically
 misreports this surface. **Verify each (module × language) pair independently.**
 
+### RTL bidi-order bug (B35) — a detector, and the two guards it MUST have
+
+In an RTL session, a run of **Latin/digit** text inside a `direction:rtl` container gets **visually reordered**
+by the browser unless the app applies bidi isolation. `4 hrs 19 mins` paints as `hrs 19 mins 4`;
+`24 - 30 Jul` paints as `Jul 30 - 24`. **`textContent` returns the CORRECT order, so string-dump tests pass it
+— it is only findable by measuring paint position or by looking.**
+
+Detector: for each text node in an RTL element, split to tokens, measure each token's `x` via
+`Range.getBoundingClientRect()`, compare logical order vs left-to-right order. **Two guards are mandatory:**
+
+1. **Y-band guard** — skip runs whose tokens span more than one line. In RTL each wrapped line restarts from
+   the right, so cross-line `x` comparison is meaningless (this inflated one route's count from 7 to 14).
+2. **Script guard** — only flag runs containing **no Arabic characters**. Correctly-rendered Arabic *is*
+   reversed in visual x-order; flagging it reports confident nonsense (this would have produced 7 false bugs
+   on a route whose true count is 0).
+
 ### Check backend health BEFORE the run — outages have confounded this engagement three times
 
 A backend outage returns **502 Bad Gateway** on every `/api/*` call while **static assets keep serving
