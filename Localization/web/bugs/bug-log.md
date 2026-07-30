@@ -40,7 +40,7 @@
 | B26 | P3 | Adherence-activity answer option "Yes" not translated (backend `configuration` API data) — should be "Sí" |
 | B27 | **P2** | Water weekly-task sentence garbled: untranslated "fl oz", nonsensical "fl oz vasos", and "1 días" pluralization error |
 | B28 | P3 | Log Water "1 glass = 250 ml" label doesn't convert when switching to fl oz (value + slider do convert) |
-| B29 | P3 | Challenge card clips 36px in its fixed-width box — every width, **every language incl. English** (not a loc defect) |
+| B29 | P3 | Challenge card overflows its box by 36px at **≥1440 only** (fits at 1024/1366) — every language incl. English; **reproduce at ≥1440 or it looks unreproducible** |
 | B30 | P3 | Log Water modal has no dialog semantics (`role`/`aria-modal`/name) and does not move focus |
 | B31 | **P2** | Log Water submit with no amount closes the dialog with **zero feedback** (toast absence confirmed) |
 | B32 | P3 | Past challenge shows an end date **before** its start date (`07 Oct 2025 - 15 Sep 2025`) [FE-BE TBD] |
@@ -1749,3 +1749,56 @@ indicators with `.focus()` — drive a real Tab.
 - **B37** contrast (above) · **B36** custom controls without ARIA · **B30** modal semantics + focus not moved
   into dialogs · earlier findings on `alt` text and icon-button names.
 - **Not done:** screen-reader pass with an actual AT, and contrast on routes other than Diary.
+
+---
+
+# ADDENDUM 2026-07-30 (fourteenth pass) — the two UNMEASURED WIDTHS (1024 · 1366), in Arabic/RTL
+
+Gap **W1** listed 1024 and 1366 as never tested at any width in any language. Measured now, in an **Arabic
+(RTL)** session — so this doubles as the first narrow-width RTL data.
+
+## ✅ PASS — the layout is responsive and clean at both narrow widths
+
+| Width | Total breaks | CLIP | SPILL | Page-level horizontal overflow |
+|---|---:|---:|---:|---:|
+| 1920 (en baseline) | 1 | 1 | 0 | — |
+| 1440 (ar) | 1 | 1 | 0 | — |
+| **1366 (ar)** | **1** | 1 | 0 | **0** ✅ |
+| **1024 (ar)** | **1** | 1 | 0 | **0** ✅ |
+
+**No page-level horizontal scroll at either narrow width** (`documentElement.scrollWidth === innerWidth`,
+`body.scrollWidth === 1024`). All five Summary card headings still render at 1024
+(`Snapshot`, `Trends`, `Challenges`, `Vitals`, `Health`) — the layout **reflows**, it does not break.
+
+The single break at every width is **`.wallet-svg-wrapper` +61px in a 30px box** — a header wallet icon,
+present at 1024/1366/1440. Small, cosmetic, in the shared perks header rather than Fit. Logged as an
+observation, not a new ID.
+
+## ⚠️ B29 — REFINED: it is a WIDE-viewport defect, not a narrow one
+
+Measured the same element across all four widths:
+
+| Width | `.ch-slide` clientW | scrollW | Overflow |
+|---|---:|---:|---:|
+| 1920 | 275 | 311 | **+36** |
+| 1440 | 275 | 311 | **+36** |
+| 1366 | — | — | **0** |
+| **1024** | **236** | **236** | **0** |
+
+**The card overflows at wide widths and fits perfectly at narrow ones** — the inverse of the normal
+responsive failure mode. At 1024 the *content* shrinks more than the box does, so something inside is sized
+against the viewport rather than against its container.
+
+**Consequence for the ticket:** B29 must be reproduced at **≥1440**. A developer testing at 1024 or on a
+narrow laptop **will not see it** and may close it as unreproducible. This is now stated in the bug.
+It also means B29 affects **desktop users specifically** — the opposite of the usual "only small screens"
+triage, and a point in favour of fixing it.
+
+## RTL at narrow widths — clean
+No RTL-specific breakage appeared at 1024 or 1366. Combined with the earlier Arabic sweep (1 break across all
+6 routes at 1440), **RTL mirroring does not degrade at narrow widths.** A real positive for this surface.
+
+## Gap W1 status
+**1024 · 1366 · 1440 · 1920 all now measured** — W1 is closed for Summary, and closed at 1440 for all 6
+routes. **Still open:** 1366/1024 on the other five routes, and **768/375 remain untested at any width**
+(mobile breakpoints were never in scope for this engagement, but they are where a reflow is most likely).
