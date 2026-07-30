@@ -183,6 +183,21 @@ other way too: load a known-good module in the same session.
 in German, is **~90% English in Spanish including the nav bar**. A German-only pass therefore systematically
 misreports this surface. **Verify each (module × language) pair independently.**
 
+### Never assess focus indicators with `.focus()` — drive a real Tab
+
+`:focus-visible` does **not** activate for scripted focus, so `el.focus()` makes a perfectly good focus ring
+look absent. A programmatic probe on 2026-07-30 reported "4 of 10 controls have no focus indicator"; a real
+`Tab` keypress showed `:focus-visible` matching with a `2px solid` outline. **The finding was a false
+negative and would have been a filed bug.**
+
+```js
+// WRONG: el.focus() then diff computed style
+// RIGHT: browser_press_key('Tab'), then check document.activeElement
+//        and el.matches(':focus-visible')
+```
+
+Same family as the B35 lesson: **measure what the browser actually paints for a real user action.**
+
 ### RTL bidi-order bug (B35) — a detector, and the two guards it MUST have
 
 In an RTL session, a run of **Latin/digit** text inside a `direction:rtl` container gets **visually reordered**

@@ -48,6 +48,7 @@
 | B34 | P4 | Language dropdown option names all English regardless of UI language (endonyms?) — judgment, independent of B33 |
 | B35 | **P2** | **Arabic/RTL: numeric, unit and date runs render in REVERSED visual order (no bidi isolation) — DOM is correct, rendering is wrong; invisible to text extraction** |
 | B36 | P3 | Water-amount slider is a custom DIV with no `role`/`aria-valuenow`/keyboard support — unusable by keyboard or screen reader |
+| B37 | P3 | 7 text elements fail WCAG AA contrast — worst **1.79:1** on the Deficit **data value**; active nav pill 3.45:1 |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -1684,3 +1685,67 @@ Sleep: `Log Sleep`, `Time asleep`, `of 8h 0m in bed`, `Bedtime`, `Wake up`, `Sav
 Activity: `Log Activity`, `Date`, `Time`, `Duration`, `Calories`, `Estimated · … kcal`,
 `Convert this activity to`, `Active Minutes`, `Log activity`, plus all ~40 activity names and 5 category
 headings. The activity names are likely a **backend master list** → `[FE-BE TBD]`, needs a source call.
+
+---
+
+# ADDENDUM 2026-07-30 (thirteenth pass) — ACCESSIBILITY DEPTH: contrast + keyboard (never done before in any language)
+
+Dimension **U10** had only ever been checked for `<html lang>`. This pass measured **contrast ratios** and
+**keyboard traversal** properly. Session: Arabic, Diary, 1440.
+
+## 🔴 B37 — [P3] NEW — 7 text elements fail WCAG AA contrast, worst at 1.79:1
+**Type:** Accessibility · **Layer:** Frontend (CSS) · **Language-independent**
+**Where:** Diary (measured); expect the same tokens elsewhere.
+
+Method: computed `color` vs the **effective** background (walking ancestors to the first non-transparent
+`background-color`), relative luminance per WCAG, threshold **4.5:1** normal / **3:1** large
+(≥24px, or ≥18.66px bold).
+
+| Text | Ratio | Required | Size/weight | Class |
+|---|---:|---:|---|---|
+| **`-7,381`** (Deficit **value**) | **1.79** | 4.5 | 16px/700 | `.cal-cell-val` |
+| **`Deficit`** | **1.79** | 4.5 | 11px/600 | `.cal-cell-unit` |
+| `100%` | 2.45 | 4.5 | 11px/600 | `.bar-pct` |
+| `Need Help with Vantage Fit?` | 3.17 | 4.5 | 13px/500 | — |
+| **`Summary`** (**active** nav pill) | 3.45 | 4.5 | 14px/500 | `.pill.active` |
+| `Add` | 3.45 | 4.5 | 11px/600 | `.quick-add-trigger-label` |
+| `50%` | 3.45 | 4.5 | 11px/600 | `.bar-pct` |
+
+**Worst case is a data value.** `-7,381` — the user's calorie deficit — at **1.79:1** is effectively
+unreadable for low-vision users. The **active navigation item** failing at 3.45:1 is the second concern,
+since it is the primary "where am I" signal.
+
+**Caveat stated:** the background walk resolves to the first opaque ancestor colour. Where text sits on a
+**gradient or image** the true ratio may differ. The `.cal-cell-*` and `.bar-pct` cases are on tinted chips,
+so those numbers should be spot-confirmed with a dropper before the fix is scoped. **The failures are real;
+the exact ratios carry that caveat.**
+
+## ✅ PASS — keyboard focus indication WORKS (and my first measurement was WRONG)
+
+**Corrected finding.** An initial probe using programmatic `.focus()` suggested 4 of 10 controls had **no**
+focus indicator. **That was a false negative.** `:focus-visible` does not activate for scripted focus.
+
+Re-tested with a **real `Tab` keypress**:
+
+| Check | Result |
+|---|---|
+| `el.matches(':focus-visible')` | **true** ✅ |
+| Outline | **`2px solid rgb(101, 74, 183)`** ✅ |
+| Stylesheet rules | **154 `:focus` + 36 `:focus-visible`** — deliberately implemented ✅ |
+
+**Focus visibility PASSES.** Recorded as a pass, and **the trap is recorded in the skill**: never assess focus
+indicators with `.focus()` — drive a real Tab.
+
+## ✅ PASS — keyboard reachability and RTL tab order
+
+- **33 focusable elements; only 1 interactive element not focusable.**
+- **Tab order is correctly RTL.** The header flows right-to-left by x-position
+  (1130 → 656 → 583 → 511 → 439 → 367 → 213 → 150) and so do the Fit tabs
+  (Summary 831 → Challenges 724 → Programs 626 → Community 516). **Correct for an RTL locale.**
+- Minor, not logged: after Community (x=516, leftmost) focus jumps to `Add` (x=1216, far right). Defensible
+  as a separate control group, but a keyboard user does traverse leftward then jump right.
+
+## Remaining U10 gaps after this pass
+- **B37** contrast (above) · **B36** custom controls without ARIA · **B30** modal semantics + focus not moved
+  into dialogs · earlier findings on `alt` text and icon-button names.
+- **Not done:** screen-reader pass with an actual AT, and contrast on routes other than Diary.
