@@ -46,6 +46,7 @@
 | B32 | P3 | Past challenge shows an end date **before** its start date (`07 Oct 2025 - 15 Sep 2025`) [FE-BE TBD] |
 | B33 | **P1** | **Fit i18n endpoint serves the SPA HTML shell, not JSON — Fit localization broken in EVERY language. Supersedes B10; likely explains B3/B16/B19/B20/B25** |
 | B34 | P4 | Language dropdown option names all English regardless of UI language (endonyms?) — judgment, independent of B33 |
+| B35 | **P2** | **Arabic/RTL: numeric, unit and date runs render in REVERSED visual order (no bidi isolation) — DOM is correct, rendering is wrong; invisible to text extraction** |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -1288,3 +1289,96 @@ tested on this surface as it stands.**
 ## Split observation
 `Offres des partenaires` (heading) is **French** while the `Library`/`Offerings` sub-tab labels beside it are
 **English** — delivery is split even within one sub-tab. More support for the two-mechanism hypothesis.
+
+---
+
+# ADDENDUM 2026-07-30 (eighth pass) — ARABIC / RTL: RTL WORKS here, but a NEW P2 bidi bug
+
+Chosen because **RTL is structural and therefore NOT blocked by B33** — whether `dir="rtl"` is set and
+whether the layout mirrors are testable regardless of the dictionary. Session: `<html lang>="ar"`, 1440.
+Full detail: `../Arabic_Pass_Conclusion_2026-07-30.md`.
+
+## ✅ MAJOR POSITIVE — RTL *is* implemented on the employee web (do NOT copy the dashboard's AR#1 across)
+
+| Check | Employee web | Admin dashboard (AR#1) |
+|---|---|---|
+| `<html dir>` | **`rtl`** ✅ | absent ❌ |
+| `body` computed direction | **`rtl`** ✅ | `ltr` ❌ |
+| `main` computed direction | **`rtl`** ✅ | — |
+| `<html lang>` | `ar` ✅ | `en` ❌ |
+
+**Visually confirmed mirrored:** logo moved to the right · nav order reversed (Community → Programs →
+Challenges → Summary, right-to-left) · cards reordered right-to-left (Snapshot right, Trends centre,
+Challenges left) · headings right-aligned · progress bars fill from the right · carousel chevrons flipped ·
+Vitals/Health cards right-aligned.
+
+**The two surfaces differ fundamentally on RTL.** The dashboard's AR#1 ("RTL not implemented") must **not** be
+assumed for the employee web. This is exactly why per-surface verification is required.
+
+## 🔴 B35 — [P2] NEW — Numeric, unit and date runs render in REVERSED VISUAL ORDER in Arabic (no bidi isolation)
+**Type:** UI / Localization (bidi) · **Layer:** Frontend (CSS) · **Arabic/RTL-specific**
+**Where:** Summary — Trends card, Snapshot card, Vitals, Health. Expect it wherever a Latin-script value sits
+in an RTL container.
+
+**The DOM is CORRECT; the RENDERING is wrong.** Measured on the same elements:
+
+| DOM `textContent` (correct) | Renders on screen as |
+|---|---|
+| `4 hrs 19 mins` | **`hrs 19 mins 4`** |
+| `0 sec` | **`sec 0`** |
+| `9 mins` | **`mins 9`** |
+| `/32 mins` | **`mins 595/32`** |
+| `24 - 30 Jul` | **`Jul 30 - 24`** |
+| `23 - 30 Jul` | **`Jul 30 - 23`** |
+| `تم التحديث في 01 Apr 2026` | **`Apr 2026 01 …`** (date parts scrambled) |
+| `g/dL` + `16.6` | **`g/dL 16.6`** |
+
+**Root cause:** the container has `direction: rtl` and **`unicode-bidi: normal`** (verified) — no isolation.
+A run of neutral/LTR characters (digits + Latin unit words) inside an RTL paragraph is therefore reordered by
+the browser's bidi algorithm. **The app is not applying `unicode-bidi: isolate`, `<bdi>`, or `dir="ltr"` to
+these value+unit spans.**
+
+**Expected:** `4 hrs 19 mins` reads as `4 hrs 19 mins`; a date range reads `24 - 30 Jul`.
+**Actual:** the visual token order is reversed, so a duration reads as `hrs 19 mins 4` and a date range as
+`Jul 30 - 24`.
+
+**Why P2, not cosmetic:** an Arabic user reading `Jul 30 - 24` sees a **wrong date range**, and
+`hrs 19 mins 4` is not parseable as a duration. This is comprehension/data-integrity, not styling.
+
+**⚠️ It is CAUSED BY B33 interacting with RTL.** If those units and month names were translated to Arabic
+they would be RTL-native and would not reorder. So **B33 escalates in Arabic from "wrong language" (cosmetic)
+to "actively misleading" (P2).** Fixing B33 will fix most instances; the remaining fix is bidi isolation on
+any genuinely-Latin value.
+
+**⚠️ METHOD NOTE — this bug is INVISIBLE to text extraction.** `textContent` returns the correct order, so
+every string-dump-based check reports it as passing. **It can only be found by looking at the screen.** This
+is the strongest justification yet for the skill's standing visual-review rule.
+
+**Evidence:** `../evidence/summary_ar_rtl.png`
+
+## Arabic numerals — PASS (with a note), and NOT the dashboard's AR#3
+
+All numbers render in **Western digits** (`846950`, `5000`, `595`, `1429`, `16.6`) with **zero Arabic-Indic
+digits** and **no mixing within a string**. The dashboard's AR#3 defect was *mixing both systems in one
+string* — that does **not** reproduce here. Consistent Western digits for Arabic is a defensible product
+choice. **Recorded as a PASS with a product note, not a defect.**
+
+## B33 in Arabic
+**17 % Arabic (12 of 72)** on Summary — the same profile as German (16 %) and French (13 %). Surviving Arabic
+strings mirror the other languages exactly: `خطوات` (steps), `الدقائق النشطة` (active minutes),
+`متوسط الخطوات`, `الترتيب الأسبوعي` (weekly rank), `التقدم الأسبوعي` (weekly progress),
+`أحدث شارة حصلت عليها` (latest badge), `الهيموغلوبين` (hemoglobin).
+
+**This is informative:** the surviving keys have **Arabic translations too**, so whatever mechanism still
+delivers them covers Arabic as well — further support for the two-delivery-mechanism hypothesis in the B33
+write-up. English chrome unchanged: `Summary`, `Snapshot`, `Trends`, `Challenges`, `Week 1`, `Vitals`,
+`Health`, `Wellness Score`, `Add`.
+
+## B34 confirmed in a second language
+In the **French** session the language dropdown placeholder was `Sélectionner` (French) while all 16 option
+names stayed English → **B34 is language-independent**.
+
+## B2 confirmed in a third data point
+Switching **from French**: *"Vous avez changé votre langue pour **{language}**. Veuillez vous reconnecter pour
+accéder au site."* — literal `{language}` again. **Broken from de and fr; works only from English.** Also
+formal *votre* → B12.
