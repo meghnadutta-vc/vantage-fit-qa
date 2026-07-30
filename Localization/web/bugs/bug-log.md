@@ -1608,3 +1608,79 @@ Arabic locales commonly use 24-hour. **Two surfaces now — worth a product deci
 Sleep and Activity modals contain **zero** Arabic strings. The Activity picker's ~40 activity names are
 likely backend master-list data (the same class as the dashboard's CC#4 `[FE-BE TBD]`) — **needs a source
 call before classifying.**
+
+---
+
+# ADDENDUM 2026-07-30 (twelfth pass) — FIELD-LEVEL validation on the newly-opened forms
+
+Nothing was saved — all testing was of **gating and derived-value behaviour**, which writes no data. The Sleep
+value was altered in-form and the modal closed **without saving**.
+
+## ✅ PASS — there is NO free-text numeric input on this surface, so the comma-decimal risk does not exist
+
+Scanned the Activity and Sleep forms for **any** typeable surface: native `input`/`textarea`,
+`isContentEditable`, or `role` in `textbox|spinbutton|combobox`. **Result: zero on both.** All numeric entry is
+**stepper-based**.
+
+**Why this matters:** comma-decimal input (`2,5`) was the admin dashboard's **only credible P1 lead** (gap G5)
+and it found a real 10×-wrong-value defect there. **That entire defect class is structurally impossible on
+these employee-web forms** — you cannot type a number at all. **Recorded as a PASS so it is never re-tested.**
+*(Caveat: this covers the Activity, Sleep and Weight forms. Any future free-text numeric field would reopen it.)*
+
+## ✅ PASS — derived-value recalculation is mathematically CORRECT (Activity form)
+
+Drove Duration down 45 min → 15 min (1 min per click) and checked every dependent value:
+
+| Duration | Calories shown | Estimated range | Active Minutes |
+|---|---|---|---|
+| 45 min | **180** | `125–234 kcal` | 45 |
+| 15 min | **60** | `42–78 kcal` | 15 |
+
+- 180 ÷ 45 = **4.0 kcal/min**; 60 ÷ 15 = **4.0 kcal/min** → **consistent** ✓
+- Range 125–234 over 45 min = 2.78–5.20 /min; 42–78 over 15 min = 2.80–5.20 /min → **consistent** ✓
+- "Convert this activity to → Active Minutes" tracks Duration exactly ✓
+
+**Three derived values all recalculate correctly and stay mutually consistent.** A genuine functional pass.
+
+## ✅ PASS — stepper gating works where a real bound exists
+Sleep "Time asleep": **`+` is correctly `disabled` at 8h**, the "of 8h 0m in bed" cap (bedtime 9:00 PM →
+wake 5:00 AM = 8h). Decrements in **5-minute** steps. Lower floor not reached within 40 clicks (8h 0m → 4h 40m).
+Activity Duration decrements in **1-minute** steps; floor not reached within 30 clicks (45 → 15 min).
+
+## ⚠️ Submit is never gated on any of these forms
+`Save` (Sleep) and `Log activity` (Activity) are **never `disabled` and never `aria-disabled`**, at any value
+reached. Combined with **B31** (Log Water submits silently with nothing entered), the pattern is:
+**these forms do not gate submission — they accept whatever state they are in.** Not asserted as a defect on
+its own (an always-valid form legitimately never gates), but it is the same shape as B31 and worth one
+product/dev question: *should a 0-value or unchanged-value save be prevented, or confirmed?*
+
+## B30 — a THIRD level of dialog a11y, so now precisely characterised across 4 modals
+
+| Modal | `role` | `aria-modal` | Accessible name | Focus moved in? |
+|---|---|---|---|---|
+| Log Water | ❌ | ❌ | ❌ | ❌ |
+| Log Weight | ❌ | ❌ | ❌ | ❌ |
+| **Log Activity** | ✅ `dialog` | ✅ `true` | ❌ **none** | ❌ |
+| **Log Sleep** | ✅ `dialog` | ✅ `true` | ✅ `fit-sheet-title-2` | ❌ |
+
+**Three different levels of compliance across four modals in one feature.** The fix is a consistency pass,
+not new work — **Log Sleep is already fully correct except for focus.**
+**Focus management is missing in all four**, which is the one part needing genuinely new code.
+
+## B36 — the no-ARIA custom-control pattern is now on THREE modals
+`DIV.wl-ruler` (Water) · `button.sl-actual-stepper` (Sleep) · `button.la-step` ×4 (Activity — Duration and
+Calories). All `role: "(none)"`, no `aria-valuenow`. **Keyboard/screen-reader users cannot set duration,
+calories, sleep time or water amount.** Steppers are at least real `<button>`s (so focusable and clickable),
+whereas the water ruler is a bare `DIV` — so the water ruler remains the worst case.
+
+## 12-hour time format — now a THIRD surface
+Activity form shows `Time: 9:21 AM`. With the Sleep modal (`6 PM`/`9:00 PM`) and Community Events
+(`03:00 PM - 04:00 PM`), that is **three surfaces** rendering 12-hour AM/PM in an **Arabic** session.
+Still **Needs Product Confirmation** rather than a logged defect — but three surfaces makes it a policy
+question, not an oversight.
+
+## Both forms remain 100 % English in Arabic (B33)
+Sleep: `Log Sleep`, `Time asleep`, `of 8h 0m in bed`, `Bedtime`, `Wake up`, `Save`.
+Activity: `Log Activity`, `Date`, `Time`, `Duration`, `Calories`, `Estimated · … kcal`,
+`Convert this activity to`, `Active Minutes`, `Log activity`, plus all ~40 activity names and 5 category
+headings. The activity names are likely a **backend master list** → `[FE-BE TBD]`, needs a source call.
