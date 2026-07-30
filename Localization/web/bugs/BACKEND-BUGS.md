@@ -207,10 +207,13 @@ question mark). Data-quality issue; a user sees the question twice.
 
 | Priority | Count | IDs |
 |---|---:|---|
-| **P2** | **11** | BE-1, BE-2, BE-3, BE-6, BE-7, BE-8, BE-9, BE-13, BE-14, BE-15, BE-16 |
-| **P3** | **4** | BE-4, BE-10, BE-11, BE-12 |
-| **P4** | **3** | BE-5, BE-17, BE-18 |
-| **Total** | **18** | |
+| **P2** | **14** | BE-1, BE-2*, BE-3, BE-6, BE-7, BE-8, BE-9, BE-13, BE-14†, BE-15, BE-16, **BE-20**, **BE-23**† |
+| **P3** | **8** | BE-4, BE-10, BE-11, BE-12, **BE-19**, **BE-21**, **BE-22** |
+| **P4** | **3** | BE-5, BE-17†, BE-18‡ |
+| **Total** | **23** | |
+
+\* BE-2 needs a design answer first · † backend but **not localization** (BE-14, BE-17, BE-23) ·
+‡ BE-18 is **rendered-only, unverified**
 
 ## Four classifications this run CORRECTED
 These were filed as frontend bugs and are provably backend — the strings are in the API body:
@@ -223,3 +226,86 @@ These were filed as frontend bugs and are provably backend — the strings are i
    format them per locale (BE-7, BE-8).
 4. Fix the plural rule and the decimal separator in task templates (BE-4, BE-15).
 5. Repair the stored image paths and the fallback asset (BE-14).
+
+---
+
+# VERIFICATION AUDIT — 2026-07-30 (asked: "are you sure these are all backend? did you check the APIs?")
+
+Fair challenge. Audited every finding against the standard **"was this read from an API response body?"**
+
+## Verification status
+
+| Verified from a body | Count |
+|---|---:|
+| ✅ **Read directly from an API response body** | **17 of 18** |
+| ⚠️ **Inferred from the rendered page only** | **1** (BE-18) |
+
+**BE-15 was the weakest item and is now VERIFIED.** Previously only seen rendered; now read from
+`GET /vantagefit/api/v1/challenge/info?id=25423` in a **German** session:
+```json
+"task_title": "Trinken Sie an 7 Tagen in dieser Woche mindestens 67.6 fl oz Gläser Wasser."
+```
+Four defects in one backend string, all confirmed in the payload: **`67.6 fl oz Gläser`** (nonsensical
+unit + noun) · **imperial unit in a German locale** · **`67.6` period decimal where German requires `67,6`** ·
+**`Trinken Sie`** formal register.
+
+**BE-18 (`Excercise` / `Mindfuless` typos) remains rendered-only.** The category names come from
+`content/byCategoryName`, whose body I have **not** read. **Treat BE-18 as unverified** until it is.
+
+## ⚠️ Three findings are BACKEND but NOT LOCALIZATION — reclassify before filing
+
+These belong to the backend team but do not belong in a *localization* ticket:
+
+| ID | What it actually is |
+|---|---|
+| **BE-14** | Malformed stored image paths / 404s → **asset & data integrity**, language-independent |
+| **BE-17** | Duplicate adherence activities → **data quality** |
+| **BE-18** | Stored typos → **content quality** (and unverified) |
+
+## ⚠️ BE-2 needs a design answer before it is called a defect
+`content/top` → `textConfig.general.heading` etc. may be **intentionally tenant-configurable** content that the
+client is meant to render as-is. If so the defect is not "the backend sends English" but **"configurable
+strings have no localization mechanism"** — a design gap, not a bug. **Ask before filing.**
+
+---
+
+# NEW findings from the German `challenge/info` body
+
+## BE-19 — [P3] Mixed-language date **inside one backend string**
+```json
+"caption": "Endet am Aug 17, 2026 11:59 PM"
+```
+German prefix + **English month `Aug`** + **12-hour `11:59 PM`** in a German locale (German uses 24h).
+**This is B1's backend source, proven in a German session** — so B1 is not Arabic-specific.
+
+## BE-20 — [P2] Number formatting is INCONSISTENT WITHIN THE SAME RESPONSE
+Same payload, same language:
+```json
+"footnote":   "Verdienen Sie 7.000 Fit-Punkte"                      ← ✅ correct German (period thousands)
+"task_title": "... mindestens 67.6 fl oz Gläser Wasser."            ← ❌ wrong (period decimal; needs 67,6)
+```
+**The backend has correct locale number formatting in one code path and not in another.** This is the
+strongest single argument that formatting should not be done server-side at all — send raw values.
+
+## BE-21 — [P3] `Leaderboard` and `SCORE` are English in a German session
+```json
+"layoutType":"leaderboard", "info": { "title": "Leaderboard" }
+"progressCaption": "SCORE"
+```
+Confirms the rendered `Leaderboard` / `You` finding as **backend**, on an endpoint that is otherwise
+well-translated (`Wöchentlicher Rang`, `Thema der Woche`, `Fortschritt der Herausforderung`, `2 Wochen 4 Tage`,
+`Wöchentlich` / `Gesamt`).
+
+## BE-22 — [P3] `"Week 1"` untranslated on a SECOND endpoint
+`challenge/info` → `layout[0].info.subtitle: "Week 1"`, while the same object has
+`"caption":"Thema der Woche"` and `weekInfo.title:"Woche"` correctly in German.
+**So the German word for "week" exists in this very response.** BE-16c confirmed twice, on two endpoints.
+
+## 🔴 BE-23 — [P2] **NOT localization** — leaderboard pagination URLs point to `localhost:9050`
+```json
+"value": { "next": "localhost:9050/vantagefit/api/v1/challenge/info?id=25423&page=1",
+           "last": "localhost:9050/vantagefit/api/v1/challenge/info?id=25423&page=1" }
+```
+A **developer-machine URL leaked into a UAT API response.** Any client following these links breaks, so
+leaderboard pagination cannot work. Found incidentally during the localization audit.
+**Flag to the backend team immediately — this is unrelated to localization and probably affects production.**
