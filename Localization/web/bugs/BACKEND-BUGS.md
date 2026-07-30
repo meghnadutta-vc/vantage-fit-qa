@@ -309,3 +309,57 @@ well-translated (`Wöchentlicher Rang`, `Thema der Woche`, `Fortschritt der Hera
 A **developer-machine URL leaked into a UAT API response.** Any client following these links breaks, so
 leaderboard pagination cannot work. Found incidentally during the localization audit.
 **Flag to the backend team immediately — this is unrelated to localization and probably affects production.**
+
+---
+
+# PER-LANGUAGE MATRIX — 3 of 16 languages captured (ar · de · fr)
+
+Each language requires a **profile switch + full re-login** to change what the API returns. There is **no
+shortcut**: the API accepts no locale header (BE-1), and authenticated calls cannot be replayed manually —
+auth uses an **HttpOnly cookie**, so a hand-built `fetch` gets 401 even with the session token. *(Attempted
+and confirmed 2026-07-30.)*
+
+## The matrix
+
+| Field / endpoint | **Arabic** | **German** | **French** | Verdict |
+|---|---|---|---|---|
+| `challenge/*` → `rankTitle`, `progressTitle` | ❌ English | ✅ `Wöchentlicher Rang` | ✅ French | **Arabic coverage gap** |
+| `configuration` → headings, `hra.status` | ❌ English | ✅ `Partner-Angebote`, `Unterdurchschnittlich` | ✅ `Offres des partenaires` | **Arabic coverage gap** |
+| **`today/overview` → everything** | ❌ English | ❌ **English** | ❌ **English** | 🔴 **no localization for ANY language** |
+| **`subtitle: "Week 1"`** | ❌ English | ❌ **English** | ❌ **English** | 🔴 **missing key in ALL 3** |
+| **`Leaderboard` / `SCORE`** | ❌ English | ❌ **English** | ❌ **English** | 🔴 **missing key in ALL 3** |
+| Water task wording | ❌ English | `67.6 fl oz Gläser Wasser` | `67.6 fl oz verres d'eau` | 🔴 **nonsensical in both translated languages** |
+| Water task **decimal** | — | ❌ `67.6` (needs `67,6`) | ❌ `67.6` (needs `67,6`) | 🔴 **wrong in both** |
+| Points **thousands** | — | ✅ `7.000` | ✅ `7 000` | ✅ **correct in both** |
+| Plural "1 day" | `1 days` ❌ | `1 Tagen` ❌ | `1 jours` ❌ | 🔴 **wrong in ALL 3** |
+| Formal register | — | ❌ `Trinken Sie`, `Ihre` | ❌ `Buvez`, `Votre` | 🔴 **formal in both** |
+
+## What the three languages establish
+
+**Confirmed language-independent** (present in every language tested — these are the priority fixes):
+**BE-16a** `today/overview` unlocalized · **BE-22** `"Week 1"` · **BE-21** `Leaderboard`/`SCORE` ·
+**BE-4** plural rule · **BE-15** water-task wording and decimal separator · **BE-12** formal register ·
+**BE-20** number-format inconsistency *(points correct, task decimal wrong — in the very same payload,
+in both de and fr)*.
+
+**Confirmed Arabic-only** (BE-16b): the coverage gap. Endpoints that are fully de/fr return 100 % English
+for Arabic.
+
+## Remaining 13 languages — recommendation rather than a blanket sweep
+
+The pattern is now **stable across 3 languages** (2 with backend coverage, 1 without), and every
+language-independent defect above has been confirmed **3 times**. Additional languages would add **coverage**
+information only, not new defect classes.
+
+**Worth capturing (4):** **es** and **pt** — the remaining locales with a wired frontend dictionary, so the
+ones the product claims to support; plus **pt-BR** / **pt-PT** as one variant check.
+
+**Low value (9):** Chinese Simplified · Dutch · French Canada · Italian · Korean · Russian · Vietnamese ·
+Hungarian · Japanese. None has a wired frontend dictionary, so "no backend coverage either" is the expected
+and near-certain result. **One spot-check of a single unwired language would confirm the whole group.**
+
+**Cost, stated honestly:** ~8–10 tool interactions per language for the switch and re-login alone, before any
+capture. 13 languages ≈ 120+ interactions.
+
+## Status
+**3 of 16 captured. Every defect class is confirmed; only per-language coverage remains open.**
