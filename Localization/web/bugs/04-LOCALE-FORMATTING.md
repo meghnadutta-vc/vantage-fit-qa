@@ -102,11 +102,20 @@ converts — partial conversion is a data-integrity class of bug, not cosmetic.*
 
 ---
 
-## B8 — [P3] `Active Minutes` capitalized inconsistently · [FE]
+## B8 — [P3] `Active Minutes` capitalized inconsistently · **[BE] — reclassified 2026-07-30**
 
-French renders **`Minutes Actives`** (capital A) in one place and `Minutes actives` in another. Also confirmed
-in Portuguese. Cosmetic, but it is the kind of thing that makes a translation look unproofed. Canonical entry:
-`05-LINGUISTIC-QUALITY.md`.
+**Proven backend.** Three fields, **one `app/home` response**, French session:
+
+| JSON path | Value |
+|---|---|
+| `progressUI.metrics[1].displayTitle` | **`Minutes Actives`** ← wrong |
+| `progressUI.metrics[1].legend` | **`Minutes Actives`** ← wrong |
+| `trends.snippets[1].title` | **`Minutes actives`** ← **correct** |
+
+Same term, two casings, same payload. The frontend receives both identically — **it cannot be a client-side
+bug**, and it cannot be "the backend can't do casing" because one of the three is right.
+
+Confirmed instance of **BE-5**. Canonical entry moved to `11-BACKEND.md`.
 
 ---
 
@@ -146,7 +155,11 @@ Those are different fixes with different owners.
 one right and one wrong, proves the server is doing locale-aware formatting **inconsistently** — so
 "the frontend should just format it" is not an available answer for these fields.
 
-**And the gate on all of it is BE-1 / B38:** the frontend sends **no locale at all**, so the backend is
-formatting for a locale it was never told. Fix that first; several of these may resolve on their own, and none
-of them can be *verified* until it is.
+**On BE-1 / B38 — corrected 2026-07-30.** It was previously written here that the backend "is formatting for a
+locale it was never told". **That is wrong.** Live capture shows the request carries no locale **and the response
+comes back correctly French** — the backend resolves the language **server-side, from the account.**
+
+So these formatting defects are **not** explained away by the missing header. The backend **knows** the locale
+and still formats inconsistently — which is exactly what **BE-20** shows within a single payload. **Fixing B38
+will not fix this group.** They are independent, and this group is genuinely a backend formatting defect.
 </content>

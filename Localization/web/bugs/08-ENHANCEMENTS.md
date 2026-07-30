@@ -24,6 +24,10 @@ so.
 
 `Wellness Score` renders in English in de/es/fr/pt and in the French session captured 2026-07-30.
 
+**Source resolved 2026-07-30 — this is BACKEND content.** `app/home` → `healthInfo.title = "Wellness Score"`.
+So if product rules it *should* translate, the fix is **backend content**, and it is **not** part of B39's
+frontend externalisation scope. That materially changes who owns the follow-up.
+
 **Why we are not filing this as a defect:** it is plausibly a **brand / product term**, in the same family as
 `Vantage Fit` and `Vantage Points`. Brand terms conventionally stay as authored across locales, and translating
 them can actively harm recognition.

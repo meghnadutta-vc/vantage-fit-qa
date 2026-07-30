@@ -87,7 +87,10 @@ formatter, not just a string, so it will not be fixed by translation alone.
 **BE-7**: units arrive from the backend **pre-formatted and imperial**, which means the frontend cannot fix
 this alone.
 
-### B9 — `Wellness Score` stays English · P4 · **judgment call**
+### B9 — `Wellness Score` stays English · P4 · **judgment call** · **BACKEND-SERVED (confirmed 2026-07-30)**
+**Source resolved:** `app/home` → `healthInfo.title = "Wellness Score"` in a French session. It comes from the
+**API**, not the frontend bundle — so it is **not** part of B39's externalisation scope, and the earlier
+"inconclusive, may be in an unloaded chunk" note is superseded.
 **Our opinion: this is probably correct as-is** and should not be filed as a defect until product rules on it.
 `Wellness Score` is plausibly a **brand/product term**, like "Vantage Points". Brand terms conventionally stay
 as authored. **Needs one product answer**, then it moves to `09-NOT-A-BUG.md` or becomes a real bug. Canonical
@@ -151,7 +154,7 @@ list before flagging any date or mixed-language finding.**
 
 # ═══ BACKEND ═══
 
-Every backend-served English string is in **`11-BACKEND.md`** (BE-1–BE-23). The ones cross-referenced above:
+Every backend-served English string is in **`11-BACKEND.md`** (BE-1–BE-24). The ones cross-referenced above:
 **BE-7** (units), **BE-9** (= B17), **BE-10** (= B18), **BE-11** (= B26), **BE-22** (= B4).
 
 **The gate on all of them is BE-1 / B38** — the frontend sends no locale, so the backend cannot localize even

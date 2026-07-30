@@ -102,8 +102,31 @@ they need the correction.
 
 ## B38 — [P2] The frontend never sends the user's locale to the Fit API · [FE] · = **BE-1**
 
-No `Accept-Language` header, no locale query parameter, on **any** `/vantagefit/api/v1/*` call. So even the
-backend — which **does** translate (see `11-BACKEND.md`) — has no way to know which language to reply in.
+No `Accept-Language` header, no locale query parameter, on **any** `/vantagefit/api/v1/*` call. Confirmed on
+live headers: `device` · `apptype: Fitness` · `appversion` · `appname` · xsrf — and nothing else.
+
+### ⚠️ CORRECTED 2026-07-30 — the observation stands, the stated impact was wrong
+
+B38 originally concluded *"so the backend cannot localize."* **It can, and it does.** A French session with
+**no locale in the request** returns correctly French bodies — `Évènements à venir`, `Pas effectués`,
+`Progrès hebdomadaire`, `Hémoglobine`. The backend resolves the language **server-side, from the account**.
+
+**So the real defect is not a missing header — it is two sources of truth for locale:**
+
+| Layer | Source of language |
+|---|---|
+| Frontend chrome | client-side (profile / stored preference) |
+| Backend content | **the account record** |
+
+**This may be the mechanism behind B25.** **B11** says the preference **is not persisted** — so the client can
+hold language X while the account holds Y, producing **chrome in X and content in Y**. That is precisely B25's
+signature, *including the part that had no explanation*: why the content query language drifts independently.
+
+**Cheap for a developer to confirm or kill:** does the language selector write to the **account**, or only to
+the client?
+
+**Severity:** **P3** as an isolated architectural smell; **stays P2 in combination**, because it is a candidate
+mechanism for B25. **Do not close it — re-scope it.**
 
 **B39 and B38 are both required.** Fixing B39 alone leaves all API-supplied text English; fixing B38 alone
 leaves all chrome English. Neither is sufficient. **This is the single most important sequencing fact in the

@@ -2271,3 +2271,196 @@ dashboard side as a cleanup item; this confirms it is not contained to the admin
 shows other junk-named content (`CREATED FROM SITE PART 3`, `This is also a test`, `Youtube link`) that is
 **not** from this engagement — pre-existing, and equally visible to employees.
 
+
+---
+
+# ADDENDUM 2026-07-30 (nineteenth pass) — BACKEND MECHANISM FOUND. BE-1/B38's stated impact was WRONG. B8 and B9 reclassified to backend. New BE-24.
+
+**Phase: backend coverage.** Started by asking a cheaper question than "capture 13 more languages": **if the
+frontend sends no locale (B38), how does the backend know to reply in German?** The answer reframes BE-1 and
+reclassifies two frontend bugs.
+
+**Method:** live network capture on `/ng/fit/summary` in a **French** session — real request headers and real
+response bodies, not a replayed `fetch`.
+
+---
+
+## 🔴 CORRECTION — BE-1 / B38's stated impact is disproven. The backend DOES localize.
+
+### What B38 / BE-1 says today
+
+> *"The frontend never sends the user's locale to the Fit API (no `Accept-Language`, no param) — **so the
+> backend cannot localize**; the backend replies in English."*
+
+### The first half is confirmed. The second half is false.
+
+**Confirmed — the request carries no locale.** Live headers on `GET /vantagefit/api/v1/configuration`:
+
+```
+device: web          apptype: Fitness      appversion: 3.2.0     appname: VantageFit
+x-xsrf-token: …      accept: application/json, text/plain, */*
+```
+
+**No `Accept-Language`. No locale header. No locale query parameter.** B38's *observation* stands.
+
+**Disproven — the backend replies in French anyway.** Same request, response body:
+
+| Endpoint | French strings | English UI strings |
+|---|---:|---:|
+| `configuration` | **5** | **0** |
+| `app/home` | **18** | 9 *(of which 2 are authored challenge names — expected)* |
+
+Examples from `configuration`: `Évènements à venir` · `Événements passés` ·
+`Pour répondre à l'ensemble de vos besoins en matière de bien-être.` ·
+`Découvrez quelles activités de bien-être ont lieu dans votre entreprise`
+
+Examples from `app/home`: `Pas effectués` · `Progrès hebdomadaire` · `Classement général` ·
+`Défi e-Marathon` · `Hémoglobine` · `Minutes de pleine conscience`
+
+### So where does the locale come from?
+
+**It is not in the request, and the response is correctly localized. Therefore the backend is resolving the
+language server-side — almost certainly from the user's account record.**
+
+**This is stated as the strong inference it is, not as proven.** What is proven: no locale in the request,
+correct French out. The account is the only obvious remaining source, but confirming *which* field requires
+backend access.
+
+### Why this matters — it is not just a wording fix
+
+**There are two sources of truth for "what language is this user in":**
+
+| Layer | Source |
+|---|---|
+| Frontend chrome | client-side (profile setting / stored preference) |
+| Backend content | **the account record, server-side** |
+
+**Two sources that can disagree — and a mechanism that makes them disagree already exists in this report.**
+
+**Candidate root-cause theory for B25, stated as a theory:**
+**B11** says the language preference **is not persisted** (it reverts to English after re-login). If the client
+can hold language X while the account holds language Y, then **chrome renders X and content renders Y** — and
+*that is exactly B25's observed signature*, including the part that had no explanation: **why the content query
+language drifts independently of the chrome.**
+
+So **B11 + B38 together may be the mechanism behind B25.** This is the most promising lead on B25 in the whole
+engagement and it is cheap for a developer to confirm or kill: *does the language selector write to the account,
+or only to the client?*
+
+### Severity and framing change
+
+| | Before | After |
+|---|---|---|
+| Claim | backend cannot localize; replies in English | **backend does localize, via the account** |
+| Real defect | missing header | **two sources of truth for locale** |
+| Standalone severity | P2 | **P3 as an isolated architectural smell** |
+| Severity *in combination* | — | **stays P2** — it is a candidate mechanism for B25 (P2) |
+
+**Do not close B38.** Re-scope it: *"locale is resolved from two independent sources; the frontend never
+transmits its own view of the language, so client and server can silently diverge."*
+
+**The dashboard contrast now reads differently too.** The dashboard **does** send `accept-language` — so it has
+**one** authoritative source per request. That is not just "more correct", it is **structurally less prone to
+B25-style divergence.** The dashboard's implementation is the reference for a reason.
+
+---
+
+## 🔴 B8 RECLASSIFIED — [P3] `Minutes Actives` casing is a **BACKEND** defect, and it is inconsistent *within one response*
+
+**B8 was filed as frontend. It is provably backend.** Three fields, **one API response**, `app/home`, French:
+
+| JSON path | Value |
+|---|---|
+| `progressUI.metrics[1].displayTitle` | **`Minutes Actives`** ← wrong |
+| `progressUI.metrics[1].legend` | **`Minutes Actives`** ← wrong |
+| `trends.snippets[1].title` | **`Minutes actives`** ← **correct** |
+
+**The same term, two different casings, in the same payload.** French convention is sentence case, so
+`Minutes actives` is right and the capitalized variant is the error.
+
+**Why this is decisive:** the frontend receives both strings identically and renders both faithfully. It cannot
+be a client-side bug. And it cannot be "the backend doesn't handle casing" — **one of the three is correct.**
+
+**This is the same class as BE-5** ("inconsistent capitalisation within one response") — B8 is now a confirmed
+instance of it, with exact paths. **Move B8's canonical entry to `11-BACKEND.md`.**
+
+## 🔴 B9 RECLASSIFIED — `Wellness Score` is **backend-served**, not a frontend bundle literal
+
+`app/home` → **`healthInfo.title = "Wellness Score"`** in a French session.
+
+**This resolves an open question, and corrects a guess of mine.** `02-UNTRANSLATED.md` recorded that
+`Wellness Score` was *"not found in the bundle — may be in an unloaded chunk or may come from the API"*, and
+listed it as **inconclusive**. **It comes from the API.** The inconclusive marker can be removed.
+
+**What changes:** the open product question — *"is `Wellness Score` a brand term?"* — is now a **backend
+content** question, not a frontend externalisation one. If product rules it should translate, the fix is in
+backend content, and it is **not** part of B39's scope.
+
+## B4 — confirmed on a THIRD endpoint, in a SECOND language
+
+`app/home` → `challenges[0].subtitle = "Week 1"` and `challenges[1].subtitle = "Week 1"`, **French session.**
+
+Previously confirmed in German and on one other endpoint (BE-22). Now: **three endpoints, two languages.**
+It is a specific missing backend key, not an endpoint-local slip.
+
+---
+
+## 🔴 BE-24 — [P3] NEW — French pluralization bug in a backend template
+
+Same `app/home` response, adjacent array entries:
+
+| Value | Correct? |
+|---|---|
+| `Défi e-Marathon (se termine dans 21 jours)` | ✅ plural correct |
+| **`Défi de course (se termine dans 1 jours)`** | ❌ **`1 jours` — should be `1 jour`** |
+| **`Défi de course (se termine dans 1 jours)`** | ❌ same |
+
+**Exactly parallel to B27 / BE-15's Spanish `1 días`.** So the pluralization defect is **not Spanish-specific** —
+it is a **shared backend template** that interpolates a count without applying a plural rule, and it will be
+wrong in **every language with plural inflection** at n=1.
+
+**Why this matters more than one string:** the correct `21 jours` sitting two entries away proves the template
+*can* produce correct plurals — it just has no n=1 rule. **One template fix covers every language.**
+Folded as **BE-24** rather than into BE-15 because it is a different language and a different endpoint, which
+together establish the *shared-template* conclusion neither could alone.
+
+---
+
+## Backend coverage — what this pass adds
+
+| Language | Status before | Status now |
+|---|---|---|
+| Arabic | captured | captured |
+| German | captured | captured |
+| **French** | *"still to capture"* | **CAPTURED — `configuration` + `app/home`, bodies inspected** |
+
+**4 of 16** (ar, de, fr + English baseline). Every defect class is now confirmed in **3 languages**.
+
+**The remaining 12 are still low-value for *defect discovery*** — but the reasoning has sharpened. Because the
+backend resolves locale from the account rather than the request, per-language coverage is a question about
+**what content exists per locale in the backend**, which a developer can answer from the data far more cheaply
+than QA can by re-logging-in 12 times (~8–10 interactions each, ~120 total).
+
+**Recommendation changed:** rather than QA capturing 12 more languages, **ask the backend team which locales
+have content coverage.** That is one question and it replaces roughly two days of switching.
+
+---
+
+## Corrections to the report files published earlier today
+
+These were written before this pass and are now out of date. **Patched in the same commit:**
+
+| File | Correction |
+|---|---|
+| `01-P1-P2-CRITICAL.md` | B38's stated impact reframed; the B11 + B38 → B25 theory added |
+| `02-UNTRANSLATED.md` | B9 marked backend-served, not inconclusive |
+| `04-LOCALE-FORMATTING.md` | B8 marked `[BE]`, not `[FE]` |
+| `05-LINGUISTIC-QUALITY.md` | B8 moved to the backend section with exact JSON paths |
+| `08-ENHANCEMENTS.md` | B9's product question re-owned to backend content |
+| `11-BACKEND.md` | BE-1 reframed · B8 added · BE-24 added · count 23 → 24 |
+
+**Method note:** this is the second time on this surface that a shortcut about FE/BE ownership has had to be
+withdrawn. The first was *"translated = backend, English = frontend"*. This one was *"no locale sent, therefore
+the backend can't localize"*. **Both were reasonable inferences that a response body disproved in one request.**
+The lesson is the same both times: **read the body, don't reason from the header.**
+

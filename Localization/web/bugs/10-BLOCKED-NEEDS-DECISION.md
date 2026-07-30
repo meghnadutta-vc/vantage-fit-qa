@@ -160,7 +160,7 @@ translate in any language, including the 5 already tested. B39 gives every langu
 
 ## Nothing has been filed to Jira · W19
 
-**39 frontend bugs and 23 backend findings, none in front of a developer.** The dashboard's pipeline
+**39 frontend bugs and 24 backend findings, none in front of a developer.** The dashboard's pipeline
 (12 category files → 13 tickets grouped by **fix unit**) has not been run here.
 
 **When it is run, the grouping should differ from the dashboard's**, because the defect shape differs:

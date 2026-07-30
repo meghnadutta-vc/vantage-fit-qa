@@ -107,15 +107,12 @@ both surfaces**.
 
 ---
 
-## B8 — [P3] `Active Minutes` capitalized inconsistently · [Copy/Casing]
+## B8 — [P3] `Active Minutes` capitalized inconsistently · **[BE] — moved to the backend section below**
 
-French renders **`Minutes Actives`** in one place and `Minutes actives` in another. Confirmed in Portuguese
-too. **Confirmed still present 2026-07-30.**
-
-French convention is sentence case here, so `Minutes actives` is correct and the capitalized variant is the
-error. Cosmetic, but visible — inconsistent casing is one of the clearest signals to a native reader that a
-translation was not proofed. Same class as the dashboard's TERM#2 (Polish `Tydzień`/`tydzień`, Russian
-`Неделя`/`неделя`).
+**Reclassified 2026-07-30 — this is a backend defect.** See the backend section at the foot of this file for the
+exact JSON paths. French convention is sentence case, so `Minutes actives` is correct and `Minutes Actives` is
+the error. Same class as the dashboard's TERM#2 (Polish `Tydzień`/`tydzień`, Russian `Неделя`/`неделя`) — **but
+unlike the dashboard's, this one lives in server data, not a frontend dictionary.**
 
 ---
 
@@ -170,6 +167,8 @@ vendor — **this surface has backend-owned linguistic defects**:
 | **BE-4** | Pluralization bug in a backend template |
 | **BE-5** | Inconsistent capitalisation **within one response** |
 | **BE-19** | Mixed-language date inside one backend string |
+| **BE-5 / B8** | **Inconsistent capitalisation within ONE response** — `progressUI.metrics[1].displayTitle` = `Minutes Actives` (wrong) beside `trends.snippets[1].title` = `Minutes actives` (correct), same `app/home` payload. **Decisive: the frontend receives both identically** |
+| **BE-24** | **French pluralization** — `(se termine dans 1 jours)` should be `1 jour`, sitting two array entries from a correct `21 jours`. Parallel to BE-15's Spanish `1 días`, so it is a **shared template with no n=1 rule** — one fix covers every inflected language |
 
 **Implication for whoever owns the register decision (B12):** because the backend returns prose the user reads,
 **whatever register product settles on must be applied to server-side strings too**, not only to frontend

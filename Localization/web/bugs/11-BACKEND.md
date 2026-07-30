@@ -1,10 +1,10 @@
 # 11 — BACKEND
 
-**23 findings, BE-1 – BE-23.** This file replaces the dashboard's `11-AC3-FALLBACK.md`, because the two
+**24 findings, BE-1 – BE-24.** This file replaces the dashboard's `11-AC3-FALLBACK.md`, because the two
 surfaces differ on exactly this point:
 
 > **The admin dashboard reported ZERO backend defects** (backend localization was declared out of scope).
-> **This surface has 23, every one quoted from a real API response body.**
+> **This surface has 24, every one quoted from a real API response body.**
 
 **Full detail — including the verbatim response-body quotes — is in [`BACKEND-BUGS.md`](BACKEND-BUGS.md).**
 This file is the **categorised view**: what each finding is, who owns it, and what order to fix in. It does not
@@ -24,24 +24,58 @@ confusion. **Only 502 indicates a real outage.**)*
 **Fit API base:** `/vantagefit/api/v1/` — endpoints inspected: `configuration` · `today/overview` ·
 `challenge/ongoing/all` · `content/top` · `content/byCategoryName` · `app/home` · `dashboard/activities/all`
 
-**Languages captured:** **Arabic** and **German**, same endpoints back to back, cross-checked against French.
-**3 of 16 captured** — see the closing section on why more would add coverage data, not new defect classes.
+**Languages captured:** **Arabic**, **German** and **French** — same endpoints, bodies inspected.
+**4 of 16 captured (incl. English baseline)** — see the closing section on why more would add coverage data, not new defect classes.
 
 ---
 
-## ⚠️ The one fact that gates every other finding in this file
+## ⚠️ The locale mechanism — read this before the findings
 
-## 🔴 BE-1 — [P2] The frontend sends no locale, so the backend cannot localize · = **B38**
+## 🔴 BE-1 — [P3 alone / P2 in combination] Locale has TWO sources of truth · = **B38** · **REFRAMED 2026-07-30**
 
-**No `Accept-Language` header. No locale query parameter. On any `/vantagefit/api/v1/*` call.**
+**No `Accept-Language` header. No locale query parameter. On any `/vantagefit/api/v1/*` call.** Confirmed on
+live headers — `device` · `apptype: Fitness` · `appversion` · `appname` · xsrf, and nothing else.
 
-So the backend is being asked to reply without ever being told which language to reply in.
+### ⚠️ The original conclusion was WRONG and is withdrawn
 
-**Fix this first.** Not for its own sake, but because:
+BE-1 previously read *"so the backend cannot localize; the backend replies in English."* **The backend localizes
+correctly.** A French session with **no locale in the request** returned:
 
-- Several findings below **may resolve on their own** once the locale arrives
-- **None of them can be *verified* until it does** — you cannot confirm a backend translation fix while the
-  server is guessing the locale
+| Endpoint | French strings | English UI strings |
+|---|---:|---:|
+| `configuration` | **5** | **0** |
+| `app/home` | **18** | 9 *(2 are authored challenge names — expected)* |
+
+`Évènements à venir` · `Pas effectués` · `Progrès hebdomadaire` · `Classement général` · `Hémoglobine` ·
+`Défi e-Marathon` · `Minutes de pleine conscience`
+
+**Therefore the backend resolves the language server-side — almost certainly from the account record.** Stated
+as the strong inference it is: what is *proven* is no locale in, correct French out.
+
+### The actual defect: two sources of truth
+
+| Layer | Source of language |
+|---|---|
+| Frontend chrome | client-side (profile / stored preference) |
+| Backend content | **the account record** |
+
+**And a mechanism that makes them diverge already exists in this report.** **B11** — the preference is **not
+persisted**. If the client holds language X while the account holds Y, you get **chrome in X, content in Y** —
+which is **B25's exact signature**, including the part that had no explanation: why the *content* query language
+drifts independently of the chrome.
+
+**B11 + BE-1 may be the root cause of B25.** Best lead in the engagement, and cheap to confirm:
+**does the language selector write to the account, or only to the client?**
+
+### What this changes about fix order
+
+**BE-1 is no longer the gate on the rest of this file.** The old reasoning was "the backend can't localize until
+it's told the locale, so nothing else is verifiable". **It can and does.** So the findings below are **genuine,
+independent backend defects** — they are not artefacts of the missing header, and **fixing BE-1 will not fix
+them.**
+
+**Still worth fixing**, for the divergence risk and because one authoritative locale per request is what the
+admin dashboard does — and it is **structurally less prone to B25-style drift.**
 
 **Instructive contrast:** the **admin dashboard sends `accept-language` correctly** (confirmed on a report
 request). So this is **not a platform limitation** — one surface does it right, and its implementation is the
@@ -111,6 +145,8 @@ these fields.
 | **BE-15** | P2 | **Four defects in one string** (= **B27**): untranslated `fl oz`, the nonsensical `fl oz vasos`, the pluralization error `1 días`, and imperial units in a metric locale. **The worst single string found in this engagement** |
 | **BE-4** | P3 | Pluralization bug in a backend template |
 | **BE-5** | P4 | Inconsistent capitalisation **within one response** |
+| **B8** | P3 | **Reclassified from frontend 2026-07-30.** `Minutes Actives` (wrong casing) and `Minutes actives` (correct) **in the same `app/home` payload** — `progressUI.metrics[1].displayTitle` and `.legend` vs `trends.snippets[1].title`. A confirmed instance of BE-5, with exact paths. **The frontend receives both identically, so it cannot be a client-side bug** |
+| **BE-24** | P3 | **NEW.** French pluralization — `Défi de course (se termine dans 1 jours)` should be `1 jour`, **two array entries from a correct `21 jours`**. Parallel to BE-15's Spanish `1 días`, so it is a **shared template with no n=1 rule** — one fix covers every inflected language. The nearby correct plural proves the template *can* do it |
 
 **Note for whoever owns the register decision (B12):** because the backend returns prose the user reads,
 whatever politeness register product settles on must be applied to **server-side strings too**, not only to
@@ -182,17 +218,18 @@ be **provably backend** after being filed as frontend.
 | | Count | IDs |
 |---|---:|---|
 | **P2** | **14** | BE-1, BE-2\*, BE-3, BE-6, BE-7, BE-8, BE-9, BE-13, BE-14†, BE-15, BE-16, **BE-20**, **BE-23**† |
-| **P3** | 7 | BE-4, BE-10, BE-11, BE-12, BE-19, BE-21, BE-22 |
+| **P3** | 10 | BE-4, BE-10, BE-11, BE-12, BE-19, BE-21, BE-22, **BE-24**, **B8**, **BE-1**\*\* |
 | **P4** | 2 | BE-5, BE-17†, BE-18† |
-| **Total** | **23** | |
+| **Total** | **24** | |
 
-\* needs a design answer first · † backend but **not** localization (BE-14, BE-17, BE-18, BE-23)
+\* needs a design answer first · † backend but **not** localization (BE-14, BE-17, BE-18, BE-23) ·
+\*\* BE-1 is P3 alone but **P2 in combination** with B11/B25 — counted once, in P3
 
 ---
 
 ## Language coverage — 3 of 16, and why that is a defensible stopping point
 
-**Captured:** Arabic, German, French.
+**Captured:** Arabic, German, **French (bodies inspected 2026-07-30 — `configuration` + `app/home`)**.
 
 **The pattern is stable across 3 languages** — two *with* frontend dictionaries and one *without* — and every
 language-independent defect above is confirmed **3 times**. Additional languages would add **coverage
@@ -213,8 +250,10 @@ it is a judgment call rather than a hard blocker.
 
 ## Recommended fix order
 
-1. **BE-1 / B38** — send the locale. Everything else is unverifiable until this lands, and some findings may
-   resolve on their own.
+1. **BE-1 / B38** — **re-scoped.** No longer a gate on the rest: the backend already localizes from the account.
+   Fix it for the **divergence risk** (and because it is the likely mechanism behind **B25**, via **B11**).
+   **First, though, answer the cheap question:** does the language selector write to the account or only to the
+   client? That one answer may close B25.
 2. **BE-23** — the `localhost:9050` leak. Not localization; escalate separately and don't let it queue behind
    translation work.
 3. **BE-16b** — decide whether Arabic is a supported market, then act.

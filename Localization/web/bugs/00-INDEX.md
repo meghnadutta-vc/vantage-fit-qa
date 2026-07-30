@@ -1,6 +1,6 @@
 # 00 — INDEX · Employee Vantage Fit web · localization bug report
 
-**Read this first.** Categorised view of **39 frontend bugs (B1–B39)** and **23 backend findings (BE-1–BE-23)**
+**Read this first.** Categorised view of **39 frontend bugs (B1–B39)** and **24 backend findings (BE-1–BE-24)**
 on the employee-facing Fit web app, `app.vantagecircle.co.in/ng/fit/*`.
 
 **Source of record:** [`bug-log.md`](bug-log.md) — 2,273 lines, 18 dated passes, every bug in full with all
@@ -48,7 +48,7 @@ Full proof (six independent methods) in `01-P1-P2-CRITICAL.md` and `bug-log.md` 
 | `08-ENHANCEMENTS.md` | Polish and parity — **not defects** | 2 |
 | `09-NOT-A-BUG.md` | Investigated and ruled out, with the reason — **including 4 of our own false positives** | — |
 | `10-BLOCKED-NEEDS-DECISION.md` | Blocked coverage + open product questions | — |
-| `11-BACKEND.md` | **BE-1–BE-23.** This surface **has** confirmed backend defects — the dashboard had none | 23 |
+| `11-BACKEND.md` | **BE-1–BE-24.** This surface **has** confirmed backend defects — the dashboard had none | 24 |
 
 Counts overlap across type files by design: one bug can be both a formatting and a linguistic finding. **Only
 `01` deliberately repeats.**
@@ -60,7 +60,7 @@ Counts overlap across type files by design: one bug can be both a formatting and
 | | P1 | P2 | P3 | P4 | Total |
 |---|---:|---:|---:|---:|---:|
 | **Frontend (B1–B39)** | **1** | 16 | 18 | 4 | **39** |
-| **Backend (BE-1–BE-23)** | 0 | 14 | 7 | 2 | **23** |
+| **Backend (BE-1–BE-24)** | 0 | 13 | 9 | 2 | **24** |
 
 **On "1 P1":** B39 is the only P1 and it is architectural. Three data-integrity candidates were specifically
 hunted and are documented in `09-NOT-A-BUG.md` — the unit-toggle conversion **passes** on Log Activity, and
@@ -98,7 +98,7 @@ one's conclusions on the other produces wrong tickets.
 | Dictionaries | 18 × 991 keys, **0 missing** | **none for Fit** — cannot be asserted, ever |
 | Dominant defect class | **wire-up gap** — key exists, unused | **not externalised** — no key exists |
 | RTL | **not implemented** at all | **implemented**, but bidi-isolation bug (B35) |
-| Confirmed backend defects | **0** (declared out of scope) | **23** |
+| Confirmed backend defects | **0** (declared out of scope) | **24** |
 | `Accept-Language` sent | **yes** — correct | **no** (B38) |
 | Fix shape | wire up existing keys — cheap, incremental | **internationalize the module** — a project |
 
