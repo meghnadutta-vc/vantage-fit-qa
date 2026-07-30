@@ -44,7 +44,7 @@ single pass answers the core question. Then confirm the *pattern* cheaply by fet
 
 ---
 
-## Phase 2 — Three untested functional dimensions (W9, W10, W13) · no extra login
+## Phase 2 — Three untested functional dimensions (W9, W10, W13) · ◐ PARTIAL 2026-07-30 — see run log
 
 All three are interaction tests that run in whatever session Phase 1 leaves behind.
 
@@ -130,3 +130,4 @@ the log wins and the report is regenerated.
 | 2026-07-30 | **Phase 1 — language axis (W12)** | **Root cause found: B39.** The Fit module has **no i18n mechanism** — 0 of the app's 79 translation calls are in the Fit chunk (the largest bundle in the app); strings are compiled as static template literals. Proven 6 ways. **Supersedes B33's framing**, which implied a cheap serving fix; `B33_DEVELOPER_ISSUE.md` corrected accordingly. Also: `/ng/assets/i18n/fit/` is the SPA catch-all (returns identical 115,655 bytes for `zzz.json`), the app never requests a Fit dictionary, and 0 of 12 live Fit strings exist in any dictionary. **W12 re-scoped, not closed** — every language now has a derived answer. Adjacent (out of Fit scope): `pt-BR`/`pt-PT`/`zh` have no dictionary file; `en`/`pl`/`hi` are a dictionary generation behind (~30% fewer keys). |
 </content>
 </invoke>
+| 2026-07-30 | **Phase 2 — validation / units / toasts** | **0 new bug IDs** — a good result. **PASS:** Log Activity km→mi converts correctly (5.0→3.1), which *strengthens* B28 by proving the Log Water miss is local to one modal, not a platform gap. **4 confirmations** (B1 via `Thursday, 30 July 2026` + `2:33 PM` + `5.0`; B8; B23 via 20 console errors; B39). **3 reach extensions** — B30 now on **3 modals** (all `role:null`, focus stays on `BODY`), B36 on a 4th surface (Hiking form has **zero** native inputs), B39 across Quick Add (12/12 English), the activity picker and the Hiking form. **1 false positive caught by opening the screenshot** (`Strength/Weight Training6` is a correctly-spaced count badge). **W9 partial** — submit is not gated but all fields ship valid defaults, so no validation message is reachable to test. **W10 N/A — premise wrong:** Fit web has no search input; the gap was inherited from the dashboard. **W13 still open** — needs a real submit, deferred on blast radius. Also: dashboard test-data debt is **visible to employees** in the Programs library. |

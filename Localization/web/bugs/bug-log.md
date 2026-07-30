@@ -2152,3 +2152,122 @@ Two observations worth a developer's attention:
 | **W8** — `accept-language` propagation | Already answered by **B38** (never sent). B39 compounds it: even if it were sent, frontend chrome would stay English. |
 | **W14** — glyphs / non-Latin | **Cannot be tested on Fit chrome** — hardcoded English has no glyphs to render. Only API-supplied text can exercise this. |
 
+
+---
+
+# ADDENDUM 2026-07-30 (eighteenth pass) — Phase 2: validation, units, modal semantics. 0 new bug IDs, 4 confirmations, 3 reach extensions, 2 gaps re-scoped.
+
+**Phase 2 of `DEEP_DIVE_PLAN.md`** — the three never-tested functional dimensions (W9 validation, W10 accented
+search, W13 toasts). Run in the same French session as Phase 1 (`<html lang="fr">`), no language switch.
+
+**Headline: no new bug IDs.** Everything found was already logged, or was a **pass**. That is a useful result —
+it means the existing 38 are holding up under a new method rather than multiplying.
+
+---
+
+## ✅ PASS — the Log Activity km/mi unit toggle converts correctly
+
+Directly tests the standing rule *"when a modal has a unit toggle, verify every value AND label converts —
+partial conversion is a data-integrity class of bug"*.
+
+| State | Distance | Calories | Estimate |
+|---|---|---|---|
+| km (default) | **5.0** | 384 | `Estimated · 268–500 kcal` |
+| after → mi | **3.1** | 384 | `Estimated · 268–500 kcal` |
+
+5.0 km = 3.107 mi. **The value converts correctly.** Calories correctly stay unchanged — same distance, only
+the display unit differs — so that is right, not a miss.
+
+**Why this matters as a contrast:** **B28** found the *Log Water* fl-oz toggle converts the value and the
+slider but leaves `1 glass = 250 ml` metric. So the pattern is **inconsistent between modals** — Log Activity
+gets it right, Log Water does not. That strengthens B28: it is a **local defect in one modal**, not a missing
+platform capability, which makes it cheaper to fix than if the whole app lacked conversion.
+
+---
+
+## Confirmations of existing bugs (no new IDs)
+
+| Bug | Confirmed how |
+|---|---|
+| **B1** — dates render English in every language | Summary in a French session shows **`Thursday, 30 July 2026`** (should be *jeudi 30 juillet 2026*) and **`20th Feb 2026`** under the French label *"Votre dernier badge"* — an English ordinal date inside a French card. New instances, same bug. |
+| **B8** — `Active Minutes` casing | French session renders **`Minutes Actives`** (capital A). Still present. |
+| **B23** — broken images / console errors | Programs load produced **20 console errors** in one navigation. |
+| **B39** — no i18n mechanism | Every new surface opened in this pass was 100% English chrome — see the inventory below. |
+
+## Reach extensions to existing bugs (no new IDs)
+
+| Bug | Was logged on | Now also confirmed on |
+|---|---|---|
+| **B30** — modal has no dialog semantics and does not move focus | Log Water | **Log Activity picker** *and* **the Hiking activity form** — both `role: null`, `aria-modal: null`, no accessible name, and `document.activeElement` stays **`BODY`** after open. **Three modals now.** Consistent with the dashboard's finding that no element anywhere carries `role=dialog` — likely the shared modal component's default, so one component fix covers all. |
+| **B36** — custom controls with no ARIA semantics | water ruler + 2 steppers | **The Hiking form has `inputs: []`** — its duration stepper, distance field and calories field are **all custom DIVs, zero native inputs**. Fourth surface. |
+| **B39** — hardcoded English chrome | Summary, Challenges, Diary | **Quick Add menu (12/12 items English)**, **Log Activity picker (40 activities + 4 section headers)**, **Hiking form (all 12 labels)** — see below |
+
+### The English-chrome inventory added by this pass (French session)
+
+- **Nav / CTAs:** `Summary` · `Challenges` · `Programs` · `Community` · `Add` · `Open Diary` · `View Trends` ·
+  `View challenge` · `Previous challenge` · `Next challenge` · `Need Help with Vantage Fit?`
+- **Quick Add menu (12/12):** `Workout` · `Mindfulness` · `Log Diary` · `Track Habits` · `Sync Steps History` ·
+  `Track on app` · `Measure Heart Rate` · `Track Squats` · `Log Activity` · `Start Outdoor Workout` ·
+  `Start 7-Minute Workout`
+- **Log Activity picker:** section headers `Well Being` · `Most Popular` · `Cardiovascular Activities` ·
+  `Sports`, plus 40 activity names
+- **Hiking form:** `Date` · `Today` · `Time` · `Duration` · `Distance` · `Calories` · `Estimated · …kcal` ·
+  `Convert this activity to` · `Active Minutes` · `Log activity`
+
+**Note on the activity names:** the 40 names are a **mix of backend master data and authored custom content**
+(`Running Test`, `Marathon Mania`, `New Custom Activity` are clearly authored). Per the standing rule,
+authored content staying as written is **expected, not a bug**. Only the four **section headers** and the form
+labels are unambiguously UI chrome. **Not counted as untranslated-string defects** — flagged as
+needing a source call, same treatment as the dashboard's CC#4.
+
+---
+
+## Locale-formatting observations in the Hiking form (French session)
+
+| Rendered | Expected in French | Status |
+|---|---|---|
+| **`2:33 PM`** | `14:33` — France uses a 24-hour clock | **Instance of the B1 date/time-formatter family.** Same class as the dashboard's EV#2 (12-hour time picker). Not logged as new — B1 already covers "dates/times render in English format in every language" |
+| **`5.0`** | `5,0` — French uses a decimal comma | Number formatting. Folded into B1's family rather than given a new ID, because it is the same locale-unaware formatting layer |
+
+**Judgment stated openly:** both could arguably be their own IDs. They are folded into B1 because B1 is
+already **P2** and already describes the shared formatter; splitting them would inflate the count without
+adding a distinct fix. If the team prefers per-symptom tickets, they split out of B1 cleanly.
+
+---
+
+## ⚠️ FALSE POSITIVE CAUGHT — recorded so the method is trusted
+
+Text extraction returned **`Strength/Weight Training6`**, which reads like a number colliding with a label —
+exactly the kind of thing that gets filed as a UI defect.
+
+**Opening the screenshot showed it is a correctly-spaced count badge** (`6`) in its own column, well clear of
+the label. **Not a bug.** The "6" and the label are separate elements that my leaf-node extraction
+concatenated.
+
+This is the standing rule *"do a visual re-review of every screenshot — text extraction does not surface
+layout truth"* working in the **opposite direction** from usual: normally the screenshot reveals a bug that
+text missed; here it **prevented a false one**. Evidence: `../evidence/fr_logactivity_picker_all_english.png`
+
+---
+
+## Gaps re-scoped rather than closed
+
+| Gap | Outcome |
+|---|---|
+| **W9 — F3 validation** | **Partially answered.** The Hiking form's submit (`Log activity`) is **not** disabled — `disabled:false`, `aria-disabled:null` — but every field ships **pre-filled with a valid default**, so there is nothing invalid to gate and no error state can be reached without defeating the custom controls. **No validation message was reachable, so none could be checked for translation.** Distinct from the dashboard, where preventive `aria-disabled` gating was confirmed. **Still open**: whether any Fit web form has a reachable validation message at all. |
+| **W10 — F6 accented search** | **N/A as written — the premise was wrong.** `/ng/fit/programs` has **zero `<input>` elements**; there is no search box. W10 was carried over from the dashboard, which *does* have search and *does* fail this. **Re-scoped to:** "confirm no search surface exists anywhere on Fit web (Community and Challenges still unchecked), then mark N/A." |
+| **W13 — F4 toasts** | **Still open, deliberately.** Capturing a toast requires **submitting** a form, which writes activity data to a real account with no delete control. Not done in this pass on blast-radius grounds. **To close it:** submit one activity with the observer installed **before** the click and a ~2 s wait, and accept the data as permanent debt — or find a reversible write. |
+
+---
+
+## Blast-radius observation worth flagging to the team
+
+The employee-facing Programs library displays **`Managing Workplace Stress: A Practical Guide`** — the content
+item created during the **admin-dashboard** QA runs, which the dashboard engagement recorded as
+un-deletable test debt (no delete control exists).
+
+**So dashboard test data is visible to real employees on the employee surface.** The debt was disclosed on the
+dashboard side as a cleanup item; this confirms it is not contained to the admin view. Alongside it the library
+shows other junk-named content (`CREATED FROM SITE PART 3`, `This is also a test`, `Youtube link`) that is
+**not** from this engagement — pre-existing, and equally visible to employees.
+
