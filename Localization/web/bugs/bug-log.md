@@ -49,6 +49,7 @@
 | B35 | **P2** | **Arabic/RTL: numeric, unit and date runs render in REVERSED visual order (no bidi isolation) — DOM is correct, rendering is wrong; invisible to text extraction** |
 | B36 | P3 | Water-amount slider is a custom DIV with no `role`/`aria-valuenow`/keyboard support — unusable by keyboard or screen reader |
 | B37 | P3 | 7 text elements fail WCAG AA contrast — worst **1.79:1** on the Deficit **data value**; active nav pill 3.45:1 |
+| B38 | **P2** | **Frontend never sends the user locale to the Fit API (no `Accept-Language`, no param) — dimension A1 FAILS; backend replies in English. Separate from B33; both needed** |
 
 ## 🗄️ Assign to BACKEND developer
 
@@ -1868,3 +1869,76 @@ this opportunity disappears.**
 The ninth-pass "two delivery mechanisms (build-time inlined vs runtime dictionary)" hypothesis is
 **withdrawn** in favour of the above. It was explicitly labelled a hypothesis at the time; recording the
 withdrawal so the log stays trustworthy.
+
+---
+
+# ADDENDUM 2026-07-30 (sixteenth pass) — API BODIES INSPECTED: B33 VALID, new B38, and several FE/BE misclassifications corrected
+
+Read the **actual API response bodies and request headers** of the running app (via network capture, which
+carries the app's auth — a bare `fetch` returns 401). Developer-ready write-up:
+`../B33_DEVELOPER_ISSUE.md`.
+
+## B33 — VALID. Confirmed a third time, now with side-by-side proof
+
+| Path | Status | content-type | JSON? | Bytes |
+|---|---|---|---|---|
+| `/ng/assets/i18n/de.json` (perks) | 200 | **application/json** | ✅ | 1,472 keys |
+| `/ng/assets/i18n/fit/de.json` | 200 | **text/html** | ❌ | **115,655** |
+| `/ng/assets/i18n/fit/en.json` | 200 | **text/html** | ❌ | **115,655** |
+
+Identical byte counts for de/en/fr prove one wrong document (the SPA `index.html`) is served for every locale.
+
+## 🔴 B38 — [P2] NEW — the frontend never sends the user's locale to the Fit API
+**Type:** Localization / API · **Layer:** Frontend (request) + Backend (response) · **Dimension A1 — FAILS**
+
+Captured request headers of a live `GET /vantagefit/api/v1/configuration` (Arabic session):
+`device: web` · `apptype: Fitness` · `appversion: 3.2.0` · `appname: VantageFit` ·
+`accept: application/json` · `x-xsrf-token` · `referer`.
+
+**No `Accept-Language`. No `lang`/`locale` parameter.** The backend is never told the user chose Arabic.
+
+**Note the contrast with the admin dashboard, where A1 PASSED** (`accept-language: pl` was verified on a
+report POST). **On the employee web A1 FAILS.** Do not carry the dashboard's A1 pass across surfaces.
+
+### Consequence, proven in the same responses (Arabic session, zero Arabic in either)
+`configuration`: `"heading":"Partner Offerings"` · `"subtitle":"To take care of your comprehensive wellness
+needs"` · `"heading":"Upcoming Events"` / `"Past Events"` · `"hra":{"status":"Below Average"}` ·
+`adherenceActivities[].title/subtitle` · `options[].displayText: "No"/"Yes"`.
+
+`today/overview`: `"date":"Today, 30 Jul 2026"` · `dataType: Moved/Running/Cycling/Meals/Water/Mood/Weight/
+Heart Rate` · `"value":"0.0 mile"` · `"value":"0.0 fl oz"` · `"value":"0.0 cal"` ·
+`intakeCaloriesData.subText:"You are currently in a caloric deficit"` ·
+`distanceData.subtext:"The Distance moved is an estimate…"`.
+
+**The backend sends display-ready English text including units and a formatted English date.**
+
+## ⚠️ FE/BE MISCLASSIFICATIONS CORRECTED — the API bodies settle these
+
+| Bug | Was filed | **Proven** | Evidence in body |
+|---|---|---|---|
+| **B17** caloric-deficit sentence | **[FE]** | **[BE]** | `intakeCaloriesData.subText` |
+| **B18** "mile" unit | **[FE]** | **[BE]** | `"value":"0.0 mile"` |
+| **B1** English dates (in part) | **[FE]** | **partly [BE]** | `"date":"Today, 30 Jul 2026"` |
+| Distance/Vitals/Nutrition labels | unclassified | **[BE]** | `dataType` fields |
+| **B26** "Yes"/"No" | [BE] ✓ | **[BE] confirmed in body** | `options[].displayText` |
+
+**Confirmed FRONTEND** (absent from every API body inspected, so they must come from the missing dictionary):
+`Diary` · `Snapshot` · `Calorie Ledger` · `Food Log` · `Intake` · `Bedtime` · `Wake up` · `Log Water` ·
+`Log Sleep` · `Log Activity` · all four nav tabs.
+
+## The "translated = backend" shortcut I proposed is WITHDRAWN
+The fifteenth pass suggested that, while B33 is live, *translated = backend / English = frontend*. **That is
+wrong.** These two endpoints return **English** backend strings, so English does **not** imply frontend.
+The rule only ever worked one way: **translated ⇒ backend** (a broken dictionary cannot produce translations).
+English ⇒ **either**. Corrected; do not use the withdrawn version for classification.
+
+## The user's statement, precisely qualified
+"The backend sends translated API responses" is **true for some endpoints and false for others**.
+- **Translated:** challenge content — `E-Marathon-Herausforderung (endet in 22 Tagen)`,
+  `Gagnez 10 000 Fit Points`, `Terminé`, the water-task sentence.
+- **NOT translated:** `configuration` and `today/overview` — 100 % English in an Arabic session.
+**Which behaviour is intended is an open question for the dev team** (question 3 in the developer write-up).
+
+## Net effect
+**Fixing B33 alone will not make Fit translated.** B33 fixes the frontend half; **B38** is the backend half.
+Both are needed.
