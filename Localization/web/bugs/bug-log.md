@@ -1532,3 +1532,79 @@ surrounding flow. **Needs product confirmation; not logged as a defect.**
 ## Also noted
 Calorie Ledger numbers use **comma** thousands grouping in Arabic (`6,546`, `-7,374`). Acceptable in many
 Arabic locales; flagged for the locale-formatting decision, not logged.
+
+---
+
+# ADDENDUM 2026-07-30 (eleventh pass) — the 5 untested write operations, opened at last
+
+I flip-flopped twice on which trackables are web-available. **This is the final, evidence-based position** —
+each affordance was opened and observed, not inferred from labels.
+
+| Affordance | Reality | Evidence |
+|---|---|---|
+| `Edit heart rate on the app` | ⭕ **app-only** | aria-label says so |
+| **`Log meals`** | ⭕ **app-only** | Opens a **redirect modal**: *"Continue this in the Vantage Fit app / This action is best done from the mobile app. Scan the code to download the app"* + QR + "Save QR" |
+| **`Add Sleep Data`** | ✅ **full web form** | "Log Sleep" · "Time asleep" h/m stepper · "of 8h 0m in bed" · timeline (6 PM/12 AM/6 AM/12 PM) · "Bedtime 9:00 PM" · "Wake up 5:00 AM" · "Save" |
+| **`Log activity`** | ✅ **full web form** | "Log Activity" + ~40 categorised activities across Well Being / Most Popular / Cardiovascular / Other Workout / Sports, plus "New Custom Activity" |
+| `Edit weight` | ✅ web form | tested in the tenth pass |
+| `Edit mood` | ✅ web form | opened previously |
+| `Log water` | ✅ web form | tested |
+| `Quick add` | ❓ **did not open** | no menu, no modal — matches the Challenges "+Add" signature. **Still unresolved** |
+
+**Record of my own error, so the log is trustworthy:** I first marked sleep/meals/activities ⭕ N/A (following
+the user's scope note), then "corrected" that to all-web-available (wrong — meals is app-only), and only
+direct observation gave the accurate split above. **Lesson: open the affordance; do not infer availability
+from aria-labels or from a general scope statement.**
+
+## ⚠️ B30 — CORRECTED, and it is now MORE actionable
+
+**Not all modals are inaccessible. The correct pattern already exists in the codebase.**
+
+| Modal | `role` | `aria-modal` | Accessible name | Focus moved in? |
+|---|---|---|---|---|
+| Log Water | ❌ none | ❌ none | ❌ none | ❌ |
+| Log Weight | ❌ none | ❌ none | ❌ none | ❌ |
+| **Log Sleep** | ✅ **`dialog`** | ✅ **`true`** | ✅ **`fit-sheet-title-2`** | ❌ |
+
+**Revised B30, two parts:**
+1. **Inconsistent dialog semantics** — Log Water and Log Weight lack `role`/`aria-modal`/name, while
+   **Log Sleep implements all three correctly.** The fix is "apply the Sleep sheet's existing pattern to the
+   other modals", not "add a11y from scratch". Much cheaper than originally framed.
+2. **Focus management is missing in ALL of them**, including the otherwise-correct Sleep modal.
+
+## NEW app-only redirect modal — an undiscovered surface, and it is English in Arabic
+
+The `Log meals` redirect modal is **not in any prior inventory**. In an **Arabic** session it renders **100 %
+English**: `MOBILE APP`, `Continue this in the Vantage Fit app`, `This action is best done from the mobile
+app. Scan the code to download the app`, `Save QR`. **B33 on a newly-found surface.**
+Added to `00-INDEX.md`. Evidence: `../evidence/diary_ar_apponly_modal.png`
+
+## B35 extends to PUNCTUATION DISPLACEMENT — and my detector was wrong to exclude it
+
+Visible in the Arabic screenshot:
+- `No activities logged.` renders as **`.No activities logged`**
+- `…Scan the code to download the app` renders with the period at the **start** of the wrapped line:
+  **`.the code to download the app`**
+
+**The trailing period migrates to the left/front of the run.** My B35 detector's **y-band guard deliberately
+skipped multi-line runs** as false positives — but this shows real punctuation displacement lives exactly
+there. **The guard prevents false positives at the cost of missing this class.** Detecting it needs
+per-character range measurement, not per-token. **Recorded as a known detector limitation**; instances found
+visually.
+
+## B36 pattern repeats — custom steppers also lack semantics
+The Sleep modal's h/m stepper is `button.sl-actual-stepper` with **`role: "(none)"`, no `aria-valuenow`** —
+the same shape as B36's water ruler. So the "custom control with no ARIA" pattern appears in at least two
+modals. Folded into B36 rather than a new ID. *(The `+` stepper correctly shows `disabled: true` at the 8h
+cap — sensible validation.)*
+
+## 12-hour time format in an Arabic session — now on TWO surfaces
+Sleep modal: `6 PM`, `12 AM`, `6 AM`, `12 PM`, `Bedtime 9:00 PM`, `Wake up 5:00 AM`.
+Community Events: `Time: 03:00 PM - 04:00 PM`.
+Arabic locales commonly use 24-hour. **Two surfaces now — worth a product decision.** Still logged as
+**Needs Product Confirmation**, not asserted as a defect.
+
+## Both new forms are 100 % English in Arabic
+Sleep and Activity modals contain **zero** Arabic strings. The Activity picker's ~40 activity names are
+likely backend master-list data (the same class as the dashboard's CC#4 `[FE-BE TBD]`) — **needs a source
+call before classifying.**
