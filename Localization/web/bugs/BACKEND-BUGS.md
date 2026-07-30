@@ -12,6 +12,9 @@ against German and French.
 **Fit API base:** `/vantagefit/api/v1/` — endpoints inspected: `configuration` · `today/overview` ·
 `challenge/ongoing/all` · `content/top` · `content/byCategoryName` · `app/home` · `dashboard/activities/all`
 
+**Languages captured:** **Arabic** and **German** (same endpoints, same data, back to back) — see **BE-16**
+for the three-way comparison that scopes each problem. French still to capture.
+
 ---
 
 ## BE-1 — [P2] **ROOT CAUSE** · The frontend sends no locale, so the backend cannot localize (= **B38**)
@@ -146,17 +149,49 @@ Rendered from backend task data, **French** session:
 format — the inverse of `Gagnez 10 000 Fit Points`, where the number format **was** correctly French.
 **Number formatting is inconsistent between two backend-generated strings.**
 
-## BE-16 — [P2] The backend localizes for some languages and/or endpoints, not others
-| Field | German / French | **Arabic** |
-|---|---|---|
-| `rankTitle` | `Wöchentlicher Rang` ✅ | `Weekly Rank` ❌ |
-| `progressTitle` | `Wöchentlicher Fortschritt` ✅ | `Weekly progress: 0%` ❌ |
-| `sponsoredLinks.heading` | `Offres des partenaires` ✅ | `Partner Offerings` ❌ |
-| challenge subtitles | `E-Marathon-Herausforderung (endet in 22 Tagen)` ✅ | `e-Marathon Challenge (ends in 21 days)` ❌ |
-| `today/overview` labels | *(re-check needed)* | all English ❌ |
+## BE-16 — [P2] **RESOLVED BY DIRECT COMPARISON** — there are THREE distinct backend problems, not one
 
-**Arabic appears to have no backend translations at all**, while German and French have partial coverage.
-**Needs a definitive answer: which languages does the backend support, and which endpoints are in scope?**
+Captured the **same endpoints in Arabic and German** (2026-07-30). The result separates cleanly:
+
+| Endpoint | **German** | **Arabic** | Verdict |
+|---|---|---|---|
+| `configuration` | ✅ **fully localized** — `Partner-Angebote`, `Kommende Veranstaltungen`, `Vergangene Veranstaltungen`, `hra.status: "Unterdurchschnittlich"` | ❌ all English | **Arabic coverage gap** |
+| `challenge/ongoing/all` | ✅ **localized** — `Wöchentlicher Fortschritt`, `Wöchentlicher Rang`, `Gesamtrang`, `Nächster Meilenstein`, `E-Marathon-Herausforderung (endet in 21 Tagen)`, `0 Schritte abgeschlossen` | ❌ all English | **Arabic coverage gap** |
+| **`today/overview`** | ❌ **ENGLISH** | ❌ English | 🔴 **endpoint has NO localization for ANY language** |
+
+### The three problems, now precisely scoped
+
+**16a — `today/overview` is not localized for any language.** Its response is **byte-identical English** in a
+German session and an Arabic one: `"date":"Today, 30 Jul 2026"`, `dataType: Moved/Running/Cycling/Meals/
+Water/Mood/Weight/Heart Rate`, `"value":"0.0 mile"/"0.0 fl oz"/"0.0 cal"`,
+`"subText":"You are currently in a caloric deficit"`, `distanceData.subtext`.
+**This upgrades BE-6, BE-7, BE-8, BE-9 and BE-10 from "Arabic problem" to "every-language problem."**
+German, French and all other locales are affected. **Highest-value backend fix.**
+
+**16b — Arabic has no backend translations at all.** Endpoints that are fully localized for German return
+100 % English for Arabic. Arabic is live and selectable in the profile, so an Arabic user gets an
+English backend everywhere.
+
+**16c — `"Week 1"` is a specific missing key, not a coverage gap.** In the **German** `challenge/ongoing/all`
+response, **9 of 10 fields are correctly German and `"subtitle":"Week 1"` is still English.** German has full
+coverage on that endpoint, so this is one untranslated string, not a missing language.
+**This definitively confirms B4 as a backend defect** (we had filed it frontend).
+
+### Two more findings from the German comparison
+
+**Pluralization is broken in every language** (BE-4 extended): English `(ends in 1 days)` ·
+French `pendant 1 jours` · **German `(endet in 1 Tagen)`** — should be `1 Tag`. One backend template with no
+plural rule, affecting all locales.
+
+**B12 (formal/informal register) has a BACKEND source.** The German `configuration` response is **formal**:
+`Um **Ihre** umfassenden Wellness-Bedürfnisse zu erfüllen` · `**Sehen Sie**, welche Wellness-Aktivitäten…` ·
+`**Sehen Sie** vergangene Wellness-Aktivitäten…`. The product voice is informal *du*.
+**B12 was filed as frontend copy; at least part of it is backend copy** and must be fixed there.
+
+### Caveat
+`adherenceActivities` was **empty** in the German capture and had 2 entries in Arabic, so **BE-11 could not be
+compared across languages**. The array appears time- or state-dependent, not language-dependent. Re-check when
+populated.
 
 ## BE-17 — [P4] Duplicate adherence activities in the data
 `adherenceActivities` contains **two** "Morning Walk" entries (`firebase_id` 49 and 54) with near-identical
